@@ -1,0 +1,22 @@
+{
+  "case_id": "demo-paramopt-001",
+  "_note": "合成示例案例（非正式答案）：材料批号、文献出处、价格与数据均为虚构，仅用于演示接口与自测链路。",
+  "research_question": {
+    "question": "在固定机时与耗材预算内，优化催化微反应器的反应温度、催化剂浓度、采样间隔与搅拌速率，使转化率最大化并控制副产物选择性",
+    "scope": "单台微反应器、固定反应窗口 120 min、批量 21 次实验以内",
+    "constraints": "单实验数据点不超过 60 个；材料耐温与放热安全阈值约束须满足；EHS 确认前不得执行温度上移实验"
+  },
+  "materials": [
+    {"name": "催化微反应器（虚构型号 MR-100）", "doc": "设备手册 SOP-12"},
+    {"name": "PEEK 密封件（耐温 175℃，虚构）", "doc": "设备手册 SOP-12 附录A"},
+    {"name": "催化剂母液 25 mmol/L（虚构批号 C-2024-11）", "doc": "试剂台账"},
+    {"name": "文献 lit-doe-2019（虚构）", "doc": "DOE 表3/图4/图5"}
+  ],
+  "prospective_contracts": {
+    "booking": "机时按 2 h/次实验折算（前瞻性预约口径，非实际报价）",
+    "price": "耗材 100 元/次实验（前瞻性折算口径，非实际报价）"
+  },
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

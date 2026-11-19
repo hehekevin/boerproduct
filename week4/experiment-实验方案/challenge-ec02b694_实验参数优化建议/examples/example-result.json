@@ -1,0 +1,738 @@
+{
+ "case_id": "demo-paramopt-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.13.14",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "开发机实测；平台运行环境以平台实际为准"
+  },
+  "research_question": {
+   "question": "在固定机时与耗材预算内，优化催化微反应器的反应温度、催化剂浓度、采样间隔与搅拌速率，使转化率最大化并控制副产物选择性",
+   "scope": "单台微反应器、固定反应窗口 120 min、批量 21 次实验以内（合成示例，非正式答案）",
+   "constraints": "单实验数据点不超过 60 个；材料耐温与放热安全阈值约束须满足；EHS 确认前不得执行温度上移实验"
+  },
+  "rubric": {
+   "weights": {
+    "information_gain": 0.4,
+    "cost_efficiency": 0.3,
+    "robustness": 0.2,
+    "risk_coverage": 0.1
+   },
+   "tie_break": [
+    "fused_score 降序",
+    "cost_efficiency 降序",
+    "version_id 升序"
+   ],
+   "normalization": "各因子 0-1 归一化，fused_score=Σw·f 保留 4 位小数",
+   "declared_at": "step2"
+  },
+  "response_metrics": [
+   {
+    "metric_id": "M-01",
+    "name": "转化率",
+    "unit": "%",
+    "measurement": "气相色谱外标法，每点平行 3 针取均值",
+    "acceptable_variation": "±1.5%"
+   },
+   {
+    "metric_id": "M-02",
+    "name": "副产物选择性",
+    "unit": "%",
+    "measurement": "GC-MS 归一化峰面积比",
+    "acceptable_variation": "±2%"
+   }
+  ],
+  "parameter_response_map": [
+   {
+    "map_id": "MAP-01",
+    "param_id": "P-01",
+    "metric_id": "M-01",
+    "relation": "unimodal：峰区约 160–165 ℃，先升后降",
+    "evidence": "文献 lit-doe-2019 图4 + pilot-run-05/07 两点佐证"
+   },
+   {
+    "map_id": "MAP-02",
+    "param_id": "P-01",
+    "metric_id": "M-02",
+    "relation": "increasing：温度升高副产物选择性上升",
+    "evidence": "文献 lit-doe-2019 图5"
+   },
+   {
+    "map_id": "MAP-03",
+    "param_id": "P-02",
+    "metric_id": "M-01",
+    "relation": "increasing：边际递减，>20 mmol/L 后趋平",
+    "evidence": "pilot-run-03~07 五点"
+   },
+   {
+    "map_id": "MAP-04",
+    "param_id": "P-03",
+    "metric_id": "M-01",
+    "relation": "sampling_resolution：间隔越密动力学拟合置信区间越窄",
+    "evidence": "kin-fit-02 拟合残差对照（虚构）"
+   }
+  ],
+  "parameters": [
+   {
+    "param_id": "P-01",
+    "name": "反应温度",
+    "unit": "℃",
+    "domain": {
+     "min": 120,
+     "max": 180,
+     "step": 5
+    },
+    "current_value": 150,
+    "basis": "literature",
+    "source_ref": "lit-doe-2019 表3（虚构）"
+   },
+   {
+    "param_id": "P-02",
+    "name": "催化剂浓度",
+    "unit": "mmol/L",
+    "domain": {
+     "min": 5,
+     "max": 25,
+     "step": 2.5
+    },
+    "current_value": 10,
+    "basis": "pilot",
+    "source_ref": "pilot-run-07（虚构）"
+   },
+   {
+    "param_id": "P-03",
+    "name": "采样间隔",
+    "unit": "min",
+    "domain": {
+     "min": 1,
+     "max": 15,
+     "step": 1
+    },
+    "current_value": 5,
+    "basis": "manual",
+    "source_ref": "设备手册 SOP-12 §4"
+   },
+   {
+    "param_id": "P-04",
+    "name": "搅拌速率",
+    "unit": "rpm",
+    "domain": {
+     "min": 100,
+     "max": 800,
+     "step": 50
+    },
+    "current_value": 300,
+    "basis": "manual",
+    "source_ref": "设备手册 SOP-12 §6"
+   }
+  ],
+  "optimization_suggestions": [
+   {
+    "sugg_id": "S-01",
+    "param_id": "P-01",
+    "direction": "set_to",
+    "suggested_value": 165,
+    "magnitude": null,
+    "expected_gain": {
+     "metric_ref": "M-01",
+     "baseline": 78.5,
+     "projected": 84.2,
+     "delta": 5.7,
+     "unit": "百分点"
+    },
+    "basis": "literature",
+    "rationale": "取峰区中点，避免对传热偏差敏感；幅度在声明域 [120,180] 内",
+    "risk_note": "副产物选择性随温度上升，须与 M-02 联动监控（R-01）"
+   },
+   {
+    "sugg_id": "S-02",
+    "param_id": "P-02",
+    "direction": "up",
+    "suggested_value": null,
+    "magnitude": 5,
+    "expected_gain": {
+     "metric_ref": "M-01",
+     "baseline": 78.5,
+     "projected": 81.0,
+     "delta": 2.5,
+     "unit": "百分点"
+    },
+    "basis": "pilot",
+    "rationale": "边际递减前最后一次有效增量；执行值 10+5=15 mmol/L",
+    "risk_note": "耗材成本上升，收益-成本折算见 budget_note 口径"
+   },
+   {
+    "sugg_id": "S-03",
+    "param_id": "P-03",
+    "direction": "down",
+    "suggested_value": null,
+    "magnitude": 3,
+    "expected_gain": {
+     "metric_ref": "M-01",
+     "baseline": 78.5,
+     "projected": 79.3,
+     "delta": 0.8,
+     "unit": "百分点"
+    },
+    "basis": "pilot",
+    "rationale": "采样加密降低动力学拟合置信区间，按 pilot 重复实验标准差收窄折算间接收益；执行值 5−3=2 min",
+    "risk_note": "数据点增多，须满足 120/P-03 ≤ 60 的机时口径约束（C-02）"
+   },
+   {
+    "sugg_id": "S-04",
+    "param_id": "P-04",
+    "direction": "hold",
+    "suggested_value": 300,
+    "magnitude": null,
+    "expected_gain": {
+     "metric_ref": "M-02",
+     "baseline": 6.0,
+     "projected": 6.0,
+     "delta": 0.0,
+     "unit": "百分点"
+    },
+    "basis": "manual",
+    "rationale": "维持现有混合水平，配合温度上移做监控，不为改而改",
+    "risk_note": "若 M-02 超 8% 需重估搅拌（R-01）"
+   }
+  ],
+  "coupling_constraints": [
+   {
+    "cid": "C-01",
+    "params": [
+     "P-01"
+    ],
+    "expression": "P-01 <= 170",
+    "source": "PEEK 密封件耐温 175℃ 留 5℃ 裕度（设备手册 SOP-12 附录A）",
+    "severity": "hard"
+   },
+   {
+    "cid": "C-02",
+    "params": [
+     "P-03"
+    ],
+    "expression": "120 / P-03 <= 60",
+    "source": "机时合同：单实验数据点 ≤60（前瞻性预约口径）",
+    "severity": "hard"
+   },
+   {
+    "cid": "C-03",
+    "params": [
+     "P-01",
+     "P-02"
+    ],
+    "expression": "P-01 * P-02 <= 2500",
+    "source": "放热速率安全阈值（合成口径，须 EHS 确认）",
+    "severity": "hard"
+   }
+  ],
+  "search_strategy": {
+   "method": "staged_screening",
+   "rationale": "先用 OFAT 粗筛主效应，再对温度×浓度做响应面（RSM）局部精修，兼顾信息增益与机时",
+   "initial_points": "OFAT：P-01 ∈ {130,140,150,160,170} × P-02=10；P-02 ∈ {5,10,15,20,25} × P-01=150，去重后 9 点",
+   "grid_resolution": null,
+   "stop_criteria": "RSM 二阶项 p<0.05 且最优点置信区间半宽 <1 ℃ 即停；连续两轮 fused_score 改善 <0.02 提前终止；补点预算耗尽强制终止",
+   "budget_note": "粗筛 9 点 + RSM 9 点 = 18 次实验，机时约 36 h、耗材约 1800 元（前瞻性折算口径，非实际报价）"
+  },
+  "strategy_versions": [
+   {
+    "version_id": "V1",
+    "summary": "分阶段筛选：OFAT 粗筛 → RSM 精修（推荐）",
+    "factors": {
+     "information_gain": 0.9,
+     "cost_efficiency": 0.75,
+     "robustness": 0.8,
+     "risk_coverage": 0.8
+    },
+    "fused_score": 0.825,
+    "changes": "相对 V2 减少网格点数，相对 V3 增加 OFAT 主效应阶段"
+   },
+   {
+    "version_id": "V2",
+    "summary": "全网格搜索（步长取声明域 step）",
+    "factors": {
+     "information_gain": 0.7,
+     "cost_efficiency": 0.4,
+     "robustness": 0.85,
+     "risk_coverage": 0.7
+    },
+    "fused_score": 0.64,
+    "changes": "覆盖最全但机时超预算"
+   },
+   {
+    "version_id": "V3",
+    "summary": "直接响应面（跳过粗筛）",
+    "factors": {
+     "information_gain": 0.75,
+     "cost_efficiency": 0.6,
+     "robustness": 0.7,
+     "risk_coverage": 0.6
+    },
+    "fused_score": 0.68,
+    "changes": "省机时但主效应未验证，峰位偏离设计空间时风险高"
+   }
+  ],
+  "strategy_ranking": {
+   "ordered_ids": [
+    "V1",
+    "V3",
+    "V2"
+   ],
+   "ties": [],
+   "top_k": [
+    "V1"
+   ],
+   "k_value": 1,
+   "note": "score_strategy.py 回填"
+  },
+  "feasibility_check": {
+   "tool": "scripts/param_check.py",
+   "checked_count": null,
+   "violations": [],
+   "warnings": [],
+   "all_within_domain": null,
+   "all_constraints_satisfied": null,
+   "note": "param_check.py 回填"
+  },
+  "risks": [
+   {
+    "risk_id": "R-01",
+    "failure_mode": "温度上移后副产物选择性超阈值",
+    "judge_criterion": "M-02 > 8% 连续两点",
+    "stop_loss": "回落至 155 ℃ 并记录返工",
+    "fallback": "维持 160 ℃ 局部重做 RSM"
+   },
+   {
+    "risk_id": "R-02",
+    "failure_mode": "无可行解（耦合约束与目标冲突）",
+    "judge_criterion": "param_check violations 非空",
+    "stop_loss": "终止寻优转人工",
+    "fallback": "放宽 soft 约束并在 uncertainties.conflicts 登记取舍"
+   }
+  ],
+  "confirmations": [
+   {
+    "item": "放热阈值 C-03 的 EHS 安全确认",
+    "kind": "safety",
+    "status": "pending"
+   },
+   {
+    "item": "机时预约窗口（前瞻性口径）",
+    "kind": "equipment",
+    "status": "pending"
+   },
+   {
+    "item": "文献峰位对本装置适用性的专家确认",
+    "kind": "expert",
+    "status": "pending"
+   }
+  ],
+  "completeness": {
+   "parameters_total": 4,
+   "metrics_total": 2,
+   "map_entries": 4,
+   "suggestions_total": 4,
+   "constraints_total": 3,
+   "risks_total": 2,
+   "strategy_versions": 3
+  },
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与要素清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "响应指标与参数-响应关系梳理",
+    "command": "(Agent 响应)",
+    "output_ref": "result.response_metrics / parameter_response_map",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "当前参数取值审计 + rubric 事前声明",
+    "command": "(Agent 响应)",
+    "output_ref": "result.parameters / result.rubric",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "优化建议（方向/幅度/预期收益）+ 耦合约束登记",
+    "command": "(Agent 响应)",
+    "output_ref": "result.optimization_suggestions / coupling_constraints",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "寻优方法与停止判据 + 风险 + claims 证据链",
+    "command": "(Agent 响应)",
+    "output_ref": "result.search_strategy / risks / claims",
+    "status": "done"
+   },
+   {
+    "step": "step5a",
+    "action": "数值可行性校验",
+    "command": "python3 /skills/weekly-skill/scripts/param_check.py --result /app/output/result.json --emit-into",
+    "output_ref": "result.feasibility_check",
+    "status": "done"
+   },
+   {
+    "step": "step5b",
+    "action": "策略机械比较排序",
+    "command": "python3 /skills/weekly-skill/scripts/score_strategy.py --result /app/output/result.json --k 1",
+    "output_ref": "result.strategy_ranking",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence",
+    "status": "done"
+   },
+   {
+    "step": "step7",
+    "action": "自检与交付",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into",
+    "output_ref": "/app/work/verify_check.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "optimized",
+  "verdict_basis": "参数审计/建议/约束/寻优方法四要素齐备且数值校验通过",
+  "gain_evidence": {
+   "probe_version": "1.0",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "demo-paramopt-001",
+   "input": {
+    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-ec02b694\\submission\\examples\\example-result.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-ec02b694\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "audit_missed": 0,
+      "suggestions_missed": 0,
+      "coupling_missed": 0,
+      "search_missed": 0,
+      "evidence_missed": 0,
+      "violations_objective": {
+       "audit": 0,
+       "suggestions": 0,
+       "coupling": 0,
+       "search": 0,
+       "evidence": 0
+      },
+      "manual_review_items": 0,
+      "steps_count": 39,
+      "steps_detail": {
+       "checks_executed": 30,
+       "checks_disabled": 0,
+       "flow_steps_total": 9,
+       "flow_steps_done": 9
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0006
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "audit_missed": 0,
+      "suggestions_missed": 0,
+      "coupling_missed": 0,
+      "search_missed": 0,
+      "evidence_missed": 0,
+      "violations_objective": {
+       "audit": 0,
+       "suggestions": 0,
+       "coupling": 0,
+       "search": 0,
+       "evidence": 0
+      },
+      "manual_review_items": 0,
+      "steps_count": 9,
+      "steps_detail": {
+       "checks_executed": 0,
+       "checks_disabled": 5,
+       "flow_steps_total": 9,
+       "flow_steps_done": 9
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0003
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "audit_missed": 0,
+    "suggestions_missed": 0,
+    "coupling_missed": 0,
+    "search_missed": 0,
+    "evidence_missed": 0,
+    "manual_review_items": 0,
+    "steps_count": 30,
+    "clarification_rounds": 0
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "audit_missed",
+     "mechanism": "当前参数取值依据审计（name/unit/domain/basis∈manual|pilot|literature|vendor/source_ref/当前值逐项齐全）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后当前值无出处、域声明缺失不再判 FAIL，参数表退化成拍脑袋取值"
+    },
+    {
+     "metric": "suggestions_missed",
+     "mechanism": "优化建议完备检查（param_ref 有效、basis/rationale 非空、expected_gain 量化且 delta=projected−baseline）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后建议无据、收益虚标（只有形容词没有数字）不再判 FAIL"
+    },
+    {
+     "metric": "coupling_missed",
+     "mechanism": "参数间耦合约束登记（params 引用有效、expression/source 齐备，确无耦合须显式声明）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后约束缺失或引用无效参数不再判 FAIL，可行域感知失效"
+    },
+    {
+     "metric": "search_missed",
+     "mechanism": "寻优方法检查（method 枚举、初始点、停止判据、预算口径齐备；grid 须给分辨率）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后搜索策略没有收敛依据与停止判据不再判 FAIL"
+    },
+    {
+     "metric": "evidence_missed",
+     "mechanism": "参数-响应关系/风险/claims 数字回证（关系条目引用有效、数值须出现在 claim text/quote）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后关系无依据、风险无止损、数字无回证不再判 FAIL"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "五组漏检合计需人工核对条目",
+     "formula": "五组 missed 之和",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐项核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "八步线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回问/返工所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "退化模式关闭五组检查（audit/suggestions/coupling/search/evidence），枚举、completeness 汇总一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "五组违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，契约字段校验跳过。",
+    "rubric 未事前声明时排序复算真值不可得，策略排序类漏检记 0 但属『无法判定』而非『无违规』。",
+    "把 --ablate 的退化结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\wk\\gain_probe_polluted.json",
+    "injected": [
+     "清空 parameters[].basis（当前值依据登记缺失）",
+     "清空 optimization_suggestions[].basis（建议无据）",
+     "把 expected_gain 改为无数字的虚标声明（收益不量化）",
+     "清空 coupling_constraints（参数间耦合约束缺失）",
+     "清空 claims（业务数值失去回证）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 15,
+     "audit_missed": 0,
+     "suggestions_missed": 0,
+     "coupling_missed": 0,
+     "search_missed": 0,
+     "evidence_missed": 0,
+     "problem_sample": [
+      "参数 P-01 审计不完整，缺少: basis",
+      "参数 P-02 审计不完整，缺少: basis",
+      "参数 P-03 审计不完整，缺少: basis",
+      "参数 P-04 审计不完整，缺少: basis",
+      "S-01 未标优化依据（basis 空）",
+      "S-01 预期收益未量化或口径错误（expected_gain 须含 metric_ref/baseline/projected/delta 且 delta=projected−baseline）",
+      "S-02 未标优化依据（basis 空）",
+      "S-02 预期收益未量化或口径错误（expected_gain 须含 metric_ref/baseline/projected/delta 且 delta=projected−baseline）"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "FAIL",
+     "problems": 1,
+     "audit_missed": 4,
+     "suggestions_missed": 4,
+     "coupling_missed": 1,
+     "search_missed": 0,
+     "evidence_missed": 1,
+     "problem_sample": [
+      "completeness 汇总与实际条目不符: ['constraints_total']"
+     ]
+    },
+    "missed_detection_delta": {
+     "audit_missed": 4,
+     "suggestions_missed": 4,
+     "coupling_missed": 1,
+     "search_missed": 0,
+     "evidence_missed": 1,
+     "problems": -14
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.0085,
+   "result_bytes": 25060,
+   "input_files_scanned": 2,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 30,
+   "checker_checks_executed_degraded": 0,
+   "checker_checks_disabled_degraded": 5,
+   "parameters_total": 4,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 0,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 0,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "当前反应温度 150 ℃ 取自文献基准工况（lit-doe-2019 表3），建议设为 165 ℃，预期转化率 78.5→84.2（+5.7 个百分点）",
+   "kind": "reported",
+   "source_id": "lit-doe-2019",
+   "location": "optimization_suggestions[S-01]",
+   "evidence": [
+    {
+     "paragraph_id": "lit-doe-2019 表3/图4",
+     "quote": "150 ℃ 为基准工况；峰区 160–165 ℃ 转化率达 84.2%（虚构引文）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "催化剂浓度当前 10 mmol/L（pilot-run-07），建议上调幅度 5 mmol/L，预期转化率 78.5→81.0（+2.5 个百分点）",
+   "kind": "inferred",
+   "source_id": "pilot-run-07",
+   "location": "optimization_suggestions[S-02]",
+   "evidence": [
+    {
+     "paragraph_id": "pilot-run-07",
+     "quote": "10→15 mmol/L 转化率提升 2.5 个百分点，边际开始递减（虚构数据）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "采样间隔当前 5 min（设备手册 SOP-12 §4），建议下调幅度 3 min，预期转化率拟合口径 78.5→79.3（+0.8，按置信区间收窄折算）",
+   "kind": "inferred",
+   "source_id": "kin-fit-02",
+   "location": "optimization_suggestions[S-03]",
+   "evidence": [
+    {
+     "paragraph_id": "kin-fit-02",
+     "quote": "间隔 5→2 min 拟合置信区间收窄，等效收益折算 0.8 个百分点（虚构数据）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "搅拌速率当前 300 rpm（SOP-12 §6），维持 300 rpm，副产物选择性预期维持 6.0（Δ0.0）",
+   "kind": "reported",
+   "source_id": "SOP-12",
+   "location": "optimization_suggestions[S-04]",
+   "evidence": [
+    {
+     "paragraph_id": "SOP-12 §6",
+     "quote": "300 rpm 为推荐搅拌档位（虚构手册条目）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "耦合约束：反应温度 ≤170 ℃（耐温裕度）；120/P-03 ≤ 60（机时口径）；P-01×P-02 ≤ 2500（放热阈值，待 EHS 确认）",
+   "kind": "reported",
+   "source_id": "SOP-12/机时合同/EHS",
+   "location": "coupling_constraints[C-01..C-03]",
+   "evidence": [
+    {
+     "paragraph_id": "SOP-12 附录A",
+     "quote": "PEEK 密封件耐温 175 ℃（虚构规格）"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "文献峰位对本装置的适用性（合成引文，须专家确认）"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "EHS 放热阈值确认",
+   "机时预约窗口"
+  ],
+  "summary": "合成示例：数值均为虚构示意，预期收益为前瞻性折算口径而非实测承诺"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step7",
+   "change": "示例回填完成"
+  }
+ ],
+ "self_check": [],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS",
+ "gates": []
+}

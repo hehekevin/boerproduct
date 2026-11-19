@@ -1,0 +1,54 @@
+{
+  "ir_version": "1.0",
+  "kind": "multi_step_analysis",
+  "sources": [
+    {"id": "src_table", "path": "input/measurements.csv", "description": "SYNTHETIC table with one duplicate"},
+    {"id": "src_dict", "path": "input/dictionary.md", "description": "SYNTHETIC data dictionary"}
+  ],
+  "datasets": [
+    {"dataset_id": "m", "source_id": "src_table", "path": "input/measurements.csv",
+     "columns": ["id", "group", "x", "val"]}
+  ],
+  "steps": [
+    {"step_id": "s1_load", "kind": "load", "depends_on": [],
+     "payload": {"dataset_ids": ["m"]}},
+    {"step_id": "s2_clean", "kind": "clean", "depends_on": ["s1_load"],
+     "payload": {"operations": [
+       {"op_id": "dedup1", "type": "dedup", "dataset_id": "m",
+        "params": {"key_columns": ["group", "x"], "keep": "first"},
+        "rule": "primary key group + x (dictionary); keep first",
+        "reason": "row 7 duplicates row 1 (A,1); removed row logged",
+        "evidence": {"source_id": "src_dict", "quote": "group + x"}}
+     ]}},
+    {"step_id": "s3_stats", "kind": "stats", "depends_on": ["s2_clean"],
+     "payload": {"analyses": [
+       {"analysis_id": "desc_val", "type": "describe", "dataset_id": "m", "column": "val",
+        "interpretation": "After dedup, val averages 17.0 MPa across 6 records; the two groups pull the mean apart."},
+       {"analysis_id": "cmp", "type": "compare_groups", "dataset_id": "m",
+        "column": "val", "group_column": "group",
+        "assumptions": ["two independent groups (dictionary); independence assumed"],
+        "interpretation": "Group B exceeds A by 10 MPa; Cohen's d = -5 (A-B) is a very large standardized difference; the mean-diff CI excludes 0."}
+     ]}},
+    {"step_id": "s4_viz", "kind": "viz", "depends_on": ["s2_clean"],
+     "payload": {"charts": [
+       {"chart_id": "scatter_x_val", "chart_type": "scatter", "dataset_id": "m",
+        "x": "x", "y": "val", "group_by": "group",
+        "title": "val vs x by group (cleaned)", "x_label": "x (mm)", "y_label": "val (MPa)",
+        "caption": "n=3 per group after dedup; individual observations; no error bars (raw scatter).",
+        "rationale": "Two continuous variables, correlation intent -> scatter; not pie/line."}
+     ]}},
+    {"step_id": "s5_interpret", "kind": "interpret", "depends_on": ["s3_stats", "s4_viz"],
+     "payload": {
+       "text": "Pipeline: loaded 7 records, removed 1 duplicate (group+x), leaving 6. Mean val = 17.0 MPa. Group B is higher than A by 10 MPa with a very large standardized effect (Cohen's d = -5.0 for A-B); the scatter shows two parallel rising series. Numbers below are back-filled from the computed metrics and cross-checked.",
+       "claims": [
+         {"metric": "desc_val.mean", "value": 17.0, "tolerance": 1e-6},
+         {"metric": "cmp.cohens_d", "value": -5.0, "tolerance": 1e-6}
+       ]
+     }}
+  ],
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "actual material -> IR -> load -> clean -> stats -> viz -> interpret (back-filled) -> result",
+    "changes": [{"step": "example", "note": "SYNTHETIC demo IR; not a formal case answer"}]
+  }
+}

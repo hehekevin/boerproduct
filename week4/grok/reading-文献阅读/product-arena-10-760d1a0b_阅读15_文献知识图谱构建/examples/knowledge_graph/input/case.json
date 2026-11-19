@@ -1,0 +1,8 @@
+{
+  "case_id": "synthetic-knowledge-graph-001",
+  "output_contract": {
+    "graph_json": "json",
+    "editable_graph": "svg",
+    "query_results": "json"
+  }
+}

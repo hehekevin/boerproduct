@@ -1,0 +1,5 @@
+SYNTHETIC EXAMPLE experimental protocol.
+
+Sec1 (Training): Train model M on dataset D (version 2.1, 10000 samples) with an 80/10/10 train/validation/test split, seed 42. Optimizer Adam, learning rate 0.001, batch size 32, 50 epochs. Hardware: 1x A100 GPU. Weight decay is not specified.
+Sec2 (Reagents): Reagent R (vendor V, lot L123); buffer B at pH 7.4.
+Sec3 (Statistics): Compare groups with a two-sample t-test, alpha 0.05, n=6 per group. Report mean +/- SD.

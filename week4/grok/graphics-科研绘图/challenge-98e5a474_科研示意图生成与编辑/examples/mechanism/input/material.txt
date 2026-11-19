@@ -1,0 +1,10 @@
+EXAMPLE SOURCE MATERIAL (synthetic, for interface demonstration only)
+
+Section 2.1 — EGFR–MAPK cascade.
+Epidermal growth factor receptor (EGFR), a receptor tyrosine kinase at the plasma
+membrane, activates the small GTPase RAS upon ligand binding. Active RAS recruits
+and activates the kinase RAF. RAF phosphorylates and activates MEK, which in turn
+phosphorylates and activates ERK. Activated ERK translocates to the nucleus and
+activates the transcription factor ELK1, driving proliferation gene expression.
+The phosphatase DUSP6 dephosphorylates and thereby inhibits ERK, forming a negative
+feedback loop. All relations are stated as established in this example text.

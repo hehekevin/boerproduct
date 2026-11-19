@@ -1,0 +1,83 @@
+{
+  "ir_version": "1.0",
+  "case_id": "SYNTHETIC-demo-compliance-001",
+  "kind": "compliance_check",
+  "sources": [
+    {"id": "S1", "path": "input/manuscript.md", "role": "manuscript"}
+  ],
+  "documents": [
+    {"document_id": "D1", "source_id": "S1", "role": "manuscript",
+     "title": "Clinical Trial of Compound X (SYNTHETIC DEMO MANUSCRIPT)"}
+  ],
+  "manuscript_id": "D1",
+  "guidelines": [
+    {"id": "G1", "name": "CONSORT", "version": "2010"},
+    {"id": "G2", "name": "ICMJE Recommendations", "version": "agent knowledge, human_confirm"}
+  ],
+  "compliance_items": [
+    {"id": "CI1", "category": "ethics", "guideline": "ICMJE / institutional ethics policy",
+     "item": "Ethics approval stated with approving body, approval number and scope",
+     "status": "partial", "severity": "major",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p2",
+                   "quote": "The study was approved by the institutional ethics board."}],
+     "missing": ["approval number", "scope of approval (which procedures covered)"],
+     "recommendation": "Add the ethics approval number and the approved scope; name the board."},
+    {"id": "CI2", "category": "ethics", "guideline": "ICMJE / Declaration of Helsinki",
+     "item": "Informed consent obtained from human participants and stated",
+     "status": "insufficient_evidence", "severity": "major",
+     "reason": "No consent statement appears anywhere in the provided manuscript text; cannot determine whether consent was obtained.",
+     "recommendation": "Authors to state informed-consent procedure; reviewer to re-check once provided."},
+    {"id": "CI3", "category": "coi", "guideline": "ICMJE disclosure requirements",
+     "item": "Conflict-of-interest declaration present",
+     "status": "compliant", "severity": "minor",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                   "quote": "The authors declare no conflicts of interest."}]},
+    {"id": "CI4", "category": "data_availability", "guideline": "journal data-availability policy (ICMJE-style)",
+     "item": "Data availability statement with a concrete access route",
+     "status": "partial", "severity": "minor",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p5",
+                   "quote": "Data are available from the corresponding author on reasonable request."}],
+     "missing": ["repository name or accession/DOI for the trial data"],
+     "recommendation": "Deposit de-identified data in a repository and cite the accession; keep the request route as fallback."},
+    {"id": "CI5", "category": "authorship", "guideline": "ICMJE authorship criteria",
+     "item": "Per-author contribution statements",
+     "status": "non_compliant", "severity": "minor",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p3",
+                   "quote": "Author contributions are not specified."}],
+     "missing": ["individual contribution description for each author"],
+     "recommendation": "Add a CRediT-style per-author contributions section."},
+    {"id": "CI6", "category": "copyright", "guideline": "publisher third-party material policy",
+     "item": "Adapted/reproduced third-party figures carry source AND permission/license",
+     "status": "non_compliant", "severity": "major",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p6",
+                   "quote": "Figure 2 was adapted from Smith et al. (2021)."}],
+     "missing": ["permission or license statement for the adapted figure", "full source citation with license type"],
+     "recommendation": "Obtain and state permission/license for Figure 2, or replace it with an original figure."},
+    {"id": "CI7", "category": "reporting_guideline", "guideline": "CONSORT 2010 item 23 (trial registration)",
+     "item": "Trial registration number and registry name reported",
+     "status": "non_compliant", "severity": "major",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p7",
+                   "quote": "The trial was not registered."}],
+     "missing": ["registry name", "registration number"],
+     "recommendation": "Register the trial (retrospectively if needed) and report registry + ID; explain the registration timing per CONSORT."},
+    {"id": "CI8", "category": "reporting_guideline", "guideline": "CONSORT 2010 item 13 (participant flow)",
+     "item": "Participant flow diagram/numbers through each stage",
+     "status": "insufficient_evidence", "severity": "minor",
+     "reason": "Only enrollment (60 patients) is stated; no flow diagram or stage numbers are present in the provided text, and figures cannot be read.",
+     "recommendation": "Provide the CONSORT flow diagram with numbers screened, allocated, followed up and analyzed."}
+  ],
+  "uncertainty": [
+    {"item": "guideline texts",
+     "reason": "CONSORT/ICMJE checklist texts are not provided under /input; item numbering relies on agent knowledge of the named standards.",
+     "impact": "clause numbers should be re-verified against the official checklist",
+     "handling": "human_confirm"},
+    {"item": "informed consent / participant flow",
+     "reason": "Statements absent from the provided text; cannot distinguish 'not done' from 'not reported'.",
+     "impact": "CI2 and CI8 remain insufficient_evidence",
+     "handling": "human_confirm"}
+  ],
+  "provenance": {
+    "pipeline": "actual material -> IR -> validate -> recompute/verify -> artifact -> result",
+    "changes": [{"at": "example-build", "change": "SYNTHETIC demo IR authored from the demo manuscript"}]
+  }
+}

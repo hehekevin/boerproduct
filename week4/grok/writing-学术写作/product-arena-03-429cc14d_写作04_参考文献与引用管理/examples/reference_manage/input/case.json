@@ -1,0 +1,14 @@
+{
+  "case_id": "example-refmanage-001",
+  "track": "writing",
+  "kind": "reference_manage",
+  "title": "Reference & citation management (SYNTHETIC EXAMPLE)",
+  "target_style": "GB/T 7714",
+  "output_contract": {
+    "reference_list": {"format": "md", "desc": "formatted, deduplicated reference list"},
+    "references_bib": {"format": "bib", "desc": "BibTeX export"},
+    "citation_map": {"format": "json", "desc": "in-text marker <-> reference cluster map"},
+    "result_json": {"format": "json", "desc": "structured result with sources/status"}
+  },
+  "note": "SYNTHETIC interface demo only; not a formal contest case."
+}

@@ -1,0 +1,34 @@
+{
+  "ir_version": "1.0",
+  "kind": "code_gen_exec",
+  "sources": [
+    {"id": "src_table", "path": "input/data.csv", "description": "SYNTHETIC cement/strength table"},
+    {"id": "src_dict", "path": "input/dictionary.md", "description": "SYNTHETIC data dictionary + caliber"},
+    {"id": "src_spec", "path": "input/task.md", "description": "SYNTHETIC code-generation spec"}
+  ],
+  "datasets": [
+    {"dataset_id": "d", "source_id": "src_table", "path": "input/data.csv",
+     "columns": ["sample", "cement", "strength"]}
+  ],
+  "code": {
+    "spec": {
+      "task": "compute mean strength excluding missing (not 0), report n and n_numeric",
+      "inputs": ["d"],
+      "expected_outputs": ["n", "n_numeric", "mean_strength"],
+      "language": "python"
+    },
+    "generated": {
+      "source": "import csv, json, os\n\n# Resolve the REAL data path from the engine-provided env (no hardcoded machine path).\npaths = json.loads(os.environ.get(\"ANALYSIS_DATA\", \"{}\"))\npath = paths.get(\"d\") or os.path.join(os.environ.get(\"ANALYSIS_INPUT\", \".\"), \"data.csv\")\n\nwith open(path, encoding=\"utf-8\", newline=\"\") as fh:\n    rows = list(csv.DictReader(fh))\n\n# Caliber per dictionary: exclude blank/missing strength; NEVER treat missing as 0.\nvals = []\nfor r in rows:\n    s = (r.get(\"strength\") or \"\").strip()\n    if s == \"\":\n        continue\n    vals.append(float(s))\n\nres = {\n    \"n\": len(rows),\n    \"n_numeric\": len(vals),\n    \"mean_strength\": (sum(vals) / len(vals)) if vals else None,\n}\n\nwith open(\"results.json\", \"w\", encoding=\"utf-8\") as fh:\n    json.dump(res, fh)\nprint(json.dumps(res))\n"
+    },
+    "exec": {"mode": "subprocess", "timeout_s": 60},
+    "checks": [
+      {"check_id": "c_mean", "description": "mean strength equals gold 35.0", "expr": "mean_strength", "expected": 35.0, "tolerance": 1e-6},
+      {"check_id": "c_rows", "description": "row count cross-check vs source", "expr": "n_rows_d", "expected": 6, "tolerance": 0}
+    ]
+  },
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "spec + dictionary -> generated code -> isolated execution -> log -> verification -> result",
+    "changes": [{"step": "example", "note": "SYNTHETIC demo IR; not a formal case answer"}]
+  }
+}

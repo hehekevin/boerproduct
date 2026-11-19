@@ -1,0 +1,8 @@
+{
+  "case_id": "synthetic-document-parse-001",
+  "output_contract": {
+    "structured_result": "json",
+    "editable_artifact": "md",
+    "evidence_map": "json"
+  }
+}

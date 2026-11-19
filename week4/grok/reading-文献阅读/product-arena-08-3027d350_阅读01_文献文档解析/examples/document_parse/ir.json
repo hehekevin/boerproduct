@@ -1,0 +1,38 @@
+{
+  "ir_version": "1.0",
+  "case_id": "synthetic-document-parse-001",
+  "kind": "document_parse",
+  "sources": [
+    {"id": "S1", "path": "material.md", "title": "SYNTHETIC example paper"}
+  ],
+  "items": [
+    {"field_id": "title", "value": "Thermal Annealing of Perovskite Films for Stable Solar Cells",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P1", "quote": "Thermal Annealing of Perovskite Films for Stable Solar Cells"}]},
+    {"field_id": "authors", "value": ["A. Example_author", "B. Sample_researcher"],
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P2", "quote": "A. Example_author and B. Sample_researcher (Demo University)"}]},
+    {"field_id": "abstract", "value": "We study the effect of thermal annealing on perovskite film stability. Annealing at 100 C for 10 min improved crystallinity without decomposition.",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P3", "quote": "We study the effect of thermal annealing on perovskite film stability. Annealing at 100 C for 10 min improved crystallinity without decomposition."}]},
+    {"field_id": "methods", "value": "Films were spin-coated and annealed at 100 C for 10 min in nitrogen. XRD patterns were recorded before and after annealing.",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P4", "quote": "Films were spin-coated and annealed at 100 C for 10 min in nitrogen. XRD patterns were recorded before and after annealing."}]},
+    {"field_id": "results", "value": "The annealed films retained 95% of initial efficiency after 500 h, versus 70% for unannealed controls.",
+     "kind": "reported", "status": "reported", "units": "%",
+     "evidence": [{"source": "S1", "paragraph_id": "P5", "quote": "The annealed films retained 95% of initial efficiency after 500 h, versus 70% for unannealed controls."}]},
+    {"field_id": "conclusion", "value": "Moderate thermal annealing improves perovskite film stability under the tested conditions.",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P6", "quote": "Moderate thermal annealing improves perovskite film stability under the tested conditions."}]}
+  ],
+  "sections": [
+    {"id": "SEC0", "title": "Title and authors", "level": 1, "parent_id": null, "paragraph_ids": ["P1", "P2"]},
+    {"id": "SEC1", "title": "Abstract", "level": 1, "parent_id": null, "paragraph_ids": ["P3"]},
+    {"id": "SEC2", "title": "Methods", "level": 1, "parent_id": null, "paragraph_ids": ["P4"]},
+    {"id": "SEC3", "title": "Results", "level": 1, "parent_id": null, "paragraph_ids": ["P5"]},
+    {"id": "SEC4", "title": "Conclusion", "level": 1, "parent_id": null, "paragraph_ids": ["P6"]}
+  ],
+  "unanswered_parts": [],
+  "uncertainty": [],
+  "provenance": {"changes": [{"step": "example", "note": "SYNTHETIC interface demo filled from material.md"}]}
+}

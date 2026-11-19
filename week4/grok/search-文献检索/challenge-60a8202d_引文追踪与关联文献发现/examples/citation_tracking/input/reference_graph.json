@@ -1,0 +1,30 @@
+[
+  {
+    "from": "R1",
+    "to": "R2",
+    "direction": "backward",
+    "source_id": "S2",
+    "context": "R1 reference list entry 12"
+  },
+  {
+    "from": "R1",
+    "to": "R4",
+    "direction": "backward",
+    "source_id": "S2",
+    "context": "R1 reference list entry 3"
+  },
+  {
+    "from": "R1",
+    "to": "R3",
+    "direction": "forward",
+    "source_id": "S2",
+    "context": "R3 cites R1 (provided citing list)"
+  },
+  {
+    "from": "R3",
+    "to": "R5",
+    "direction": "backward",
+    "source_id": "S2",
+    "context": "R3 reference list entry 7 (no metadata provided)"
+  }
+]

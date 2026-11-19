@@ -1,0 +1,52 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-latex-001",
+  "kind": "latex",
+  "title": "LaTeX source (SYNTHETIC EXAMPLE)",
+  "audience": "peers",
+  "genre": "journal_article",
+  "sources": [
+    {"id": "content", "locator": "content.md", "kind": "text", "version": "example-v1", "values": [4.5, 0.9, 6]}
+  ],
+  "latex": {
+    "documentclass": "article",
+    "options": "11pt",
+    "packages": ["amsmath", "graphicx", "booktabs"],
+    "title": "Treatment X elevates marker expression",
+    "author": "Example Author",
+    "abstract": "Treatment X elevates marker expression over time in a controlled cohort (example).",
+    "bib_style": "plain",
+    "required_sections": ["Introduction", "Methods", "Results", "Conclusion"],
+    "sections": [
+      {"heading": "Introduction", "level": 1, "label": "sec:intro",
+       "body": "Marker expression is a key readout. Treatment X increased expression 4.5-fold at Day14 \\cite{ref1}. Prior work reported similar dynamics \\cite{ref2}."},
+      {"heading": "Methods", "level": 1, "label": "sec:methods",
+       "body": "Two arms, n=6 per timepoint; expression measured at Day3, Day7, Day14; reported as mean $\\pm$ SD."},
+      {"heading": "Results", "level": 1, "label": "sec:results",
+       "body": "Treatment rose to 4.5 by Day14 versus control 0.9."},
+      {"heading": "Conclusion", "level": 1, "label": "sec:conclusion",
+       "body": "The increase is time-dependent in this cohort; mechanism remains open (Section~\\ref{sec:results})."}
+    ],
+    "figures": []
+  },
+  "bib_entries": [
+    {"key": "ref1", "authors": "Example A", "year": "2024", "title": "Marker dynamics in controlled cohorts", "journal": "J Example", "doi": "10.1234/ex.2024.001", "source": "content", "locator": "content.md Ref1"},
+    {"key": "ref2", "authors": "Example B", "year": "2023", "title": "Time course of marker expression", "journal": "J Example", "doi": "10.1234/ex.2023.002", "source": "content", "locator": "content.md Ref2"}
+  ],
+  "citations": [
+    {"id": "ref1", "authors": "Example A", "year": "2024", "title": "Marker dynamics in controlled cohorts", "journal": "J Example", "doi": "10.1234/ex.2024.001", "source": "content"},
+    {"id": "ref2", "authors": "Example B", "year": "2023", "title": "Time course of marker expression", "journal": "J Example", "doi": "10.1234/ex.2023.002", "source": "content"}
+  ],
+  "numbers": [
+    {"value": 4.5, "unit": "fold", "source": "content", "locator": "content.md Results"},
+    {"value": 0.9, "unit": "a.u.", "source": "content", "locator": "content.md Results control"},
+    {"value": 6, "unit": "per arm", "source": "content", "locator": "content.md Methods"}
+  ],
+  "claims": [
+    {"id": "c1", "text": "Treatment X increased expression 4.5-fold at Day14.", "type": "fact", "evidence": [{"source": "content", "locator": "content.md Introduction/Results", "strength": "established", "supports": "full"}], "citation_ids": ["ref1"]},
+    {"id": "c2", "text": "Prior work reported similar dynamics.", "type": "fact", "evidence": [{"source": "content", "locator": "content.md Introduction", "strength": "supported", "supports": "full"}], "citation_ids": ["ref2"]}
+  ],
+  "exports": [{"format": "tex"}, {"format": "bib"}],
+  "provenance": {"pipeline": "material -> writing IR -> validate -> editable artifact -> result", "skill_version": "1.0.0", "changes": []},
+  "uncertainty": []
+}

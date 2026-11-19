@@ -1,0 +1,21 @@
+{
+  "ir_version": "1.0",
+  "kind": "feasibility",
+  "sources": [{"id": "proto", "path": "protocol.md"}, {"id": "inv", "path": "inventory.md"}],
+  "documents": [{"id": "d1", "source_id": "proto", "title": "Protocol under review"}, {"id": "d2", "source_id": "inv", "title": "Equipment/reagent inventory"}],
+  "protocols": [{"id": "plan-v1", "source_id": "proto", "version": "v1", "title": "Extraction protocol"}],
+  "protocol_id": "plan-v1",
+  "items": [
+    {"item_id": "i1", "category": "reagent", "name": "ethanol", "requirement": "800 mL of ethanol (analytical grade) for the extraction run", "inventory_id": "inv_eth", "needed_qty": 800, "evidence": {"source_id": "proto", "paragraph_id": "p1", "quote": "800 mL of ethanol"}},
+    {"item_id": "i2", "category": "time", "requirement": "3.7 hours of bath time within a single 4-hour booking window", "inventory_id": "inv_bath", "needed_hours": 3.7, "window_hours": 4, "evidence": {"source_id": "proto", "paragraph_id": "p2", "quote": "3.7 hours of bath time"}},
+    {"item_id": "i3", "category": "equipment", "name": "spectrophotometer", "requirement": "a spectrophotometer is available for yield measurement", "evidence": {"source_id": "proto", "paragraph_id": "p3", "quote": "spectrophotometer is available"}}
+  ],
+  "inventory": [
+    {"id": "inv_eth", "name": "ethanol", "category": "reagent", "available": true, "available_qty": 500, "lead_time": "5 days", "evidence": {"source_id": "inv", "paragraph_id": "p1", "quote": "500 mL analytical grade available"}},
+    {"id": "inv_bath", "name": "ultrasonic bath UB-200", "category": "equipment", "available": true, "capacity": 4, "evidence": {"source_id": "inv", "paragraph_id": "p2", "quote": "bookable 4 hours per day"}}
+  ],
+  "uncertainty": [
+    {"item": "i3 spectrophotometer", "reason": "not listed in inventory; availability cannot be verified", "handling": "human_confirm"}
+  ],
+  "provenance": {"pipeline": "actual material -> IR -> validate -> compute -> artifact -> result", "changes": []}
+}

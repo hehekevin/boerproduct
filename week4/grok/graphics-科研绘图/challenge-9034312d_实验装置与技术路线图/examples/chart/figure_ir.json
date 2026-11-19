@@ -1,0 +1,63 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-chart-001",
+  "kind": "source_value_chart",
+  "title": "Expression over time by group (EXAMPLE)",
+  "caption": "Example grouped bar chart. Mean expression +/- SD, n=6 per group per timepoint. Synthetic demonstration only.",
+  "canvas": {
+    "width_mm": 120,
+    "height_mm": 90,
+    "dpi": 300,
+    "background": "#ffffff"
+  },
+  "style": {
+    "preset": "nature",
+    "font_family": "DejaVu Sans",
+    "base_font_pt": 8,
+    "min_font_pt": 5,
+    "line_width_pt": 0.6,
+    "color_space": "RGB",
+    "palette": "okabe_ito"
+  },
+  "sources": [
+    {
+      "id": "tbl",
+      "locator": "data.csv (columns group,day,expression,sd,n)",
+      "kind": "table",
+      "version": "example-v1"
+    }
+  ],
+  "chart": {
+    "chart_type": "grouped_bar",
+    "data_source": "tbl",
+    "data_path": "input/data.csv",
+    "x": "day",
+    "y": "expression",
+    "series": "group",
+    "error": "sd",
+    "error_kind": "sd",
+    "n": "n",
+    "x_label": "Time",
+    "y_label": "Relative expression",
+    "unit": "a.u."
+  },
+  "exports": [
+    {
+      "format": "svg"
+    },
+    {
+      "format": "png",
+      "dpi": 300
+    },
+    {
+      "format": "pdf"
+    }
+  ],
+  "provenance": {
+    "pipeline": "material -> IR -> editable source -> export",
+    "skill_version": "1.0.0",
+    "source_version": "example-v1",
+    "changes": []
+  },
+  "uncertainty": []
+}

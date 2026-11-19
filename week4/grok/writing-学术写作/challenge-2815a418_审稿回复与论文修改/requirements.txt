@@ -1,0 +1,5 @@
+# Runtime dependencies (preinstalled in the platform scientific-python image).
+# figkit.py and svgkit.py are stdlib-only; the renderers/checker need:
+matplotlib>=3.5
+numpy>=1.21
+Pillow>=9.0

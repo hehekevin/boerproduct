@@ -1,0 +1,113 @@
+{
+  "ir_version": "1.0",
+  "kind": "cross_language",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "original_pt.md",
+      "type": "md",
+      "name": "synthetic Portuguese original"
+    },
+    {
+      "id": "S2",
+      "path": "translation_en.md",
+      "type": "md",
+      "name": "synthetic publisher translation"
+    },
+    {
+      "id": "S3",
+      "path": "abstract_en.md",
+      "type": "md",
+      "name": "synthetic English abstract-only"
+    },
+    {
+      "id": "S4",
+      "path": "terms.csv",
+      "type": "csv",
+      "name": "synthetic term table"
+    },
+    {
+      "id": "S5",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "works": [
+    {
+      "id": "W1",
+      "canonical_title": "Pyroptosis in pancreatic beta cells: an experimental study",
+      "doi": "10.1000/demo.801",
+      "source_id": "S1"
+    }
+  ],
+  "views": [
+    {
+      "id": "V1",
+      "work_id": "W1",
+      "language": "pt",
+      "body_language": "pt",
+      "version": "original",
+      "title": "piroptose em células beta pancreáticas: um estudo experimental",
+      "doi": "10.1000/demo.801",
+      "source_id": "S1",
+      "snippet": "piroptose em células beta pancreáticas"
+    },
+    {
+      "id": "V2",
+      "work_id": "W1",
+      "language": "en",
+      "body_language": "en",
+      "version": "publisher_translation",
+      "title": "Pyroptosis in pancreatic beta cells: an experimental study",
+      "doi": "10.1000/demo.801",
+      "source_id": "S2",
+      "snippet": "Full text translated by the publisher"
+    },
+    {
+      "id": "V3",
+      "work_id": "W1",
+      "language": "en",
+      "body_language": "pt",
+      "version": "abstract_only",
+      "title": "Pyroptosis in pancreatic beta cells: an experimental study",
+      "doi": "10.1000/demo.801",
+      "source_id": "S3",
+      "snippet": "Abstract only; body remains Portuguese"
+    },
+    {
+      "id": "V4",
+      "work_id": "W1",
+      "language": "en",
+      "body_language": "en",
+      "version": "publisher_translation",
+      "title": "Pyroptosis in pancreatic beta cells: an experimental study",
+      "doi": "10.1000/demo.801",
+      "source_id": "S2",
+      "snippet": "re-indexed copy of V2 (exact duplicate)"
+    }
+  ],
+  "term_alignments": [
+    {
+      "term": "pyroptosis",
+      "language": "zh",
+      "render": "细胞焦亡",
+      "type": "standard translation",
+      "source_id": "S4"
+    },
+    {
+      "term": "pyroptosis",
+      "language": "pt",
+      "render": "piroptose",
+      "type": "local render",
+      "source_id": "S4"
+    }
+  ],
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-cross_language-001"
+}

@@ -1,0 +1,51 @@
+{
+  "ir_version": "1.0",
+  "kind": "protocol_design",
+  "sources": [{"id": "mat", "path": "material.md"}],
+  "documents": [{"id": "d1", "source_id": "mat", "title": "Synthetic extraction material"}],
+  "objective": {
+    "statement": "Design an extraction protocol for compound X from plant material maximizing yield within a 200 CNY budget.",
+    "hypothesis": "Yield of compound X increases with ethanol concentration up to 70% (v/v) then declines.",
+    "budget_cap": 200,
+    "evidence": {"source_id": "mat", "paragraph_id": "p1", "quote": "reported optimum is 70% ethanol"}
+  },
+  "variables": [
+    {"name": "ethanol_concentration", "role": "independent", "operational_definition": "Volume fraction of ethanol in the extraction solvent", "unit": "%", "range": [60, 80], "measurement": "prepared gravimetrically, verified by refractometry", "evidence": {"source_id": "mat", "paragraph_id": "p1", "quote": "ethanol concentration 60-80% (v/v)"}},
+    {"name": "yield", "role": "dependent", "operational_definition": "Mass of compound X extracted per gram of plant material", "unit": "mg/g", "measurement": "spectrophotometry after evaporation", "evidence": {"source_id": "mat", "paragraph_id": "p2", "quote": "spectrophotometer for yield measurement"}},
+    {"name": "temperature", "role": "confounder", "operational_definition": "Bath temperature during ultrasonic extraction", "unit": "C", "range": [20, 60], "measurement": "UB-200 thermostat readout", "evidence": {"source_id": "mat", "paragraph_id": "p2", "quote": "temperature range 20-60 C"}}
+  ],
+  "design": {
+    "steps": [
+      {"step_id": "s1", "action": "Ultrasonic-assisted ethanol extraction of ground plant material", "duration_min": 30, "cost": 25,
+       "parameters": [
+         {"name": "ethanol_concentration", "value": 70, "unit": "%", "range": [60, 80], "status": "reported", "evidence": {"source_id": "mat", "paragraph_id": "p1", "quote": "reported optimum is 70% ethanol"}},
+         {"name": "temperature", "value": 50, "unit": "C", "range": [20, 60], "status": "reported", "evidence": {"source_id": "mat", "paragraph_id": "p2", "quote": "temperature range 20-60 C"}}
+       ],
+       "reagents": [{"name": "ethanol", "spec": "500 mL, analytical grade", "evidence": {"source_id": "mat", "paragraph_id": "p3", "quote": "ethanol 500 mL costs 25 CNY"}}],
+       "equipment": [{"name": "ultrasonic bath", "model": "UB-200", "range": "20-60 C", "evidence": {"source_id": "mat", "paragraph_id": "p2", "quote": "ultrasonic bath model UB-200"}}],
+       "evidence": {"source_id": "mat", "paragraph_id": "p1", "quote": "highest extraction yield of compound X"}},
+      {"step_id": "s2", "action": "Filter extract through a 0.45 um membrane", "duration_min": 15,
+       "evidence": {"source_id": "mat", "paragraph_id": "p3", "quote": "Filtration and measurement consume no extra reagent cost"}},
+      {"step_id": "s3", "action": "Measure compound X yield by spectrophotometry", "duration_min": 20,
+       "equipment": [{"name": "spectrophotometer"}],
+       "evidence": {"source_id": "mat", "paragraph_id": "p2", "quote": "spectrophotometer for yield measurement has no model recorded"}}
+    ],
+    "controls": [
+      {"control_id": "c1", "type": "blank", "purpose": "Exclude solvent background signal from the yield reading", "evidence": {"source_id": "mat", "paragraph_id": "p1", "quote": "extraction yield of compound X"}},
+      {"control_id": "c2", "type": "positive", "purpose": "Verify detection sensitivity with a reference standard of compound X", "evidence": {"source_id": "mat", "paragraph_id": "p1", "quote": "reported optimum is 70% ethanol"}}
+    ],
+    "optimizations": [
+      {"id": "o1", "target_step": "s1", "suggestion": "Raise extraction temperature from 50 C to 55 C to shorten duration", "rationale": "Higher temperature within the UB-200 limit increases diffusion rate while staying below the 60 C maximum; not yet pilot-verified.", "status": "inferred", "evidence": {"source_id": "mat", "paragraph_id": "p2", "quote": "maximum 60 C"}}
+    ]
+  },
+  "risks": [
+    {"id": "r1", "failure_mode": "No signal / low yield", "criterion": "yield < 1 mg/g in the positive control", "stop_loss": "abort after 2 consecutive failed runs", "alternative": "re-check ethanol concentration and spectrophotometer calibration", "evidence": {"source_id": "mat", "paragraph_id": "p1", "quote": "extraction yield of compound X"}}
+  ],
+  "confirmations": [
+    {"item": "spectrophotometer model", "reason": "no model recorded in the device manual; availability and spec unverified", "handling": "human_confirm"}
+  ],
+  "uncertainty": [
+    {"item": "temperature optimization o1", "reason": "inferred from the device limit, not from pilot data", "impact": "duration estimate may change", "handling": "human_confirm"}
+  ],
+  "provenance": {"pipeline": "actual material -> IR -> validate -> compute -> artifact -> result", "changes": []}
+}

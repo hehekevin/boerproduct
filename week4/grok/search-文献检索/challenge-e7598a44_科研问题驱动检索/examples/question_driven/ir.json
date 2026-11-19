@@ -1,0 +1,157 @@
+{
+  "ir_version": "1.0",
+  "kind": "question_driven",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "records.csv",
+      "type": "csv",
+      "name": "synthetic candidate export"
+    },
+    {
+      "id": "S2",
+      "path": "responses.json",
+      "type": "json",
+      "name": "synthetic responses"
+    },
+    {
+      "id": "S3",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "questions": [
+    {
+      "id": "RQ1",
+      "text": "What evidence links gut microbiome composition to type-2 diabetes progression, and which methods measure it?",
+      "source_id": "S3",
+      "subquestions": [
+        {
+          "id": "SQ1",
+          "text": "Which studies report microbiome composition changes during T2D progression?"
+        },
+        {
+          "id": "SQ2",
+          "text": "Which sequencing methods profile the microbiome in these studies?"
+        },
+        {
+          "id": "SQ3",
+          "text": "What causal evidence (intervention/FMT) exists?"
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "id": "Q1",
+      "query_string": "\"gut microbiome\" AND \"type-2 diabetes\" AND progression",
+      "subquestion_id": "SQ1",
+      "database": "Crossref (provided export)",
+      "round": 1,
+      "source_id": "S2"
+    },
+    {
+      "id": "Q2",
+      "query_string": "\"16S rRNA\" AND microbiome AND profiling",
+      "subquestion_id": "SQ2",
+      "database": "EuropePMC (provided export)",
+      "round": 1,
+      "source_id": "S2"
+    },
+    {
+      "id": "Q3",
+      "query_string": "\"fecal microbiota transplantation\" AND \"type-2 diabetes\"",
+      "subquestion_id": "SQ3",
+      "database": "Crossref (provided export)",
+      "round": 2,
+      "source_id": "S2"
+    }
+  ],
+  "records": [
+    {
+      "id": "R1",
+      "title": "Gut microbiome signatures in type-2 diabetes progression",
+      "authors": "Kim H; Park J",
+      "year": 2024,
+      "journal": "Nat Med",
+      "doi": "10.1000/demo.101",
+      "source_id": "S1",
+      "query_id": "Q1",
+      "subquestion_ids": [
+        "SQ1"
+      ],
+      "snippet": "R1: Gut microbiome signatures in type-2 diabetes progression ...",
+      "decision": "include",
+      "reason_code": "direct_evidence",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "field": "title",
+          "quote": "Gut microbiome signatures in type-2 diabetes progression"
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "title": "16S rRNA sequencing methods for microbiome profiling",
+      "authors": "Lopez M",
+      "year": 2021,
+      "journal": "Methods Ecol Evol",
+      "doi": "10.1000/demo.102",
+      "source_id": "S1",
+      "query_id": "Q2",
+      "subquestion_ids": [
+        "SQ2"
+      ],
+      "snippet": "R2: 16S rRNA sequencing methods for microbiome profiling ...",
+      "decision": "include",
+      "reason_code": "method_reference",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "field": "title",
+          "quote": "16S rRNA sequencing methods for microbiome profiling"
+        }
+      ]
+    },
+    {
+      "id": "R3",
+      "title": "A unrelated catalysis study",
+      "authors": "Zhao R",
+      "year": 2020,
+      "journal": "J Catal",
+      "doi": "10.1000/demo.103",
+      "source_id": "S1",
+      "query_id": "Q1",
+      "subquestion_ids": [],
+      "snippet": "R3: A unrelated catalysis study ...",
+      "decision": "exclude",
+      "reason_code": "off_topic",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "field": "title",
+          "quote": "A unrelated catalysis study"
+        }
+      ]
+    }
+  ],
+  "stopping": {
+    "reason": "SQ1/SQ2 have included evidence; SQ3 query Q3 returned no hits in the provided export after round 2 — marginal gain zero, causal-evidence gap escalated to human.",
+    "rounds_run": 2
+  },
+  "uncertainty": [
+    {
+      "item": "SQ3 causal evidence",
+      "reason": "no provided response hits for FMT/T2D query Q3; cannot fabricate studies",
+      "handling": "human_confirm"
+    }
+  ],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-question_driven-001"
+}

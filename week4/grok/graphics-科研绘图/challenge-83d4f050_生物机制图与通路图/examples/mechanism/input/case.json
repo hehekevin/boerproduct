@@ -1,0 +1,12 @@
+{
+  "_notice": "SYNTHETIC EXAMPLE ONLY — illustrates the skill interface. Not a formal test case and not a pre-written answer. The platform supplies the real hidden cases.",
+  "case_id": "example-mechanism-001",
+  "task": "Draw the EGFR–MAPK signaling cascade described in material.txt as an editable mechanism diagram, then export SVG/PNG/PDF.",
+  "output_contract": {
+    "editable_source": "layered editable SVG of the mechanism diagram",
+    "png_preview": "300 dpi PNG preview",
+    "pdf_export": "vector PDF with embedded fonts",
+    "result_json": "structured result with sources and uncertainty"
+  },
+  "materials": ["material.txt"]
+}

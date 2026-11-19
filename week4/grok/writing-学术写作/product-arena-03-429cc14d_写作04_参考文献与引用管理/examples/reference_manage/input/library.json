@@ -1,0 +1,6 @@
+[
+  {"id": "ref1", "authors": "Example A, Example B", "year": "2024", "title": "Marker dynamics in controlled cohorts", "journal": "J Example", "doi": "10.1234/example.2024.001", "volume": "12", "issue": "3", "pages": "101-110"},
+  {"id": "ref2", "authors": "Example C", "year": "2023", "title": "Time course of marker expression", "journal": "J Example", "doi": "10.1234/example.2023.007", "volume": "11", "pages": "55-63"},
+  {"id": "ref3", "authors": "Example A, Example B", "year": "2024", "title": "Marker Dynamics in Controlled Cohorts (preprint)", "journal": "J Example", "doi": "https://doi.org/10.1234/example.2024.001", "volume": "12", "issue": "3", "pages": "101-110"},
+  {"id": "ref4", "authors": "Example D", "year": "2022", "title": "Unrelated methods note", "journal": "J Other"}
+]

@@ -1,0 +1,45 @@
+{
+  "ir_version": "1.0",
+  "case_id": "synthetic-knowledge-graph-001",
+  "kind": "knowledge_graph",
+  "sources": [
+    {"id": "S1", "path": "material.md", "title": "SYNTHETIC example paper"}
+  ],
+  "nodes": [
+    {"id": "N1", "label": "thermal annealing", "type": "method", "aliases": ["annealing"],
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P2", "quote": "Films were annealed at 100 C for 10 min in nitrogen."}]},
+    {"id": "N2", "label": "perovskite film", "type": "material", "aliases": [],
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P1", "quote": "Thermal Annealing of Perovskite Films."}]},
+    {"id": "N3", "label": "XRD", "type": "instrument", "aliases": [],
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P2", "quote": "XRD was used to check crystallinity."}]},
+    {"id": "N4", "label": "perovskite film stability", "type": "metric", "aliases": ["stability"],
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P4", "quote": "Moderate thermal annealing improves perovskite film stability under the tested conditions."},
+                  {"source": "S1", "paragraph_id": "P3", "quote": "Annealed films retained 95% of initial efficiency after 500 h, versus 70% for controls."}]}
+  ],
+  "edges": [
+    {"id": "E1", "from": "N1", "to": "N2", "type": "applied_to", "conditions": "100 C, 10 min, nitrogen",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P2", "quote": "Films were annealed at 100 C for 10 min in nitrogen."}]},
+    {"id": "E2", "from": "N3", "to": "N2", "type": "measures",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P2", "quote": "XRD was used to check crystallinity."}]},
+    {"id": "E3", "from": "N1", "to": "N4", "type": "increases", "conditions": "under the tested conditions",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P4", "quote": "Moderate thermal annealing improves perovskite film stability under the tested conditions."}]}
+  ],
+  "queries": [
+    {"id": "Q1", "question": "Which method improves film stability, under what conditions?",
+     "answer": "thermal annealing, under the tested conditions (100 C, 10 min, nitrogen)", "node_ids": ["N1", "N4"]},
+    {"id": "Q2", "question": "Which instrument was used to check crystallinity of the films?",
+     "answer": "XRD", "node_ids": ["N3", "N2"]},
+    {"id": "Q3", "question": "What efficiency retention was reported after 500 h?",
+     "answer": "95% for annealed films versus 70% for controls", "node_ids": ["N4"]}
+  ],
+  "unanswered_parts": [],
+  "uncertainty": [],
+  "provenance": {"changes": [{"step": "example", "note": "SYNTHETIC interface demo; all nodes/edges quoted from material.md"}]}
+}

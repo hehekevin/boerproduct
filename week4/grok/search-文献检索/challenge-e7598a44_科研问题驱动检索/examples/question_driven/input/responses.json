@@ -1,0 +1,12 @@
+[
+  {
+    "query_id": "Q1",
+    "subquestion_id": "SQ1",
+    "snippet": "R1: Gut microbiome signatures in type-2 diabetes progression ..."
+  },
+  {
+    "query_id": "Q2",
+    "subquestion_id": "SQ2",
+    "snippet": "R2: 16S rRNA sequencing methods for microbiome profiling ..."
+  }
+]

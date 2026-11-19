@@ -1,0 +1,177 @@
+{
+  "ir_version": "1.0",
+  "kind": "multi_db_merge",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "crossref_export.json",
+      "type": "json",
+      "name": "synthetic Crossref-style export"
+    },
+    {
+      "id": "S2",
+      "path": "europepmc_export.json",
+      "type": "json",
+      "name": "synthetic EuropePMC-style export"
+    },
+    {
+      "id": "S3",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "databases": [
+    {
+      "id": "DB1",
+      "name": "Crossref (provided export)",
+      "priority": 1,
+      "source_id": "S1"
+    },
+    {
+      "id": "DB2",
+      "name": "EuropePMC (provided export)",
+      "priority": 2,
+      "source_id": "S2"
+    }
+  ],
+  "field_mapping": {
+    "TI": "title",
+    "AU": "authors",
+    "PY": "year",
+    "JO": "journal",
+    "DO": "doi",
+    "authorString": "authors",
+    "pubYear": "year",
+    "journalTitle": "journal"
+  },
+  "queries": [
+    {
+      "id": "Q1",
+      "query_string": "microbiome AND diabetes",
+      "database_id": "DB1",
+      "source_id": "S1"
+    },
+    {
+      "id": "Q2",
+      "query_string": "(microbiome) AND (diabetes)",
+      "database_id": "DB2",
+      "source_id": "S2"
+    }
+  ],
+  "records": [
+    {
+      "id": "R1",
+      "database_id": "DB1",
+      "query_id": "Q1",
+      "source_id": "S1",
+      "title": "Gut microbiome signatures in type-2 diabetes",
+      "authors": "Kim H; Park J",
+      "year": 2024,
+      "journal": "Nature Medicine",
+      "doi": "10.1000/demo.401",
+      "raw_fields": {
+        "TI": "Gut microbiome signatures in type-2 diabetes",
+        "AU": "Kim H; Park J",
+        "PY": 2024,
+        "JO": "Nature Medicine",
+        "DO": "10.1000/demo.401"
+      },
+      "snippet": "cr1: TI=Gut microbiome signatures in type-2 diabetes; DO=10.1000/demo.401",
+      "field_sources": {
+        "title": {
+          "source_id": "S1",
+          "field": "TI"
+        },
+        "journal": {
+          "source_id": "S1",
+          "field": "JO"
+        },
+        "doi": {
+          "source_id": "S1",
+          "field": "DO"
+        }
+      }
+    },
+    {
+      "id": "R2",
+      "database_id": "DB2",
+      "query_id": "Q2",
+      "source_id": "S2",
+      "title": "Gut microbiome signatures in type-2 diabetes",
+      "authors": "Kim H, Park J",
+      "year": 2024,
+      "journal": "Nat Med",
+      "doi": "10.1000/demo.401",
+      "raw_fields": {
+        "title": "Gut microbiome signatures in type-2 diabetes",
+        "authorString": "Kim H, Park J",
+        "pubYear": 2024,
+        "journalTitle": "Nat Med",
+        "doi": "10.1000/demo.401"
+      },
+      "snippet": "ep1: title=Gut microbiome signatures in type-2 diabetes; doi=10.1000/demo.401",
+      "field_sources": {
+        "journal": {
+          "source_id": "S2",
+          "field": "journalTitle"
+        }
+      }
+    },
+    {
+      "id": "R3",
+      "database_id": "DB1",
+      "query_id": "Q1",
+      "source_id": "S1",
+      "title": "Metformin and the gut microbiome",
+      "authors": "Lopez M",
+      "year": 2022,
+      "journal": "Diabetologia",
+      "doi": "10.1000/demo.402",
+      "raw_fields": {
+        "TI": "Metformin and the gut microbiome",
+        "AU": "Lopez M",
+        "PY": 2022,
+        "JO": "Diabetologia",
+        "DO": "10.1000/demo.402"
+      },
+      "snippet": "cr2: TI=Metformin and the gut microbiome; DO=10.1000/demo.402",
+      "field_sources": {
+        "title": {
+          "source_id": "S1",
+          "field": "TI"
+        }
+      }
+    },
+    {
+      "id": "R4",
+      "database_id": "DB2",
+      "query_id": "Q2",
+      "source_id": "S2",
+      "title": "A regional cohort study on diet and microbiota",
+      "authors": "Silva A",
+      "year": 2023,
+      "journal": "Local J Nutr",
+      "raw_fields": {
+        "title": "A regional cohort study on diet and microbiota",
+        "authorString": "Silva A",
+        "pubYear": 2023,
+        "journalTitle": "Local J Nutr"
+      },
+      "snippet": "ep2: title=A regional cohort study on diet and microbiota (no DOI)",
+      "field_sources": {
+        "title": {
+          "source_id": "S2",
+          "field": "title"
+        }
+      }
+    }
+  ],
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-multi_db_merge-001"
+}

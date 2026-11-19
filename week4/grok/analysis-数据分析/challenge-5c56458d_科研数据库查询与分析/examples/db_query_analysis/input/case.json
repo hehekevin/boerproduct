@@ -1,0 +1,8 @@
+{
+  "case_id": "EXAMPLE-db-query-001",
+  "output_contract": {
+    "query_results_json": {"type": "json", "desc": "schema + query results + evidence"},
+    "report_md": {"type": "markdown", "desc": "human-readable query/analysis report"},
+    "provenance_json": {"type": "json", "desc": "result -> db/sql/params locator map"}
+  }
+}

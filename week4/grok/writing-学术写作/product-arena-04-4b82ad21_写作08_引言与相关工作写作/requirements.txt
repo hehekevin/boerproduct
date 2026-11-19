@@ -1,0 +1,4 @@
+# arena-intro-related — Python 3.10+ standard library only.
+# No third-party packages required (docx via stdlib zipfile OOXML).
+# Optional at runtime: office-renderer (LibreOffice) for true PDF/PNG previews.
+# Run with PYTHONDONTWRITEBYTECODE=1 to avoid __pycache__.

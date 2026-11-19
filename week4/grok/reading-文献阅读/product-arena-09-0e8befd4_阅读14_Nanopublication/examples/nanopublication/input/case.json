@@ -1,0 +1,8 @@
+{
+  "case_id": "synthetic-nanopublication-001",
+  "output_contract": {
+    "nanopubs_json": "json",
+    "nanopubs_trig": "text",
+    "evidence_map": "json"
+  }
+}

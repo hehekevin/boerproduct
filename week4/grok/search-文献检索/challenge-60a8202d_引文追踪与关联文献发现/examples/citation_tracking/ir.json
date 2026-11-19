@@ -1,0 +1,109 @@
+{
+  "ir_version": "1.0",
+  "kind": "citation_tracking",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "records.csv",
+      "type": "csv",
+      "name": "synthetic record metadata"
+    },
+    {
+      "id": "S2",
+      "path": "reference_graph.json",
+      "type": "json",
+      "name": "synthetic retained reference graph"
+    },
+    {
+      "id": "S3",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "seeds": [
+    "R1"
+  ],
+  "max_depth": 2,
+  "records": [
+    {
+      "id": "R1",
+      "title": "Attention-based protein folding",
+      "authors": "Alvarez P",
+      "year": 2024,
+      "journal": "Nat Methods",
+      "doi": "10.1000/demo.301",
+      "source_id": "S1"
+    },
+    {
+      "id": "R2",
+      "title": "Deep learning foundations for structure prediction",
+      "authors": "Sen K",
+      "year": 2021,
+      "journal": "ML Rev",
+      "doi": "10.1000/demo.302",
+      "source_id": "S1"
+    },
+    {
+      "id": "R3",
+      "title": "Improved attention folding with recycling",
+      "authors": "Kim H",
+      "year": 2025,
+      "journal": "Bioinformatics",
+      "doi": "10.1000/demo.303",
+      "source_id": "S1"
+    },
+    {
+      "id": "R4",
+      "title": "Protein folding kinetics measured by NMR",
+      "authors": "Novak T",
+      "year": 2019,
+      "journal": "Biophys J",
+      "doi": "10.1000/demo.304",
+      "source_id": "S1"
+    }
+  ],
+  "edges": [
+    {
+      "from": "R1",
+      "to": "R2",
+      "direction": "backward",
+      "source_id": "S2",
+      "context": "R1 reference list entry 12"
+    },
+    {
+      "from": "R1",
+      "to": "R4",
+      "direction": "backward",
+      "source_id": "S2",
+      "context": "R1 reference list entry 3"
+    },
+    {
+      "from": "R1",
+      "to": "R3",
+      "direction": "forward",
+      "source_id": "S2",
+      "context": "R3 cites R1 (provided citing list)"
+    },
+    {
+      "from": "R3",
+      "to": "R5",
+      "direction": "backward",
+      "source_id": "S2",
+      "context": "R3 reference list entry 7 (no metadata provided)"
+    }
+  ],
+  "uncertainty": [
+    {
+      "item": "R5",
+      "reason": "cited node has no metadata in the provided corpus; kept as labelled stub, not fabricated",
+      "handling": "human_confirm"
+    }
+  ],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-citation_tracking-001"
+}

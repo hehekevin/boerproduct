@@ -1,0 +1,15 @@
+{
+  "_notice": "SYNTHETIC EXAMPLE ONLY — illustrates the skill interface. Not a formal test case or pre-written answer.",
+  "case_id": "example-deck-001",
+  "task": "Organize material.txt into a 6-slide committee talk (10 min) with speaker notes and a data-bound result figure; deliver editable pptx + PDF/PNG previews.",
+  "output_contract": {
+    "editable_pptx": "template-based editable presentation",
+    "pdf_export": "rendered PDF",
+    "png_previews": "per-slide PNG previews",
+    "result_json": "structured result with page-level evidence map"
+  },
+  "audience": "committee",
+  "duration_min": 10,
+  "slide_count_target": 6,
+  "materials": ["material.txt", "data.csv"]
+}

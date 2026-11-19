@@ -1,0 +1,31 @@
+{
+  "ir_version": "1.0",
+  "case_id": "synthetic-nanopublication-001",
+  "kind": "nanopublication",
+  "sources": [
+    {"id": "S1", "path": "material.md", "title": "SYNTHETIC example paper"}
+  ],
+  "nanopubs": [
+    {"id": "NP1",
+     "assertion": {"subject": "moderate thermal annealing", "predicate": "improves",
+                   "object": "perovskite film stability", "conditions": "under the tested conditions (100 C, 10 min, nitrogen)"},
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P4", "quote": "Moderate thermal annealing improves perovskite film stability under the tested conditions."}],
+     "provenance": {"source_id": "S1", "authors": ["A. Example_author", "B. Sample_researcher"], "year": "2024", "doi": "10.0000/synthetic.demo"}},
+    {"id": "NP2",
+     "assertion": {"subject": "thermal annealing", "predicate": "increases",
+                   "object": "retained efficiency after 500 h (95% vs 70% for controls)", "conditions": "100 C, 10 min, nitrogen"},
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P3", "quote": "Annealed films retained 95% of initial efficiency after 500 h, versus 70% for controls."}],
+     "provenance": {"source_id": "S1", "authors": ["A. Example_author", "B. Sample_researcher"], "year": "2024", "doi": "10.0000/synthetic.demo"}},
+    {"id": "NP3",
+     "assertion": {"subject": "this study", "predicate": "contains",
+                   "object": "limitation: only one batch was tested; outdoor degradation was not studied"},
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P5", "quote": "Only one batch was tested; outdoor degradation was not studied."}],
+     "provenance": {"source_id": "S1", "authors": ["A. Example_author", "B. Sample_researcher"], "year": "2024", "doi": "10.0000/synthetic.demo"}}
+  ],
+  "unanswered_parts": [],
+  "uncertainty": [],
+  "provenance": {"changes": [{"step": "example", "note": "SYNTHETIC interface demo; metadata copied from P1"}]}
+}

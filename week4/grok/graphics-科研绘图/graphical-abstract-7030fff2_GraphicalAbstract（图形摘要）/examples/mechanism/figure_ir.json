@@ -1,0 +1,38 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-mechanism-001",
+  "kind": "mechanism_pathway",
+  "title": "EGFR–MAPK signaling cascade (EXAMPLE)",
+  "caption": "Example mechanism diagram. EGFR activates RAS–RAF–MEK–ERK; ERK activates nuclear ELK1; DUSP6 inhibits ERK (negative feedback). Synthetic demonstration only.",
+  "canvas": {"width_mm": 180, "height_mm": 110, "dpi": 300, "background": "#ffffff"},
+  "style": {"preset": "nature", "font_family": "DejaVu Sans", "base_font_pt": 8, "min_font_pt": 5, "line_width_pt": 0.6, "color_space": "RGB", "palette": "okabe_ito"},
+  "sources": [
+    {"id": "mat", "locator": "material.txt Section 2.1", "kind": "text", "version": "example-v1"}
+  ],
+  "entities": [
+    {"id": "EGFR", "label": "EGFR", "category": "protein", "entity_kind": "receptor", "group": "membrane", "source": "mat", "source_locator": "Section 2.1 sentence 1", "confidence": "high"},
+    {"id": "RAS", "label": "RAS", "category": "protein", "entity_kind": "gtpase", "group": "cyto", "source": "mat", "source_locator": "Section 2.1 sentence 1", "confidence": "high"},
+    {"id": "RAF", "label": "RAF", "category": "protein", "entity_kind": "kinase", "group": "cyto", "source": "mat", "source_locator": "Section 2.1 sentence 2", "confidence": "high"},
+    {"id": "MEK", "label": "MEK", "category": "protein", "entity_kind": "kinase", "group": "cyto", "source": "mat", "source_locator": "Section 2.1 sentence 3", "confidence": "high"},
+    {"id": "ERK", "label": "ERK", "category": "protein", "entity_kind": "kinase", "group": "cyto", "source": "mat", "source_locator": "Section 2.1 sentence 3", "confidence": "high"},
+    {"id": "ELK1", "label": "ELK1", "category": "protein", "entity_kind": "transcription_factor", "group": "nucleus", "source": "mat", "source_locator": "Section 2.1 sentence 4", "confidence": "high"},
+    {"id": "DUSP6", "label": "DUSP6", "category": "protein", "entity_kind": "phosphatase", "group": "cyto", "source": "mat", "source_locator": "Section 2.1 sentence 5", "confidence": "high"}
+  ],
+  "relations": [
+    {"id": "r1", "from": "EGFR", "to": "RAS", "type": "activates", "direction": "forward", "source": "mat", "source_locator": "Section 2.1 sentence 1", "evidence_strength": "established", "confidence": "high"},
+    {"id": "r2", "from": "RAS", "to": "RAF", "type": "activates", "direction": "forward", "source": "mat", "source_locator": "Section 2.1 sentence 2", "evidence_strength": "established", "confidence": "high"},
+    {"id": "r3", "from": "RAF", "to": "MEK", "type": "activates", "direction": "forward", "modifiers": ["phosphorylation"], "source": "mat", "source_locator": "Section 2.1 sentence 3", "evidence_strength": "established", "confidence": "high"},
+    {"id": "r4", "from": "MEK", "to": "ERK", "type": "activates", "direction": "forward", "modifiers": ["phosphorylation"], "source": "mat", "source_locator": "Section 2.1 sentence 3", "evidence_strength": "established", "confidence": "high"},
+    {"id": "r5", "from": "ERK", "to": "ELK1", "type": "activates", "direction": "forward", "source": "mat", "source_locator": "Section 2.1 sentence 4", "evidence_strength": "established", "confidence": "high"},
+    {"id": "r6", "from": "ERK", "to": "ELK1", "type": "transports", "direction": "forward", "label": "nuclear translocation", "source": "mat", "source_locator": "Section 2.1 sentence 4", "evidence_strength": "established", "confidence": "medium"},
+    {"id": "r7", "from": "DUSP6", "to": "ERK", "type": "inhibits", "direction": "forward", "modifiers": ["dephosphorylation"], "label": "negative feedback", "source": "mat", "source_locator": "Section 2.1 sentence 5", "evidence_strength": "established", "confidence": "high"}
+  ],
+  "groups": [
+    {"id": "membrane", "label": "Plasma membrane", "kind": "compartment", "members": ["EGFR"], "source": "mat"},
+    {"id": "cyto", "label": "Cytoplasm", "kind": "compartment", "members": ["RAS", "RAF", "MEK", "ERK", "DUSP6"], "source": "mat"},
+    {"id": "nucleus", "label": "Nucleus", "kind": "compartment", "members": ["ELK1"], "source": "mat"}
+  ],
+  "exports": [{"format": "svg"}, {"format": "png", "dpi": 300}, {"format": "pdf"}],
+  "provenance": {"pipeline": "material -> IR -> editable source -> export", "skill_version": "1.0.0", "source_version": "example-v1", "changes": []},
+  "uncertainty": [{"item": "ERK->ELK1 dual edge", "reason": "text implies both activation and translocation", "impact": "two edges drawn between same pair", "handling": "kept distinct types; confirm with curator"}]
+}

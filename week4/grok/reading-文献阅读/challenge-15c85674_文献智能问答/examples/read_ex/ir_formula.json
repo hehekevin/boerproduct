@@ -1,0 +1,71 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-read-001",
+  "kind": "formula_reasoning",
+  "sources": [
+    {
+      "id": "mat",
+      "document_id": "doc1",
+      "locator": "material.txt Sec3",
+      "kind": "text",
+      "version": "ex1"
+    }
+  ],
+  "formulas": [
+    {
+      "id": "eq1",
+      "latex": "y = a x + b",
+      "variables": [
+        {
+          "symbol": "a",
+          "definition": "slope",
+          "unit": "a.u./day",
+          "range": ">0",
+          "source": "mat",
+          "defined_in_paper": true
+        },
+        {
+          "symbol": "b",
+          "definition": "intercept",
+          "unit": "a.u.",
+          "source": "mat",
+          "defined_in_paper": true
+        },
+        {
+          "symbol": "x",
+          "definition": "time",
+          "unit": "day",
+          "source": "mat",
+          "defined_in_paper": true
+        },
+        {
+          "symbol": "y",
+          "definition": "expression",
+          "unit": "a.u.",
+          "source": "mat",
+          "defined_in_paper": true
+        }
+      ],
+      "steps": [
+        {
+          "expr": "y = a x + b",
+          "assumption": "linear trend"
+        }
+      ],
+      "numeric_check": {
+        "expr": "a*x+b",
+        "values": {
+          "a": 0.9,
+          "x": 3,
+          "b": 1.8
+        },
+        "expected": 4.5,
+        "tol": 0.000001
+      }
+    }
+  ],
+  "provenance": {
+    "pipeline": "material -> reading IR -> formula check"
+  },
+  "uncertainty": []
+}

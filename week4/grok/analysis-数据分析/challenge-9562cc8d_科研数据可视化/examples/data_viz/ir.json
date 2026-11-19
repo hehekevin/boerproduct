@@ -1,0 +1,31 @@
+{
+  "ir_version": "1.0",
+  "kind": "data_viz",
+  "sources": [
+    {"id": "src_table", "path": "input/series.csv", "description": "SYNTHETIC two-series x/y table"},
+    {"id": "src_dict", "path": "input/dictionary.md", "description": "SYNTHETIC data dictionary"}
+  ],
+  "datasets": [
+    {"dataset_id": "s", "source_id": "src_table", "path": "input/series.csv",
+     "columns": ["x", "y", "group"]}
+  ],
+  "charts": [
+    {"chart_id": "scatter_xy", "chart_type": "scatter", "dataset_id": "s",
+     "x": "x", "y": "y", "group_by": "group",
+     "title": "Response y vs x by group", "x_label": "x (mm)", "y_label": "y (MPa)",
+     "caption": "n=5 per group (A, B); points are individual observations; no error bars (raw scatter). Missing rows would be skipped and counted.",
+     "rationale": "Two continuous variables, correlation intent -> scatter with position encoding. NOT recommended: pie (no composition), line (x is not a time series and groups are unordered categories).",
+     "width_mm": 180, "height_mm": 120},
+    {"chart_id": "bar_mean_y", "chart_type": "bar", "dataset_id": "s",
+     "x": "group", "y": "y", "aggregate": "mean", "error_bars": "sd",
+     "title": "Mean y by group (SD)", "x_label": "group", "y_label": "mean y (MPa)",
+     "caption": "Bars = mean y per group, n=5 each; error bars = standard deviation (sd), NOT se or CI; bars start at zero baseline.",
+     "rationale": "Categorical comparison of a numeric outcome -> bar with length encoding and zero baseline. NOT recommended: pie/area (exaggerates differences), truncated axis (misleads).",
+     "width_mm": 120, "height_mm": 100}
+  ],
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "actual material -> IR -> validate -> render data-bound SVG -> data_map -> result",
+    "changes": [{"step": "example", "note": "SYNTHETIC demo IR; not a formal case answer"}]
+  }
+}

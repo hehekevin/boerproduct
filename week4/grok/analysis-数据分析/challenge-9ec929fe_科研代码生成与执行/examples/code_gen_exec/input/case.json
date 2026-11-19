@@ -1,0 +1,9 @@
+{
+  "case_id": "EXAMPLE-code-gen-exec-001",
+  "output_contract": {
+    "code_results_json": {"type": "json", "desc": "results + verification checks + static scan"},
+    "execution_log_json": {"type": "json", "desc": "command/exit/stdout/stderr/duration/env"},
+    "report_md": {"type": "markdown", "desc": "human-readable code-execution report"},
+    "provenance_json": {"type": "json", "desc": "code/spec -> source locator map"}
+  }
+}

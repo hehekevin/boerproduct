@@ -1,0 +1,112 @@
+{
+  "ir_version": "1.0",
+  "kind": "incremental_tracking",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "import_state_1.json",
+      "type": "json",
+      "name": "synthetic import state 1"
+    },
+    {
+      "id": "S2",
+      "path": "import_state_2.json",
+      "type": "json",
+      "name": "synthetic import state 2"
+    },
+    {
+      "id": "S3",
+      "path": "records.csv",
+      "type": "csv",
+      "name": "synthetic record metadata"
+    },
+    {
+      "id": "S4",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "subscription": {
+    "topic": "protein structure prediction",
+    "source_id": "S4",
+    "window_timezone": "UTC",
+    "dedup_key": "normalized DOI, else normalized title+year"
+  },
+  "snapshots": [
+    {
+      "id": "SN1",
+      "window": {
+        "start": "2025-01-01",
+        "end": "2025-01-31"
+      },
+      "imported_at": "2025-02-01T02:00:00Z",
+      "record_ids": [
+        "R1",
+        "R2"
+      ],
+      "source_id": "S1"
+    },
+    {
+      "id": "SN2",
+      "window": {
+        "start": "2025-01-31",
+        "end": "2025-02-28"
+      },
+      "imported_at": "2025-03-01T02:00:00Z",
+      "record_ids": [
+        "R2",
+        "R3",
+        "R4"
+      ],
+      "source_id": "S2"
+    }
+  ],
+  "records": [
+    {
+      "id": "R1",
+      "title": "Attention folding (preprint)",
+      "authors": "Alvarez P",
+      "year": 2024,
+      "journal": "bioRxiv",
+      "doi": "10.1000/demo.501pre",
+      "source_id": "S3"
+    },
+    {
+      "id": "R2",
+      "title": "Protein language models review",
+      "authors": "Sen K",
+      "year": 2023,
+      "journal": "ML Rev",
+      "doi": "10.1000/demo.502",
+      "source_id": "S3"
+    },
+    {
+      "id": "R3",
+      "title": "Attention folding (published)",
+      "authors": "Alvarez P",
+      "year": 2025,
+      "journal": "Nat Methods",
+      "doi": "10.1000/demo.501pre",
+      "source_id": "S3",
+      "version_of": "R1"
+    },
+    {
+      "id": "R4",
+      "title": "Retracted: folding benchmark",
+      "authors": "Novak T",
+      "year": 2022,
+      "journal": "J Bench",
+      "doi": "10.1000/demo.504",
+      "source_id": "S3",
+      "retracted": true
+    }
+  ],
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-incremental_tracking-001"
+}

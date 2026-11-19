@@ -1,0 +1,16 @@
+{
+  "case_id": "example-paper2ppt-001",
+  "track": "ppt",
+  "kind": "paper_to_ppt",
+  "title": "Paper to academic deck (SYNTHETIC EXAMPLE)",
+  "audience": "committee",
+  "duration_min": 10,
+  "slide_count_target": 6,
+  "output_contract": {
+    "deck_pptx": {"format": "pptx", "desc": "editable academic deck"},
+    "outline_md": {"format": "md", "desc": "source-bound slide outline"},
+    "deck_pdf": {"format": "pdf", "desc": "rendered preview (office-renderer or labelled fallback)"},
+    "result_json": {"format": "json", "desc": "structured result with sources/status"}
+  },
+  "note": "SYNTHETIC interface demo only; not a formal contest case."
+}

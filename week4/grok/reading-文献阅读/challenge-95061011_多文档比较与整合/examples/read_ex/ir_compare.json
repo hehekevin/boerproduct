@@ -1,0 +1,76 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-read-001",
+  "kind": "multi_doc_compare",
+  "sources": [
+    {
+      "id": "d1",
+      "document_id": "doc1",
+      "locator": "p1",
+      "kind": "text"
+    },
+    {
+      "id": "d2",
+      "document_id": "doc2",
+      "locator": "p2",
+      "kind": "text"
+    }
+  ],
+  "matrix": {
+    "fields": [
+      "effect_day14",
+      "n"
+    ],
+    "rows": [
+      {
+        "document_id": "doc1",
+        "task": "marker",
+        "metric": "expression",
+        "condition": "cohortA",
+        "cells": [
+          {
+            "field": "effect_day14",
+            "value": 4.5,
+            "units": "a.u.",
+            "source_document_id": "doc1",
+            "paragraph_id": "Sec3"
+          },
+          {
+            "field": "n",
+            "value": 6,
+            "source_document_id": "doc1",
+            "paragraph_id": "Sec2"
+          }
+        ]
+      },
+      {
+        "document_id": "doc2",
+        "task": "marker",
+        "metric": "expression",
+        "condition": "cohortB",
+        "cells": [
+          {
+            "field": "effect_day14",
+            "value": 3,
+            "units": "a.u.",
+            "source_document_id": "doc2",
+            "paragraph_id": "R1"
+          },
+          {
+            "field": "n",
+            "value": 8,
+            "source_document_id": "doc2",
+            "paragraph_id": "M1"
+          }
+        ]
+      }
+    ],
+    "conflict_explanation": {
+      "effect_day14": "different cohort (A vs B); comparable only within cohort"
+    }
+  },
+  "provenance": {
+    "pipeline": "material -> reading IR -> comparison"
+  },
+  "uncertainty": []
+}

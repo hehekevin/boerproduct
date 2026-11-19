@@ -1,0 +1,5 @@
+id,title,authors,year,journal,doi
+R1,Deep learning for protein structure prediction: a benchmark,"Alvarez P; Sen K",2024,Nature Methods,10.1000/demo.201
+R2,Deep learning for protein structure prediction: a benchmark (preprint),"Alvarez P; Sen K",2023,bioRxiv,10.1000/demo.201pre
+R3,Protein folding kinetics measured by NMR,"Novak T",2019,Biophys J,10.1000/demo.203
+R4,Ambiguous short abstract on neural networks,"Unknown",2022,Workshop,,

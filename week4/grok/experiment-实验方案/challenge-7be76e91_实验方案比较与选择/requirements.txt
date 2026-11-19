@@ -1,0 +1,2 @@
+# Python 3.10+ standard library only. No third-party packages required.
+# The engine uses json/csv/hashlib/re/math/pathlib/ast (safe_eval) + w4kit stats.

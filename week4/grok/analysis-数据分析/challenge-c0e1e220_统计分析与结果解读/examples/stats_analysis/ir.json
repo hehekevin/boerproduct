@@ -1,0 +1,35 @@
+{
+  "ir_version": "1.0",
+  "kind": "stats_analysis",
+  "sources": [
+    {"id": "src_table", "path": "input/groups.csv", "description": "SYNTHETIC two-group strength table"},
+    {"id": "src_dict", "path": "input/dictionary.md", "description": "SYNTHETIC data dictionary"}
+  ],
+  "datasets": [
+    {"dataset_id": "g", "source_id": "src_table", "path": "input/groups.csv",
+     "columns": ["sample", "group", "age", "strength"]}
+  ],
+  "stats": {
+    "analyses": [
+      {"analysis_id": "desc_strength", "type": "describe", "dataset_id": "g",
+       "column": "strength",
+       "assumptions": ["unit MPa per dictionary; missing excluded pairwise, no imputation"],
+       "interpretation": "Strength centers near 36 MPa with moderate spread; the distribution is right-skewed because strength grows with age, so the median and quartiles describe it better than the mean alone."},
+      {"analysis_id": "cmp_AB", "type": "compare_groups", "dataset_id": "g",
+       "column": "strength", "group_column": "group",
+       "assumptions": ["two independent groups (dictionary: non-paired); independence assumed from design"],
+       "interpretation": "Group B shows a higher mean strength than A; the Welch test and Cohen's d quantify the difference and its uncertainty. Statistical significance does not by itself establish practical importance — judge the mean-diff CI against the engineering tolerance."},
+      {"analysis_id": "corr_age_strength", "type": "correlation", "dataset_id": "g",
+       "columns": ["age", "strength"], "method": "pearson",
+       "interpretation": "Strength increases with age; Pearson r and its Fisher-z CI summarize the linear association. This is association, not causation, and the relation is curved (log-like), so r understates the monotonic trend — Spearman would be higher."},
+      {"analysis_id": "reg_age_strength", "type": "regression", "dataset_id": "g",
+       "columns": ["age", "strength"],
+       "interpretation": "The OLS line gives an average strength gain per day of age with R² indicating fit; the slope CI expresses uncertainty. A linear model is an approximation of a saturating growth curve — inspect residuals before extrapolating."}
+    ]
+  },
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "actual material -> IR -> validate -> recompute -> effect size + CI -> interpretation -> result",
+    "changes": [{"step": "example", "note": "SYNTHETIC demo IR; not a formal case answer"}]
+  }
+}

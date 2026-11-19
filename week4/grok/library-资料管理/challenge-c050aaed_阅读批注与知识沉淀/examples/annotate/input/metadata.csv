@@ -1,0 +1,6 @@
+document_id,title,authors,year,type,project,doi
+D01,Buffer optimization for enzyme assay,"Li W, Chen X",2021,journal_article,P-ALPHA,10.1000/alpha.2021.001
+D03,Extraction protocol beta,"Wang F",2022,protocol,P-BETA,
+D04,Gamma activity dataset,"Zhao Q",2023,dataset,P-GAMMA,
+D05,催化剂表面反应的学位论文,"Sun Y",2020,thesis,P-ALPHA,
+D08,Project P-BETA annual report 2022,"Team B",2022,report,P-BETA,

@@ -1,0 +1,28 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-refmanage-001",
+  "kind": "reference_manage",
+  "title": "References managed to GB/T 7714 (SYNTHETIC EXAMPLE)",
+  "target_style": "GB/T 7714",
+  "sources": [
+    {"id": "mat", "locator": "manuscript.txt body", "kind": "text", "version": "example-v1"},
+    {"id": "lib", "locator": "library.json records ref1-ref4", "kind": "table", "version": "example-v1"}
+  ],
+  "references": [
+    {"id": "ref1", "authors": "Example A, Example B", "year": "2024", "title": "Marker dynamics in controlled cohorts", "journal": "J Example", "doi": "10.1234/example.2024.001", "volume": "12", "issue": "3", "pages": "101-110", "source": "lib", "locator": "library.json ref1"},
+    {"id": "ref2", "authors": "Example C", "year": "2023", "title": "Time course of marker expression", "journal": "J Example", "doi": "10.1234/example.2023.007", "volume": "11", "pages": "55-63", "source": "lib", "locator": "library.json ref2"},
+    {"id": "ref3", "authors": "Example A, Example B", "year": "2024", "title": "Marker Dynamics in Controlled Cohorts (preprint)", "journal": "J Example", "doi": "https://doi.org/10.1234/example.2024.001", "volume": "12", "issue": "3", "pages": "101-110", "source": "lib", "locator": "library.json ref3"},
+    {"id": "ref4", "authors": "Example D", "year": "2022", "title": "Unrelated methods note", "journal": "J Other", "source": "lib", "locator": "library.json ref4"}
+  ],
+  "in_text_citations": [
+    {"id": "m1", "marker": "[1]", "ref_id": "ref1", "claim_text": "Marker expression rises under Treatment X", "source": "mat", "locator": "manuscript.txt sentence 1"},
+    {"id": "m2", "marker": "[2]", "ref_id": "ref2", "claim_text": "Prior cohorts show similar dynamics", "source": "mat", "locator": "manuscript.txt sentence 2"},
+    {"id": "m3", "marker": "[3]", "ref_id": "ref3", "claim_text": "The time course was confirmed in a follow-up study", "source": "mat", "locator": "manuscript.txt sentence 3"}
+  ],
+  "claims": [
+    {"id": "c1", "text": "ref1 and ref3 are the same work (identical normalized DOI); merged with title conflict noted.", "type": "structural", "evidence": [{"source": "lib", "locator": "library.json ref1/ref3 doi", "strength": "established", "supports": "full"}], "citation_ids": []}
+  ],
+  "exports": [{"format": "md"}, {"format": "bib"}, {"format": "docx"}],
+  "provenance": {"pipeline": "material -> writing IR -> validate -> editable artifact -> result", "skill_version": "1.0.0", "changes": []},
+  "uncertainty": [{"item": "ref4", "reason": "present in library but not cited in manuscript", "impact": "uncited reference", "handling": "flagged uncited_references; human_confirm whether to cite or remove"}, {"item": "ref1/ref3 title", "reason": "preprint vs published title differs", "impact": "field conflict within merged cluster", "handling": "conflict recorded in dedup_report; representative = published ref1"}]
+}

@@ -1,0 +1,5 @@
+id,title,authors,year,journal,doi
+R1,Attention-based protein folding,"Alvarez P",2024,Nat Methods,10.1000/demo.301
+R2,Deep learning foundations for structure prediction,"Sen K",2021,ML Rev,10.1000/demo.302
+R3,Improved attention folding with recycling,"Kim H",2025,Bioinformatics,10.1000/demo.303
+R4,Protein folding kinetics measured by NMR,"Novak T",2019,Biophys J,10.1000/demo.304

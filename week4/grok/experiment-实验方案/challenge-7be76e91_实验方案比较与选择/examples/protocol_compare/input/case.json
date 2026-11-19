@@ -1,0 +1,7 @@
+{
+  "case_id": "synthetic-compare-001",
+  "output_contract": {
+    "comparison_md": {"type": "markdown", "desc": "editable comparison matrix"},
+    "comparison_json": {"type": "json", "desc": "structured comparison artifact"}
+  }
+}

@@ -1,0 +1,570 @@
+{
+  "ir_version": "1.0",
+  "case_id": "EXAMPLE-systematic_review-001",
+  "kind": "systematic_review",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Evening blue light delays sleep onset in adults (2018 trial)",
+      "file": "docs/s1.md",
+      "year": 2018,
+      "doi": "10.0000/example.s1",
+      "type": "journal_article"
+    },
+    {
+      "id": "S2",
+      "title": "Blue-light filtering lenses shorten sleep onset in adult insomniacs (2019)",
+      "file": "docs/s2.md",
+      "year": 2019,
+      "doi": "10.0000/example.s2",
+      "type": "journal_article"
+    },
+    {
+      "id": "S3",
+      "title": "Blue-light filtering shows no sleep-onset effect in adolescents (2020)",
+      "file": "docs/s3.md",
+      "year": 2020,
+      "doi": "10.0000/example.s3",
+      "type": "journal_article"
+    },
+    {
+      "id": "S4",
+      "title": "Meta-analysis of blue-light filtering and sleep onset (2021)",
+      "file": "docs/s4.md",
+      "year": 2021,
+      "doi": "10.0000/example.s4",
+      "type": "journal_article"
+    },
+    {
+      "id": "S5",
+      "title": "Dose-response of evening screen luminance and circadian phase (2022)",
+      "file": "docs/s5.md",
+      "year": 2022,
+      "doi": "10.0000/example.s5",
+      "type": "journal_article"
+    },
+    {
+      "id": "S6",
+      "title": "Wearable blue-light blocking and melatonin onset pilot (2023)",
+      "file": "docs/s6.md",
+      "year": 2023,
+      "doi": "10.0000/example.s6",
+      "type": "journal_article"
+    },
+    {
+      "id": "S7",
+      "title": "Morning bright light and daytime alertness (2017)",
+      "file": "docs/s7.md",
+      "year": 2017,
+      "doi": "10.0000/example.s7",
+      "type": "journal_article"
+    },
+    {
+      "id": "S8",
+      "title": "Retinal phototoxicity thresholds of blue-light devices (2020)",
+      "file": "docs/s8.md",
+      "year": 2020,
+      "doi": "10.0000/example.s8",
+      "type": "journal_article"
+    }
+  ],
+  "protocol": {
+    "inclusion": [
+      {
+        "id": "I1",
+        "text": "Human studies of evening light exposure or blue-light filtering with a sleep/circadian outcome."
+      },
+      {
+        "id": "I2",
+        "text": "Randomized, crossover, cohort, meta-analysis or pilot designs."
+      }
+    ],
+    "exclusion": [
+      {
+        "id": "E1",
+        "text": "Morning-only light exposure without an evening/sleep outcome."
+      },
+      {
+        "id": "E2",
+        "text": "No sleep or circadian outcome (e.g., retinal safety only)."
+      }
+    ],
+    "search_queries": [
+      {
+        "id": "Q1",
+        "query": "evening blue light AND sleep onset latency",
+        "intent": "core exposure effect",
+        "executed": true,
+        "date": "2026-11-01",
+        "database": "provided local corpus (synthetic)"
+      },
+      {
+        "id": "Q2",
+        "query": "blue-light filtering lenses AND insomnia",
+        "intent": "intervention efficacy",
+        "executed": true,
+        "date": "2026-11-01",
+        "database": "provided local corpus (synthetic)"
+      }
+    ]
+  },
+  "records": [
+    {
+      "id": "R1",
+      "source_id": "S1",
+      "title": "Evening blue light delays sleep onset in adults (2018 trial)",
+      "year": 2018,
+      "doi": "10.0000/example.s1",
+      "stage": "full_text",
+      "decision": "include",
+      "criteria_applied": [
+        "I1",
+        "I2"
+      ],
+      "reviewer": "agent"
+    },
+    {
+      "id": "R2",
+      "source_id": "S2",
+      "title": "Blue-light filtering lenses shorten sleep onset in adult insomniacs (2019)",
+      "year": 2019,
+      "doi": "10.0000/example.s2",
+      "stage": "full_text",
+      "decision": "include",
+      "criteria_applied": [
+        "I1",
+        "I2"
+      ],
+      "reviewer": "agent"
+    },
+    {
+      "id": "R3",
+      "source_id": "S3",
+      "title": "Blue-light filtering shows no sleep-onset effect in adolescents (2020)",
+      "year": 2020,
+      "doi": "10.0000/example.s3",
+      "stage": "full_text",
+      "decision": "include",
+      "criteria_applied": [
+        "I1",
+        "I2"
+      ],
+      "reviewer": "agent"
+    },
+    {
+      "id": "R4",
+      "source_id": "S4",
+      "title": "Meta-analysis of blue-light filtering and sleep onset (2021)",
+      "year": 2021,
+      "doi": "10.0000/example.s4",
+      "stage": "full_text",
+      "decision": "include",
+      "criteria_applied": [
+        "I1",
+        "I2"
+      ],
+      "reviewer": "agent"
+    },
+    {
+      "id": "R5",
+      "source_id": "S5",
+      "title": "Dose-response of evening screen luminance and circadian phase (2022)",
+      "year": 2022,
+      "doi": "10.0000/example.s5",
+      "stage": "full_text",
+      "decision": "include",
+      "criteria_applied": [
+        "I1",
+        "I2"
+      ],
+      "reviewer": "agent"
+    },
+    {
+      "id": "R6",
+      "source_id": "S6",
+      "title": "Wearable blue-light blocking and melatonin onset pilot (2023)",
+      "year": 2023,
+      "doi": "10.0000/example.s6",
+      "stage": "full_text",
+      "decision": "include",
+      "criteria_applied": [
+        "I1",
+        "I2"
+      ],
+      "reviewer": "agent"
+    },
+    {
+      "id": "R7",
+      "source_id": "S2",
+      "title": "Blue-light filtering lenses shorten sleep onset in adult insomniacs (2019)",
+      "year": 2019,
+      "doi": "10.0000/example.s2",
+      "duplicate_of": "R2",
+      "reason": "Same DOI/title as R2; duplicate database hit."
+    },
+    {
+      "id": "R8",
+      "source_id": "S7",
+      "title": "Morning bright light and daytime alertness (2017)",
+      "year": 2017,
+      "doi": "10.0000/example.s7",
+      "stage": "title_abstract",
+      "decision": "exclude",
+      "criteria_applied": [
+        "E1"
+      ],
+      "reviewer": "agent",
+      "reason": "Morning-only light; no evening/sleep outcome (E1)."
+    },
+    {
+      "id": "R9",
+      "source_id": "S8",
+      "title": "Retinal phototoxicity thresholds of blue-light devices (2020)",
+      "year": 2020,
+      "doi": "10.0000/example.s8",
+      "stage": "title_abstract",
+      "decision": "exclude",
+      "criteria_applied": [
+        "E2"
+      ],
+      "reviewer": "agent",
+      "reason": "Retinal safety review; no sleep outcome (E2)."
+    }
+  ],
+  "research_question": {
+    "main": "Does evening blue-light exposure delay sleep onset, and does blue-light filtering meaningfully improve it?",
+    "subquestions": [
+      {
+        "id": "SQ1",
+        "question": "What is the effect of evening blue light on sleep onset latency?",
+        "depends_on": []
+      },
+      {
+        "id": "SQ2",
+        "question": "Do blue-light filtering interventions shorten sleep onset, and for whom?",
+        "depends_on": [
+          "SQ1"
+        ]
+      },
+      {
+        "id": "SQ3",
+        "question": "What mechanisms and dose-response relationships are reported?",
+        "depends_on": []
+      }
+    ]
+  },
+  "themes": [
+    {
+      "id": "T1",
+      "name": "Evening light and sleep onset",
+      "basis": "Induced from S1 (delay) and S5 (dose-response) reporting sleep/circadian outcomes."
+    },
+    {
+      "id": "T2",
+      "name": "Filtering interventions and evidence synthesis",
+      "basis": "Induced from S2/S3 (trials), S4 (meta-analysis) and S6 (pilot)."
+    },
+    {
+      "id": "T3",
+      "name": "Mechanisms and dose-response",
+      "basis": "Induced from S5 (luminance threshold) and S1 (melatonin suppression)."
+    }
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "text": "Evening blue-light exposure delays sleep onset latency in adults.",
+      "type": "fact",
+      "strength": "supported",
+      "theme_id": "T1",
+      "subquestion_id": "SQ1",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "paragraph_id": "P1",
+          "quote": "evening blue-light exposure (480 nm, 2 hours) delayed sleep onset latency by 28 minutes",
+          "stance": "supports"
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "text": "Blue-light filtering lenses shorten sleep onset latency, but the effect is inconsistent across populations.",
+      "type": "fact",
+      "strength": "contested",
+      "theme_id": "T2",
+      "subquestion_id": "SQ2",
+      "evidence": [
+        {
+          "source_id": "S2",
+          "paragraph_id": "P1",
+          "quote": "shortened sleep onset latency by 18 minutes in 60 adult insomniacs",
+          "stance": "supports"
+        },
+        {
+          "source_id": "S3",
+          "paragraph_id": "P1",
+          "quote": "produced no significant change in sleep onset latency",
+          "stance": "contradicts"
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "text": "Pooled evidence suggests a modest average benefit of blue-light filtering, larger in adults than adolescents.",
+      "type": "comparison",
+      "strength": "supported",
+      "theme_id": "T2",
+      "subquestion_id": "SQ2",
+      "evidence": [
+        {
+          "source_id": "S4",
+          "paragraph_id": "P1",
+          "quote": "a pooled reduction in sleep onset latency of 12 minutes with blue-light filtering",
+          "stance": "supports"
+        },
+        {
+          "source_id": "S4",
+          "paragraph_id": "P2",
+          "quote": "Effects were larger in adults than adolescents",
+          "stance": "supports"
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "text": "Circadian phase shifting by evening light follows a nonlinear dose-response with a low luminance threshold.",
+      "type": "method",
+      "strength": "supported",
+      "theme_id": "T3",
+      "subquestion_id": "SQ3",
+      "evidence": [
+        {
+          "source_id": "S5",
+          "paragraph_id": "P1",
+          "quote": "a nonlinear threshold near 30 lux",
+          "stance": "supports"
+        }
+      ]
+    },
+    {
+      "id": "C5",
+      "text": "Wearable blue-light blocking may advance melatonin onset, but effects on sleep onset remain unproven.",
+      "type": "fact",
+      "strength": "suggestive",
+      "theme_id": "T2",
+      "subquestion_id": "SQ2",
+      "uncertainty": "Pilot n=24 with no sham arm; hypothesis-generating only.",
+      "evidence": [
+        {
+          "source_id": "S6",
+          "paragraph_id": "P1",
+          "quote": "a wearable blue-light blocking device advanced melatonin onset by 30 minutes",
+          "stance": "supports"
+        }
+      ]
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "CF1",
+      "topic": "Efficacy of blue-light filtering lenses on sleep onset latency",
+      "positions": [
+        {
+          "source_id": "S2",
+          "paragraph_id": "P1",
+          "quote": "shortened sleep onset latency by 18 minutes in 60 adult insomniacs",
+          "stance": "supports"
+        },
+        {
+          "source_id": "S3",
+          "paragraph_id": "P1",
+          "quote": "produced no significant change in sleep onset latency",
+          "stance": "contradicts"
+        }
+      ],
+      "handling": "Present both; attribute difference to population (adults vs adolescents) and adherence (S3 52%). See S4 moderator analysis. Do not collapse to one verdict."
+    }
+  ],
+  "gaps": [
+    {
+      "id": "G1",
+      "type": "evidence_gap",
+      "text": "No included trial reports objective actigraphy-confirmed sleep onset in adolescents with verified adherence.",
+      "evidence": [
+        {
+          "source_id": "S3",
+          "paragraph_id": "P2",
+          "quote": "Adherence was low (52% of nights)"
+        }
+      ],
+      "search_scope_checked": "Searched provided corpus S1-S8; adolescent trial S3 only, pilot S6 in adults.",
+      "human_confirm": true
+    },
+    {
+      "id": "G2",
+      "type": "coverage_gap",
+      "text": "Long-term (>6 month) effects of evening blue-light filtering are not reported in the provided sources.",
+      "search_scope_checked": "All provided sources are acute or short-term (<=3 months); no long-term follow-up found.",
+      "human_confirm": true
+    }
+  ],
+  "tool_log": [
+    {
+      "step": 1,
+      "tool": "list_materials",
+      "params": {
+        "dir": "/input"
+      },
+      "result": "8 documents registered"
+    },
+    {
+      "step": 2,
+      "tool": "read_text",
+      "params": {
+        "file": "docs/s1.md"
+      },
+      "result": "extracted P1/P2"
+    },
+    {
+      "step": 3,
+      "tool": "screen",
+      "params": {
+        "criteria": [
+          "I1",
+          "I2",
+          "E1",
+          "E2"
+        ]
+      },
+      "result": "6 included, 2 excluded, 1 duplicate"
+    },
+    {
+      "step": 4,
+      "tool": "synthesize",
+      "params": {
+        "n_claims": 5
+      },
+      "result": "matrix + conflict + gaps"
+    }
+  ],
+  "proposal": {
+    "text": "A prospective 4-week randomized sham-controlled trial of sensor-verified blue-light filtering in adults, with actigraphy sleep onset as the primary endpoint. Bounded to the provided evidence; this is a plan, no data were collected.",
+    "bounded": true
+  },
+  "uncertainty": [
+    {
+      "item": "conflict CF1",
+      "reason": "Adult vs adolescent efficacy disagreement; adherence differs.",
+      "impact": "Effect size uncertain across populations.",
+      "handling": "Present both; moderator analysis S4."
+    },
+    {
+      "item": "gap G1",
+      "reason": "No objective adolescent adherence-confirmed data.",
+      "handling": "human_confirm."
+    },
+    {
+      "item": "corpus_scope",
+      "reason": "Only 8 provided sources; not a comprehensive database search.",
+      "impact": "Trends and novelty are bounded to this set.",
+      "handling": "Declare scope; no field-wide claims."
+    }
+  ],
+  "provenance": {
+    "pipeline": "material -> research IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "quality": [
+    {
+      "record_id": "R1",
+      "overall": "moderate",
+      "dimensions": [
+        {
+          "name": "design",
+          "rating": "randomized crossover",
+          "evidence": {
+            "source_id": "S1",
+            "paragraph_id": "P1",
+            "quote": "randomized crossover trial of 40 adults"
+          }
+        }
+      ]
+    },
+    {
+      "record_id": "R2",
+      "overall": "moderate",
+      "dimensions": [
+        {
+          "name": "design",
+          "rating": "randomized sham-controlled",
+          "evidence": {
+            "source_id": "S2",
+            "paragraph_id": "P1",
+            "quote": "randomized, sham-controlled"
+          }
+        }
+      ]
+    },
+    {
+      "record_id": "R3",
+      "overall": "low",
+      "dimensions": [
+        {
+          "name": "adherence",
+          "rating": "low (52%)",
+          "evidence": {
+            "source_id": "S3",
+            "paragraph_id": "P2",
+            "quote": "Adherence was low (52% of nights)"
+          }
+        }
+      ]
+    },
+    {
+      "record_id": "R4",
+      "overall": "high",
+      "dimensions": [
+        {
+          "name": "synthesis",
+          "rating": "meta-analysis of 9 trials",
+          "evidence": {
+            "source_id": "S4",
+            "paragraph_id": "P1",
+            "quote": "meta-analysis of 9 trials (n=520)"
+          }
+        }
+      ]
+    },
+    {
+      "record_id": "R5",
+      "overall": "moderate",
+      "dimensions": [
+        {
+          "name": "design",
+          "rating": "dose-response",
+          "evidence": {
+            "source_id": "S5",
+            "paragraph_id": "P1",
+            "quote": "A dose-response study"
+          }
+        }
+      ]
+    },
+    {
+      "record_id": "R6",
+      "overall": "low",
+      "dimensions": [
+        {
+          "name": "bias",
+          "rating": "no sham arm",
+          "evidence": {
+            "source_id": "S6",
+            "paragraph_id": "P2",
+            "quote": "lack of a sham arm limit causal inference"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "case_id": "EXAMPLE-stats-analysis-001",
+  "output_contract": {
+    "stats_results_json": {"type": "json", "desc": "recomputed statistics + effect sizes + CIs + interpretation"},
+    "report_md": {"type": "markdown", "desc": "human-readable statistical report with locators"},
+    "provenance_json": {"type": "json", "desc": "statistic -> source locator map"}
+  }
+}

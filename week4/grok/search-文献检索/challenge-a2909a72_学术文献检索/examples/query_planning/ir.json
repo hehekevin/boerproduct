@@ -1,0 +1,159 @@
+{
+  "ir_version": "1.0",
+  "kind": "query_planning",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "records.csv",
+      "type": "csv",
+      "name": "synthetic candidate export"
+    },
+    {
+      "id": "S2",
+      "path": "responses.json",
+      "type": "json",
+      "name": "synthetic database responses"
+    },
+    {
+      "id": "S3",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "research_question": {
+    "text": "Does intermittent fasting improve insulin sensitivity in adults with prediabetes?",
+    "source_id": "S3",
+    "scope": "adults with prediabetes; RCT and controlled trials; 2018-2025"
+  },
+  "facets": [
+    {
+      "id": "F1",
+      "text": "intervention",
+      "terms": [
+        "intermittent fasting"
+      ],
+      "expanded_terms": [
+        "time-restricted eating",
+        "alternate-day fasting",
+        "5:2 diet"
+      ]
+    },
+    {
+      "id": "F2",
+      "text": "outcome + population",
+      "terms": [
+        "insulin sensitivity",
+        "prediabetes"
+      ],
+      "expanded_terms": [
+        "glucose metabolism",
+        "insulin resistance",
+        "impaired glucose tolerance"
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "id": "Q1",
+      "query_string": "(\"intermittent fasting\" OR \"time-restricted eating\") AND \"insulin sensitivity\" AND prediabetes",
+      "facet_id": "F1",
+      "database": "Crossref (provided export)",
+      "round": 1,
+      "source_id": "S2"
+    },
+    {
+      "id": "Q2",
+      "query_string": "\"time-restricted eating\" AND \"glucose metabolism\"",
+      "facet_id": "F2",
+      "database": "EuropePMC (provided export)",
+      "round": 2,
+      "source_id": "S2"
+    }
+  ],
+  "records": [
+    {
+      "id": "R1",
+      "title": "Intermittent fasting and insulin sensitivity in prediabetes: a randomized trial",
+      "authors": "Chen L; Wang Q",
+      "year": 2023,
+      "journal": "Diabetes Care",
+      "doi": "10.1000/demo.001",
+      "source_id": "S1",
+      "query_id": "Q1",
+      "matched_queries": [
+        "Q1"
+      ],
+      "snippet": "R1: Intermittent fasting and insulin sensitivity ... doi:10.1000/demo.001",
+      "label": "keep",
+      "graded_relevance": 3,
+      "features": {
+        "question_match": 0.95,
+        "method_match": 0.9,
+        "population_match": 0.9,
+        "evidence_quality": 0.85,
+        "recency": 0.8
+      },
+      "relevance_rationale": "RCT directly on question population and outcome"
+    },
+    {
+      "id": "R2",
+      "title": "Time-restricted eating effects on glucose metabolism",
+      "authors": "Silva A; Costa B",
+      "year": 2022,
+      "journal": "Am J Clin Nutr",
+      "doi": "10.1000/demo.002",
+      "source_id": "S1",
+      "query_id": "Q2",
+      "matched_queries": [
+        "Q2"
+      ],
+      "snippet": "R2: Time-restricted eating effects on glucose metabolism ... doi:10.1000/demo.002",
+      "label": "maybe",
+      "graded_relevance": 2,
+      "features": {
+        "question_match": 0.6,
+        "method_match": 0.7,
+        "population_match": 0.4,
+        "evidence_quality": 0.6,
+        "recency": 0.7
+      },
+      "relevance_rationale": "outcome matches; population not restricted to prediabetes"
+    },
+    {
+      "id": "R3",
+      "title": "Intermittent fasting and insulin sensitivity in prediabetes: a randomized trial",
+      "authors": "Chen L; Wang Q",
+      "year": 2023,
+      "journal": "Diabetes Care",
+      "doi": "https://doi.org/10.1000/demo.001",
+      "source_id": "S1",
+      "query_id": "Q1",
+      "matched_queries": [
+        "Q1"
+      ],
+      "snippet": "duplicate export row of R1 with URL-form DOI",
+      "label": "keep",
+      "graded_relevance": 3,
+      "features": {
+        "question_match": 0.95,
+        "method_match": 0.9,
+        "population_match": 0.9,
+        "evidence_quality": 0.85,
+        "recency": 0.8
+      },
+      "relevance_rationale": "same work as R1 (DOI URL variant) — dedup keeps provenance"
+    }
+  ],
+  "ranking": {
+    "k": 3
+  },
+  "gaps": [],
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-query_planning-001"
+}

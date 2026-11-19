@@ -1,0 +1,6 @@
+{
+  "_notice": "SYNTHETIC EXAMPLE ONLY — interface demo, not a formal answer.",
+  "case_id": "example-read-001",
+  "output_contract": {"reading_result": "structured fields/answers with locators", "evidence": "page/paragraph/quote", "status": "honest run status"},
+  "materials": ["material.txt"]
+}

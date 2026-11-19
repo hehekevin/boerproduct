@@ -1,0 +1,14 @@
+{
+  "case_id": "example-intro-001",
+  "track": "writing",
+  "kind": "intro_related",
+  "title": "Introduction + Related Work (SYNTHETIC EXAMPLE)",
+  "audience": "peers",
+  "genre": "journal_article",
+  "output_contract": {
+    "manuscript_md": {"format": "md", "desc": "Introduction + Related Work + Gap + Contributions"},
+    "manuscript_docx": {"format": "docx", "desc": "editable manuscript"},
+    "result_json": {"format": "json", "desc": "structured result with sources/status"}
+  },
+  "note": "SYNTHETIC interface demo only; not a formal contest case."
+}

@@ -1,0 +1,4 @@
+# arena-reference-manage — Python 3.10+ standard library only.
+# No third-party packages required (docx via stdlib zipfile OOXML; dedup/format stdlib).
+# No network: verification is against provided material, not live DOI lookup.
+# Run with PYTHONDONTWRITEBYTECODE=1 to avoid __pycache__.

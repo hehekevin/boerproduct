@@ -1,0 +1,9 @@
+{
+  "case_id": "EXAMPLE-data-cleaning-001",
+  "output_contract": {
+    "cleaned_csv": {"type": "csv", "desc": "cleaned dataset; originals preserved in snapshot + log"},
+    "cleaning_log_json": {"type": "json", "desc": "per-change log + quality report + consistency check"},
+    "report_md": {"type": "markdown", "desc": "human-readable cleaning report with locators"},
+    "provenance_json": {"type": "json", "desc": "item -> source locator map"}
+  }
+}

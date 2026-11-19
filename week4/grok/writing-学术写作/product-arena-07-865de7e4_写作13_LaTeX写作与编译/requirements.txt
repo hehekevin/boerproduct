@@ -1,0 +1,5 @@
+# arena-latex — Python 3.10+ standard library only.
+# No third-party Python packages required.
+# OPTIONAL: a LaTeX compiler (latexmk / pdflatex / xelatex) for true compile.
+#   Present at runtime (latex-compiler); absent locally -> honest structure-only fallback.
+# Run with PYTHONDONTWRITEBYTECODE=1 to avoid __pycache__.

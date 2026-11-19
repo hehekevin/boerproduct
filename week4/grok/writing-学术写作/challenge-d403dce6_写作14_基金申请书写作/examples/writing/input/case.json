@@ -1,0 +1,11 @@
+{
+  "_notice": "SYNTHETIC EXAMPLE ONLY — illustrates the skill interface. Not a formal test case or pre-written answer.",
+  "case_id": "example-writing-001",
+  "task": "Write a Results & Discussion section from material.txt + data.csv with source-bound claims and citations; deliver editable md+docx.",
+  "output_contract": {
+    "editable_manuscript": "editable md + docx",
+    "evidence_map": "claim->source mapping",
+    "result_json": "structured result with uncertainty and change log"
+  },
+  "materials": ["material.txt", "data.csv"]
+}

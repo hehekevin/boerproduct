@@ -1,0 +1,39 @@
+{
+  "ir_version": "1.0",
+  "kind": "protocol_compare",
+  "sources": [{"id": "plans", "path": "plans.md"}],
+  "documents": [{"id": "d1", "source_id": "plans", "title": "Three candidate extraction plans"}],
+  "protocols": [
+    {"id": "planA", "source_id": "plans", "version": "A", "title": "Plan A"},
+    {"id": "planB", "source_id": "plans", "version": "B", "title": "Plan B"},
+    {"id": "planC", "source_id": "plans", "version": "C", "title": "Plan C"}
+  ],
+  "comparison": {
+    "criteria": [
+      {"id": "cost", "name": "reagent cost", "direction": "lower_better", "weight": 0.3, "unit": "CNY"},
+      {"id": "time", "name": "duration", "direction": "lower_better", "weight": 0.2, "unit": "h"},
+      {"id": "yield", "name": "expected yield", "direction": "higher_better", "weight": 0.4, "unit": "mg/g"},
+      {"id": "safety", "name": "safety score", "direction": "higher_better", "weight": 0.1, "unit": "0-1"}
+    ],
+    "candidates": [
+      {"id": "A", "title": "Plan A", "source_id": "plans", "protocol_id": "planA", "version": "A"},
+      {"id": "B", "title": "Plan B", "source_id": "plans", "protocol_id": "planB", "version": "B"},
+      {"id": "C", "title": "Plan C", "source_id": "plans", "protocol_id": "planC", "version": "C"}
+    ],
+    "matrix": [
+      {"criterion_id": "cost", "candidate_id": "A", "value": 120, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p1", "quote": "reagent cost 120 CNY"}},
+      {"criterion_id": "cost", "candidate_id": "B", "value": 80, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p2", "quote": "reagent cost 80 CNY"}},
+      {"criterion_id": "cost", "candidate_id": "C", "value": 150, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p3", "quote": "reagent cost 150 CNY"}},
+      {"criterion_id": "time", "candidate_id": "A", "value": 6, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p1", "quote": "duration 6 hours"}},
+      {"criterion_id": "time", "candidate_id": "B", "value": 9, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p2", "quote": "duration 9 hours"}},
+      {"criterion_id": "time", "candidate_id": "C", "value": 5, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p3", "quote": "duration 5 hours"}},
+      {"criterion_id": "yield", "candidate_id": "A", "value": 7.9, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p1", "quote": "expected yield 7.9 mg/g"}},
+      {"criterion_id": "yield", "candidate_id": "B", "value": 6.8, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p2", "quote": "expected yield 6.8 mg/g"}},
+      {"criterion_id": "yield", "candidate_id": "C", "value": 8.5, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p3", "quote": "expected yield 8.5 mg/g"}},
+      {"criterion_id": "safety", "candidate_id": "A", "value": 0.9, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p1", "quote": "safety score 0.9"}},
+      {"criterion_id": "safety", "candidate_id": "B", "value": 0.8, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p2", "quote": "safety score 0.8"}},
+      {"criterion_id": "safety", "candidate_id": "C", "value": 0.4, "status": "reported", "evidence": {"source_id": "plans", "paragraph_id": "p3", "quote": "safety score 0.4"}}
+    ]
+  },
+  "provenance": {"pipeline": "actual material -> IR -> validate -> compute -> artifact -> result", "changes": []}
+}

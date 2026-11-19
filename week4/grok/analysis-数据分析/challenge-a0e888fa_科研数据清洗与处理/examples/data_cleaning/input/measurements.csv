@@ -1,0 +1,10 @@
+sample_id,timestamp,conc,unit,note
+S001,2024-01-01,12.5,mg/L,
+S001,2024-01-01,12.5,mg/L,duplicate export
+S002,2024-01-01,-999,mg/L,storage fault sentinel
+S003,2024-01-02,,mg/L,blank entry
+S004,2024-01-02,0,mg/L,detected as zero
+S005,2024-01-03,8.2,ug/mL,unit variant
+S006,2024-01-03,9.1,mg/L,
+S007,2024-01-04,250.0,mg/L,possible spike
+S008,2024-01-04,7.8,mg/L,

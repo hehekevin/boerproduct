@@ -1,0 +1,7 @@
+SYNTHETIC EXAMPLE paper.
+
+Sec1 (Introduction): Does Treatment X raise marker expression, and how does it evolve over 14 days? The effect versus control is unresolved and the time course (Day3/7/14) is unknown.
+Sec2 (Methods): Two arms (Control vs Treatment), n=6 per arm per timepoint. Expression measured at Day3, Day7, Day14. Reported as mean +/- SD (not SEM).
+Sec3 (Results, Fig1): Control stayed near baseline (1.0, 1.1, 0.9). Treatment rose 1.8 -> 3.2 -> 4.5. At Day14 treatment mean 4.5 exceeds control 0.9. Fig1 plots mean expression +/- SD from data.csv.
+Sec4 (Limitations): Single cohort, small n=6, no mechanistic assay.
+Sec5 (Conclusion): The increase is time-dependent in this cohort; mechanism remains to be tested.

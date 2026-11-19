@@ -1,0 +1,14 @@
+[
+  {
+    "query_id": "Q1",
+    "database": "Crossref (provided export)",
+    "n_hits": 2,
+    "snippet": "R1: Intermittent fasting and insulin sensitivity ... doi:10.1000/demo.001"
+  },
+  {
+    "query_id": "Q2",
+    "database": "EuropePMC (provided export)",
+    "n_hits": 1,
+    "snippet": "R2: Time-restricted eating effects on glucose metabolism ... doi:10.1000/demo.002"
+  }
+]

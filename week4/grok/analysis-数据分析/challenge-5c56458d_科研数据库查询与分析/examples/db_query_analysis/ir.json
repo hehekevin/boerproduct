@@ -1,0 +1,26 @@
+{
+  "ir_version": "1.0",
+  "kind": "db_query_analysis",
+  "sources": [
+    {"id": "src_db", "path": "input/seed.sql", "description": "SYNTHETIC SQLite dump (samples + measurements)"},
+    {"id": "src_dict", "path": "input/dictionary.md", "description": "SYNTHETIC data dictionary + join path"}
+  ],
+  "datasets": [
+    {"dataset_id": "db", "source_id": "src_db", "path": "input/seed.sql"}
+  ],
+  "queries": [
+    {"query_id": "q1_count", "question": "How many samples per group_name?", "dataset_id": "db",
+     "sql": "SELECT group_name, COUNT(*) AS n FROM samples GROUP BY group_name ORDER BY group_name",
+     "params": [],
+     "interpretation": "group_name is a categorical code (A/B), counted not averaged. Each group has 2 samples; this is the sample grain (no join, no inflation)."},
+    {"query_id": "q2_mean_strength", "question": "Mean strength by group for samples aged >= 7 days?", "dataset_id": "db",
+     "sql": "SELECT s.group_name, AVG(m.strength) AS mean_strength, COUNT(*) AS n_meas FROM samples s JOIN measurements m ON s.sample_id = m.sample_id WHERE s.age >= ? GROUP BY s.group_name ORDER BY s.group_name",
+     "params": [7],
+     "interpretation": "Parameterized age filter (?=7). Join samples->measurements ON sample_id is one-to-many: sample 1 has 2 measurements, so n_meas counts MEASUREMENTS (A=3, B=2), not samples. AVG(strength) ignores NULL and is at measurement grain (A=(25+34+26)/3=28.33, B=(28+40)/2=34.0). For sample-grain means, aggregate measurements per sample first."}
+  ],
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "actual db dump -> IR -> validate read-only -> schema discovery -> execute mode=ro -> export + log -> result",
+    "changes": [{"step": "example", "note": "SYNTHETIC demo IR; not a formal case answer"}]
+  }
+}

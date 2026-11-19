@@ -1,0 +1,4 @@
+# Python 3.10+ standard library only. No third-party packages required.
+# research_engine.py uses: json, csv, re, pathlib, collections, hashlib, zipfile,
+# xml.sax.saxutils (OOXML docx via stdlib zipfile). w4kit.py uses sqlite3/statistics;
+# numpy is imported lazily and is OPTIONAL (never required for the research kinds).

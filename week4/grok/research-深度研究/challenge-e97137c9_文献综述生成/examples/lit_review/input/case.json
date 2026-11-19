@@ -1,0 +1,29 @@
+{
+  "case_id": "EXAMPLE-lit_review-001",
+  "output_contract": {
+    "report_md": {
+      "type": "markdown",
+      "desc": "editable research report with locators"
+    },
+    "report_docx": {
+      "type": "docx",
+      "desc": "editable Word report"
+    },
+    "evidence_matrix_csv": {
+      "type": "csv",
+      "desc": "claim x evidence synthesis matrix"
+    },
+    "screening_log_csv": {
+      "type": "csv",
+      "desc": "PRISMA screening log"
+    },
+    "prisma_svg": {
+      "type": "svg",
+      "desc": "PRISMA flow diagram"
+    },
+    "provenance_json": {
+      "type": "json",
+      "desc": "claim/record/source -> locator map"
+    }
+  }
+}

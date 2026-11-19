@@ -1,0 +1,153 @@
+{
+  "ir_version": "1.0",
+  "kind": "screen_rank",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "records.csv",
+      "type": "csv",
+      "name": "synthetic candidate export"
+    },
+    {
+      "id": "S2",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "research_question": {
+    "text": "Deep learning methods for protein structure prediction",
+    "source_id": "S2"
+  },
+  "criteria": [
+    {
+      "id": "C1",
+      "type": "include",
+      "text": "primary study proposing/evaluating a deep learning method for protein structure prediction"
+    },
+    {
+      "id": "C2",
+      "type": "include",
+      "text": "method/benchmark reference directly used by such studies"
+    },
+    {
+      "id": "C3",
+      "type": "exclude",
+      "text": "no deep learning component (experimental-only biophysics)"
+    },
+    {
+      "id": "C4",
+      "type": "exclude",
+      "text": "insufficient metadata/abstract to judge -> human queue, not silent exclude"
+    }
+  ],
+  "records": [
+    {
+      "id": "R1",
+      "title": "Deep learning for protein structure prediction: a benchmark",
+      "authors": "Alvarez P; Sen K",
+      "year": 2024,
+      "journal": "Nature Methods",
+      "doi": "10.1000/demo.201",
+      "source_id": "S1",
+      "label": "keep",
+      "reason_code": "C1",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "field": "title",
+          "quote": "Deep learning for protein structure prediction: a benchmark"
+        }
+      ],
+      "graded_relevance": 3,
+      "features": {
+        "question_match": 0.95,
+        "method_match": 0.95,
+        "population_match": 0.8,
+        "evidence_quality": 0.9,
+        "recency": 0.9
+      }
+    },
+    {
+      "id": "R2",
+      "title": "Deep learning for protein structure prediction: a benchmark (preprint)",
+      "authors": "Alvarez P; Sen K",
+      "year": 2023,
+      "journal": "bioRxiv",
+      "doi": "10.1000/demo.201pre",
+      "source_id": "S1",
+      "label": "keep",
+      "reason_code": "C1",
+      "version_of": "R1",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "field": "title",
+          "quote": "... (preprint)"
+        }
+      ],
+      "graded_relevance": 3,
+      "features": {
+        "question_match": 0.95,
+        "method_match": 0.95,
+        "population_match": 0.8,
+        "evidence_quality": 0.7,
+        "recency": 0.8
+      }
+    },
+    {
+      "id": "R3",
+      "title": "Protein folding kinetics measured by NMR",
+      "authors": "Novak T",
+      "year": 2019,
+      "journal": "Biophys J",
+      "doi": "10.1000/demo.203",
+      "source_id": "S1",
+      "label": "exclude",
+      "reason_code": "C3",
+      "evidence": [
+        {
+          "source_id": "S1",
+          "field": "title",
+          "quote": "Protein folding kinetics measured by NMR"
+        }
+      ],
+      "graded_relevance": 0,
+      "features": {
+        "question_match": 0.2,
+        "method_match": 0.0,
+        "population_match": 0.5,
+        "evidence_quality": 0.6,
+        "recency": 0.3
+      }
+    },
+    {
+      "id": "R4",
+      "title": "Ambiguous short abstract on neural networks",
+      "authors": "Unknown",
+      "year": 2022,
+      "journal": "Workshop",
+      "doi": null,
+      "source_id": "S1",
+      "label": "maybe",
+      "reason_code": "C4",
+      "status": "insufficient_evidence"
+    }
+  ],
+  "ranking": {
+    "k": 3
+  },
+  "uncertainty": [
+    {
+      "item": "R4",
+      "reason": "no DOI and abstract too short to judge relevance; kept in human review queue",
+      "handling": "human_confirm"
+    }
+  ],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-screen_rank-001"
+}

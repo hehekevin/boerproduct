@@ -1,0 +1,83 @@
+{
+  "ir_version": "1.0",
+  "case_id": "SYNTHETIC-demo-logic-001",
+  "kind": "logic_argument_review",
+  "sources": [
+    {"id": "S1", "path": "input/manuscript.md", "role": "manuscript"}
+  ],
+  "documents": [
+    {"document_id": "D1", "source_id": "S1", "role": "manuscript",
+     "title": "Compound X and Cell Growth (SYNTHETIC DEMO MANUSCRIPT)"}
+  ],
+  "manuscript_id": "D1",
+  "arguments": [
+    {"id": "A1",
+     "conclusion": {"text": "Compound X causes accelerated cell growth in patients.",
+                    "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                                  "quote": "Therefore, Compound X causes accelerated cell growth in patients."}]},
+     "premises": [
+       {"id": "A1P1", "status": "reported",
+        "text": "Cells exposed to Compound X grew faster than untreated cells in the experiment.",
+        "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p3",
+                      "quote": "In our experiment, cells exposed to Compound X grew faster than untreated cells."}]}
+     ],
+     "inference_type": "causal",
+     "validity": "gap",
+     "gaps": ["An uncontrolled cell-culture association does not establish causation (no mechanism, dose-response or confounder control presented).",
+              "Extrapolation from cultured cells to patients is unsupported: no animal or human data are provided."],
+     "note": "The premise supports at most 'was associated with faster growth in this cell model'.",
+     "recommendation": "Rewrite the conclusion as 'Compound X was associated with faster growth in cultured cells'; remove the patient claim or add in vivo evidence."},
+    {"id": "A2",
+     "conclusion": {"text": "Compound X is safe for clinical use.",
+                    "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p5",
+                                  "quote": "Compound X is safe for clinical use."}]},
+     "premises": [
+       {"id": "A2P1", "status": "reported",
+        "text": "Toxicity was not assessed in this study (the only safety-related statement offered).",
+        "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p6",
+                      "quote": "Toxicity was not assessed in this study."}]}
+     ],
+     "inference_type": "other",
+     "validity": "fallacy",
+     "fallacy_type": "argument_from_ignorance",
+     "note": "Absence of toxicity assessment is treated as evidence of safety; the premise actually undermines the conclusion.",
+     "recommendation": "Delete the safety claim or replace it with 'toxicity was not assessed'; safety requires dedicated assessment."}
+  ],
+  "consistency_checks": [
+    {"id": "K1",
+     "a": {"text": "Compound X is safe for clinical use.",
+           "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p5",
+                         "quote": "Compound X is safe for clinical use."}]},
+     "b": {"text": "Toxicity was not assessed in this study.",
+           "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p6",
+                         "quote": "Toxicity was not assessed in this study."}]},
+     "verdict": "inconsistent",
+     "note": "A clinical-safety assertion cannot stand alongside an explicit statement that toxicity was never assessed."}
+  ],
+  "findings": [
+    {"id": "L1", "dimension": "cross_section_consistency", "severity": "major", "status": "confirmed",
+     "verdict": "Safety claim (p5) contradicts the stated lack of toxicity assessment (p6); see consistency check K1 and argument A2.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p5",
+                   "quote": "Compound X is safe for clinical use."},
+                  {"source_id": "S1", "document_id": "D1", "paragraph_id": "p6",
+                   "quote": "Toxicity was not assessed in this study."}],
+     "recommendation": "Remove or qualify the safety sentence; align abstract/discussion wording with what was actually measured."},
+    {"id": "L2", "dimension": "evidence_support", "severity": "minor", "status": "insufficient_evidence",
+     "verdict": "No statistical test, effect size, replication or quantification is reported for the growth difference, so whether the observation supports even the weakened claim cannot be determined from the provided material.",
+     "reason": "no numeric results or statistics provided in the manuscript",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p3",
+                   "quote": "cells exposed to Compound X grew faster than untreated cells"}],
+     "recommendation": "Report quantified growth measurements with a test/effect size; re-audit claim strength once numbers are supplied.",
+     "handling": "human_confirm"}
+  ],
+  "uncertainty": [
+    {"item": "strength of the growth observation",
+     "reason": "No quantitative results provided; claim-evidence alignment for A1's premise cannot be fully graded.",
+     "impact": "L2 remains insufficient_evidence",
+     "handling": "human_confirm"}
+  ],
+  "provenance": {
+    "pipeline": "actual material -> IR -> validate -> recompute/verify -> artifact -> result",
+    "changes": [{"at": "example-build", "change": "SYNTHETIC demo IR authored from the demo manuscript"}]
+  }
+}

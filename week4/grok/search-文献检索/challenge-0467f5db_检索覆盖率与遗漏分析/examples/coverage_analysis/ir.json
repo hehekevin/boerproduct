@@ -1,0 +1,136 @@
+{
+  "ir_version": "1.0",
+  "kind": "coverage_analysis",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "known_items.csv",
+      "type": "csv",
+      "name": "synthetic frozen known-item list"
+    },
+    {
+      "id": "S2",
+      "path": "results.csv",
+      "type": "csv",
+      "name": "synthetic retrieved results"
+    },
+    {
+      "id": "S3",
+      "path": "queries.json",
+      "type": "json",
+      "name": "synthetic query log"
+    },
+    {
+      "id": "S4",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "reference_set": [
+    {
+      "id": "REF1",
+      "title": "Gut microbiome signatures in type-2 diabetes",
+      "doi": "10.1000/demo.601",
+      "year": 2024,
+      "source_id": "S1",
+      "inclusion_reason": "cited by the provided review"
+    },
+    {
+      "id": "REF2",
+      "title": "Metformin and the gut microbiome",
+      "doi": "10.1000/demo.602",
+      "year": 2022,
+      "source_id": "S1",
+      "inclusion_reason": "landmark trial per review"
+    },
+    {
+      "id": "REF3",
+      "title": "A regional cohort study on diet and microbiota",
+      "doi": null,
+      "year": 2023,
+      "source_id": "S1",
+      "inclusion_reason": "expert-list item"
+    },
+    {
+      "id": "REF4",
+      "title": "Retracted microbiome meta-analysis",
+      "doi": "10.1000/demo.604",
+      "year": 2021,
+      "source_id": "S1",
+      "inclusion_reason": "retracted notice in source",
+      "unusable": "retracted"
+    }
+  ],
+  "queries": [
+    {
+      "id": "Q1",
+      "query_string": "microbiome AND diabetes",
+      "database": "Crossref (provided export)",
+      "round": 1,
+      "source_id": "S3"
+    },
+    {
+      "id": "Q2",
+      "query_string": "\"diet\" AND \"microbiota\" AND cohort",
+      "database": "EuropePMC (provided export)",
+      "round": 2,
+      "source_id": "S3"
+    }
+  ],
+  "records": [
+    {
+      "id": "R1",
+      "title": "Gut microbiome signatures in type-2 diabetes",
+      "authors": "Kim H",
+      "year": 2024,
+      "journal": "Nat Med",
+      "doi": "10.1000/demo.601",
+      "source_id": "S2",
+      "query_id": "Q1",
+      "snippet": "R1 row in results.csv"
+    },
+    {
+      "id": "R2",
+      "title": "Metformin and the gut microbiome",
+      "authors": "Lopez M",
+      "year": 2022,
+      "journal": "Diabetologia",
+      "doi": "https://doi.org/10.1000/demo.602",
+      "source_id": "S2",
+      "query_id": "Q1",
+      "snippet": "R2 row in results.csv (URL DOI)"
+    },
+    {
+      "id": "R3",
+      "title": "A regional cohort study on diet and microbiota",
+      "authors": "Silva A",
+      "year": 2023,
+      "journal": "Local J Nutr",
+      "doi": null,
+      "source_id": "S2",
+      "query_id": "Q2",
+      "snippet": "R3 row in results.csv (no DOI; found by round 2)"
+    }
+  ],
+  "miss_attributions": [],
+  "supplementary_rounds": [
+    {
+      "id": "SR1",
+      "query_ids": [
+        "Q2"
+      ],
+      "new_record_ids": [
+        "R3"
+      ],
+      "basis": "REF3 missed by Q1 (diabetes-centric terms); diet/microbiota synonyms added in Q2"
+    }
+  ],
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-coverage_analysis-001"
+}

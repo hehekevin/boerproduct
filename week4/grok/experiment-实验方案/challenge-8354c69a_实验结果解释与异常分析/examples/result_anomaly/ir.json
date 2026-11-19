@@ -1,0 +1,36 @@
+{
+  "ir_version": "1.0",
+  "kind": "result_anomaly",
+  "sources": [{"id": "mat", "path": "material.md"}, {"id": "data", "path": "results.csv"}],
+  "documents": [{"id": "d1", "source_id": "mat", "title": "Reference method + calibration + run log"}],
+  "results": [
+    {"metric": "yield", "expected": 7.5, "observed": [7.6, 7.4, 9.8, 7.5, 7.7], "tolerance": {"abs": 0.5}, "unit": "mg/g",
+     "evidence": [{"source_id": "mat", "paragraph_id": "p1", "quote": "expected yield of compound X is 7.5 mg/g"}, {"source_id": "data", "table": "results.csv", "field": "observed"}]},
+    {"metric": "purity", "expected": 95, "observed": [90, 91, 89, 92], "tolerance": {"pct": 2}, "unit": "%",
+     "evidence": [{"source_id": "mat", "paragraph_id": "p4", "quote": "expected purity of compound X is 95%"}, {"source_id": "data", "table": "results.csv", "field": "observed"}]}
+  ],
+  "anomalies": [
+    {"id": "a1", "metric": "yield", "observation": "Yield replicate r3 = 9.8 mg/g lies above the IQR upper bound (8.0 mg/g) while the other replicates cluster near 7.5.",
+     "candidate_causes": [
+       {"cause": "Spectrophotometer calibration drift (+0.3 mg/g) after lamp replacement inflates readings", "support": "partially_supported", "status": "inferred", "evidence": {"source_id": "mat", "paragraph_id": "p2", "quote": "drift of +0.3 mg/g after lamp replacement"}},
+       {"cause": "Sample degradation/evaporation during the 2-hour room-temperature delay before r3", "support": "partially_supported", "status": "inferred", "evidence": {"source_id": "mat", "paragraph_id": "p3", "quote": "replicate r3 was measured after a 2-hour delay"}},
+       {"cause": "Pipetting error specific to r3", "support": "unknown", "status": "insufficient_evidence"}
+     ],
+     "action": "Re-calibrate the spectrophotometer, then re-measure r3 immediately; repeat with a delayed aliquot as a control to separate drift from degradation.",
+     "evidence": {"source_id": "data", "table": "results.csv", "field": "r3"}},
+    {"id": "a2", "metric": "purity", "observation": "Mean purity 90.5% is below the 95% expectation by more than the 2% relative tolerance.",
+     "candidate_causes": [
+       {"cause": "Incomplete extraction leaving impurities in the product", "support": "unknown", "status": "insufficient_evidence"}
+     ],
+     "action": "Verify extraction completeness (mass balance / TLC) and re-assay purity against a reference standard.",
+     "evidence": {"source_id": "data", "table": "results.csv", "field": "purity"}}
+  ],
+  "follow_up": [
+    {"action": "Re-run yield replicates with immediate measurement and a freshly calibrated instrument", "rationale": "Removes the delay confounder and the calibration drift so the r3 spike can be attributed or cleared", "evidence": {"source_id": "mat", "paragraph_id": "p3", "quote": "replicate r3 was measured after a 2-hour delay"}}
+  ],
+  "unexplained": [
+    {"item": "Root cause of the r3 yield spike", "reason": "Calibration drift and delay are each only partially supported; neither is confirmed, and a pipetting error has no evidence."},
+    {"item": "Cause of low purity", "reason": "No material evidence identifies the impurity source; insufficient_evidence."}
+  ],
+  "provenance": {"pipeline": "actual material -> IR -> validate -> compute -> artifact -> result", "changes": []}
+}

@@ -1,0 +1,8 @@
+# Runtime dependencies (preinstalled in the platform scientific-python image).
+# figkit.py / deckkit.py / svgkit.py are stdlib-only; build/check/render need:
+python-pptx>=1.0
+matplotlib>=3.5
+numpy>=1.21
+Pillow>=9.0
+# Optional: office-renderer (LibreOffice) for true PDF/PNG export; honest fallback otherwise.
+# Run with PYTHONDONTWRITEBYTECODE=1 to avoid __pycache__.

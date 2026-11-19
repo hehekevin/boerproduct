@@ -1,0 +1,5 @@
+SYNTHETIC EXAMPLE provided literature.
+
+Sec1 (Ref1: Example A, 2024, J Example, doi 10.1234/ex.2024.001): Method A achieves 0.92 accuracy on cohort X but requires large labeled data.
+Sec2 (Ref2: Example B, 2023, J Example, doi 10.1234/ex.2023.002): Method B is label-efficient but drops to 0.80 accuracy under domain shift.
+Sec3 (Ref3: Example C, 2025, J Example, doi 10.1234/ex.2025.003): Review notes no method combines label efficiency with robustness to domain shift.

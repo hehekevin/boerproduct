@@ -1,0 +1,59 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-polish-001",
+  "kind": "polish",
+  "title": "Polished results draft (SYNTHETIC EXAMPLE)",
+  "audience": "peers",
+  "genre": "journal_article",
+  "sources": [
+    {"id": "mat", "locator": "material.txt Sec1-2", "kind": "text", "version": "example-v1", "values": [4.5, 0.9, 14, 6, 2, 1]}
+  ],
+  "glossary": [
+    {"term": "marker expression", "render": "marker expression", "source": "mat"},
+    {"term": "Treatment X", "render": "Treatment X", "source": "mat"}
+  ],
+  "numbers": [
+    {"value": 4.5, "unit": "fold", "source": "mat", "locator": "Sec1"},
+    {"value": 0.9, "unit": "a.u.", "source": "mat", "locator": "Sec1 control"},
+    {"value": 14, "unit": "day", "source": "mat", "locator": "Sec1 Day14"},
+    {"value": 6, "unit": "subjects/arm", "source": "mat", "locator": "Sec1"},
+    {"value": 2, "unit": "figure", "source": "mat", "locator": "Sec2 Figure 2"},
+    {"value": 1, "unit": "citation", "source": "mat", "locator": "Sec1 [1]"}
+  ],
+  "segments": [
+    {"id": "s1", "change_type": "grammar", "source": "mat", "locator": "Sec1 sentence 1",
+     "original": "In recent years, marker expression have attracted widely attention.",
+     "revised": "Marker expression has attracted considerable attention.",
+     "reason": "subject-verb agreement (expression has); 'widely attention' -> 'considerable attention'; removed empty 'In recent years' filler (tone). Meaning and hedge unchanged.",
+     "meaning_preserved": true},
+    {"id": "s2", "change_type": "grammar", "source": "mat", "locator": "Sec1 sentence 2",
+     "original": "Treatment X cause a increase of 4.5 fold at Day14 [1], which is significantly higher then control (0.9).",
+     "revised": "Treatment X caused a 4.5-fold increase at Day14 [1], significantly higher than control (0.9).",
+     "reason": "past tense (caused); article 'an'->restructured 'a 4.5-fold increase'; 'then'->'than'; hyphenate compound modifier. Numbers 4.5/0.9, Day14 and citation [1] preserved.",
+     "meaning_preserved": true},
+    {"id": "s3", "change_type": "clarity", "source": "mat", "locator": "Sec1 sentence 3",
+     "original": "Each arm had 6 subjects.",
+     "revised": "Each arm comprised 6 subjects.",
+     "reason": "academic register ('comprised'); n=6 preserved.",
+     "meaning_preserved": true},
+    {"id": "s4", "change_type": "grammar", "source": "mat", "locator": "Sec2 sentence 1",
+     "original": "The results was showed in Figure 2.",
+     "revised": "The results are shown in Figure 2.",
+     "reason": "plural agreement (results are); past participle 'shown'; Figure 2 pointer preserved.",
+     "meaning_preserved": true},
+    {"id": "s5", "change_type": "grammar", "source": "mat", "locator": "Sec2 sentence 2",
+     "original": "We believes that the mechanism is clear.",
+     "revised": "We believe that the mechanism is clear.",
+     "reason": "subject-verb agreement (We believe). Claim strength unchanged (no hedge added/removed).",
+     "meaning_preserved": true}
+  ],
+  "claims": [
+    {"id": "c1", "text": "Polishing preserves all source numbers (4.5, 0.9, 14, 6) and citation [1] / Figure 2.", "type": "structural", "evidence": [{"source": "mat", "locator": "Sec1-2", "strength": "established", "supports": "full"}], "citation_ids": []}
+  ],
+  "revisions": [
+    {"id": "r1", "location": "s1", "before": "In recent years, marker expression have attracted widely attention.", "after": "Marker expression has attracted considerable attention.", "reason": "grammar+tone minimal edit", "status": "accepted", "source": "mat"}
+  ],
+  "exports": [{"format": "md"}, {"format": "docx"}],
+  "provenance": {"pipeline": "material -> writing IR -> validate -> editable artifact -> result", "skill_version": "1.0.0", "changes": []},
+  "uncertainty": [{"item": "mechanism claim", "reason": "original asserts 'mechanism is clear' without evidence in material", "impact": "polish keeps author wording; strength not altered", "handling": "flagged for author confirmation (human_confirm); not strengthened/weakened"}]
+}

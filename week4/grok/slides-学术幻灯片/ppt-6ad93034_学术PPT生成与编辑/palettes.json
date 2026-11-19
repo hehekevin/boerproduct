@@ -1,0 +1,22 @@
+{
+  "_doc": "Colorblind-safe qualitative palettes. okabe_ito is the default (Okabe & Ito 2008, universally distinguishable). Each palette lists hex colors in series order; the renderer assigns them deterministically so legend and glyphs always agree. Grayscale-safe variants included for print.",
+  "okabe_ito": ["#0072B2", "#E69F00", "#009E73", "#CC79A7", "#56B4E9", "#D55E00", "#F0E442", "#000000"],
+  "tol_bright": ["#4477AA", "#EE6677", "#228833", "#CCBB44", "#66CCEE", "#AA3377", "#BBBBBB"],
+  "tol_muted": ["#332288", "#88CCEE", "#44AA99", "#117733", "#999933", "#DDCC77", "#CC6677", "#882255", "#AA4499"],
+  "nature": ["#0C5DA5", "#FF2C00", "#00B945", "#845EC2", "#FF964F", "#2C73D2", "#008E9B", "#B39CD0"],
+  "gray_safe": ["#000000", "#555555", "#999999", "#CCCCCC", "#222222", "#777777"],
+  "sequential_blue": ["#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1", "#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B"],
+  "diverging_rdpu": ["#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7", "#F7F7F7", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"],
+  "semantic_edges": {
+    "activates": "#009E73",
+    "inhibits": "#D55E00",
+    "binds": "#0072B2",
+    "modifies": "#CC79A7",
+    "transports": "#56B4E9",
+    "contains": "#999999",
+    "sequence": "#000000",
+    "feedback": "#E69F00",
+    "flows_to": "#0072B2",
+    "causes": "#000000"
+  }
+}

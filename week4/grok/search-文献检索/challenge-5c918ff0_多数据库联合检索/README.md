@@ -1,0 +1,48 @@
+# search-multi-db-merge — Bohrium week4 SEARCH track Skill
+
+Source-bound Skill for **多数据库联合检索** (`challenge-5c918ff0`, kind `multi_db_merge`).
+The agent reads the ACTUAL organizer-provided local materials under /input,
+fills a structured IR, and a deterministic stdlib engine (`search_engine.py`)
+validates it and performs the real computation (field normalization + priority merge + coverage matrix). Outputs are
+editable artifacts + bidirectional provenance + an honest result.json.
+No pre-baked answers; no live remote search; every record traces to a real
+input file/response and locator.
+
+## Quick start
+```
+PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir <ir.json> --input /input --out /app/output
+```
+Synthetic interface demo (NOT a formal answer):
+```
+PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir examples/multi_db_merge/ir.json --input examples/multi_db_merge/input --out /tmp/demo
+```
+
+## Files
+- SKILL.md — trigger description, workflow, IR schema, domain rules, self-check
+- assemble.py — CLI (validate -> build -> result.json)
+- search_engine.py — deterministic engine (validate_ir + build; all 11 search kinds)
+- w4kit.py — shared core (case load, source check, dedup, result assembly)
+- rules/rules_multi_db_merge.md — domain rules the agent follows to fill the IR
+- docs/WORKFLOW.md, docs/ERROR_HANDLING.md — step-by-step + failure handling
+- examples/multi_db_merge/ — tiny SYNTHETIC input + accepted ir.json (labelled EXAMPLE)
+
+## Dependencies
+Python 3.10+ standard library only (see requirements.txt). No network access,
+no third-party packages, no binaries.
+
+## Scope & limits
+- Finite organizer-provided snapshot only; NO live database coverage, global
+  recall, latest-publication or novelty claims.
+- Merge quality depends on the provided exports; fuzzy title matches are probabilistic and keep a human arbitration entry.
+- Honest status: success / partial / failed / stuck; gaps flagged human_confirm.
+
+## Self-check (before handover)
+- [ ] databases registered with priorities; queries adapted per database, originals kept
+- [ ] field_mapping covers actual raw names; raw_fields + snippets verbatim
+- [ ] every record database_id + source_id + field_sources; merge alternatives kept
+- [ ] coverage matrix read; empty databases / single-source fields explicit
+
+## Hard-constraint self-check
+- <=50 UTF-8 text files, <=500KB each, <=2MB total; no binaries/__pycache__/symlinks.
+- Run python with PYTHONDONTWRITEBYTECODE=1; result.json preserves every
+  output_contract key + case_id.

@@ -1,0 +1,15 @@
+{
+  "case_id": "example-methods-001",
+  "track": "writing",
+  "kind": "methods_section",
+  "title": "Methods & Experiments section (SYNTHETIC EXAMPLE)",
+  "audience": "peers",
+  "genre": "journal_article",
+  "output_contract": {
+    "manuscript_md": {"format": "md", "desc": "Methods + Experiments section"},
+    "manuscript_docx": {"format": "docx", "desc": "editable manuscript"},
+    "parameters_csv": {"format": "csv", "desc": "parameter table with source + status"},
+    "result_json": {"format": "json", "desc": "structured result with sources/status"}
+  },
+  "note": "SYNTHETIC interface demo only; not a formal contest case."
+}

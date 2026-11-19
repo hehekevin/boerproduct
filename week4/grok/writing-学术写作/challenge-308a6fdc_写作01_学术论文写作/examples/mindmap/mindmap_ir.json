@@ -1,0 +1,25 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-mindmap-001",
+  "kind": "mind_map",
+  "title": "Treatment X study map (EXAMPLE)",
+  "sources": [{"id": "mat", "locator": "material.txt Sec1-5", "kind": "text", "version": "example-v1"}],
+  "nodes": [
+    {"id": "root", "label": "Treatment X study", "source": "mat", "source_locator": "Title"},
+    {"id": "q", "parent": "root", "label": "Question: effect over 14d?", "source": "mat", "source_locator": "Sec1", "evidence": "Sec1"},
+    {"id": "m", "parent": "root", "label": "Method: 2 arms n=6", "source": "mat", "source_locator": "Sec2", "evidence": "Sec2"},
+    {"id": "r", "parent": "root", "label": "Result: 1.8->3.2->4.5", "source": "mat", "source_locator": "Sec3", "evidence": "Sec3"},
+    {"id": "l", "parent": "root", "label": "Limit: single cohort", "source": "mat", "source_locator": "Sec4", "evidence": "Sec4"},
+    {"id": "c", "parent": "root", "label": "Conclusion: time-dependent", "source": "mat", "source_locator": "Sec5", "evidence": "Sec5"},
+    {"id": "r1", "parent": "r", "label": "Control ~baseline", "source": "mat", "source_locator": "Sec3"},
+    {"id": "c1", "parent": "c", "label": "Mechanism open", "source": "mat", "source_locator": "Sec5"}
+  ],
+  "relations": [
+    {"id": "e1", "from": "m", "to": "r", "type": "support", "source": "mat", "source_locator": "Sec2-3"},
+    {"id": "e2", "from": "r", "to": "c", "type": "support", "source": "mat", "source_locator": "Sec3-5"},
+    {"id": "e3", "from": "l", "to": "c", "type": "conflict", "source": "mat", "source_locator": "Sec4-5"}
+  ],
+  "exports": [{"format": "svg"}, {"format": "png"}, {"format": "pdf"}],
+  "provenance": {"pipeline": "material -> mindmap IR -> editable SVG -> export", "skill_version": "1.0.0"},
+  "uncertainty": []
+}

@@ -1,0 +1,7 @@
+SYNTHETIC EXAMPLE material (original draft to polish).
+
+Sec1 (Results draft):
+In recent years, marker expression have attracted widely attention. Treatment X cause a increase of 4.5 fold at Day14 [1], which is significantly higher then control (0.9). Each arm had 6 subjects.
+
+Sec2 (Figure callout draft):
+The results was showed in Figure 2. We believes that the mechanism is clear.

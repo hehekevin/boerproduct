@@ -1,0 +1,28 @@
+{
+  "aliases": [
+    {
+      "alias": "alpha-paper",
+      "document": "paper_alpha.md"
+    },
+    {
+      "alias": "酶缓冲液论文",
+      "document": "paper_alpha.md"
+    },
+    {
+      "alias": "alpha-final-FINAL",
+      "document": "alpha_copy.md"
+    },
+    {
+      "alias": "beta-protocol",
+      "document": "beta_protocol.md"
+    },
+    {
+      "alias": "thesis-delta",
+      "document": "delta_thesis.md"
+    },
+    {
+      "alias": "theta-calibration",
+      "document": "theta_recovered.md"
+    }
+  ]
+}

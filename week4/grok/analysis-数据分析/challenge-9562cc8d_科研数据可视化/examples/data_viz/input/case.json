@@ -1,0 +1,9 @@
+{
+  "case_id": "EXAMPLE-data-viz-001",
+  "output_contract": {
+    "chart_svg": {"type": "svg", "desc": "editable data-bound chart (every glyph traces to a row)"},
+    "charts_json": {"type": "json", "desc": "chart specs + series + data_map + png_status"},
+    "report_md": {"type": "markdown", "desc": "human-readable visualization report"},
+    "provenance_json": {"type": "json", "desc": "glyph -> source row locator map"}
+  }
+}

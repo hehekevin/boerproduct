@@ -1,0 +1,2 @@
+# Python 3.10+ standard library only. No third-party packages required.
+# Optional: none. The engine uses json/csv/hashlib/re/pathlib/sqlite3/statistics.

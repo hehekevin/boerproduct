@@ -1,0 +1,10 @@
+metric,replicate,observed
+yield,r1,7.6
+yield,r2,7.4
+yield,r3,9.8
+yield,r4,7.5
+yield,r5,7.7
+purity,p1,90
+purity,p2,91
+purity,p3,89
+purity,p4,92

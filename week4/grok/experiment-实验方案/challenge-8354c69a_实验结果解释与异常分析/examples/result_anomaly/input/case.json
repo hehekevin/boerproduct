@@ -1,0 +1,7 @@
+{
+  "case_id": "synthetic-anomaly-001",
+  "output_contract": {
+    "anomaly_md": {"type": "markdown", "desc": "editable interpretation report"},
+    "anomaly_json": {"type": "json", "desc": "structured anomaly artifact"}
+  }
+}

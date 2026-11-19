@@ -1,0 +1,692 @@
+{
+  "ir_version": "1.0",
+  "case_id": "EXAMPLE-qa-001",
+  "kind": "library_qa",
+  "sources": [
+    {
+      "id": "S01",
+      "path": "library/paper_alpha.md",
+      "role": "document",
+      "description": "actual library file for D01 (SYNTHETIC example)"
+    },
+    {
+      "id": "S02",
+      "path": "library/alpha_copy.md",
+      "role": "document",
+      "description": "actual library file for D02 (SYNTHETIC example)"
+    },
+    {
+      "id": "S03",
+      "path": "library/beta_protocol.md",
+      "role": "document",
+      "description": "actual library file for D03 (SYNTHETIC example)"
+    },
+    {
+      "id": "S04",
+      "path": "library/gamma_data.csv",
+      "role": "document",
+      "description": "actual library file for D04 (SYNTHETIC example)"
+    },
+    {
+      "id": "S05",
+      "path": "library/delta_thesis.md",
+      "role": "document",
+      "description": "actual library file for D05 (SYNTHETIC example)"
+    },
+    {
+      "id": "S06",
+      "path": "library/epsilon_notes.md",
+      "role": "document",
+      "description": "actual library file for D06 (SYNTHETIC example)"
+    },
+    {
+      "id": "S07",
+      "path": "library/zeta_preprint.md",
+      "role": "document",
+      "description": "actual library file for D07 (SYNTHETIC example)"
+    },
+    {
+      "id": "S08",
+      "path": "library/eta_report.md",
+      "role": "document",
+      "description": "actual library file for D08 (SYNTHETIC example)"
+    },
+    {
+      "id": "S09",
+      "path": "recovered/theta_recovered.md",
+      "role": "document",
+      "description": "actual library file for D09 (SYNTHETIC example)"
+    },
+    {
+      "id": "S10",
+      "path": "aliases.json",
+      "role": "alias_table"
+    },
+    {
+      "id": "S11",
+      "path": "version_notes.md",
+      "role": "version_notes"
+    },
+    {
+      "id": "S12",
+      "path": "metadata.csv",
+      "role": "metadata_table"
+    },
+    {
+      "id": "S13",
+      "path": "task.md",
+      "role": "workorder"
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "D01",
+      "source_id": "S01",
+      "title": "Buffer optimization for enzyme assay",
+      "path": "library/paper_alpha.md",
+      "aliases": [
+        "alpha-paper",
+        "酶缓冲液论文"
+      ],
+      "metadata": {
+        "title": {
+          "value": "Buffer optimization for enzyme assay",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "title",
+            "quote": "D01,Buffer optimization for enzyme assay,\"Li W, Chen X\",2021,journal_article,P-ALPHA,10.1000/alpha.2021.001"
+          }
+        },
+        "authors": {
+          "value": "Li W, Chen X",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "authors",
+            "quote": "D01,Buffer optimization for enzyme assay,\"Li W, Chen X\",2021,journal_article,P-ALPHA,10.1000/alpha.2021.001"
+          }
+        },
+        "year": {
+          "value": "2021",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "year",
+            "quote": "D01,Buffer optimization for enzyme assay,\"Li W, Chen X\",2021,journal_article,P-ALPHA,10.1000/alpha.2021.001"
+          }
+        },
+        "type": {
+          "value": "journal_article",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "type",
+            "quote": "D01,Buffer optimization for enzyme assay,\"Li W, Chen X\",2021,journal_article,P-ALPHA,10.1000/alpha.2021.001"
+          }
+        },
+        "project": {
+          "value": "P-ALPHA",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "project",
+            "quote": "D01,Buffer optimization for enzyme assay,\"Li W, Chen X\",2021,journal_article,P-ALPHA,10.1000/alpha.2021.001"
+          }
+        },
+        "doi": {
+          "value": "10.1000/alpha.2021.001",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "doi",
+            "quote": "D01,Buffer optimization for enzyme assay,\"Li W, Chen X\",2021,journal_article,P-ALPHA,10.1000/alpha.2021.001"
+          }
+        }
+      },
+      "versions": [
+        {
+          "version_id": "D01V1",
+          "label": "preprint",
+          "date": "2021-03-01",
+          "note": "preprint, superseded by published version",
+          "evidence": {
+            "source_id": "S11",
+            "quote": "D01 v1 preprint 2021-03-01 was superseded by D01 v2 published 2021-09-15; v2 adds revised Figure 3."
+          }
+        },
+        {
+          "version_id": "D01V2",
+          "label": "published",
+          "date": "2021-09-15",
+          "supersedes": "D01V1",
+          "note": "adds revised Figure 3 and corrected activity table",
+          "evidence": {
+            "source_id": "S11",
+            "quote": "D01 v1 preprint 2021-03-01 was superseded by D01 v2 published 2021-09-15; v2 adds revised Figure 3."
+          }
+        }
+      ]
+    },
+    {
+      "document_id": "D02",
+      "source_id": "S02",
+      "title": "Buffer optimization for enzyme assay",
+      "path": "library/alpha_copy.md",
+      "aliases": [
+        "alpha-final-FINAL"
+      ],
+      "metadata": {
+        "title": {
+          "value": "Buffer optimization for enzyme assay",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S02",
+            "paragraph_id": "p1",
+            "quote": "Buffer optimization for enzyme assay"
+          }
+        },
+        "authors": {
+          "value": "Li W, Chen X",
+          "status": "inferred",
+          "uncertainty": "byte-identical duplicate of D01; authors taken from D01 metadata row",
+          "evidence": {
+            "source_id": "S12",
+            "field": "authors",
+            "quote": "D01,Buffer optimization for enzyme assay,\"Li W, Chen X\",2021,journal_article,P-ALPHA,10.1000/alpha.2021.001"
+          }
+        },
+        "year": {
+          "value": "2021",
+          "status": "inferred",
+          "uncertainty": "duplicate of D01",
+          "evidence": {
+            "source_id": "S12",
+            "field": "year",
+            "quote": "D01,Buffer optimization for enzyme assay,\"Li W, Chen X\",2021,journal_article,P-ALPHA,10.1000/alpha.2021.001"
+          }
+        },
+        "type": {
+          "value": "duplicate_copy",
+          "status": "inferred",
+          "uncertainty": "administrative note says renamed backup copy",
+          "evidence": {
+            "source_id": "S11",
+            "quote": "D02 is a renamed duplicate of D01 made during a backup; content identical."
+          }
+        },
+        "project": {
+          "value": "P-ALPHA",
+          "status": "inferred",
+          "uncertainty": "duplicate of D01",
+          "evidence": {
+            "source_id": "S12",
+            "field": "project",
+            "quote": "D01,Buffer optimization for enzyme assay,\"Li W, Chen X\",2021,journal_article,P-ALPHA,10.1000/alpha.2021.001"
+          }
+        },
+        "doi": {
+          "value": null,
+          "status": "not_reported"
+        }
+      },
+      "versions": [
+        {
+          "version_id": "D02V1",
+          "label": "backup_copy",
+          "note": "renamed duplicate of D01; content identical",
+          "evidence": {
+            "source_id": "S11",
+            "quote": "D02 is a renamed duplicate of D01 made during a backup; content identical."
+          }
+        }
+      ]
+    },
+    {
+      "document_id": "D03",
+      "source_id": "S03",
+      "title": "Extraction protocol beta",
+      "path": "library/beta_protocol.md",
+      "aliases": [
+        "beta-protocol"
+      ],
+      "metadata": {
+        "title": {
+          "value": "Extraction protocol beta",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "title",
+            "quote": "D03,Extraction protocol beta,\"Wang F\",2022,protocol,P-BETA,"
+          }
+        },
+        "authors": {
+          "value": "Wang F",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "authors",
+            "quote": "D03,Extraction protocol beta,\"Wang F\",2022,protocol,P-BETA,"
+          }
+        },
+        "year": {
+          "value": "2022",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "year",
+            "quote": "D03,Extraction protocol beta,\"Wang F\",2022,protocol,P-BETA,"
+          }
+        },
+        "type": {
+          "value": "protocol",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "type",
+            "quote": "D03,Extraction protocol beta,\"Wang F\",2022,protocol,P-BETA,"
+          }
+        },
+        "project": {
+          "value": "P-BETA",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "project",
+            "quote": "D03,Extraction protocol beta,\"Wang F\",2022,protocol,P-BETA,"
+          }
+        },
+        "doi": {
+          "value": null,
+          "status": "not_reported"
+        }
+      },
+      "versions": []
+    },
+    {
+      "document_id": "D04",
+      "source_id": "S04",
+      "title": "sample_id,activity,unit",
+      "path": "library/gamma_data.csv",
+      "aliases": [],
+      "metadata": {
+        "title": {
+          "value": "Gamma activity dataset",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "title",
+            "quote": "D04,Gamma activity dataset,\"Zhao Q\",2023,dataset,P-GAMMA,"
+          }
+        },
+        "authors": {
+          "value": "Zhao Q",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "authors",
+            "quote": "D04,Gamma activity dataset,\"Zhao Q\",2023,dataset,P-GAMMA,"
+          }
+        },
+        "year": {
+          "value": "2023",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "year",
+            "quote": "D04,Gamma activity dataset,\"Zhao Q\",2023,dataset,P-GAMMA,"
+          }
+        },
+        "type": {
+          "value": "dataset",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "type",
+            "quote": "D04,Gamma activity dataset,\"Zhao Q\",2023,dataset,P-GAMMA,"
+          }
+        },
+        "project": {
+          "value": "P-GAMMA",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "project",
+            "quote": "D04,Gamma activity dataset,\"Zhao Q\",2023,dataset,P-GAMMA,"
+          }
+        },
+        "doi": {
+          "value": null,
+          "status": "not_reported"
+        }
+      },
+      "versions": []
+    },
+    {
+      "document_id": "D05",
+      "source_id": "S05",
+      "title": "催化剂表面反应的学位论文",
+      "path": "library/delta_thesis.md",
+      "aliases": [
+        "thesis-delta"
+      ],
+      "metadata": {
+        "title": {
+          "value": "催化剂表面反应的学位论文",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "title",
+            "quote": "D05,催化剂表面反应的学位论文,\"Sun Y\",2020,thesis,P-ALPHA,"
+          }
+        },
+        "authors": {
+          "value": "Sun Y",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "authors",
+            "quote": "D05,催化剂表面反应的学位论文,\"Sun Y\",2020,thesis,P-ALPHA,"
+          }
+        },
+        "year": {
+          "value": "2020",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "year",
+            "quote": "D05,催化剂表面反应的学位论文,\"Sun Y\",2020,thesis,P-ALPHA,"
+          }
+        },
+        "type": {
+          "value": "thesis",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "type",
+            "quote": "D05,催化剂表面反应的学位论文,\"Sun Y\",2020,thesis,P-ALPHA,"
+          }
+        },
+        "project": {
+          "value": "P-ALPHA",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "project",
+            "quote": "D05,催化剂表面反应的学位论文,\"Sun Y\",2020,thesis,P-ALPHA,"
+          }
+        },
+        "doi": {
+          "value": null,
+          "status": "not_reported"
+        }
+      },
+      "versions": []
+    },
+    {
+      "document_id": "D06",
+      "source_id": "S06",
+      "title": "Lab meeting notes",
+      "path": "library/epsilon_notes.md",
+      "aliases": [],
+      "metadata": {
+        "title": {
+          "value": "Lab meeting notes",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S06",
+            "paragraph_id": "p1",
+            "quote": "Lab meeting notes"
+          }
+        },
+        "authors": {
+          "value": null,
+          "status": "not_reported"
+        },
+        "year": {
+          "value": null,
+          "status": "not_reported"
+        },
+        "type": {
+          "value": "notes",
+          "status": "inferred",
+          "uncertainty": "inferred from heading 'Lab meeting notes'",
+          "evidence": {
+            "source_id": "S06",
+            "paragraph_id": "p1",
+            "quote": "Lab meeting notes"
+          }
+        },
+        "project": {
+          "value": null,
+          "status": "not_reported"
+        },
+        "doi": {
+          "value": null,
+          "status": "not_reported"
+        }
+      },
+      "versions": []
+    },
+    {
+      "document_id": "D07",
+      "source_id": "S07",
+      "title": "Buffer optimization for enzyme assay",
+      "path": "library/zeta_preprint.md",
+      "aliases": [],
+      "metadata": {
+        "title": {
+          "value": "Buffer optimization for enzyme assay",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S07",
+            "paragraph_id": "p1",
+            "quote": "Buffer optimization for enzyme assay"
+          }
+        },
+        "authors": {
+          "value": null,
+          "status": "not_reported"
+        },
+        "year": {
+          "value": "2021",
+          "status": "inferred",
+          "uncertainty": "preprint of the 2021 alpha study per administrative note",
+          "evidence": {
+            "source_id": "S11",
+            "quote": "D07 is the preprint copy of the alpha study kept for provenance; it does not supersede the published version."
+          }
+        },
+        "type": {
+          "value": "preprint",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S11",
+            "quote": "D07 is the preprint copy of the alpha study kept for provenance; it does not supersede the published version."
+          }
+        },
+        "project": {
+          "value": null,
+          "status": "not_reported"
+        },
+        "doi": {
+          "value": null,
+          "status": "not_reported"
+        }
+      },
+      "versions": [
+        {
+          "version_id": "D07V1",
+          "label": "preprint",
+          "date": "2021-03-01",
+          "note": "preprint copy kept for provenance",
+          "evidence": {
+            "source_id": "S11",
+            "quote": "D07 is the preprint copy of the alpha study kept for provenance; it does not supersede the published version."
+          }
+        }
+      ]
+    },
+    {
+      "document_id": "D08",
+      "source_id": "S08",
+      "title": "Project P-BETA annual report 2022",
+      "path": "library/eta_report.md",
+      "aliases": [],
+      "metadata": {
+        "title": {
+          "value": "Project P-BETA annual report 2022",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "title",
+            "quote": "D08,Project P-BETA annual report 2022,\"Team B\",2022,report,P-BETA,"
+          }
+        },
+        "authors": {
+          "value": "Team B",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "authors",
+            "quote": "D08,Project P-BETA annual report 2022,\"Team B\",2022,report,P-BETA,"
+          }
+        },
+        "year": {
+          "value": "2022",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "year",
+            "quote": "D08,Project P-BETA annual report 2022,\"Team B\",2022,report,P-BETA,"
+          }
+        },
+        "type": {
+          "value": "report",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "type",
+            "quote": "D08,Project P-BETA annual report 2022,\"Team B\",2022,report,P-BETA,"
+          }
+        },
+        "project": {
+          "value": "P-BETA",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S12",
+            "field": "project",
+            "quote": "D08,Project P-BETA annual report 2022,\"Team B\",2022,report,P-BETA,"
+          }
+        },
+        "doi": {
+          "value": null,
+          "status": "not_reported"
+        }
+      },
+      "versions": []
+    },
+    {
+      "document_id": "D09",
+      "source_id": "S09",
+      "title": "Instrument calibration record theta",
+      "path": "library/theta_missing.md",
+      "aliases": [
+        "theta-calibration"
+      ],
+      "metadata": {
+        "title": {
+          "value": "Instrument calibration record theta",
+          "status": "reported",
+          "evidence": {
+            "source_id": "S09",
+            "paragraph_id": "p1",
+            "quote": "Instrument calibration record theta"
+          }
+        },
+        "authors": {
+          "value": null,
+          "status": "not_reported"
+        },
+        "year": {
+          "value": "2023",
+          "status": "inferred",
+          "uncertainty": "calibration date 2023-05-12 in recovered text",
+          "evidence": {
+            "source_id": "S09",
+            "paragraph_id": "p2",
+            "quote": "Calibration of the spectrometer was performed on 2023-05-12 by the facility team."
+          }
+        },
+        "type": {
+          "value": "record",
+          "status": "inferred",
+          "uncertainty": "inferred from heading",
+          "evidence": {
+            "source_id": "S09",
+            "paragraph_id": "p1",
+            "quote": "Instrument calibration record theta"
+          }
+        },
+        "project": {
+          "value": null,
+          "status": "not_reported"
+        },
+        "doi": {
+          "value": null,
+          "status": "not_reported"
+        }
+      },
+      "versions": [
+        {
+          "version_id": "D09V1",
+          "label": "recovered",
+          "date": "2023-06-01",
+          "note": "recovered from archive backup after original loss",
+          "evidence": {
+            "source_id": "S11",
+            "quote": "D09 original file was lost; recovery from archive backup approved 2023-06-01."
+          }
+        }
+      ],
+      "content_path": "recovered/theta_recovered.md"
+    }
+  ],
+  "operations": [],
+  "searches": [],
+  "questions": [
+    {
+      "question_id": "q1",
+      "question": "What buffer concentration is used in the beta extraction protocol?",
+      "scope": [
+        "D03"
+      ]
+    },
+    {
+      "question_id": "q2",
+      "question": "What activity gain did the optimal buffer condition produce in the alpha assay?",
+      "scope": [
+        "D01"
+      ]
+    },
+    {
+      "question_id": "q3",
+      "question": "What is the grant number of project P-GAMMA?",
+      "scope": [
+        "D04"
+      ]
+    }
+  ],
+  "annotations": [],
+  "knowledge_cards": [],
+  "uncertainty": [],
+  "provenance": {
+    "pipeline": "actual material -> IR -> validate -> index/compute -> artifact -> result",
+    "changes": [
+      {
+        "at": "example-build",
+        "change": "synthetic example IR filled from example input files"
+      }
+    ]
+  }
+}

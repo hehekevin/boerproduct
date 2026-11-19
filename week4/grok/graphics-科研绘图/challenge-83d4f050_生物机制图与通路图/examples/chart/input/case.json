@@ -1,0 +1,12 @@
+{
+  "_notice": "SYNTHETIC EXAMPLE ONLY — illustrates the skill interface. Not a formal test case or pre-written answer.",
+  "case_id": "example-chart-001",
+  "task": "Plot expression over time by group from data.csv as a grouped bar chart with SD error bars; export SVG/PNG/PDF.",
+  "output_contract": {
+    "editable_source": "editable SVG chart",
+    "png_preview": "300 dpi PNG",
+    "pdf_export": "vector PDF",
+    "result_json": "structured result with data mapping"
+  },
+  "materials": ["data.csv"]
+}

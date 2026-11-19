@@ -1,0 +1,50 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-writing-001",
+  "kind": "results_discussion",
+  "title": "Treatment X elevates marker expression over time (EXAMPLE)",
+  "audience": "peers",
+  "genre": "results_discussion",
+  "sources": [
+    {"id": "mat", "locator": "material.txt Sec1-5", "kind": "text", "version": "example-v1", "values": [1.0, 1.1, 0.9, 1.8, 3.2, 4.5, 6]},
+    {"id": "tbl", "locator": "data.csv", "kind": "table", "version": "example-v1", "values": [1.0, 1.1, 0.9, 1.8, 3.2, 4.5]}
+  ],
+  "citations": [
+    {"id": "ref1", "authors": "Example A, Example B", "year": "2024", "title": "Marker dynamics in controlled cohorts", "journal": "J Example", "doi": "10.1234/example.2024.001", "source": "mat"}
+  ],
+  "glossary": [
+    {"term": "marker expression", "render": "marker expression", "source": "mat"},
+    {"term": "SD", "render": "standard deviation (SD)", "source": "mat"}
+  ],
+  "numbers": [
+    {"value": 4.5, "unit": "a.u.", "source": "tbl", "locator": "data.csv Treatment Day14"},
+    {"value": 0.9, "unit": "a.u.", "source": "tbl", "locator": "data.csv Control Day14"},
+    {"value": 6, "unit": "per arm", "source": "mat", "locator": "Sec2"}
+  ],
+  "claims": [
+    {"id": "c1", "text": "Control expression stayed near baseline (1.0, 1.1, 0.9).", "type": "fact", "evidence": [{"source": "tbl", "locator": "data.csv Control rows", "strength": "established", "supports": "full"}], "citation_ids": []},
+    {"id": "c2", "text": "Treatment expression rose from 1.8 (Day3) to 3.2 (Day7) to 4.5 (Day14).", "type": "fact", "evidence": [{"source": "tbl", "locator": "data.csv Treatment rows", "strength": "established", "supports": "full"}], "citation_ids": []},
+    {"id": "c3", "text": "The Day14 treatment mean (4.5) exceeds control (0.9).", "type": "fact", "evidence": [{"source": "tbl", "locator": "data.csv Day14", "strength": "established", "supports": "full"}], "citation_ids": []},
+    {"id": "c4", "text": "The increase is time-dependent in this cohort; mechanism remains untested.", "type": "interpretation", "evidence": [{"source": "mat", "locator": "Sec5", "strength": "supported", "supports": "partial"}], "citation_ids": ["ref1"], "strength": "supported"}
+  ],
+  "required_sections": ["Results", "Discussion", "Limitations"],
+  "sections": [
+    {"id": "s1", "level": 1, "heading": "Results", "role": "Results", "paragraphs": [
+      {"id": "p1", "text": "Control expression remained near baseline across Day3, Day7 and Day14 (1.0, 1.1 and 0.9 respectively).", "claims": ["c1"], "source": "tbl"},
+      {"id": "p2", "text": "Treatment expression increased from 1.8 at Day3 to 3.2 at Day7 and 4.5 at Day14; at Day14 the treatment mean (4.5) exceeded control (0.9).", "claims": ["c2", "c3"], "source": "tbl"}
+    ], "figures": [{"ref": "Fig1", "caption": "Mean expression +/- SD by group and time (data.csv).", "source": "tbl"}]},
+    {"id": "s2", "level": 1, "heading": "Discussion", "role": "Discussion", "paragraphs": [
+      {"id": "p3", "text": "The time-dependent rise is consistent with prior marker-dynamics reports [ref1], though the present design does not establish a mechanism.", "claims": ["c4"], "source": "mat"}
+    ]},
+    {"id": "s3", "level": 1, "heading": "Limitations", "role": "Limitations", "paragraphs": [
+      {"id": "p4", "text": "Single cohort with n=6 per arm per timepoint; no mechanistic assay; variability reported as SD, not SEM.", "claims": [], "source": "mat"}
+    ]}
+  ],
+  "revisions": [
+    {"id": "r1", "location": "s2/p3", "before": "Treatment causes the increase.", "after": "The increase is time-dependent in this cohort; mechanism remains untested.", "reason": "avoid causal claim beyond evidence", "status": "accepted", "source": "mat"}
+  ],
+  "declarations": [{"name": "Data availability", "text": "Data in data.csv (example)."}],
+  "exports": [{"format": "md"}, {"format": "docx"}],
+  "provenance": {"pipeline": "material -> writing IR -> editable doc -> check/export", "skill_version": "1.0.0", "changes": []},
+  "uncertainty": [{"item": "mechanism", "reason": "no mechanistic assay", "impact": "causal claim not supported", "handling": "bounded conclusion; flagged"}]
+}

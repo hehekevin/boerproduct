@@ -1,0 +1,8 @@
+{
+  "case_id": "synthetic-translation-001",
+  "output_contract": {
+    "bilingual_result": "json",
+    "translation_check": "json",
+    "editable_artifact": "md"
+  }
+}

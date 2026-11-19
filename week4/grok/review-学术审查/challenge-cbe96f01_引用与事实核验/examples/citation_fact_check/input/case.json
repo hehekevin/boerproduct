@@ -1,0 +1,8 @@
+{
+  "case_id": "SYNTHETIC-demo-citation-001",
+  "output_contract": {
+    "review_json": {"description": "structured citation/fact verification payload"},
+    "report_md": {"description": "human-readable verification report"},
+    "checklist_csv": {"description": "itemized claim/citation checklist"}
+  }
+}

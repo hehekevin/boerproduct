@@ -1,0 +1,3 @@
+# Python 3.10+ standard library only.
+# No third-party packages are required at runtime.
+# (w4kit stats helpers use pure-stdlib math; numpy is never imported.)

@@ -1,0 +1,99 @@
+{
+  "ir_version": "1.0",
+  "case_id": "SYNTHETIC-demo-quality-001",
+  "kind": "quality_review",
+  "sources": [
+    {"id": "S1", "path": "input/manuscript.md", "role": "manuscript"}
+  ],
+  "documents": [
+    {"document_id": "D1", "source_id": "S1", "role": "manuscript",
+     "title": "Effects of Compound X on Cell Growth (SYNTHETIC DEMO MANUSCRIPT)"}
+  ],
+  "manuscript_id": "D1",
+  "dimension_scores": [
+    {"dimension": "novelty", "score": 2, "scale": 5,
+     "basis": "Novelty is asserted ('no prior studies') but no literature is provided to substantiate it; credit limited to the stated research question.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p2",
+                   "quote": "Compound X is a novel molecule, and no prior studies have examined its activity."}]},
+    {"dimension": "rigor", "score": 1, "scale": 5,
+     "basis": "No sample size, no control description, no replication; a single p-value without effect size or CI; causal claim from an uncontrolled observation.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p3",
+                   "quote": "Cells were treated with Compound X and observed for 48 hours."},
+                  {"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                   "quote": "Statistical analysis showed a significant difference (p = 0.049)."}]},
+    {"dimension": "clarity", "score": 3, "scale": 5,
+     "basis": "Short text is readable and the objective is stated plainly, but sections are unlabeled and the conclusion is vague ('is effective').",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p2",
+                   "quote": "We investigated the effect of Compound X on the growth of cultured cells."}]},
+    {"dimension": "significance", "score": 2, "scale": 5,
+     "basis": "A growth-promoting effect could matter, but the clinical extrapolation is unsupported by the presented cell-level observation.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                   "quote": "can be used as a growth promoter in clinical settings"}]}
+  ],
+  "checklist": [
+    {"category": "fact_check", "status": "checked",
+     "note": "Novelty claim cannot be verified: no reference material provided (see F5)."},
+    {"category": "citation_support", "status": "not_applicable",
+     "reason": "The manuscript contains no citations or reference list; nothing to verify against."},
+    {"category": "methods_design", "status": "checked"},
+    {"category": "stats_reporting", "status": "checked"},
+    {"category": "argument_chain", "status": "checked"},
+    {"category": "academic_norms", "status": "checked"}
+  ],
+  "findings": [
+    {"id": "F1", "dimension": "methods_design", "severity": "major", "status": "confirmed",
+     "polarity": "issue",
+     "verdict": "Methods omit sample size, control-group setup, replication and randomization; the design cannot support the comparison claimed.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p3",
+                   "quote": "Cells were treated with Compound X and observed for 48 hours. Treated cells grew faster than untreated cells."}],
+     "recommendation": "Report n per group, control conditions, number of independent replicates, and how growth was quantified."},
+    {"id": "F2", "dimension": "stats_reporting", "severity": "major", "status": "confirmed",
+     "polarity": "issue",
+     "verdict": "Only a bare p-value (p = 0.049) is reported: no test name, effect size, confidence interval, or exact statistic; borderline significance is over-interpreted.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                   "quote": "Statistical analysis showed a significant difference (p = 0.049)."}],
+     "recommendation": "Name the test, report effect size with 95% CI and the exact p-value; avoid dichotomous 'significant' framing at p near 0.05."},
+    {"id": "F3", "dimension": "argument_chain", "severity": "major", "status": "confirmed",
+     "polarity": "issue",
+     "verdict": "Causal claim ('causes') and clinical extrapolation jump from an uncontrolled cell observation; conclusion exceeds the data.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                   "quote": "Therefore, Compound X causes accelerated cell growth and can be used as a growth promoter in clinical settings."}],
+     "recommendation": "Downgrade to 'was associated with faster growth in this cell model'; remove the clinical-use claim or add supporting evidence."},
+    {"id": "F4", "dimension": "academic_norms", "severity": "major", "status": "confirmed",
+     "polarity": "issue",
+     "verdict": "Ethics statement is a bare denial without justification; no data-availability or conflict-of-interest statement is present.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p5",
+                   "quote": "No ethics approval was required for this study."}],
+     "recommendation": "State the ethics basis (e.g., cell-line source and approval/exemption), add data-availability and COI statements."},
+    {"id": "F5", "dimension": "fact_check", "severity": "minor", "status": "insufficient_evidence",
+     "polarity": "issue",
+     "verdict": "The novelty assertion ('no prior studies have examined its activity') cannot be confirmed or refuted: no literature material was provided with this case.",
+     "reason": "no reference material under /input",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p2",
+                   "quote": "no prior studies have examined its activity"}],
+     "recommendation": "Authors must cite prior work or a documented search; reviewer to re-check once literature is supplied.",
+     "handling": "human_confirm"},
+    {"id": "F6", "dimension": "structure", "severity": "suggestion", "status": "confirmed",
+     "polarity": "strength",
+     "verdict": "The research objective is stated plainly in the opening paragraph.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p2",
+                   "quote": "We investigated the effect of Compound X on the growth of cultured cells."}],
+     "recommendation": "Keep this clarity; add explicit section headings."}
+  ],
+  "overall_recommendation": {
+    "decision": "major_revision",
+    "rationale": "Core rigor defects (missing design details, bare p-value, causal overreach, ethics statement) must be fixed before the claims can be evaluated; novelty remains unverified.",
+    "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                  "quote": "Therefore, Compound X causes accelerated cell growth"}]
+  },
+  "uncertainty": [
+    {"item": "novelty / citation support",
+     "reason": "No cited literature provided with the material; existence of prior work cannot be checked locally.",
+     "impact": "fact_check category partially unverified",
+     "handling": "human_confirm"}
+  ],
+  "provenance": {
+    "pipeline": "actual material -> IR -> validate -> recompute/verify -> artifact -> result",
+    "changes": [{"at": "example-build", "change": "SYNTHETIC demo IR authored from the demo manuscript"}]
+  }
+}

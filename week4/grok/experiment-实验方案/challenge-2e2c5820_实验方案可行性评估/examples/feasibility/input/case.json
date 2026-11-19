@@ -1,0 +1,7 @@
+{
+  "case_id": "synthetic-feasibility-001",
+  "output_contract": {
+    "feasibility_md": {"type": "markdown", "desc": "editable feasibility review"},
+    "feasibility_json": {"type": "json", "desc": "structured verdict artifact"}
+  }
+}

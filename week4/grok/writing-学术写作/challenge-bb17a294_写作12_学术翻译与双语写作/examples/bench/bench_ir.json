@@ -1,0 +1,25 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-bench-001",
+  "kind": "writing_benchmark",
+  "title": "Results-section writing benchmark (EXAMPLE)",
+  "sources": [{"id": "mat", "locator": "material.txt + data.csv", "kind": "text", "version": "example-v1"}],
+  "tasks": [
+    {
+      "id": "t1",
+      "instruction": "Write a Results paragraph reporting the Day14 treatment vs control means from data.csv, with units and SD noted.",
+      "input_material": "data.csv + material.txt Sec3",
+      "required_points": ["4.5", "0.9", "SD"],
+      "forbidden": ["causes", "proves mechanism"],
+      "acceptable_variants": ["order of group mention", "sentence structure"],
+      "reference_answer": "At Day14, treatment mean expression was 4.5 a.u. versus 0.9 a.u. for control (mean +/- SD, n=6).",
+      "anchors": [
+        {"criterion": "Day14 treatment value 4.5 present", "observable": "string '4.5' in text"},
+        {"criterion": "Day14 control value 0.9 present", "observable": "string '0.9' in text"},
+        {"criterion": "no causal overclaim", "observable": "absence of 'causes'/'proves mechanism'"}
+      ]
+    }
+  ],
+  "provenance": {"pipeline": "material -> benchmark tasks -> rubric/eval", "skill_version": "1.0.0"},
+  "uncertainty": []
+}

@@ -1,0 +1,54 @@
+{
+  "ir_version": "1.0",
+  "kind": "data_cleaning",
+  "sources": [
+    {"id": "src_table", "path": "input/measurements.csv", "description": "SYNTHETIC instrument export with injected storage/encoding faults"},
+    {"id": "src_dict", "path": "input/dictionary.md", "description": "SYNTHETIC data dictionary: keys, sentinels, units, QC rules"}
+  ],
+  "datasets": [
+    {"dataset_id": "meas", "source_id": "src_table", "path": "input/measurements.csv",
+     "columns": ["sample_id", "timestamp", "conc", "unit", "note"]}
+  ],
+  "cleaning": {
+    "operations": [
+      {"op_id": "op1_flag_missing", "type": "flag_missing", "dataset_id": "meas",
+       "columns": ["conc"],
+       "params": {"sentinel_map": {"-999": "storage_fault_sentinel", "": "missing_entry",
+                                    "ND": "not_detected", "<LOD": "below_detection_limit"},
+                  "blank_is_missing": true},
+       "rule": "dictionary p2: sentinels are faults/missing, not measurements; true 0 is valid",
+       "reason": "distinguish not-detected / below-LOD / missing entry / fault from true zero; no imputation",
+       "evidence": {"source_id": "src_dict", "paragraph_id": "p2", "quote": "-999 为存储故障哨兵值"}},
+      {"op_id": "op2_dedup", "type": "dedup", "dataset_id": "meas",
+       "params": {"key_columns": ["sample_id", "timestamp"], "keep": "first"},
+       "rule": "primary key = sample_id + timestamp (dictionary p1); keep first export",
+       "reason": "S001 exported twice; first export authoritative, removed row logged in full",
+       "evidence": {"source_id": "src_dict", "paragraph_id": "p1", "quote": "sample_id + timestamp"}},
+      {"op_id": "op3_unit_mgL", "type": "unit_convert", "dataset_id": "meas", "column": "conc",
+       "params": {"unit_column": "unit", "from_unit": "mg/L", "to_unit": "ug/L", "factor_expr": "1000"},
+       "rule": "1 mg/L = 1000 ug/L; reversible (inverse_expr logged); original preserved",
+       "reason": "harmonize to dictionary target unit ug/L",
+       "evidence": {"source_id": "src_dict", "paragraph_id": "p3", "quote": "ug/L"}},
+      {"op_id": "op4_unit_ugmL", "type": "unit_convert", "dataset_id": "meas", "column": "conc",
+       "params": {"unit_column": "unit", "from_unit": "ug/mL", "to_unit": "ug/L", "factor_expr": "1000"},
+       "rule": "1 ug/mL = 1000 ug/L; reversible",
+       "reason": "harmonize unit variant to target ug/L",
+       "evidence": {"source_id": "src_dict", "paragraph_id": "p3", "quote": "ug/L"}},
+      {"op_id": "op5_outlier", "type": "outlier_flag", "dataset_id": "meas", "column": "conc",
+       "params": {"method": "iqr", "k": 1.5, "action": "flag"},
+       "rule": "Tukey IQR fence k=1.5 on cleaned ug/L values; flag only, no deletion",
+       "reason": "250 mg/L spike may be real high value or pipetting error; flag for human review",
+       "evidence": {"source_id": "src_dict", "paragraph_id": "p4", "quote": "异常值"}}
+    ]
+  },
+  "uncertainty": [
+    {"item": "S007 spike", "reason": "IQR-flagged high value (250000 ug/L) could be a real extreme or a pipetting error; retained and flagged",
+     "impact": "downstream statistics sensitive to this point", "handling": "human_confirm"},
+    {"item": "true zero below IQR fence", "reason": "S004 detected-as-0 falls below the lower IQR fence; dictionary p2 says 0 is valid, so it is retained despite the diagnostic flag",
+     "handling": "human_confirm"}
+  ],
+  "provenance": {
+    "pipeline": "actual material -> IR -> validate -> clean -> quality report (self-checked) -> result",
+    "changes": [{"step": "example", "note": "SYNTHETIC demo IR; not a formal case answer"}]
+  }
+}

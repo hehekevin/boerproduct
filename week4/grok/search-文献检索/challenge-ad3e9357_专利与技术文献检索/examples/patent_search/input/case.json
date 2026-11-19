@@ -1,0 +1,17 @@
+{
+  "case_id": "EXAMPLE-patent_search-001",
+  "output_contract": {
+    "patent_families_json": {
+      "type": "json",
+      "desc": "main structured result (editable)"
+    },
+    "report_md": {
+      "type": "markdown",
+      "desc": "human-readable report with locators"
+    },
+    "provenance_json": {
+      "type": "json",
+      "desc": "item -> source locator map"
+    }
+  }
+}

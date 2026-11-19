@@ -1,0 +1,8 @@
+{
+  "case_id": "SYNTHETIC-demo-methods-001",
+  "output_contract": {
+    "review_json": {"description": "structured methods/statistics review payload"},
+    "report_md": {"description": "human-readable review report"},
+    "checklist_csv": {"description": "itemized findings + recomputation checklist"}
+  }
+}

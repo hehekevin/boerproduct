@@ -1,0 +1,33 @@
+{
+  "ir_version": "1.0",
+  "case_id": "synthetic-translation-001",
+  "kind": "translation",
+  "sources": [
+    {"id": "S1", "path": "material.md", "title": "SYNTHETIC example paper"}
+  ],
+  "glossary": [
+    {"source_term": "perovskite", "target_term": "钙钛矿"},
+    {"source_term": "annealing", "target_term": "退火"},
+    {"source_term": "crystallinity", "target_term": "结晶度"}
+  ],
+  "segments": [
+    {"id": "seg1",
+     "source_text": "Thermal annealing at 100 C for 10 min improved the crystallinity of perovskite films [1].",
+     "target_text": "在 100 C 下退火 10 min 改善了钙钛矿薄膜的结晶度 [1]。",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P1", "quote": "Thermal annealing at 100 C for 10 min improved the crystallinity of perovskite films [1]."}]},
+    {"id": "seg2",
+     "source_text": "The annealed films retained 95% of initial efficiency after 500 h, versus 70% for controls [2,3].",
+     "target_text": "退火后的薄膜在 500 h 后保留了初始效率的 95%，而对照组为 70% [2,3]。",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P2", "quote": "The annealed films retained 95% of initial efficiency after 500 h, versus 70% for controls [2,3]."}]},
+    {"id": "seg3",
+     "source_text": "We conclude that moderate annealing improves stability under the tested conditions.",
+     "target_text": "我们得出结论：在所测试的条件下，适度退火可改善稳定性。",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P3", "quote": "We conclude that moderate annealing improves stability under the tested conditions."}]}
+  ],
+  "unanswered_parts": [],
+  "uncertainty": [],
+  "provenance": {"changes": [{"step": "example", "note": "SYNTHETIC interface demo; glossary locked before translation"}]}
+}

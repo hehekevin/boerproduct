@@ -1,0 +1,5 @@
+id,title,authors,year,journal,doi,retracted
+R1,Attention folding (preprint),"Alvarez P",2024,bioRxiv,10.1000/demo.501pre,false
+R2,Protein language models review,"Sen K",2023,ML Rev,10.1000/demo.502,false
+R3,Attention folding (published),"Alvarez P",2025,Nat Methods,10.1000/demo.501pre,false
+R4,Retracted: folding benchmark,"Novak T",2022,J Bench,10.1000/demo.504,true

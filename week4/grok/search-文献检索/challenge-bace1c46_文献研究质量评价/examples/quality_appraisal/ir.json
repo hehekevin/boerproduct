@@ -1,0 +1,163 @@
+{
+  "ir_version": "1.0",
+  "kind": "quality_appraisal",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "paper_p1.md",
+      "type": "md",
+      "name": "synthetic paper P1"
+    },
+    {
+      "id": "S2",
+      "path": "paper_p2.md",
+      "type": "md",
+      "name": "synthetic paper P2"
+    },
+    {
+      "id": "S3",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "appraisal_tool": {
+    "name": "demo RoB-style scale (synthetic)",
+    "aggregation": "worst_domain",
+    "critical_dimensions": [
+      "D1"
+    ],
+    "dimensions": [
+      {
+        "id": "D1",
+        "name": "design & allocation",
+        "applies_to": [
+          "rct",
+          "cohort"
+        ]
+      },
+      {
+        "id": "D2",
+        "name": "sampling & power",
+        "applies_to": [
+          "rct",
+          "cohort"
+        ]
+      },
+      {
+        "id": "D3",
+        "name": "statistics & reporting",
+        "applies_to": [
+          "rct",
+          "cohort"
+        ]
+      }
+    ]
+  },
+  "records": [
+    {
+      "id": "P1",
+      "title": "Exercise RCT in prediabetes",
+      "study_type": "rct",
+      "source_id": "S1",
+      "dimensions": [
+        {
+          "dimension_id": "D1",
+          "judgment": "yes",
+          "grade": "low",
+          "rationale": "randomized 1:1 with computer sequence and allocation concealment",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "paragraph_id": "p1-para1",
+              "page": 2,
+              "quote": "randomized 120 adults with prediabetes 1:1 ... allocation concealment"
+            }
+          ]
+        },
+        {
+          "dimension_id": "D2",
+          "judgment": "yes",
+          "grade": "low",
+          "rationale": "a priori power calculation; enrollment exceeds required n",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "paragraph_id": "p1-para2",
+              "page": 3,
+              "quote": "Sample size was calculated for 80% power ... 120 enrolled"
+            }
+          ]
+        },
+        {
+          "dimension_id": "D3",
+          "judgment": "yes",
+          "grade": "low",
+          "rationale": "ITT mixed models; dropout reported and balanced",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "paragraph_id": "p1-para3",
+              "page": 5,
+              "quote": "intention-to-treat with mixed models; dropout was 8%"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P2",
+      "title": "Observational diet cohort",
+      "study_type": "cohort",
+      "source_id": "S2",
+      "dimensions": [
+        {
+          "dimension_id": "D1",
+          "judgment": "partial",
+          "grade": "some_concerns",
+          "rationale": "single-clinic convenience recruitment; no randomization (observational by design)",
+          "evidence": [
+            {
+              "source_id": "S2",
+              "paragraph_id": "p2-para1",
+              "page": 1,
+              "quote": "300 volunteers recruited from a single clinic"
+            }
+          ]
+        },
+        {
+          "dimension_id": "D2",
+          "judgment": "partial",
+          "grade": "some_concerns",
+          "rationale": "no a priori sample size / power statement in the provided text",
+          "evidence": [
+            {
+              "source_id": "S2",
+              "paragraph_id": "p2-para1",
+              "page": 1,
+              "quote": "We followed 300 volunteers"
+            }
+          ]
+        },
+        {
+          "dimension_id": "D3",
+          "judgment": "insufficient_evidence",
+          "rationale": "adjustment details not described in the provided excerpt; abstain rather than guess"
+        }
+      ]
+    }
+  ],
+  "uncertainty": [
+    {
+      "item": "P2/D3",
+      "reason": "statistical adjustment not reported in provided excerpt; abstained (grade unclear)",
+      "handling": "human_confirm"
+    }
+  ],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-quality_appraisal-001"
+}

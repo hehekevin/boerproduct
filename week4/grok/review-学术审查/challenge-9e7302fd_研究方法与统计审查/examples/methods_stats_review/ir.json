@@ -1,0 +1,82 @@
+{
+  "ir_version": "1.0",
+  "case_id": "SYNTHETIC-demo-methods-001",
+  "kind": "methods_stats_review",
+  "sources": [
+    {"id": "S1", "path": "input/manuscript.md", "role": "manuscript"},
+    {"id": "S2", "path": "input/data.csv", "role": "data"}
+  ],
+  "documents": [
+    {"document_id": "D1", "source_id": "S1", "role": "manuscript",
+     "title": "Dose-Response Study of Compound X (SYNTHETIC DEMO MANUSCRIPT)"},
+    {"document_id": "D2", "source_id": "S2", "role": "data",
+     "title": "dose-response measurements (8 samples)"}
+  ],
+  "manuscript_id": "D1",
+  "findings": [
+    {"id": "M1", "dimension": "statistical_test", "severity": "major", "status": "confirmed",
+     "verdict": "The significance claim names no statistical test, no statistic and no degrees of freedom; the reader cannot judge whether the test fits the data.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                   "quote": "A statistical test showed the treatment effect was significant (p = 0.03)."}],
+     "recommendation": "Name the test (e.g., paired/unpaired t-test or regression slope test), report the statistic with df and the exact p-value."},
+    {"id": "M2", "dimension": "sample_size_power", "severity": "major", "status": "confirmed",
+     "verdict": "No sample-size justification or power analysis; n=8 is stated without basis, so the significant result may be underpowered/unstable.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p3",
+                   "quote": "No sample size calculation was performed."}],
+     "recommendation": "Add an a priori sample-size estimate (effect-size source, alpha, power) or explicitly label the study exploratory."},
+    {"id": "M3", "dimension": "reporting", "severity": "minor", "status": "confirmed",
+     "verdict": "Reported SD 1.5 does not match the provided data: recomputed sample SD = 1.309307 (n=8, mean 12.0 matches). See stats_check ST1.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                   "quote": "The mean response was 12.0 (SD 1.5)."},
+                  {"source_id": "S2", "document_id": "D2", "field": "response",
+                   "quote": "response column of data.csv (8 rows)"}],
+     "recommendation": "Correct the SD to 1.31 (or state the estimator/population convention if a different formula was intended)."},
+    {"id": "M4", "dimension": "assumptions", "severity": "minor", "status": "suspected",
+     "verdict": "Distributional assumptions and independence of the eight samples are never discussed; with n=8 a normality-based test may be fragile.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                   "quote": "A statistical test showed the treatment effect was significant (p = 0.03)."}],
+     "recommendation": "State independence/normality checks or use a distribution-free alternative and report it."},
+    {"id": "M5", "dimension": "p_ci_interpretation", "severity": "suggestion", "status": "confirmed",
+     "polarity": "strength",
+     "verdict": "The reported 95% CI upper limit 13.04 is internally consistent with the reported mean/SD/n (recomputed 13.0394 via mean+1.96*sd/sqrt(n)); see ST3. Note it inherits the wrong SD from M3.",
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p5",
+                   "quote": "The 95% confidence interval upper limit was 13.04."}],
+     "recommendation": "Keep CI reporting; recompute the interval after fixing the SD."}
+  ],
+  "stats_checks": [
+    {"id": "ST1", "description": "Recompute mean/SD/n of response from data.csv and compare with the manuscript (rel tolerance 5%).",
+     "check_type": "describe",
+     "data": {"source_id": "S2", "field": "response"},
+     "reported": {"mean": 12.0, "sd": 1.5, "n": 8},
+     "tolerance": {"rel": 0.05, "abs": 1e-9},
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p4",
+                   "quote": "The mean response was 12.0 (SD 1.5)."}]},
+    {"id": "ST2", "description": "Recompute OLS slope and R2 of response on dose; manuscript reports slope 0.29, R2 0.29 (2-decimal rounding, rel 5%).",
+     "check_type": "linreg",
+     "data": {"source_id": "S2", "x_field": "dose", "y_field": "response"},
+     "reported": {"slope": 0.29, "r2": 0.29},
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p5",
+                   "quote": "Response increased with dose (slope 0.29, R2 0.29)."}]},
+    {"id": "ST3", "description": "Internal consistency: 95% CI upper limit = mean + 1.96*sd/sqrt(n) using the REPORTED mean/SD/n (checks arithmetic, not the SD itself).",
+     "check_type": "expr",
+     "expr": "mean + 1.96 * sd / sqrt(n)",
+     "env": {"mean": 12.0, "sd": 1.5, "n": 8},
+     "reported": {"value": 13.04},
+     "tolerance": {"rel": 0.005, "abs": 1e-9},
+     "evidence": [{"source_id": "S1", "document_id": "D1", "paragraph_id": "p5",
+                   "quote": "The 95% confidence interval upper limit was 13.04."}]},
+    {"id": "ST4", "description": "Attempted recompute of biomarker_x spread; the column is absent from the provided data (honest not_recomputable demo).",
+     "check_type": "describe",
+     "data": {"source_id": "S2", "field": "biomarker_x"}}
+  ],
+  "uncertainty": [
+    {"item": "biomarker_x analysis",
+     "reason": "Column biomarker_x not present in the provided data.csv; ST4 cannot be recomputed.",
+     "impact": "one planned check unverified",
+     "handling": "human_confirm"}
+  ],
+  "provenance": {
+    "pipeline": "actual material -> IR -> validate -> recompute/verify -> artifact -> result",
+    "changes": [{"at": "example-build", "change": "SYNTHETIC demo IR authored from the demo manuscript and data.csv"}]
+  }
+}

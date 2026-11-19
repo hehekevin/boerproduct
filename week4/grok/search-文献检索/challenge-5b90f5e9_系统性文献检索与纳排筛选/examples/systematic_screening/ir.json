@@ -1,0 +1,229 @@
+{
+  "ir_version": "1.0",
+  "kind": "systematic_screening",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "records.csv",
+      "type": "csv",
+      "name": "synthetic candidate export"
+    },
+    {
+      "id": "S2",
+      "path": "criteria.md",
+      "type": "md",
+      "name": "synthetic frozen criteria v1"
+    },
+    {
+      "id": "S3",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "protocol": {
+    "databases": [
+      "Crossref (provided export)",
+      "EuropePMC (provided export)"
+    ],
+    "search_date": "2025-03-01",
+    "criteria_version": "v1",
+    "time_range": "2018-2025",
+    "languages": [
+      "en"
+    ],
+    "query_strings": [
+      "exercise AND prediabetes",
+      "intervention AND \"type-2 diabetes\" prevention"
+    ],
+    "source_id": "S3"
+  },
+  "criteria": [
+    {
+      "id": "INC1",
+      "type": "include",
+      "text": "human intervention study on prediabetes/T2D prevention",
+      "source_id": "S2"
+    },
+    {
+      "id": "EXC1",
+      "type": "exclude",
+      "text": "animal-only study",
+      "source_id": "S2"
+    },
+    {
+      "id": "EXC2",
+      "type": "exclude",
+      "text": "no intervention component",
+      "source_id": "S2"
+    },
+    {
+      "id": "MAY1",
+      "type": "include",
+      "text": "abstract-only / insufficient information -> human decision",
+      "source_id": "S2"
+    }
+  ],
+  "records": [
+    {
+      "id": "R1",
+      "title": "Exercise intervention for prediabetes: RCT",
+      "authors": "Chen L",
+      "year": 2023,
+      "journal": "Diabetes Care",
+      "doi": "10.1000/demo.701",
+      "source_id": "S1",
+      "reviewers": [
+        {
+          "reviewer": "A",
+          "decision": "include",
+          "reason_code": "INC1",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "field": "title",
+              "quote": "Exercise intervention for prediabetes: RCT"
+            }
+          ]
+        },
+        {
+          "reviewer": "B",
+          "decision": "include",
+          "reason_code": "INC1",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "field": "title",
+              "quote": "Exercise intervention for prediabetes: RCT"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "title": "Exercise intervention for prediabetes: RCT (duplicate export)",
+      "authors": "Chen L",
+      "year": 2023,
+      "journal": "Diabetes Care",
+      "doi": "10.1000/demo.701",
+      "source_id": "S1",
+      "reviewers": [
+        {
+          "reviewer": "A",
+          "decision": "include",
+          "reason_code": "INC1",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "field": "title",
+              "quote": "duplicate export of R1"
+            }
+          ]
+        },
+        {
+          "reviewer": "B",
+          "decision": "include",
+          "reason_code": "INC1",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "field": "title",
+              "quote": "duplicate export of R1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R3",
+      "title": "Diet and diabetes in mice",
+      "authors": "Silva A",
+      "year": 2022,
+      "journal": "Lab Anim",
+      "doi": "10.1000/demo.703",
+      "source_id": "S1",
+      "reviewers": [
+        {
+          "reviewer": "A",
+          "decision": "exclude",
+          "reason_code": "EXC1",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "field": "title",
+              "quote": "Diet and diabetes in mice"
+            }
+          ]
+        },
+        {
+          "reviewer": "B",
+          "decision": "exclude",
+          "reason_code": "EXC1",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "field": "title",
+              "quote": "Diet and diabetes in mice"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R4",
+      "title": "Exercise and glucose control: abstract only",
+      "authors": "Kim H",
+      "year": 2024,
+      "journal": "Conf Proc",
+      "doi": null,
+      "source_id": "S1",
+      "reviewers": [
+        {
+          "reviewer": "A",
+          "decision": "include",
+          "reason_code": "INC1",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "field": "title",
+              "quote": "Exercise and glucose control"
+            }
+          ]
+        },
+        {
+          "reviewer": "B",
+          "decision": "maybe",
+          "reason_code": "MAY1",
+          "evidence": [
+            {
+              "source_id": "S1",
+              "field": "title",
+              "quote": "abstract only"
+            }
+          ]
+        }
+      ],
+      "adjudication": {
+        "decision": "maybe",
+        "reason_code": "MAY1",
+        "rationale": "abstract-only conference record; population not decidable from title; escalate to full-text/human per criteria v1",
+        "adjudicator": "C",
+        "source_id": "S2"
+      }
+    }
+  ],
+  "uncertainty": [
+    {
+      "item": "R4",
+      "reason": "abstract-only record pending full-text/human decision after adjudication",
+      "handling": "human_confirm"
+    }
+  ],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-systematic_screening-001"
+}

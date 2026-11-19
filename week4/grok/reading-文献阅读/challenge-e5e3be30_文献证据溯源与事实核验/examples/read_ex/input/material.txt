@@ -1,0 +1,18 @@
+EXAMPLE SOURCE MATERIAL (synthetic, for interface demonstration only)
+
+Title: Treatment X elevates marker expression over time in a controlled cohort.
+
+Background / question (Sec 1): Whether Treatment X raises marker expression relative
+to control, and how the effect evolves over 14 days, is unresolved.
+
+Methods (Sec 2): Two arms (Control, Treatment), n=6 per arm per timepoint; expression
+measured at Day3, Day7, Day14; values are mean +/- SD (data.csv).
+
+Results (Sec 3, Table 1 / data.csv): Control stays near baseline (1.0, 1.1, 0.9).
+Treatment rises from 1.8 (Day3) to 3.2 (Day7) to 4.5 (Day14). The Day14 treatment
+mean is 4.5x the control Day14 mean (0.9).
+
+Limitations (Sec 4): single cohort, n=6, no mechanistic assay; SD reported, not SEM.
+
+Conclusion (Sec 5): Treatment X increases marker expression in a time-dependent
+manner in this cohort; mechanism remains to be tested.

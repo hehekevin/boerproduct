@@ -1,0 +1,74 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-read-001",
+  "kind": "conclusion_extraction",
+  "sources": [
+    {
+      "id": "mat",
+      "document_id": "doc1",
+      "locator": "material.txt Sec3",
+      "kind": "text",
+      "version": "ex1"
+    }
+  ],
+  "items": [
+    {
+      "id": "f1",
+      "field_id": "treatment_day14",
+      "value": 4.5,
+      "units": "a.u.",
+      "statistic": "mean",
+      "condition": "Treatment, Day14, n=6",
+      "kind": "reported",
+      "status": "answered",
+      "evidence": [
+        {
+          "source": "mat",
+          "document_id": "doc1",
+          "paragraph_id": "Sec3",
+          "quote": "Treatment rises 1.8->3.2->4.5"
+        }
+      ]
+    },
+    {
+      "id": "f2",
+      "field_id": "control_day14",
+      "value": 0.9,
+      "units": "a.u.",
+      "statistic": "mean",
+      "condition": "Control, Day14, n=6",
+      "kind": "reported",
+      "status": "answered",
+      "evidence": [
+        {
+          "source": "mat",
+          "document_id": "doc1",
+          "paragraph_id": "Sec3",
+          "quote": "control 0.9"
+        }
+      ]
+    },
+    {
+      "id": "f3",
+      "field_id": "mechanism",
+      "value": null,
+      "kind": "reported",
+      "status": "insufficient_evidence",
+      "evidence": [],
+      "unanswered_parts": [
+        "mechanism not assayed"
+      ]
+    }
+  ],
+  "coverage": {
+    "read": [
+      "Sec1-5"
+    ],
+    "unread": []
+  },
+  "unanswered_parts": [],
+  "provenance": {
+    "pipeline": "material -> reading IR -> structured result"
+  },
+  "uncertainty": []
+}

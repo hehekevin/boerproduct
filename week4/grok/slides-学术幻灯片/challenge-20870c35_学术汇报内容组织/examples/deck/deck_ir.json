@@ -1,0 +1,30 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-deck-001",
+  "kind": "academic_ppt",
+  "title": "Treatment X elevates marker expression over time (EXAMPLE)",
+  "audience": "committee",
+  "goal": "Convince the committee the time-dependent effect is real and bounded",
+  "duration_min": 10,
+  "slide_count_target": 6,
+  "template": {"theme_font": "DejaVu Sans", "cjk_font": "DejaVu Sans", "title_pt": 28, "body_pt": 18, "min_pt": 14, "accent": "#0C5DA5", "footer": "EXAMPLE demo", "max_bullets": 4, "max_words_per_bullet": 20},
+  "sources": [
+    {"id": "mat", "locator": "material.txt Sec1-5", "kind": "text", "version": "example-v1"},
+    {"id": "tbl", "locator": "data.csv (group,day,expression,sd,n)", "kind": "table", "version": "example-v1"}
+  ],
+  "pages": [
+    {"id": "p1", "role": "title", "layout": "title", "claim": "Treatment X elevates marker expression over time", "notes": "Open with the one-sentence takeaway; state cohort and window.", "source": "mat", "source_locator": "Title"},
+    {"id": "p2", "role": "question", "layout": "content", "claim": "Does Treatment X raise expression, and how does it evolve over 14 days?", "bullets": [{"text": "Effect vs control unresolved", "source": "mat", "source_locator": "Sec1"}, {"text": "Time course Day3/7/14 unknown", "source": "mat", "source_locator": "Sec1"}], "notes": "Frame the gap; why the time course matters.", "source": "mat", "source_locator": "Sec1"},
+    {"id": "p3", "role": "method", "layout": "content", "claim": "Two arms, n=6 per timepoint, mean +/- SD", "bullets": [{"text": "Control vs Treatment, n=6/arm/timepoint", "source": "mat", "source_locator": "Sec2"}, {"text": "Expression at Day3, Day7, Day14", "source": "mat", "source_locator": "Sec2"}, {"text": "Reported as mean +/- SD (not SEM)", "source": "mat", "source_locator": "Sec2"}], "notes": "Keep methods to three lines; flag SD vs SEM for Q&A.", "source": "mat", "source_locator": "Sec2"},
+    {"id": "p4", "role": "result", "layout": "picture", "claim": "Treatment rises to 4.5 by Day14 vs control 0.9", "bullets": [{"text": "Control near baseline (1.0/1.1/0.9)", "source": "tbl", "source_locator": "data.csv Control rows"}, {"text": "Treatment 1.8 -> 3.2 -> 4.5", "source": "tbl", "source_locator": "data.csv Treatment rows"}], "figures": [{"ref": "Fig1", "chart": {"chart_type": "grouped_bar", "data_source": "tbl", "data_path": "input/data.csv", "x": "day", "y": "expression", "series": "group", "error": "sd", "error_kind": "sd", "n": "n", "x_label": "Time", "y_label": "Relative expression", "unit": "a.u."}, "caption": "Fig1 Mean expression +/- SD (data.csv)", "source": "tbl", "source_locator": "data.csv"}], "notes": "Walk the figure left to right; emphasise Day14 separation; error bars are SD.", "source": "tbl", "source_locator": "Sec3 / data.csv", "evidence_strength": "supported"},
+    {"id": "p5", "role": "limitation", "layout": "content", "claim": "Single cohort, n=6, no mechanistic assay", "bullets": [{"text": "One cohort; small n", "source": "mat", "source_locator": "Sec4"}, {"text": "No mechanism tested", "source": "mat", "source_locator": "Sec4"}], "notes": "State limits plainly; pre-empt the mechanism question.", "source": "mat", "source_locator": "Sec4"},
+    {"id": "p6", "role": "conclusion", "layout": "content", "claim": "Time-dependent increase in this cohort; mechanism open", "bullets": [{"text": "Effect real and time-dependent here", "source": "mat", "source_locator": "Sec5"}, {"text": "Mechanism remains to be tested", "source": "mat", "source_locator": "Sec5"}], "notes": "Close with the bounded claim; invite questions.", "source": "mat", "source_locator": "Sec5", "evidence_strength": "supported"}
+  ],
+  "qa": [
+    {"question": "Why SD and not SEM?", "answer_points": ["Source reports SD (Sec2)", "SD shows spread, not precision of mean"], "source": "mat"},
+    {"question": "Is the effect mechanistic?", "answer_points": ["No mechanistic assay (Sec4)", "Conclusion bounded to this cohort"], "backup_page": "p5", "source": "mat"}
+  ],
+  "exports": [{"format": "pptx"}, {"format": "pdf"}, {"format": "png"}],
+  "provenance": {"pipeline": "material -> deck IR -> editable pptx -> render/export", "skill_version": "1.0.0", "changes": []},
+  "uncertainty": []
+}

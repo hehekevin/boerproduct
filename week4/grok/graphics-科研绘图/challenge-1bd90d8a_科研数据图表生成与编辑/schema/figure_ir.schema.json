@@ -1,0 +1,178 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FigureIR",
+  "description": "Source-bound intermediate representation for scientific figures. Every drawable element carries a `source` pointer back to the input material so the figure is independently verifiable. Shared by all five graphics-track skills.",
+  "type": "object",
+  "required": ["ir_version", "case_id", "kind", "provenance"],
+  "properties": {
+    "ir_version": {"type": "string", "const": "1.0"},
+    "case_id": {"type": "string", "description": "Copied verbatim from /input/case.json case_id."},
+    "kind": {
+      "type": "string",
+      "enum": ["relationship_schematic", "source_value_chart", "mechanism_pathway", "apparatus_route", "graphical_abstract"],
+      "description": "Drawing workorder type; selects the renderer and the domain rule pack."
+    },
+    "title": {"type": "string"},
+    "caption": {"type": "string", "description": "Figure caption; facts here must also be source-bound."},
+    "canvas": {
+      "type": "object",
+      "properties": {
+        "width_mm": {"type": "number", "default": 180},
+        "height_mm": {"type": "number", "default": 120},
+        "dpi": {"type": "integer", "default": 300},
+        "background": {"type": "string", "default": "#ffffff"}
+      }
+    },
+    "style": {
+      "type": "object",
+      "description": "Resolved style; usually filled from a journal preset.",
+      "properties": {
+        "preset": {"type": "string"},
+        "font_family": {"type": "string", "default": "DejaVu Sans"},
+        "base_font_pt": {"type": "number", "default": 8},
+        "min_font_pt": {"type": "number", "default": 6},
+        "line_width_pt": {"type": "number", "default": 0.8},
+        "color_space": {"type": "string", "enum": ["RGB", "CMYK", "Gray"], "default": "RGB"},
+        "palette": {"type": "string", "default": "okabe_ito"}
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "Registry of input materials. id is referenced by every element.source.",
+      "items": {
+        "type": "object",
+        "required": ["id", "locator"],
+        "properties": {
+          "id": {"type": "string"},
+          "locator": {"type": "string", "description": "File path + page/section/row, e.g. material.pdf p3 Table 2 or data.csv col 'Day7'."},
+          "kind": {"type": "string", "enum": ["pdf", "table", "text", "image", "database", "gold_standard"]},
+          "version": {"type": "string"},
+          "sha256": {"type": "string"}
+        }
+      }
+    },
+    "entities": {
+      "type": "array",
+      "description": "Scientific entities (genes, proteins, complexes, compartments, apparatus parts, samples, panels).",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "category"],
+        "properties": {
+          "id": {"type": "string"},
+          "label": {"type": "string", "description": "Exact display name as in source; do not invent."},
+          "category": {"type": "string", "description": "gene|protein|complex|cell|compartment|part|step|sample|panel|material|device|concept"},
+          "entity_kind": {"type": "string", "description": "Fine type, e.g. receptor, kinase, transcription_factor."},
+          "group": {"type": "string", "description": "Compartment / stage / panel grouping id."},
+          "attributes": {"type": "object", "description": "Numeric/string attributes with units, e.g. {conc: {value: 5, unit: 'uM'}}."},
+          "source": {"type": "string", "description": "sources[].id this entity was extracted from."},
+          "source_locator": {"type": "string", "description": "Precise span/row/page within that source."},
+          "confidence": {"type": "string", "enum": ["high", "medium", "low", "uncertain"]},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "relations": {
+      "type": "array",
+      "description": "Directed/typed edges between entities. Semantic type drives arrow grammar.",
+      "items": {
+        "type": "object",
+        "required": ["id", "from", "to", "type"],
+        "properties": {
+          "id": {"type": "string"},
+          "from": {"type": "string"},
+          "to": {"type": "string"},
+          "type": {
+            "type": "string",
+            "enum": ["activates", "inhibits", "binds", "modifies", "transports", "contains", "parallel", "upstream_of", "causes", "sequence", "feedback", "connects", "flows_to", "part_of", "compares", "encodes"],
+            "description": "Interaction semantics; never collapse inhibition into activation."
+          },
+          "direction": {"type": "string", "enum": ["forward", "reverse", "bidirectional", "none"], "default": "forward"},
+          "modifiers": {"type": "array", "items": {"type": "string"}, "description": "e.g. phosphorylation, ubiquitination."},
+          "label": {"type": "string"},
+          "value": {"type": "object", "description": "Optional numeric encoding {value, unit}."},
+          "evidence_strength": {"type": "string", "enum": ["established", "supported", "hypothesized", "uncertain"]},
+          "source": {"type": "string"},
+          "source_locator": {"type": "string"},
+          "confidence": {"type": "string", "enum": ["high", "medium", "low", "uncertain"]}
+        }
+      }
+    },
+    "groups": {
+      "type": "array",
+      "description": "Compartments, stages, panels, assemblies (containment boundaries).",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "properties": {
+          "id": {"type": "string"},
+          "label": {"type": "string"},
+          "kind": {"type": "string", "enum": ["compartment", "stage", "panel", "assembly", "membrane", "phase"]},
+          "parent": {"type": "string"},
+          "members": {"type": "array", "items": {"type": "string"}},
+          "source": {"type": "string"}
+        }
+      }
+    },
+    "chart": {
+      "type": "object",
+      "description": "Data-chart spec (kind=source_value_chart, or a panel inside graphical_abstract).",
+      "properties": {
+        "chart_type": {"type": "string", "enum": ["bar", "grouped_bar", "line", "scatter", "box", "heatmap", "pie", "multi_panel"]},
+        "data_source": {"type": "string", "description": "sources[].id of the table."},
+        "data_path": {"type": "string", "description": "Resolved path to CSV/JSON actually read."},
+        "x": {"type": "string"},
+        "y": {"type": "string"},
+        "series": {"type": "string", "description": "Column whose unique values define series/legend."},
+        "error": {"type": "string", "description": "Column holding error magnitude."},
+        "error_kind": {"type": "string", "enum": ["sd", "sem", "ci95", "range", "unknown"]},
+        "n": {"type": "string", "description": "Sample-size column."},
+        "significance": {"type": "array", "description": "Explicit significance brackets {a,b,p,label}."},
+        "x_label": {"type": "string"},
+        "y_label": {"type": "string"},
+        "unit": {"type": "string"},
+        "panels": {"type": "array", "description": "For multi_panel: list of sub-chart specs with panel letters."}
+      }
+    },
+    "layout": {
+      "type": "object",
+      "description": "Computed positions (filled by layout step). Both SVG and raster renderers read these so they stay consistent.",
+      "properties": {
+        "algorithm": {"type": "string"},
+        "positions": {"type": "object", "description": "entity_id -> {x,y,w,h} in canvas mm."},
+        "group_boxes": {"type": "object"},
+        "edge_routes": {"type": "object"}
+      }
+    },
+    "legend": {
+      "type": "object",
+      "properties": {
+        "items": {"type": "array", "items": {"type": "object", "properties": {"label": {"type": "string"}, "color": {"type": "string"}, "marker": {"type": "string"}, "meaning": {"type": "string"}, "source": {"type": "string"}}}},
+        "edge_types": {"type": "array", "description": "Legend of arrow semantics used."},
+        "auto_from_data": {"type": "boolean", "default": true}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["pipeline"],
+      "properties": {
+        "pipeline": {"type": "string", "description": "material -> IR -> editable source -> export"},
+        "skill_version": {"type": "string"},
+        "source_version": {"type": "string"},
+        "element_map": {"type": "object", "description": "element_id -> {source, source_locator, glyph, value} filled at render."},
+        "data_map": {"type": "object", "description": "glyph_id -> {file,row,column,value} for charts (bidirectional)."},
+        "changes": {"type": "array", "items": {"type": "object", "properties": {"what": {"type": "string"}, "why": {"type": "string"}, "before": {"type": "string"}, "after": {"type": "string"}, "confirmed_by": {"type": "string"}}}},
+        "human_confirmation": {"type": "string"}
+      }
+    },
+    "uncertainty": {
+      "type": "array",
+      "description": "Honest limits: missing data, ambiguous direction, conflicting sources.",
+      "items": {"type": "object", "properties": {"item": {"type": "string"}, "reason": {"type": "string"}, "impact": {"type": "string"}, "handling": {"type": "string"}}}
+    },
+    "exports": {
+      "type": "array",
+      "description": "Requested export targets.",
+      "items": {"type": "object", "properties": {"format": {"type": "string", "enum": ["svg", "pdf", "png", "eps", "tiff"]}, "dpi": {"type": "integer"}, "width_mm": {"type": "number"}, "path": {"type": "string"}}}
+    }
+  }
+}

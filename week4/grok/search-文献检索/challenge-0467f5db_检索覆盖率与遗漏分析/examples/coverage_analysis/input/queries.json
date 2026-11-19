@@ -1,0 +1,12 @@
+[
+  {
+    "id": "Q1",
+    "query_string": "microbiome AND diabetes",
+    "database": "Crossref (provided export)"
+  },
+  {
+    "id": "Q2",
+    "query_string": "\"diet\" AND \"microbiota\" AND cohort",
+    "database": "EuropePMC (provided export)"
+  }
+]

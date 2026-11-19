@@ -1,0 +1,3 @@
+SYNTHETIC EXAMPLE manuscript body.
+
+Marker expression rises under Treatment X [1]. Prior cohorts show similar dynamics [2]. The time course was confirmed in a follow-up study [3].

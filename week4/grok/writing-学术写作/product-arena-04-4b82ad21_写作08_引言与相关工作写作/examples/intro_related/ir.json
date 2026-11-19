@@ -1,0 +1,54 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-intro-001",
+  "kind": "intro_related",
+  "title": "Introduction and Related Work (SYNTHETIC EXAMPLE)",
+  "audience": "peers",
+  "genre": "journal_article",
+  "sources": [
+    {"id": "lit", "locator": "literature.txt Sec1-3", "kind": "text", "version": "example-v1", "values": ["0.92", "0.80"]}
+  ],
+  "citations": [
+    {"id": "ref1", "authors": "Example A", "year": "2024", "title": "Method A for cohort X", "journal": "J Example", "doi": "10.1234/ex.2024.001", "source": "lit"},
+    {"id": "ref2", "authors": "Example B", "year": "2023", "title": "Label-efficient Method B", "journal": "J Example", "doi": "10.1234/ex.2023.002", "source": "lit"},
+    {"id": "ref3", "authors": "Example C", "year": "2025", "title": "Review of label efficiency and robustness", "journal": "J Example", "doi": "10.1234/ex.2025.003", "source": "lit"}
+  ],
+  "numbers": [
+    {"value": "0.92", "unit": "accuracy", "source": "lit", "locator": "Sec1 Method A"},
+    {"value": "0.80", "unit": "accuracy", "source": "lit", "locator": "Sec2 Method B domain shift"}
+  ],
+  "glossary": [
+    {"term": "domain shift", "render": "domain shift", "source": "lit"},
+    {"term": "label-efficient", "render": "label-efficient", "source": "lit"}
+  ],
+  "claims": [
+    {"id": "c1", "text": "Method A achieves 0.92 accuracy on cohort X.", "type": "fact", "evidence": [{"source": "lit", "locator": "Sec1", "strength": "established", "supports": "full"}], "citation_ids": ["ref1"]},
+    {"id": "c2", "text": "Method A requires large labeled data.", "type": "fact", "evidence": [{"source": "lit", "locator": "Sec1", "strength": "established", "supports": "full"}], "citation_ids": ["ref1"]},
+    {"id": "c3", "text": "Method B is label-efficient but drops to 0.80 accuracy under domain shift.", "type": "fact", "evidence": [{"source": "lit", "locator": "Sec2", "strength": "established", "supports": "full"}], "citation_ids": ["ref2"]},
+    {"id": "c4", "text": "A review notes no method combines label efficiency with robustness to domain shift.", "type": "fact", "evidence": [{"source": "lit", "locator": "Sec3", "strength": "supported", "supports": "full"}], "citation_ids": ["ref3"]},
+    {"id": "c5", "text": "The cited literature reveals a gap: label-efficient methods are not robust to domain shift.", "type": "interpretation", "evidence": [{"source": "lit", "locator": "Sec1-3", "strength": "supported", "supports": "partial"}], "citation_ids": ["ref1", "ref2", "ref3"], "strength": "supported"}
+  ],
+  "required_sections": ["Introduction", "Related Work", "Research Gap", "Contributions"],
+  "sections": [
+    {"id": "s1", "level": 1, "heading": "Introduction", "role": "Introduction", "paragraphs": [
+      {"id": "p1", "text": "Accurate prediction on cohort X is established: Method A achieves 0.92 accuracy [ref1]. However, Method A requires large labeled data [ref1], motivating label-efficient alternatives.", "claims": ["c1", "c2"], "source": "lit"}
+    ]},
+    {"id": "s2", "level": 1, "heading": "Related Work", "role": "Related Work", "paragraphs": [
+      {"id": "p2", "text": "Approaches differ in label efficiency and robustness. Method A is accurate but label-hungry [ref1]; Method B is label-efficient yet drops to 0.80 accuracy under domain shift [ref2].", "claims": ["c2", "c3"], "source": "lit"},
+      {"id": "p3", "text": "A recent review notes that no method combines label efficiency with robustness to domain shift [ref3].", "claims": ["c4"], "source": "lit"}
+    ]},
+    {"id": "s3", "level": 1, "heading": "Research Gap", "role": "Research Gap", "paragraphs": [
+      {"id": "p4", "text": "Taken together, the cited literature reveals a gap: label-efficient methods are not robust to domain shift [ref1][ref2][ref3].", "claims": ["c5"], "source": "lit"}
+    ]},
+    {"id": "s4", "level": 1, "heading": "Contributions", "role": "Contributions", "paragraphs": [
+      {"id": "p5", "text": "This work targets the label-efficiency/robustness gap identified above (proposed contribution; actual results not in the provided material).", "claims": ["c5"], "source": "lit"}
+    ]}
+  ],
+  "research_gap": {"statement": "Label-efficient methods lack robustness to domain shift.", "derived_from": ["ref1", "ref2", "ref3"]},
+  "contributions": [
+    {"id": "ct1", "text": "Proposed: a label-efficient method robust to domain shift, addressing the gap.", "claim_ids": ["c5"], "evidence": [{"source": "lit", "locator": "Sec1-3"}], "status": "proposed"}
+  ],
+  "exports": [{"format": "md"}, {"format": "docx"}],
+  "provenance": {"pipeline": "material -> writing IR -> validate -> editable artifact -> result", "skill_version": "1.0.0", "changes": []},
+  "uncertainty": [{"item": "contributions", "reason": "this-work methods/results not in provided material", "impact": "contribution is proposed, not result-backed", "handling": "flagged human_confirm; bound to gap evidence only"}]
+}

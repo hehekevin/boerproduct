@@ -1,0 +1,4 @@
+# Python 3.10+ standard library only. No third-party packages required.
+# Core: csv, json, math, hashlib, re, pathlib, sqlite3, ast, subprocess, shutil.
+# Optional (NOT needed for data_cleaning): matplotlib — only the data_viz kind uses it
+# for optional 300 dpi PNG previews, with honest fallback to editable stdlib SVG.

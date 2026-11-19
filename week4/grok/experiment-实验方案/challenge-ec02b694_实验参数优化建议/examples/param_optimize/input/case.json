@@ -1,0 +1,7 @@
+{
+  "case_id": "synthetic-param-001",
+  "output_contract": {
+    "params_md": {"type": "markdown", "desc": "editable parameter plan"},
+    "params_json": {"type": "json", "desc": "structured optimization artifact"}
+  }
+}

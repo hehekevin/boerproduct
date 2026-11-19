@@ -1,0 +1,71 @@
+{
+  "ir_version": "1.0",
+  "case_id": "example-methods-001",
+  "kind": "methods_section",
+  "title": "Methods and Experiments (SYNTHETIC EXAMPLE)",
+  "audience": "peers",
+  "genre": "journal_article",
+  "sources": [
+    {"id": "proto", "locator": "protocol.txt Sec1-3", "kind": "text", "version": "example-v1",
+     "values": ["2.1", "80", "10", "42", "0.001", "32", "50", "100", "0.05", "6", "7.4"]}
+  ],
+  "numbers": [
+    {"value": "2.1", "unit": "version", "source": "proto", "locator": "Sec1 dataset D"},
+    {"value": "80", "unit": "% train", "source": "proto", "locator": "Sec1 split"},
+    {"value": "10", "unit": "% val/test", "source": "proto", "locator": "Sec1 split"},
+    {"value": "42", "unit": "seed", "source": "proto", "locator": "Sec1"},
+    {"value": "0.001", "unit": "learning rate", "source": "proto", "locator": "Sec1 Adam"},
+    {"value": "32", "unit": "batch size", "source": "proto", "locator": "Sec1"},
+    {"value": "50", "unit": "epochs", "source": "proto", "locator": "Sec1"},
+    {"value": "100", "unit": "GPU model (A100)", "source": "proto", "locator": "Sec1 hardware"},
+    {"value": "0.05", "unit": "alpha", "source": "proto", "locator": "Sec3"},
+    {"value": "6", "unit": "n/group", "source": "proto", "locator": "Sec3"},
+    {"value": "7.4", "unit": "pH", "source": "proto", "locator": "Sec2 buffer B"}
+  ],
+  "glossary": [
+    {"term": "SD", "render": "standard deviation (SD)", "source": "proto"},
+    {"term": "domain shift", "render": "domain shift", "source": "proto"}
+  ],
+  "claims": [
+    {"id": "c1", "text": "Training used Adam (learning rate 0.001, batch size 32, 50 epochs) on a single A100 GPU.", "type": "fact", "evidence": [{"source": "proto", "locator": "Sec1", "strength": "established", "supports": "full"}], "citation_ids": []},
+    {"id": "c2", "text": "Groups were compared with a two-sample t-test (alpha 0.05, n=6 per group); variability reported as SD.", "type": "fact", "evidence": [{"source": "proto", "locator": "Sec3", "strength": "established", "supports": "full"}], "citation_ids": []},
+    {"id": "c3", "text": "Weight decay is not specified in the protocol.", "type": "fact", "evidence": [{"source": "proto", "locator": "Sec1", "strength": "established", "supports": "full"}], "citation_ids": []}
+  ],
+  "required_sections": ["Methods", "Experiments"],
+  "sections": [
+    {"id": "s1", "level": 1, "heading": "Methods", "role": "Methods", "paragraphs": [
+      {"id": "p1", "text": "Model M was trained on dataset D (version 2.1) with a stratified 80/10/10 train/validation/test split (seed 42); full hyperparameters are listed in the parameter table.", "claims": ["c1"], "source": "proto"},
+      {"id": "p2", "text": "Optimization used Adam with learning rate 0.001, batch size 32, for 50 epochs on a single A100 GPU.", "claims": ["c1"], "source": "proto"},
+      {"id": "p3", "text": "Reagent R and buffer B (pH 7.4) were used; equipment and reagent details are tabulated.", "claims": [], "source": "proto"}
+    ]},
+    {"id": "s2", "level": 1, "heading": "Experiments", "role": "Experiments", "paragraphs": [
+      {"id": "p4", "text": "Group comparisons used a two-sample t-test (alpha 0.05, n=6 per group); variability is reported as SD.", "claims": ["c2"], "source": "proto"},
+      {"id": "p5", "text": "Weight decay is not reported in the protocol and is flagged for author confirmation.", "claims": ["c3"], "source": "proto"}
+    ]}
+  ],
+  "parameters": [
+    {"name": "learning_rate", "value": "0.001", "unit": "", "target": "Adam optimizer", "status": "reported", "source": "proto", "locator": "Sec1"},
+    {"name": "batch_size", "value": "32", "unit": "samples", "target": "training", "status": "reported", "source": "proto", "locator": "Sec1"},
+    {"name": "epochs", "value": "50", "unit": "epochs", "target": "training", "status": "reported", "source": "proto", "locator": "Sec1"},
+    {"name": "seed", "value": "42", "unit": "", "target": "split/shuffle", "status": "reported", "source": "proto", "locator": "Sec1"},
+    {"name": "split", "value": "80/10/10", "unit": "train/val/test", "target": "dataset D", "status": "reported", "source": "proto", "locator": "Sec1"},
+    {"name": "alpha", "value": "0.05", "unit": "", "target": "t-test", "status": "reported", "source": "proto", "locator": "Sec3"},
+    {"name": "n_per_group", "value": "6", "unit": "subjects", "target": "experiment", "status": "reported", "source": "proto", "locator": "Sec3"},
+    {"name": "gpu_model", "value": "A100", "unit": "", "target": "hardware", "status": "reported", "source": "proto", "locator": "Sec1"},
+    {"name": "weight_decay", "value": null, "unit": "", "target": "Adam optimizer", "status": "not_reported", "source": "proto", "locator": "Sec1 (absent)"}
+  ],
+  "equipment": [{"name": "A100 GPU", "count": 1, "source": "proto", "locator": "Sec1"}],
+  "reagents": [
+    {"name": "Reagent R", "vendor": "V", "lot": "L123", "source": "proto", "locator": "Sec2"},
+    {"name": "Buffer B", "pH": "7.4", "source": "proto", "locator": "Sec2"}
+  ],
+  "statistical_methods": [{"name": "two-sample t-test", "alpha": "0.05", "n": "6", "variability": "SD", "source": "proto", "locator": "Sec3"}],
+  "datasets": [{"name": "D", "version": "2.1", "size": 10000, "split": "80/10/10", "seed": 42, "source": "proto", "locator": "Sec1"}],
+  "reproducibility": {"code_version": null, "environment": "1x A100 GPU", "seed": 42, "commands": null, "data_access": "dataset D v2.1"},
+  "exports": [{"format": "md"}, {"format": "docx"}, {"format": "csv"}],
+  "provenance": {"pipeline": "material -> writing IR -> validate -> editable artifact -> result", "skill_version": "1.0.0", "changes": []},
+  "uncertainty": [
+    {"item": "weight_decay", "reason": "not specified in protocol", "impact": "cannot reproduce optimizer exactly", "handling": "not_reported; human_confirm"},
+    {"item": "code_version/commands", "reason": "not provided", "impact": "reproducibility checklist incomplete", "handling": "not_reported; human_confirm"}
+  ]
+}

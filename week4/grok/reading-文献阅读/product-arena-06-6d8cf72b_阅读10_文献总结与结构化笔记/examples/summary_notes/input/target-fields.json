@@ -1,0 +1,3 @@
+{
+  "fields": ["research_question", "data", "methods", "results", "conclusion", "limitations"]
+}

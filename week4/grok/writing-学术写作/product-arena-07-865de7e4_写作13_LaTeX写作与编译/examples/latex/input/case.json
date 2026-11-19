@@ -1,0 +1,16 @@
+{
+  "case_id": "example-latex-001",
+  "track": "writing",
+  "kind": "latex",
+  "title": "LaTeX source from content (SYNTHETIC EXAMPLE)",
+  "audience": "peers",
+  "genre": "journal_article",
+  "template": "article",
+  "output_contract": {
+    "latex_source": {"format": "tex", "desc": "compilable main.tex"},
+    "references_bib": {"format": "bib", "desc": "references.bib"},
+    "structure_check": {"format": "json", "desc": "balanced braces/environments + cite/ref checks"},
+    "result_json": {"format": "json", "desc": "structured result with sources/status"}
+  },
+  "note": "SYNTHETIC interface demo only; not a formal contest case. Local env has no LaTeX compiler; structure validated, compile deferred to runtime latex-compiler."
+}

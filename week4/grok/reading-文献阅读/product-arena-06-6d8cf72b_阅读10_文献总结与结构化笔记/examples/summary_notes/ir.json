@@ -1,0 +1,46 @@
+{
+  "ir_version": "1.0",
+  "case_id": "synthetic-summary-notes-001",
+  "kind": "summary_notes",
+  "sources": [
+    {"id": "S1", "path": "material.md", "title": "SYNTHETIC example paper"}
+  ],
+  "sections": [
+    {"id": "SEC1", "title": "Introduction", "level": 1, "parent_id": null, "paragraph_ids": ["P1"]},
+    {"id": "SEC2", "title": "Data", "level": 1, "parent_id": null, "paragraph_ids": ["P2"]},
+    {"id": "SEC3", "title": "Methods", "level": 1, "parent_id": null, "paragraph_ids": ["P3"]},
+    {"id": "SEC4", "title": "Results", "level": 1, "parent_id": null, "paragraph_ids": ["P4"]},
+    {"id": "SEC5", "title": "Conclusion", "level": 1, "parent_id": null, "paragraph_ids": ["P5"]},
+    {"id": "SEC6", "title": "Limitations", "level": 1, "parent_id": null, "paragraph_ids": ["P6"]}
+  ],
+  "items": [
+    {"field_id": "research_question", "value": "Does thermal annealing improve the operational stability of perovskite solar cells?",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P1", "quote": "Does thermal annealing improve the operational stability of perovskite solar cells?"}]},
+    {"field_id": "data", "value": "30 spin-coated perovskite films (1 cm2 each) from a single batch",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P2", "quote": "We used 30 spin-coated perovskite films (1 cm2 each) from a single batch."}]},
+    {"field_id": "methods", "value": "Films were annealed at 100 C for 10 min in nitrogen; controls were unannealed. Efficiency was tracked under 1 sun illumination at 25 C.",
+     "kind": "reported", "status": "reported", "condition": "100 C, 10 min, nitrogen; 1 sun, 25 C",
+     "evidence": [{"source": "S1", "paragraph_id": "P3", "quote": "Films were annealed at 100 C for 10 min in nitrogen; controls were unannealed. Efficiency was tracked under 1 sun illumination at 25 C."}]},
+    {"field_id": "results", "value": "Annealed films retained 95% of initial efficiency after 500 h, versus 70% for controls.",
+     "kind": "reported", "status": "reported", "units": "%", "condition": "after 500 h, 1 sun, 25 C",
+     "evidence": [{"source": "S1", "paragraph_id": "P4", "quote": "Annealed films retained 95% of initial efficiency after 500 h, versus 70% for controls."}]},
+    {"field_id": "conclusion", "value": "Under the tested conditions, moderate thermal annealing improves operational stability.",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P5", "quote": "Under the tested conditions, moderate thermal annealing improves operational stability."}]},
+    {"field_id": "limitations", "value": "Only one batch and one illumination condition were tested; outdoor degradation was not studied.",
+     "kind": "reported", "status": "reported",
+     "evidence": [{"source": "S1", "paragraph_id": "P6", "quote": "Only one batch and one illumination condition were tested; outdoor degradation was not studied."}]}
+  ],
+  "claims": [
+    {"id": "C1", "text": "Annealing improves retained efficiency under the tested conditions",
+     "subclaims": [
+       {"text": "Annealed films retained 95% after 500 h vs 70% for controls", "support": "supports",
+        "evidence": [{"source": "S1", "paragraph_id": "P4", "quote": "Annealed films retained 95% of initial efficiency after 500 h, versus 70% for controls."}]}
+     ]}
+  ],
+  "unanswered_parts": [],
+  "uncertainty": [],
+  "provenance": {"changes": [{"step": "example", "note": "SYNTHETIC interface demo; skeleton follows material.md sections"}]}
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "synthetic-design-001",
+  "output_contract": {
+    "protocol_md": {"type": "markdown", "desc": "editable experiment protocol"},
+    "protocol_json": {"type": "json", "desc": "structured design artifact"}
+  }
+}

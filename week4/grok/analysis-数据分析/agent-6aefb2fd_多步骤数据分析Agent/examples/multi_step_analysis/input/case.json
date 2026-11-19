@@ -1,0 +1,8 @@
+{
+  "case_id": "EXAMPLE-multi-step-001",
+  "output_contract": {
+    "pipeline_json": {"type": "json", "desc": "step statuses + metrics + back-fill checks"},
+    "report_md": {"type": "markdown", "desc": "end-to-end report with same-source numbers"},
+    "provenance_json": {"type": "json", "desc": "step -> inputs/outputs/status map"}
+  }
+}

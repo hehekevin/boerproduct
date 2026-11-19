@@ -1,0 +1,130 @@
+{
+  "ir_version": "1.0",
+  "kind": "patent_search",
+  "example_label": "SYNTHETIC interface demo — NOT a formal answer",
+  "sources": [
+    {
+      "id": "S1",
+      "path": "uspto_facsimile_p1.md",
+      "type": "md",
+      "name": "synthetic USPTO-style facsimile P1"
+    },
+    {
+      "id": "S2",
+      "path": "record_p2.json",
+      "type": "json",
+      "name": "synthetic authorized record P2"
+    },
+    {
+      "id": "S3",
+      "path": "tech_paper.md",
+      "type": "md",
+      "name": "synthetic comparison paper"
+    },
+    {
+      "id": "S4",
+      "path": "task.md",
+      "type": "md",
+      "name": "synthetic task"
+    }
+  ],
+  "queries": [
+    {
+      "id": "Q1",
+      "query_string": "\"solid electrolyte\" AND sulfide AND Li6PS5Cl",
+      "database": "provided patent corpus",
+      "source_id": "S4"
+    },
+    {
+      "id": "Q2",
+      "query_string": "sulfide solid electrolyte stability (scientific literature)",
+      "database": "provided paper corpus",
+      "source_id": "S4"
+    }
+  ],
+  "patents": [
+    {
+      "id": "P1",
+      "title": "Sulfide solid electrolyte with improved stability",
+      "numbers": {
+        "publication": "US 2023/0123456 A1",
+        "application": "17/123,456"
+      },
+      "assignee": "Demo Energy Inc.",
+      "filing_date": "2021-03-15",
+      "publication_date": "2023-04-20",
+      "source_id": "S1",
+      "authorization": "green",
+      "claims": [
+        {
+          "version": "as_published_A1",
+          "locator": {
+            "source_id": "S1",
+            "page": 3,
+            "quote": "1. A solid electrolyte comprising Li6PS5Cl doped with 0.1-2 mol% LiI."
+          },
+          "text_snippet": "1. A solid electrolyte comprising Li6PS5Cl doped with 0.1-2 mol% LiI."
+        }
+      ],
+      "family_links": [
+        {
+          "to": "P2",
+          "basis": "P2 record claims priority of 17/123,456 (observed link)",
+          "source_id": "S2"
+        }
+      ],
+      "ocr_boundary": "claims page right margin cut; dependent claims 2-5 partially unreadable",
+      "risk_flags": [
+        "legal_status UNKNOWN (no official register in provided sources)",
+        "OCR boundary on dependent claims"
+      ]
+    },
+    {
+      "id": "P2",
+      "title": "Sulfide solid electrolyte battery cell",
+      "numbers": {
+        "publication": "US 2024/0765432 A1",
+        "application": "18/222,333"
+      },
+      "assignee": "Demo Energy Inc.",
+      "filing_date": "2023-06-01",
+      "publication_date": "2024-03-10",
+      "source_id": "S2",
+      "authorization": "green",
+      "claims": [],
+      "risk_flags": [
+        "legal_status UNKNOWN (no official register in provided sources)"
+      ]
+    }
+  ],
+  "records": [
+    {
+      "id": "T1",
+      "title": "Sulfide versus halide solid electrolytes: a comparative study",
+      "authors": "Demo Authors",
+      "year": 2024,
+      "journal": "Demo J Mater",
+      "doi": "10.1000/demo.901",
+      "source_id": "S3",
+      "query_id": "Q2",
+      "snippet": "Sulfide versus halide solid electrolytes: a comparative study. DOI: 10.1000/demo.901"
+    }
+  ],
+  "uncertainty": [
+    {
+      "item": "P1/P2 legal status",
+      "reason": "current official legal status not verifiable from the provided finite corpus; UNKNOWN with human_confirm",
+      "handling": "human_confirm"
+    },
+    {
+      "item": "P1 dependent claims",
+      "reason": "OCR boundary cuts claims 2-5; scope per as_published version only",
+      "handling": "human_confirm"
+    }
+  ],
+  "provenance": {
+    "pipeline": "material -> IR -> validate -> compute -> artifact -> result",
+    "changes": []
+  },
+  "case_id": "EXAMPLE-patent_search-001"
+}

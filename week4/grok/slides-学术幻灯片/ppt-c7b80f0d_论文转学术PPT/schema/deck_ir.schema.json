@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DeckIR",
+  "description": "Source-bound intermediate representation for an academic presentation. Every page claim/bullet/figure carries a pointer to the paper/material so the deck is independently verifiable. Shared by the three slides-track skills.",
+  "type": "object",
+  "required": ["ir_version", "case_id", "kind", "pages", "provenance"],
+  "properties": {
+    "ir_version": {"type": "string", "const": "1.0"},
+    "case_id": {"type": "string"},
+    "kind": {"type": "string", "enum": ["academic_ppt", "content_organization", "template_adaptation"]},
+    "title": {"type": "string"},
+    "audience": {"type": "string", "description": "e.g. committee / peers / reviewers / fund panel; drives background depth & terminology."},
+    "goal": {"type": "string", "description": "What this talk must achieve (checkable)."},
+    "duration_min": {"type": "number"},
+    "slide_count_target": {"type": "integer"},
+    "template": {
+      "type": "object",
+      "properties": {
+        "path": {"type": "string", "description": "Runtime-provided master/layout .pptx (from /input). If absent, a programmatic master is created."},
+        "theme_font": {"type": "string"},
+        "cjk_font": {"type": "string"},
+        "title_pt": {"type": "number", "default": 28},
+        "body_pt": {"type": "number", "default": 18},
+        "min_pt": {"type": "number", "default": 14},
+        "accent": {"type": "string", "default": "#0C5DA5"},
+        "footer": {"type": "string"},
+        "max_bullets": {"type": "integer", "default": 5},
+        "max_words_per_bullet": {"type": "integer", "default": 22}
+      }
+    },
+    "sources": {"type": "array", "items": {"type": "object", "required": ["id", "locator"], "properties": {"id": {"type": "string"}, "locator": {"type": "string"}, "kind": {"type": "string"}, "version": {"type": "string"}}}},
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "role", "claim"],
+        "properties": {
+          "id": {"type": "string"},
+          "role": {"type": "string", "enum": ["title", "outline", "background", "question", "method", "result", "discussion", "limitation", "conclusion", "qa", "backup", "section"]},
+          "layout": {"type": "string", "description": "Template layout name to inherit (title_slide / title_content / two_content / picture / section / blank)."},
+          "claim": {"type": "string", "description": "The single sentence this page asserts (source-bound)."},
+          "bullets": {"type": "array", "items": {"type": "object", "properties": {"text": {"type": "string"}, "source": {"type": "string"}, "source_locator": {"type": "string"}}}},
+          "figures": {"type": "array", "items": {"type": "object", "properties": {"ref": {"type": "string", "description": "e.g. Fig3 / Table2"}, "image_path": {"type": "string", "description": "Cited original image (do not redraw if only citable)."}, "chart": {"type": "object", "description": "If redrawable: a render_chart spec bound to source data."}, "caption": {"type": "string"}, "source": {"type": "string"}, "source_locator": {"type": "string"}}}},
+          "notes": {"type": "string", "description": "Speaker notes; must correspond to the page claim, not repeat bullets verbatim."},
+          "evidence_strength": {"type": "string", "enum": ["established", "supported", "hypothesized", "uncertain"]},
+          "source": {"type": "string"},
+          "source_locator": {"type": "string"}
+        }
+      }
+    },
+    "qa": {"type": "array", "items": {"type": "object", "properties": {"question": {"type": "string"}, "answer_points": {"type": "array", "items": {"type": "string"}}, "backup_page": {"type": "string"}, "source": {"type": "string"}}}},
+    "provenance": {"type": "object", "required": ["pipeline"], "properties": {"pipeline": {"type": "string"}, "skill_version": {"type": "string"}, "page_map": {"type": "object", "description": "page_id -> {source, source_locator, figures[], claim}"}, "changes": {"type": "array"}, "template_inheritance": {"type": "object"}}},
+    "uncertainty": {"type": "array"},
+    "exports": {"type": "array", "items": {"type": "object", "properties": {"format": {"type": "string", "enum": ["pptx", "pdf", "png"]}}}}
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "_note": "示意结构，非正式案例结果：extract_template.py 产出的 checklist.json 形态示意",
+  "items": [
+    {"item_id": null, "category": "margin", "name": "页边距", "checkable": "docx", "check_type": "numeric",
+     "template_value": "上下2.54cm 左右3.17cm", "numeric": {"cm": 2.54},
+     "source": {"file": "template.md", "line": 12, "quote": "页边距上下2.54cm 左右3.17cm"}},
+    {"item_id": null, "category": "columns", "name": "栏数", "checkable": "docx", "check_type": "enum",
+     "template_value": "双栏", "numeric": {"count": 2},
+     "source": {"file": "template.md", "line": 13, "quote": "正文采用双栏排版"}},
+    {"item_id": null, "category": "font_size", "name": "正文字号", "checkable": "docx", "check_type": "numeric",
+     "template_value": "小四", "numeric": {"pt": 12}, "scope": "body",
+     "source": {"file": "template.md", "line": 14, "quote": "正文宋体小四"}},
+    {"item_id": null, "category": "citation", "name": "参考文献样式", "checkable": "md", "check_type": "enum",
+     "template_value": "GB/T 7714 顺序编码制", "numeric": null,
+     "source": {"file": "template.md", "line": 20, "quote": "参考文献采用GB/T 7714顺序编码制"}}
+  ],
+  "defaulted": [],
+  "conflicts": [],
+  "required_sections": ["摘要", "引言", "方法", "结果", "结论", "参考文献"],
+  "sources": [{"file": "template.md", "tag": "template"}],
+  "unreadable": [],
+  "gates": {"input_dir": "enforced", "template_found": "enforced", "items_extracted": "enforced"},
+  "note": "示意：规格条目均可按 source{file,line,quote} 回溯；item_id 由编号器补齐"
+}

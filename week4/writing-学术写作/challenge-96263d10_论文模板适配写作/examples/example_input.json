@@ -1,0 +1,27 @@
+{
+  "_note": "示意结构，非正式案例结果：sections/S##.json 单章节文件的最小输入示意",
+  "title": "（示意标题）待适配稿件",
+  "meta": {"genre": "示意", "version": "v1"},
+  "sections": [
+    {
+      "order": "01",
+      "heading": "摘要",
+      "level": 1,
+      "paragraphs": [
+        "示意段落：正文文字，此处不应包含材料外事实；题注/交叉引用由 adapt_build 按模板重编号。",
+        {"type": "table", "caption": "表1（示意）三线表", "rows": [["组别", "24h"], ["对照", "12.3±1.1"]]},
+        {"type": "figure", "caption": "图1（示意）结果图", "path": "", "source_locator": "SRC:M02:p3"}
+      ],
+      "comments": ["示意审校备注"],
+      "notes_for_human": ["示意：模板冲突处需人工确认"]
+    },
+    {
+      "order": "02",
+      "heading": "1 引言",
+      "level": 1,
+      "paragraphs": ["示意段落：引用 [1] 须在参考文献表有条目。"]
+    }
+  ],
+  "references": ["[1] 示意条目. 期刊名, 2024. DOI:10.0000/example（示意）"],
+  "notes_for_human": ["示意：材料缺口需人工确认项"]
+}

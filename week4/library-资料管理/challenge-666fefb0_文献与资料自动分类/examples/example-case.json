@@ -1,0 +1,22 @@
+{
+  "_note": "合成示意案例（非正式答案、非真实文献）：仅用于本地自测整条链路。所有标题/摘要/DOI 均为虚构。",
+  "case_id": "demo-litclassify-001",
+  "task_type": "literature_classification_organize",
+  "classification_goal": {
+    "question": "把混杂的科研资料目录按多级体系（学科主题/文献类型/年份段）归类，登记重复与边界情形",
+    "scope": "期刊论文、预印本、数据集说明与扫描件共 8 个条目；跨主题、多标签与元数据缺失照实登记"
+  },
+  "files": [
+    {"file_id": "F01", "title": "Attention-based neural networks for protein structure prediction", "year": 2022, "doc_type": "journal_article", "doi": "10.1000/demo-001", "journal": "J. Comput. Biol. Demo", "abstract": "We propose an attention-based neural network for protein structure prediction, trained on 12,000 curated structures. The deep learning model improves TM-score by 0.08 over prior baselines. Code and weights are released for reproducibility."},
+    {"file_id": "F02", "title": "Attention-based neural networks for protein structure prediction (preprint v1)", "year": 2021, "doc_type": "preprint", "doi": "10.1000/demo-001", "abstract": "Preprint v1 of the protein structure prediction study: we propose an attention-based neural network for protein structure prediction trained on 12,000 curated structures."},
+    {"file_id": "F03", "title": "Hippocampal replay and spatial memory consolidation during sleep", "year": 2019, "doc_type": "journal_article", "journal": "J. Neurosci. Rep. Demo", "abstract": "We record hippocampal replay in sleeping rats and relate replay events to spatial memory accuracy. Results link sleep replay to memory consolidation."},
+    {"file_id": "F04", "title": "A survey of machine learning methods in climate science", "year": 2023, "doc_type": "journal_article", "journal": "Annu. Rev. Climate Demo", "abstract": "A survey of machine learning methods applied to climate science, covering emulation, downscaling and parameterization. We discuss open challenges in climate modeling."},
+    {"file_id": "F05", "title": "scan_0031.pdf", "year": null, "doc_type": "scan", "filename": "scan_0031.pdf", "abstract": ""},
+    {"file_id": "F06", "title": "Dataset: Global sea surface temperature reanalysis v2 (1980-2020)", "year": 2020, "doc_type": "dataset", "abstract": "Gridded global sea surface temperature reanalysis product v2, monthly means from 1980 to 2020, 0.25 degree resolution."},
+    {"file_id": "F07", "title": "Reward shaping in multi-agent reinforcement learning for urban traffic signal control", "year": 2024, "doc_type": "journal_article", "journal": "Trans. Urban AI Demo", "abstract": "We study reward shaping in multi-agent reinforcement learning for urban traffic signal control across three cities. Shaped agents converge faster and reduce average waiting time by 12%."},
+    {"file_id": "F08", "title": "Hippocampal replay and spatial memory consolidation during sleep", "year": 2019, "doc_type": "journal_article", "filename": "replay-memory-paper (1).pdf", "source": "local_downloads", "abstract": "We record hippocampal replay in sleeping rats and relate replay events to spatial memory accuracy. Results link sleep replay to memory consolidation."}
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "_note": "示意输出（非正式答案）：与 examples/example-case.json 配套的合成示例，用于演示接口与判定格式，不冒充正式案例结果。",
+  "case_id": "demo-litclassify-001",
+  "status": "answered",
+  "result": {
+    "material_gaps": ["F05 扫描件无文本层且元数据缺失（year/doc_type 之外无可用字段）"],
+    "environment": {"python_version": "3.13.x（示意）", "packages": "stdlib-only", "seed": null, "hardware_note": "本地自测环境，仅作示意"},
+    "classification_goal": {"question": "把混杂的科研资料目录按多级体系（学科主题/文献类型/年份段）归类，登记重复与边界情形", "scope": "期刊论文、预印本、数据集说明与扫描件共 8 个条目", "corpus_note": "files[] 共 8 条；以实际 case.json 为准"},
+    "taxonomy": {
+      "declared_at": "step1",
+      "dimensions": [
+        {"dim_id": "D1", "name": "学科主题（主类目唯一）", "nodes": [
+          {"node_id": "T-01", "path": "机器学习/深度学习", "keywords": ["deep learning", "neural network", "attention", "machine learning", "神经网络", "深度学习"]},
+          {"node_id": "T-02", "path": "机器学习/强化学习", "keywords": ["reinforcement learning", "强化学习", "reward", "multi-agent"]},
+          {"node_id": "T-03", "path": "神经科学/记忆", "keywords": ["hippocampal", "memory", "sleep", "记忆", "睡眠"]},
+          {"node_id": "T-04", "path": "气候科学/气候模拟", "keywords": ["climate", "sea surface temperature", "气候"]}
+        ]},
+        {"dim_id": "D2", "name": "文献类型（按元数据多标签）", "nodes": [
+          {"node_id": "T-10", "path": "类型/期刊论文", "keywords": []},
+          {"node_id": "T-11", "path": "类型/预印本", "keywords": ["preprint"]},
+          {"node_id": "T-12", "path": "类型/数据集", "keywords": ["dataset"]}
+        ]},
+        {"dim_id": "D3", "name": "年份段（按元数据多标签）", "nodes": [
+          {"node_id": "T-20", "path": "年份/2021-2025", "keywords": []},
+          {"node_id": "T-21", "path": "年份/2015-2020", "keywords": []}
+        ]}
+      ],
+      "multi_label_policy": "主类目（D1）唯一；D2/D3 按元数据逐维打标签；跨学科命中 ≥2 个 D1 节点且分差 ≤1 时判 multi_domain 并登记待复核",
+      "boundary_policy": "multi_domain / missing_fields / duplicate / unreadable 四类边界情形必须写 boundary 字段并登记 pending_review"
+    },
+    "items": [
+      {"item_id": "F01", "source_ref": "files[0]", "title": "Attention-based neural networks for protein structure prediction", "fields": {"year": 2022, "doc_type": "journal_article", "doi": "10.1000/demo-001", "journal": "J. Comput. Biol. Demo"},
+       "primary_path": "T-01", "tags": ["T-01", "T-10", "T-20"], "confidence": "high",
+       "rationale": "摘要明示 attention-based neural network 与 deep learning 模型，命中 T-01 关键词 3 处且显著领先；类型/年份按元数据打标签",
+       "evidence_quote": "The deep learning model improves TM-score by 0.08 over prior baselines.", "evidence_location": "files[0].abstract",
+       "key_signature": "doi:10.1000/demo-001", "mechanical": {"suggested_path": "T-01", "keyword_hits": 3, "margin": 3, "confidence_suggestion": "high"},
+       "boundary": null, "pending_reason": null, "judged": true},
+      {"item_id": "F02", "source_ref": "files[1]", "title": "Attention-based neural networks for protein structure prediction (preprint v1)", "fields": {"year": 2021, "doc_type": "preprint", "doi": "10.1000/demo-001"},
+       "primary_path": "T-01", "tags": ["T-01", "T-11", "T-20"], "confidence": "high",
+       "rationale": "DOI 与 F01 相同（同键），摘要同一研究；按 preprint_vs_published 冲突合并保留正式版 F01，主类目与 F01 一致（同键同类）",
+       "evidence_quote": "we propose an attention-based neural network for protein structure prediction trained on 12,000 curated structures", "evidence_location": "files[1].abstract",
+       "key_signature": "doi:10.1000/demo-001", "mechanical": {"suggested_path": "T-01", "keyword_hits": 2, "margin": 1, "confidence_suggestion": "medium"},
+       "boundary": "duplicate", "pending_reason": null, "judged": true},
+      {"item_id": "F03", "source_ref": "files[2]", "title": "Hippocampal replay and spatial memory consolidation during sleep", "fields": {"year": 2019, "doc_type": "journal_article", "journal": "J. Neurosci. Rep. Demo"},
+       "primary_path": "T-03", "tags": ["T-03", "T-10", "T-21"], "confidence": "high",
+       "rationale": "摘要含 hippocampal replay 与 spatial memory，命中 T-03 关键词 3 处；无 DOI，同键键取归一化标题+年份（与 F08 同键同类）",
+       "evidence_quote": "Results link sleep replay to memory consolidation.", "evidence_location": "files[2].abstract",
+       "key_signature": "title:hippocampalreplayandspatialmemoryconsolidationduringsleep@2019", "mechanical": {"suggested_path": "T-03", "keyword_hits": 3, "margin": 3, "confidence_suggestion": "high"},
+       "boundary": null, "pending_reason": null, "judged": true},
+      {"item_id": "F04", "source_ref": "files[3]", "title": "A survey of machine learning methods in climate science", "fields": {"year": 2023, "doc_type": "journal_article", "journal": "Annu. Rev. Climate Demo"},
+       "primary_path": "T-01", "tags": ["T-01", "T-04", "T-10", "T-20"], "confidence": "low",
+       "rationale": "同时命中 T-01（machine learning）与 T-04（climate）各 1 处、分差为 0，属跨主题边界情形：主类目暂取 T-01，登记 multi_domain 待人工确认",
+       "evidence_quote": "A survey of machine learning methods applied to climate science", "evidence_location": "files[3].abstract",
+       "key_signature": "title:asurveyofmachinelearningmethodsinclimatescience@2023", "mechanical": {"suggested_path": "T-01", "keyword_hits": 1, "margin": 0, "confidence_suggestion": "low"},
+       "boundary": "multi_domain", "pending_reason": null, "judged": true},
+      {"item_id": "F05", "source_ref": "files[4]", "title": "scan_0031.pdf", "fields": {"doc_type": "scan", "filename": "scan_0031.pdf"},
+       "primary_path": null, "tags": [], "confidence": null,
+       "rationale": null, "evidence_quote": null, "evidence_location": null,
+       "key_signature": "title:scan0031pdf", "mechanical": {"suggested_path": null, "keyword_hits": 0, "margin": 0, "confidence_suggestion": "low"},
+       "boundary": "missing_fields", "pending_reason": "扫描件无文本层且无标题/作者/年份元数据，机械与人工均无法归类", "judged": false},
+      {"item_id": "F06", "source_ref": "files[5]", "title": "Dataset: Global sea surface temperature reanalysis v2 (1980-2020)", "fields": {"year": 2020, "doc_type": "dataset"},
+       "primary_path": "T-04", "tags": ["T-04", "T-12", "T-21"], "confidence": "high",
+       "rationale": "说明文字明示 sea surface temperature reanalysis，唯一命中 T-04；doc_type=dataset 打 T-12 标签，2020 归 T-21 年份段",
+       "evidence_quote": "monthly means from 1980 to 2020, 0.25 degree resolution", "evidence_location": "files[5].abstract",
+       "key_signature": "title:datasetglobalseasurfacetemperaturereanalysisv219802020@2020", "mechanical": {"suggested_path": "T-04", "keyword_hits": 1, "margin": 0, "confidence_suggestion": "low"},
+       "boundary": null, "pending_reason": null, "judged": true},
+      {"item_id": "F07", "source_ref": "files[6]", "title": "Reward shaping in multi-agent reinforcement learning for urban traffic signal control", "fields": {"year": 2024, "doc_type": "journal_article", "journal": "Trans. Urban AI Demo"},
+       "primary_path": "T-02", "tags": ["T-02", "T-10", "T-20"], "confidence": "high",
+       "rationale": "标题与摘要含 reinforcement learning、reward、multi-agent，命中 T-02 关键词 3 处且无竞争类目",
+       "evidence_quote": "Shaped agents converge faster and reduce average waiting time by 12%.", "evidence_location": "files[6].abstract",
+       "key_signature": "title:rewardshapinginmultiagentreinforcementlearningforurbantrafficsignalcontrol@2024", "mechanical": {"suggested_path": "T-02", "keyword_hits": 3, "margin": 3, "confidence_suggestion": "high"},
+       "boundary": null, "pending_reason": null, "judged": true},
+      {"item_id": "F08", "source_ref": "files[7]", "title": "Hippocampal replay and spatial memory consolidation during sleep", "fields": {"year": 2019, "doc_type": "journal_article", "filename": "replay-memory-paper (1).pdf", "source": "local_downloads"},
+       "primary_path": "T-03", "tags": ["T-03", "T-10", "T-21"], "confidence": "high",
+       "rationale": "与 F03 同题同年（key_signature 相同）判为重复下载：同键同类归 T-03，conflicts 登记 merged 保留 F03 所指正式版，主类目一致",
+       "evidence_quote": "We record hippocampal replay in sleeping rats and relate replay events to spatial memory accuracy.", "evidence_location": "files[7].abstract",
+       "key_signature": "title:hippocampalreplayandspatialmemoryconsolidationduringsleep@2019", "mechanical": {"suggested_path": "T-03", "keyword_hits": 3, "margin": 3, "confidence_suggestion": "high"},
+       "boundary": "duplicate", "pending_reason": null, "judged": true}
+    ],
+    "consistency": {"key_groups": [
+      {"key": "doi:10.1000/demo-001", "item_ids": ["F01", "F02"], "suggested_paths": ["T-01"], "same": true, "rule": "doi > 归一化标题+年份 > source_ref"},
+      {"key": "title:hippocampalreplayandspatialmemoryconsolidationduringsleep@2019", "item_ids": ["F03", "F08"], "suggested_paths": ["T-03"], "same": true, "rule": "doi > 归一化标题+年份 > source_ref"}
+    ], "note": "classify_engine.py 按 key_signature 分组；同键组全部一致（示意）"},
+    "coverage": {"total_items": 8, "judged_items": 7, "classified": 7, "pending": 1, "boundary_flagged": 2, "multi_label_count": 7, "ratio": 0.875},
+    "conflicts": [
+      {"item_ids": ["F01", "F02"], "kind": "preprint_vs_published", "resolution": "merged", "evidence": "DOI 相同（10.1000/demo-001），F02 为同一研究预印本 v1；保留正式发表版 F01"},
+      {"item_ids": ["F03", "F08"], "kind": "duplicate_download", "resolution": "merged", "evidence": "同题同年（key_signature 相同）、摘要逐字一致；F08 为重复下载，保留 F03，归档 F08"}
+    ],
+    "pending_review": [
+      {"item_id": "F04", "reason": "跨主题边界：machine learning 与 climate 各命中 1 处、分差为 0，主类目归属需人工确认", "needed_action": "人工复核主类目与多标签顺序；确认后在 changelog 记录改判"},
+      {"item_id": "F05", "reason": "扫描件无文本层且元数据缺失，无法机械归类", "needed_action": "OCR 或人工录入标题/作者/年份后重跑分类"}
+    ],
+    "steps": [
+      {"step": "step0", "action": "落骨架与文献清单", "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work", "output_ref": "/app/output/result.json", "status": "done"},
+      {"step": "step1", "action": "事前声明多级分类体系", "command": "Agent 填写 result.taxonomy 与 /app/work/taxonomy.json（declared_at=step1）", "output_ref": "result.taxonomy", "status": "done"},
+      {"step": "step2", "action": "机械归类与同键分组", "command": "python3 /skills/weekly-skill/scripts/classify_engine.py --result /app/output/result.json --case /input/case.json --work-dir /app/work", "output_ref": "result.consistency", "status": "done"},
+      {"step": "step3", "action": "逐条判定：主类目/多标签/置信度/依据引用/边界登记", "command": "Agent 填写 items[].primary_path/tags/confidence/evidence_quote/boundary", "output_ref": "result.items", "status": "done"},
+      {"step": "step4", "action": "增益对照与效率计数", "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution", "output_ref": "result.gain_evidence", "status": "done"},
+      {"step": "step5", "action": "双重自检", "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json", "output_ref": "/app/work/verify_check.json", "status": "done"}
+    ],
+    "run_status": {"state": "success", "reason": null, "manual_takeover": ["F04 主类目复核", "F05 待 OCR"]},
+    "verdict": "partially_classified",
+    "verdict_basis": "8 条中 7 条已判定归类，1 条（F05）因扫描件无文本层待复核，另 2 条边界情形已登记待复核",
+    "gain_evidence": {"runs": [], "delta_normal_minus_degraded": {}, "mechanism_to_metric_map": [], "boundaries": [], "failure_conditions": []},
+    "efficiency": {"wall_clock_seconds_total": 0.0, "checker_runs": 2, "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"}
+  },
+  "claims": [
+    {"claim_id": "c-01", "text": "F01 归 T-01（机器学习/深度学习）：摘要明示 deep learning 模型且 TM-score 提升 0.08；置信度 high", "kind": "reported", "source_id": "F01", "location": "items[0]", "evidence": [{"paragraph_id": "files[0].abstract", "quote": "The deep learning model improves TM-score by 0.08 over prior baselines."}]},
+    {"claim_id": "c-02", "text": "F02 归 T-01 且与 F01 合并：DOI 相同、摘要同一研究；置信度 high", "kind": "reported", "source_id": "F02", "location": "items[1]", "evidence": [{"paragraph_id": "files[1].abstract", "quote": "we propose an attention-based neural network for protein structure prediction trained on 12,000 curated structures"}]},
+    {"claim_id": "c-03", "text": "F03 归 T-03（神经科学/记忆）：摘要含 hippocampal replay 与 memory consolidation；置信度 high", "kind": "reported", "source_id": "F03", "location": "items[2]", "evidence": [{"paragraph_id": "files[2].abstract", "quote": "Results link sleep replay to memory consolidation."}]},
+    {"claim_id": "c-04", "text": "F04 暂归 T-01 并登记 multi_domain：机器学习与气候各命中 1 处、分差 0；置信度 low", "kind": "inferred", "source_id": "F04", "location": "items[3]", "evidence": [{"paragraph_id": "files[3].abstract", "quote": "A survey of machine learning methods applied to climate science"}]},
+    {"claim_id": "c-05", "text": "F06 归 T-04（气候科学）：说明明示 sea surface temperature reanalysis；置信度 high", "kind": "reported", "source_id": "F06", "location": "items[5]", "evidence": [{"paragraph_id": "files[5].abstract", "quote": "monthly means from 1980 to 2020, 0.25 degree resolution"}]},
+    {"claim_id": "c-06", "text": "F07 归 T-02（强化学习）：reinforcement learning、reward、multi-agent 三处命中；置信度 high", "kind": "reported", "source_id": "F07", "location": "items[6]", "evidence": [{"paragraph_id": "files[6].abstract", "quote": "Shaped agents converge faster and reduce average waiting time by 12%."}]},
+    {"claim_id": "c-07", "text": "F08 与 F03 同键同类归 T-03：同题同年摘要逐字一致，判重复下载合并；置信度 high", "kind": "reported", "source_id": "F08", "location": "items[7]", "evidence": [{"paragraph_id": "files[7].abstract", "quote": "We record hippocampal replay in sleeping rats and relate replay events to spatial memory accuracy."}]}
+  ],
+  "uncertainties": {"unreported": [], "unverifiable": ["F05 无文本层，内容主题不可验证"], "conflicts": [], "human_review": ["F04 跨主题主类目需人工确认", "F05 待 OCR 后重跑分类"], "summary": "7/8 已判定（示意），1 条缺元数据待复核，2 条边界情形已登记"},
+  "changelog": [{"step": "step0", "change": "build_skeleton 落骨架"}, {"step": "step1", "change": "声明三级体系（4 学科 + 3 类型 + 2 年份段节点）"}, {"step": "step2", "change": "classify_engine 机械归类与同键分组"}, {"step": "step3", "change": "逐条判定与边界登记"}, {"step": "step4", "change": "gain_probe 双跑对照"}, {"step": "step5", "change": "verify_check + schema_guard 自检"}],
+  "self_check": [],
+  "gates": [],
+  "unbacked_numbers": [],
+  "validator_verdict": "PASS"
+}

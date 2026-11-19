@@ -1,0 +1,52 @@
+{
+  "case_id": "demo-scidb-001",
+  "_note": "合成示例案例（虚构数据，仅示意接口与流程，非正式案例答案，非正式答案）。",
+  "output_contract": ["case_id", "status", "result", "claims", "uncertainties", "changelog"],
+  "questions": [
+    {"question_id": "Q01", "text": "统计 exp_samples 中每种 sample_type 的样本数量分布。", "intent": "group_count"},
+    {"question_id": "Q02", "text": "计算 batch=B2 的样本在 measurements 中 concentration_mgml 的平均值。", "intent": "filtered_avg"},
+    {"question_id": "Q03", "text": "status 编码为 9（报废）的样本有多少条？", "intent": "coded_filter_count"},
+    {"question_id": "Q04", "text": "查询 batch=B9（不存在的批次）的样本数，验证空结果被登记而非静默丢弃。", "intent": "empty_result_boundary"}
+  ],
+  "datasets": [
+    {
+      "dataset_id": "exp_samples",
+      "columns": ["sample_id", "sample_type", "batch", "status", "collected_at"],
+      "_dict": "status 为编码型字段：1=合格, 2=待复测, 9=报废；不得当数值聚合",
+      "rows": [
+        {"sample_id": "S01", "sample_type": "A", "batch": "B1", "status": 1, "collected_at": "2026-03-01"},
+        {"sample_id": "S02", "sample_type": "A", "batch": "B1", "status": 2, "collected_at": "2026-03-01"},
+        {"sample_id": "S03", "sample_type": "A", "batch": "B2", "status": 1, "collected_at": "2026-03-02"},
+        {"sample_id": "S04", "sample_type": "B", "batch": "B1", "status": 1, "collected_at": "2026-03-02"},
+        {"sample_id": "S05", "sample_type": "B", "batch": "B2", "status": 1, "collected_at": "2026-03-03"},
+        {"sample_id": "S06", "sample_type": "B", "batch": "B2", "status": 9, "collected_at": "2026-03-03"},
+        {"sample_id": "S07", "sample_type": "C", "batch": "B1", "status": 1, "collected_at": "2026-03-04"},
+        {"sample_id": "S08", "sample_type": "C", "batch": "B2", "status": 2, "collected_at": "2026-03-04"},
+        {"sample_id": "S09", "sample_type": "C", "batch": "B2", "status": 1, "collected_at": "2026-03-05"},
+        {"sample_id": "S10", "sample_type": "A", "batch": "B2", "status": 1, "collected_at": "2026-03-05"},
+        {"sample_id": "S11", "sample_type": "B", "batch": "B3", "status": 9, "collected_at": "2026-03-06"},
+        {"sample_id": "S12", "sample_type": "C", "batch": "B3", "status": 1, "collected_at": "2026-03-06"}
+      ]
+    },
+    {
+      "dataset_id": "measurements",
+      "columns": ["meas_id", "sample_id", "concentration_mgml", "ph", "instrument", "measured_at"],
+      "_dict": "concentration_mgml 单位 mg/mL；ph 允许缺失（NA）；含 1 条重复记录 meas_id=M07",
+      "rows": [
+        {"meas_id": "M01", "sample_id": "S01", "concentration_mgml": 10.2, "ph": 7.1, "instrument": "HPLC-1", "measured_at": "2026-03-08"},
+        {"meas_id": "M02", "sample_id": "S02", "concentration_mgml": 11.5, "ph": 7.0, "instrument": "HPLC-1", "measured_at": "2026-03-08"},
+        {"meas_id": "M03", "sample_id": "S03", "concentration_mgml": 12.1, "ph": 7.2, "instrument": "HPLC-2", "measured_at": "2026-03-09"},
+        {"meas_id": "M04", "sample_id": "S04", "concentration_mgml": 9.8, "ph": 6.9, "instrument": "HPLC-2", "measured_at": "2026-03-09"},
+        {"meas_id": "M05", "sample_id": "S05", "concentration_mgml": 13.4, "ph": null, "instrument": "HPLC-1", "measured_at": "2026-03-10"},
+        {"meas_id": "M06", "sample_id": "S06", "concentration_mgml": 8.7, "ph": 7.4, "instrument": "HPLC-1", "measured_at": "2026-03-10"},
+        {"meas_id": "M07", "sample_id": "S07", "concentration_mgml": 14.9, "ph": 7.3, "instrument": "HPLC-2", "measured_at": "2026-03-11"},
+        {"meas_id": "M07", "sample_id": "S07", "concentration_mgml": 14.9, "ph": 7.3, "instrument": "HPLC-2", "measured_at": "2026-03-11"},
+        {"meas_id": "M08", "sample_id": "S08", "concentration_mgml": 10.6, "ph": null, "instrument": "HPLC-1", "measured_at": "2026-03-11"},
+        {"meas_id": "M09", "sample_id": "S09", "concentration_mgml": 12.8, "ph": 7.5, "instrument": "HPLC-2", "measured_at": "2026-03-12"},
+        {"meas_id": "M10", "sample_id": "S10", "concentration_mgml": 11.9, "ph": 7.1, "instrument": "HPLC-1", "measured_at": "2026-03-12"},
+        {"meas_id": "M11", "sample_id": "S11", "concentration_mgml": 9.4, "ph": 6.8, "instrument": "HPLC-2", "measured_at": "2026-03-13"},
+        {"meas_id": "M12", "sample_id": "S12", "concentration_mgml": 15.3, "ph": 7.6, "instrument": "HPLC-1", "measured_at": "2026-03-13"}
+      ]
+    }
+  ]
+}

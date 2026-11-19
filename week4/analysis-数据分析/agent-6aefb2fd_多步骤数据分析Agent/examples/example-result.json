@@ -1,0 +1,143 @@
+{
+  "case_id": "demo-analysis-001",
+  "status": "answered",
+  "_note": "本文件为合成示例的示意输出（示意，非正式答案）。标题、数字与结论均为虚构演示数据，仅用于说明接口与自测链路。",
+  "result": {
+    "material_gaps": [],
+    "environment": {"python_version": "3.11（示意）", "packages": "stdlib-only", "seed": null, "hardware_note": null},
+    "task_scope": {
+      "question": "三组水灰比配比对混凝土 28 天抗压强度的影响（示意案例）",
+      "table_ids": ["concrete-trial"],
+      "plan_version": "analysis-plan-v1"
+    },
+    "plan": {
+      "version": "analysis-plan-v1",
+      "declared_at": "2026-11-19T00:00:00Z（示意时间戳）",
+      "steps": [
+        {"step_id": "S1", "name": "导入与字段核对", "depends_on": [],
+         "inputs": ["raw_table"], "outputs": ["schema_report"],
+         "checkpoint": "字段名/类型/单位核对，产出字段映射"},
+        {"step_id": "S2", "name": "清洗（缺失/异常/重复）", "depends_on": ["S1"],
+         "inputs": ["raw_table", "schema_report"], "outputs": ["clean_table", "clean_log"],
+         "checkpoint": "行数守恒：原始行数=保留+填补+剔除，规则逐条登记"},
+        {"step_id": "S3", "name": "统计检验", "depends_on": ["S2"],
+         "inputs": ["clean_table"], "outputs": ["stats_result"],
+         "checkpoint": "检验前提（分布/样本量）+ 关键数值复算"},
+        {"step_id": "S4", "name": "可视化", "depends_on": ["S3"],
+         "inputs": ["stats_result"], "outputs": ["figure_spec"],
+         "checkpoint": "图型选择与坐标轴/聚合层级和底层数据一致"},
+        {"step_id": "S5", "name": "报告生成", "depends_on": ["S3", "S4"],
+         "inputs": ["stats_result", "figure_spec"], "outputs": ["report"],
+         "checkpoint": "正文数字与 stats_result 同源，可回算"}
+      ]
+    },
+    "dag": {"nodes": [], "edges": [], "acyclic": true, "computed_by": "pipeline_run.py（示意，运行时回填）"},
+    "steps": [
+      {"step_id": "S1", "status": "done",
+       "command": "agent 执行：读取 tables[concrete-trial] 并对照 data_dictionary",
+       "inputs": ["raw_table: concrete-trial (12 rows)"],
+       "outputs": ["schema_report: 5 列齐全，类型与单位一致（water_ratio 无量纲，strength_mpa MPa）"],
+       "artifacts": {"schema_report": {"columns": ["batch", "mix_id", "water_ratio", "curing_days", "strength_mpa"], "n_rows": 12, "type_mismatches": 0}},
+       "checks": [
+         {"check_id": "S1-SCHEMA-01", "kind": "schema", "passed": true, "detail": "5 列与 data_dictionary 一致"},
+         {"check_id": "S1-RECOMP-01", "kind": "recompute", "passed": true, "detail": "单位与量纲逐列复核，无混淆"}
+       ]},
+      {"step_id": "S2", "status": "done",
+       "command": "agent 执行：去重（保留首次观测）+ 缺失填补（组均值）",
+       "inputs": ["raw_table", "schema_report"],
+       "outputs": ["clean_table (11 rows)", "clean_log: 1 行重复剔除、1 处缺失填补"],
+       "artifacts": {"clean_summary": {"raw_rows": 12, "kept": 11, "removed_duplicate_rows": 1, "imputed_cells": 1, "dropped_other": 0},
+                      "clean_log": ["B1 批次 38.2 行与首行完全重复，按『保留首次观测』剔除", "B3 批次 strength_mpa 缺失，以 M-low 组有效均值 38.5 填补并登记"]},
+       "checks": [
+         {"check_id": "S2-SCHEMA-01", "kind": "schema", "passed": true, "detail": "行数守恒：12=11+1+0"},
+         {"check_id": "S2-RECOMP-01", "kind": "recompute", "passed": true, "detail": "复算 12-1=11 行，填补计数=1"}
+       ]},
+      {"step_id": "S3", "status": "done",
+       "command": "agent 执行：M-low / M-mid / M-high 分组均值统计与复算",
+       "inputs": ["clean_table (11 rows)"],
+       "outputs": ["stats_result: 三组均值与组间差异"],
+       "artifacts": {"stats_result": {"group_low": {"n": 5, "mean_mpa": 38.5}, "group_mid": {"n": 3, "mean_mpa": 33.2}, "group_high": {"n": 3, "mean_mpa": 29.5}, "diff_low_minus_high_mpa": 9.0, "premise_note": "样本量为示意小样本，正式案例按前提校验选择方法并登记"}},
+       "checks": [
+         {"check_id": "S3-SCHEMA-01", "kind": "schema", "passed": true, "detail": "stats_result 含组均值/样本量/差异"},
+         {"check_id": "S3-RECOMP-01", "kind": "recompute", "passed": true, "detail": "复算 (38.2+38.5+38.9+38.4+38.5)/5=38.5；(29.1+29.8+29.6)/3=29.5"}
+       ]},
+      {"step_id": "S4", "status": "degraded",
+       "command": "agent 执行：分组均值条形图选型（带误差表示说明）",
+       "inputs": ["stats_result"],
+       "outputs": ["figure_spec: 分组均值条形图数据规格（渲染降级）"],
+       "artifacts": {"figure_spec": {"chart_type": "bar", "y_axis": "28 天抗压强度均值（MPa）", "groups": ["M-low", "M-mid", "M-high"], "values_mpa": [38.5, 33.2, 29.5], "aggregation_level": "组均值（n=5/3/3）", "error_note": "示意案例样本量小，误差棒以范围标注说明代替"}},
+       "checks": [
+         {"check_id": "S4-SCHEMA-01", "kind": "schema", "passed": true, "detail": "figure_spec 含图型/坐标轴/聚合层级"},
+         {"check_id": "S4-RECOMP-01", "kind": "recompute", "passed": false, "detail": "渲染超时，图形未实际生成——降级为数据规格并登记 fallback"}
+       ]},
+      {"step_id": "S5", "status": "done",
+       "command": "agent 执行：报告生成，正文数字全部回填自 stats_result",
+       "inputs": ["stats_result", "figure_spec"],
+       "outputs": ["report_markdown: 组会材料说明（数字同源）"],
+       "artifacts": {"report_markdown": {"headline": "组间差异 9.0 MPa（38.5 vs 29.5）", "sections": ["清洗口径与行数守恒", "分组统计与前提说明", "图表口径与降级说明", "结论与不确定性"], "source_of_truth": "result.steps[S3].artifacts.stats_result"}},
+       "checks": [
+         {"check_id": "S5-SCHEMA-01", "kind": "schema", "passed": true, "detail": "报告四节齐备，标注图表降级"},
+         {"check_id": "S5-RECOMP-01", "kind": "recompute", "passed": true, "detail": "正文 9.0=38.5−29.5 回算一致"}
+       ]}
+    ],
+    "fallbacks": [
+      {"step_id": "S4", "failure_mode": "图形渲染超时（示意环境无图形栈）",
+       "degraded_action": "降级输出 figure_spec 数据规格（图型/坐标轴/数值），并在报告中登记图形未实际生成",
+       "registered": true}
+    ],
+    "middle_checks": {"total": 10, "passed": 9, "failed": 1, "pass_rate": 0.9, "computed_by": "verify_check.py（示意，运行时回填）"},
+    "artifacts": {"clean_summary": {"raw_rows": 12, "kept": 11, "removed_duplicate_rows": 1, "imputed_cells": 1, "dropped_other": 0},
+                   "stats_result": {"group_low": {"n": 5, "mean_mpa": 38.5}, "group_mid": {"n": 3, "mean_mpa": 33.2}, "group_high": {"n": 3, "mean_mpa": 29.5}, "diff_low_minus_high_mpa": 9.0},
+                   "figure_spec": {"chart_type": "bar", "values_mpa": [38.5, 33.2, 29.5]},
+                   "report_markdown": {"headline": "组间差异 9.0 MPa（38.5 vs 29.5）"}},
+    "conflicts": [],
+    "pending_review": [
+      {"step_id": "S4", "reason": "图形未实际渲染（示意环境限制），图形正确性需人工确认",
+       "needed_action": "在具备图形栈的环境重跑 S4，或人工按 figure_spec 出图核对"}
+    ],
+    "run_status": {"state": "success", "reason": "S4 渲染降级已登记，主链路（清洗→统计→报告）完成", "manual_takeover": ["S4 图形渲染人工确认"]},
+    "verdict": "answered",
+    "verdict_basis": "五个计划步骤全部有留痕，S4 降级已登记，主结论（组间差异）与证据链对齐",
+    "gain_evidence": {"available": false, "reason": "由 gain_probe.py 运行时回填（示意占位）"},
+    "efficiency": {"available": false, "reason": "由 gain_probe.py 运行时回填（示意占位）"}
+  },
+  "claims": [
+    {"claim_id": "c-01", "text": "清洗后保留 11 行有效记录（原始 12 行，剔除 1 行重复，填补 1 处缺失），行数守恒 12=11+1+0。",
+     "kind": "grounded", "source_id": "S2", "location": "result.steps[S2].artifacts.clean_summary",
+     "evidence": [{"paragraph_id": "task_brief", "quote": "重复记录以保留首次观测为准"}]},
+    {"claim_id": "c-02", "text": "低水灰比组（n=5）平均强度 38.5 MPa，高水灰比组（n=3）平均 29.5 MPa，组间差异 9.0 MPa，已复算与 stats_result 一致。",
+     "kind": "grounded", "source_id": "S3", "location": "result.steps[S3].artifacts.stats_result",
+     "evidence": [{"paragraph_id": "data_dictionary.strength_mpa", "quote": "28 天抗压强度（MPa，保留一位小数）"}]},
+    {"claim_id": "c-03", "text": "报告正文数字与 stats_result 同源：组间差异 9.0 MPa 可由 38.5 − 29.5 复算得出，图形与报告口径一致。",
+     "kind": "inferred", "source_id": "S5", "location": "result.steps[S5].artifacts.report_markdown",
+     "evidence": [{"paragraph_id": "task_brief", "quote": "正文数字须与统计结果同源可回算"}]}
+  ],
+  "uncertainties": {
+    "unreported": [],
+    "unverifiable": [],
+    "conflicts": [],
+    "human_review": ["S4 图形未实际渲染，需人工按 figure_spec 确认图形正确性"],
+    "summary": "示意案例：统计结论基于小样本（示意），S4 图形降级已登记；正式案例以实际运行数据为准。"
+  },
+  "changelog": [
+    {"step": "step0", "change": "build_skeleton 落骨架（示意）"},
+    {"step": "step2", "change": "S1–S5 逐步执行并留痕（示意）"},
+    {"step": "step6", "change": "校验器复核通过后交付（示意）"}
+  ],
+  "self_check": [
+    {"item": "步骤图依赖无环", "template_value": "topo_check 复算", "applied": true, "match": true},
+    {"item": "逐步留痕可回放", "template_value": "trace_audit 要素齐全", "applied": true, "match": true},
+    {"item": "中间校验通过率可复算", "template_value": "steps[].checks 复算对照", "applied": true, "match": true},
+    {"item": "结论-证据对齐（引文+数字回证）", "template_value": "claims_audit", "applied": true, "match": true},
+    {"item": "失败降级登记不静默", "template_value": "fallback_audit", "applied": true, "match": true}
+  ],
+  "unbacked_numbers": [],
+  "unbacked_evidence": [],
+  "validator_verdict": "PASS",
+  "gates": [
+    {"gate": "case_contract", "state": "enforced", "note": "示意案例"},
+    {"gate": "plan_ledger", "state": "enforced", "note": "示意案例"},
+    {"gate": "dag_acyclic", "state": "enforced", "note": "示意案例"},
+    {"gate": "middle_checks", "state": "enforced", "note": "示意案例"}
+  ]
+}

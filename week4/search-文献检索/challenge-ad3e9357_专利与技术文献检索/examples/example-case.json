@@ -1,0 +1,32 @@
+{
+  "_note": "合成示意案例（非正式答案、非真实专利/论文）：仅用于本地自测整条链路。所有号码/著录项/摘录均为虚构。",
+  "case_id": "demo-patent-001",
+  "task_type": "patent_technical_literature_search",
+  "research_question": {
+    "question": "固态锂电池硫化物电解质涂层技术主题的专利布局与相关技术文献",
+    "scope": "专利文献（公开号/同族/法律状态）+ 技术文献（论文与专利的相互引证）",
+    "time_range": "2018-2026"
+  },
+  "criteria": {
+    "inclusion": [
+      {"criterion_id": "IN-01", "text": "专利条目，技术主题为硫化物固态电解质及其涂层结构"},
+      {"criterion_id": "IN-02", "text": "与目标专利 US20200123456A1 同族（共享优先权）或相同公开号"},
+      {"criterion_id": "IN-03", "text": "技术文献主题与硫化物电解质涂层直接相关，且与目标专利存在可回证的引证关系"}
+    ],
+    "exclusion": [
+      {"criterion_id": "EX-01", "text": "技术主题无关（非硫化物固态电解质/涂层领域）"},
+      {"criterion_id": "EX-02", "text": "与既有条目重复（同号转载/镜像记录），归并保留原始登记条目"}
+    ]
+  },
+  "candidates": [
+    {"item_id": "P01", "kind": "patent", "title": "Solid-state electrolyte composition with sulfide-based conductor", "publication_number": "US 2020/0123456 A1", "priority": ["US 16/123,456"], "year": 2020, "abstract": "United States patent application publication. The invention relates to a solid-state electrolyte composition comprising a sulfide-based solid conductor and a protective coating layer, improving cycle stability of all-solid-state lithium batteries. Claim 1 (verbatim): a solid electrolyte layer comprising a sulfide-based conductor and a coating layer having a thickness of 5 to 50 nm."},
+    {"item_id": "P02", "kind": "patent", "title": "Solid-state electrolyte composition with sulfide-based conductor (EP counterpart)", "publication_number": "EP 3987654 A1", "priority": ["US 16/123,456"], "year": 2022, "abstract": "European publication EP 3987654 A1, counterpart of US 2020/0123456 A1 sharing priority US 16/123,456. Claim 1 recites the same scope: a solid electrolyte layer comprising a sulfide-based conductor and a coating layer having a thickness of 5 to 50 nm."},
+    {"item_id": "P03", "kind": "patent", "title": "US 2020/0123456 A1 mirror page", "publication_number": "US 2020/0123456 A1", "year": 2024, "abstract": "Aggregator mirror record of US 2020/0123456 A1 (same publication number, scraped page). No priority metadata available on the mirrored page."},
+    {"item_id": "P04", "kind": "patent", "title": "PCT publication in the same technical field", "publication_number": "WO 2021/098765 A1", "year": 2021, "abstract": "PCT publication WO 2021/098765 A1 in the field of sulfide solid electrolyte coatings. OCR boundary retained: the priority field is truncated in the facsimile. Claim excerpt (verbatim): a cathode comprising the solid electrolyte of any one of claims 1-8."},
+    {"item_id": "P05", "kind": "paper", "title": "Sulfide-based solid electrolytes for all-solid-state lithium batteries: coating strategies", "year": 2023, "abstract": "Technical review of coating strategies for sulfide-based solid electrolytes. Cites US 2020/0123456 A1 as representative coating patent. The review states (verbatim): coating layers of 5-50 nm markedly improve interfacial stability of sulfide electrolytes."},
+    {"item_id": "P06", "kind": "paper", "title": "Perovskite solar cell efficiency improvements", "year": 2024, "abstract": "Study on perovskite solar cell efficiency improvements. Not related to sulfide solid electrolytes or lithium batteries."}
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

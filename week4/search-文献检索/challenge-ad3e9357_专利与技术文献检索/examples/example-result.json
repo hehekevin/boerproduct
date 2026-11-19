@@ -1,0 +1,799 @@
+{
+ "case_id": "demo-patent-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.13.x",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "合成示例：桌面环境实测"
+  },
+  "research_question": {
+   "question": "固态锂电池硫化物电解质涂层技术主题的专利布局与相关技术文献",
+   "scope": "专利文献（公开号/同族/法律状态）+ 技术文献（论文与专利的相互引证）",
+   "time_range": "2018-2026"
+  },
+  "criteria": {
+   "inclusion": [
+    {
+     "criterion_id": "IN-01",
+     "text": "专利条目，技术主题为硫化物固态电解质及其涂层结构"
+    },
+    {
+     "criterion_id": "IN-02",
+     "text": "与目标专利 US20200123456A1 同族（共享优先权）或相同公开号"
+    },
+    {
+     "criterion_id": "IN-03",
+     "text": "技术文献主题与硫化物电解质涂层直接相关，且与目标专利存在可回证的引证关系"
+    }
+   ],
+   "exclusion": [
+    {
+     "criterion_id": "EX-01",
+     "text": "技术主题无关（非硫化物固态电解质/涂层领域）"
+    },
+    {
+     "criterion_id": "EX-02",
+     "text": "与既有条目重复（同号转载/镜像记录），归并保留原始登记条目"
+    }
+   ]
+  },
+  "sources": [
+   {
+    "source_id": "src-uspto",
+    "name": "USPTO Patent Public Search（登记条目）",
+    "version": "2026-11 快照",
+    "query_date": "2026-11-19",
+    "licensing": "green",
+    "display_scope": "著录项与权利要求摘录可展示"
+   },
+   {
+    "source_id": "src-epo",
+    "name": "EPO Open Patent Services（登记条目）",
+    "version": "OPS 1.0",
+    "query_date": "2026-11-19",
+    "licensing": "yellow",
+    "display_scope": "仅登记元数据，不整段展示受限字段"
+   },
+   {
+    "source_id": "src-agg",
+    "name": "二手聚合站镜像页",
+    "version": "无版本",
+    "query_date": "2026-11-19",
+    "licensing": "red",
+    "display_scope": "仅登记存在性，不引用原文"
+   }
+  ],
+  "items": [
+   {
+    "item_id": "P01",
+    "source_ref": "candidates[0]",
+    "kind": "patent",
+    "raw_number": "US 2020/0123456 A1",
+    "norm_number": "US20200123456A1",
+    "number_kind": null,
+    "title": "Solid-state electrolyte composition with sulfide-based conductor",
+    "priority_numbers": [
+     "US 16/123,456"
+    ],
+    "application_number": null,
+    "relevance": "direct",
+    "label": "keep",
+    "criteria_hit": [
+     "IN-01",
+     "IN-02"
+    ],
+    "excluded_by": [],
+    "evidence_quote": "a solid electrolyte layer comprising a sulfide-based conductor and a coating layer having a thickness of 5 to 50 nm",
+    "evidence_location": "candidates[0].abstract（权利要求 1 逐字摘录）",
+    "confidence": "high",
+    "rationale": "硫化物固态电解质涂层主题命中 IN-01，且为目标专利本体命中 IN-02；权利要求 1 逐字摘录可回证",
+    "family_id": "F-US16123456",
+    "legal_status": {
+     "status": "active（转述）",
+     "effective_date": null,
+     "source": "src-uspto",
+     "query_date": "2026-11-19",
+     "lag_note": "登记快照可能滞后，正式状态以官方登记为准"
+    },
+    "cross_refs": [],
+    "tech_points": [
+     {
+      "point_id": "tp-01",
+      "quote": "a solid electrolyte layer comprising a sulfide-based conductor and a coating layer having a thickness of 5 to 50 nm",
+      "location": "candidates[0].abstract"
+     }
+    ],
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "P02",
+    "source_ref": "candidates[1]",
+    "kind": "patent",
+    "raw_number": "EP 3987654 A1",
+    "norm_number": "EP3987654A1",
+    "number_kind": null,
+    "title": "Solid-state electrolyte composition with sulfide-based conductor (EP counterpart)",
+    "priority_numbers": [
+     "US 16/123,456"
+    ],
+    "application_number": null,
+    "relevance": "direct",
+    "label": "keep",
+    "criteria_hit": [
+     "IN-01",
+     "IN-02"
+    ],
+    "excluded_by": [],
+    "evidence_quote": "European publication EP 3987654 A1, counterpart of US 2020/0123456 A1 sharing priority US 16/123,456",
+    "evidence_location": "candidates[1].abstract",
+    "confidence": "high",
+    "rationale": "与 P01 共享优先权构成同族，命中 IN-01/IN-02；同族成员保留并标注口径",
+    "family_id": "F-US16123456",
+    "legal_status": {
+     "status": "granted（转述）",
+     "effective_date": null,
+     "source": "src-epo",
+     "query_date": "2026-11-19",
+     "lag_note": "OPS 登记条目，状态可能滞后"
+    },
+    "cross_refs": [],
+    "tech_points": [
+     {
+      "point_id": "tp-02",
+      "quote": "a solid electrolyte layer comprising a sulfide-based conductor and a coating layer having a thickness of 5 to 50 nm",
+      "location": "candidates[1].abstract"
+     }
+    ],
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "P03",
+    "source_ref": "candidates[2]",
+    "kind": "patent",
+    "raw_number": "US 2020/0123456 A1",
+    "norm_number": "US20200123456A1",
+    "number_kind": null,
+    "title": "US 2020/0123456 A1 mirror page",
+    "priority_numbers": [],
+    "application_number": null,
+    "relevance": "direct",
+    "label": "exclude",
+    "criteria_hit": [],
+    "excluded_by": [
+     "EX-02"
+    ],
+    "evidence_quote": "Aggregator mirror record of US 2020/0123456 A1 (same publication number, scraped page)",
+    "evidence_location": "candidates[2].abstract",
+    "confidence": "high",
+    "rationale": "与 P01 同号转载镜像记录，命中 EX-02，归并保留 P01 原始登记条目",
+    "family_id": null,
+    "legal_status": {
+     "status": null,
+     "effective_date": null,
+     "source": "src-agg",
+     "query_date": "2026-11-19",
+     "lag_note": "镜像页非登记依据，仅登记存在性"
+    },
+    "cross_refs": [],
+    "tech_points": [],
+    "duplicate_of": "P01",
+    "missing_metadata": [
+     "priority"
+    ],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "P04",
+    "source_ref": "candidates[3]",
+    "kind": "patent",
+    "raw_number": "WO 2021/098765 A1",
+    "norm_number": "WO2021098765A1",
+    "number_kind": null,
+    "title": "PCT publication in the same technical field",
+    "priority_numbers": [],
+    "application_number": null,
+    "relevance": "direct",
+    "label": "pending",
+    "criteria_hit": [
+     "IN-01"
+    ],
+    "excluded_by": [],
+    "evidence_quote": "a cathode comprising the solid electrolyte of any one of claims 1-8",
+    "evidence_location": "candidates[3].abstract（权利要求摘录，OCR 边界保留）",
+    "confidence": "medium",
+    "rationale": "主题命中 IN-01；但优先权字段被 OCR 截断，族归属无法机械判定，转待复核",
+    "family_id": null,
+    "legal_status": {
+     "status": null,
+     "effective_date": null,
+     "source": null,
+     "query_date": null,
+     "lag_note": null
+    },
+    "cross_refs": [],
+    "tech_points": [
+     {
+      "point_id": "tp-03",
+      "quote": "a cathode comprising the solid electrolyte of any one of claims 1-8",
+      "location": "candidates[3].abstract"
+     }
+    ],
+    "duplicate_of": null,
+    "missing_metadata": [
+     "priority"
+    ],
+    "pending_reason": "OCR 边界保留、优先权字段截断，族归属与族口径需人工回 PCT 登记库核对",
+    "judged": true
+   },
+   {
+    "item_id": "P05",
+    "source_ref": "candidates[4]",
+    "kind": "paper",
+    "raw_number": null,
+    "norm_number": null,
+    "number_kind": null,
+    "title": "Sulfide-based solid electrolytes for all-solid-state lithium batteries: coating strategies",
+    "priority_numbers": [],
+    "application_number": null,
+    "relevance": "indirect",
+    "label": "keep",
+    "criteria_hit": [
+     "IN-03"
+    ],
+    "excluded_by": [],
+    "evidence_quote": "Cites US 2020/0123456 A1 as representative coating patent",
+    "evidence_location": "candidates[4].abstract",
+    "confidence": "high",
+    "rationale": "技术文献主题与硫化物电解质涂层直接相关且对目标专利有引证，命中 IN-03",
+    "family_id": null,
+    "legal_status": null,
+    "cross_refs": [
+     {
+      "ref_kind": "npl_cites_patent",
+      "target_id": "P01",
+      "evidence_quote": "Cites US 2020/0123456 A1 as representative coating patent",
+      "location": "candidates[4].abstract"
+     }
+    ],
+    "tech_points": [
+     {
+      "point_id": "tp-04",
+      "quote": "coating layers of 5-50 nm markedly improve interfacial stability of sulfide electrolytes",
+      "location": "candidates[4].abstract"
+     }
+    ],
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "P06",
+    "source_ref": "candidates[5]",
+    "kind": "paper",
+    "raw_number": null,
+    "norm_number": null,
+    "number_kind": null,
+    "title": "Perovskite solar cell efficiency improvements",
+    "priority_numbers": [],
+    "application_number": null,
+    "relevance": "irrelevant",
+    "label": "exclude",
+    "criteria_hit": [],
+    "excluded_by": [
+     "EX-01"
+    ],
+    "evidence_quote": "Not related to sulfide solid electrolytes or lithium batteries",
+    "evidence_location": "candidates[5].abstract",
+    "confidence": "high",
+    "rationale": "钙钛矿太阳能电池主题无关，命中 EX-01",
+    "family_id": null,
+    "legal_status": null,
+    "cross_refs": [],
+    "tech_points": [],
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   }
+  ],
+  "family_groups": [
+   {
+    "family_id": "F-US16123456",
+    "key": "US16123456",
+    "key_kind": "priority",
+    "member_ids": [
+     "P01",
+     "P02"
+    ],
+    "scope": null,
+    "evidence": "族键=US16123456(priority)；成员号见 items[].priority_numbers/application_number"
+   }
+  ],
+  "legal_status_registry": [
+   {
+    "item_id": "P01",
+    "status": "active（转述）",
+    "effective_date": null,
+    "source": "src-uspto",
+    "query_date": "2026-11-19",
+    "lag_note": "登记快照可能滞后，正式状态以官方登记为准"
+   },
+   {
+    "item_id": "P02",
+    "status": "granted（转述）",
+    "effective_date": null,
+    "source": "src-epo",
+    "query_date": "2026-11-19",
+    "lag_note": "OPS 登记条目，状态可能滞后"
+   },
+   {
+    "item_id": "P03",
+    "status": "unknown",
+    "effective_date": null,
+    "source": "src-agg",
+    "query_date": "2026-11-19",
+    "lag_note": "镜像页非登记依据"
+   },
+   {
+    "item_id": "P04",
+    "status": "unknown",
+    "effective_date": null,
+    "source": null,
+    "query_date": null,
+    "lag_note": "OCR 截断，待人工回 PCT 库核对"
+   }
+  ],
+  "cross_registry": [
+   {
+    "from_id": "P05",
+    "to_id": "P01",
+    "ref_kind": "npl_cites_patent",
+    "evidence": "Cites US 2020/0123456 A1 as representative coating patent",
+    "location": "candidates[4].abstract"
+   }
+  ],
+  "screening": {
+   "ordered_ids": [
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P06"
+   ],
+   "ties": [
+    {
+     "relevance_tier": 0,
+     "confidence_rank": 0,
+     "item_ids": [
+      "P01",
+      "P02",
+      "P03"
+     ],
+     "rule": "item_id 升序"
+    }
+   ],
+   "rule": "relevance 层级(direct<indirect<irrelevant) → confidence 降序 → item_id 升序",
+   "note": "norm_family.py 机械产出"
+  },
+  "coverage": {
+   "total_candidates": 6,
+   "judged_items": 6,
+   "keep": 3,
+   "pending": 1,
+   "exclude": 2,
+   "families_merged": 1,
+   "duplicates_merged": 1,
+   "ratio": 1.0
+  },
+  "conflicts": [
+   {
+    "item_ids": [
+     "P01",
+     "P03"
+    ],
+    "kind": "duplicate_publication",
+    "resolution": "merged",
+    "evidence": "同公开号 US 2020/0123456 A1 的镜像转载记录；归并保留 USPTO 登记条目 P01"
+   }
+  ],
+  "pending_review": [
+   {
+    "item_id": "P04",
+    "reason": "OCR 边界保留、优先权字段截断，族归属无法机械判定",
+    "needed_action": "人工回 PCT/WIPO 登记库核对 WO2021098765A1 的优先权与同族成员，并确认法律状态来源"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与候选清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明研究问题、纳排标准与检索口径台账（ledger）",
+    "command": "（Agent 声明，写入 result 与 /app/work/ledger.json）",
+    "output_ref": "result.criteria",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "逐条判定候选（relevance/label/证据摘录/置信度）",
+    "command": "（Agent 逐条判定，无脚本）",
+    "output_ref": "result.items",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "号码规范化 + 族归并 + 筛选排序（机械引擎）",
+    "command": "python3 /skills/weekly-skill/scripts/norm_family.py --result /app/output/result.json",
+    "output_ref": "result.family_groups / result.screening",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "法律状态与交叉引用登记、证据链回填",
+    "command": "（Agent 登记，无脚本）",
+    "output_ref": "result.legal_status_registry / result.cross_registry / claims",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "业务校验与结构守卫",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "/app/work/verify_check.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": [
+    "P04 族归属待人工回 PCT 库核对（见 pending_review）"
+   ]
+  },
+  "verdict": "screened",
+  "verdict_basis": "6 条候选全部逐条判定且覆盖完整（3 keep / 1 pending / 2 exclude），证据与号码全部回证",
+  "gain_evidence": {
+   "probe_version": "1.0",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "demo-patent-001",
+   "input": {
+    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-ad3e9357\\submission\\examples\\example-result.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-ad3e9357\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "numbers_violations_objective": 0,
+      "numbers_caught": 0,
+      "numbers_missed": 0,
+      "family_violations_objective": 0,
+      "family_caught": 0,
+      "family_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_caught": 2,
+      "evidence_missed": 0,
+      "registry_violations_objective": 0,
+      "registry_caught": 0,
+      "registry_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "unjudged": 0,
+       "numbers_missed": 0,
+       "family_missed": 0,
+       "evidence_missed": 0,
+       "registry_missed": 0
+      },
+      "steps_count": 31,
+      "steps_detail": {
+       "checks_executed": 24,
+       "checks_disabled": 0,
+       "flow_steps_total": 7,
+       "flow_steps_done": 7
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0008
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "numbers_violations_objective": 0,
+      "numbers_caught": 0,
+      "numbers_missed": 0,
+      "family_violations_objective": 0,
+      "family_caught": 0,
+      "family_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_caught": 0,
+      "evidence_missed": 0,
+      "registry_violations_objective": 0,
+      "registry_caught": 0,
+      "registry_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "unjudged": 0,
+       "numbers_missed": 0,
+       "family_missed": 0,
+       "evidence_missed": 0,
+       "registry_missed": 0
+      },
+      "steps_count": 8,
+      "steps_detail": {
+       "checks_executed": 1,
+       "checks_disabled": 4,
+       "flow_steps_total": 7,
+       "flow_steps_done": 7
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0004
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "numbers_missed": 0,
+    "family_missed": 0,
+    "evidence_missed": 0,
+    "registry_missed": 0,
+    "manual_review_items": 0,
+    "steps_count": 23,
+    "clarification_rounds": 0
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "numbers_missed",
+     "mechanism": "号码与标签一致性检查（patent⇒raw/norm 号码可归一、norm 与 raw 归一结果一致或登记缺失、keep⇒criteria_hit、exclude⇒excluded_by、pending⇒pending_reason、跨级矛盾）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后号码失据、keep 无纳入依据、跨级矛盾不再被判 FAIL，漏检数上升"
+    },
+    {
+     "metric": "family_missed",
+     "mechanism": "族归并独立复算（族键=规范化优先权号/申请号）+ 筛选顺序逐位对照（relevance 层级→confidence→item_id）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后幽灵族、同键拆组、顺序错乱不再可检出，族关系不可追溯"
+    },
+    {
+     "metric": "evidence_missed",
+     "mechanism": "claims 证据链回证（keep/pending 须有 source_id 对应 claim；norm_number 号码须出现在 claim text/quote）",
+     "formula": "无回证的 keep/pending 条目数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后证据链缺失不再判 FAIL，理由完备性退化为自述"
+    },
+    {
+     "metric": "registry_missed",
+     "mechanism": "登记完备性检查（pending⇒pending_review、keep 专利⇒legal_status 含 status/source/query_date 且来源登记授权分级、duplicate_of⇒conflicts、escalated⇒待复核、cross_refs 目标存在）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后法律状态无来源、授权分级未登记、待定条目静默漏登记"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "漏检 + 未判定条目合计",
+     "formula": "unjudged + 四类漏检",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐条回官方库核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "七步线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回官方库/回问所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "退化模式关闭四组检查（numbers/family/evidence/registry），枚举、结构守卫、coverage 汇总一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "四类违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，契约字段校验跳过。",
+    "norm_family.py 未跑时 screening/族分组真值不可得，family_missed 记 0 但属『无法判定』而非『无违规』。",
+    "把 --ablate 的退化结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\wk\\gain_probe_polluted.json",
+    "injected": [
+     "P01 改为 keep 但清空 criteria_hit/evidence_quote",
+     "P01 norm_number 篡改为 XX-INVALID（号码失据）",
+     "family_groups 注入幽灵族 F-FAKE（成员 P-UNKNOWN-MEMBER 不存在）",
+     "P04 标 pending 但清空 pending_reason",
+     "清空 pending_review（待复核登记丢失）",
+     "清空 claims（证据链缺失）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 15,
+     "numbers_missed": 3,
+     "family_missed": 1,
+     "evidence_missed": 0,
+     "registry_missed": 0,
+     "problem_sample": [
+      "P01 norm_number 不符合规范形式（国家码+数字+种类码）: 'XX-INVALID'",
+      "P01 norm_number='XX-INVALID' 与 raw_number 归一结果 US20200123456A1 不一致（号码失据）",
+      "P01 标 keep 但未命中任何纳入标准（criteria_hit 空）",
+      "P04 标 pending 但 pending_reason 为空",
+      "F-FAKE 成员不存在于 items: P-UNKNOWN-MEMBER",
+      "P01 有族键但族组归并不一致（登记 'F-US16123456'）",
+      "同族键 US16123456 的成员被拆进多个组: F-FAKE,F-US16123456",
+      "P01 标 keep 但无证据摘录（evidence_quote 空）"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "PASS",
+     "problems": 0,
+     "numbers_missed": 4,
+     "family_missed": 2,
+     "evidence_missed": 4,
+     "registry_missed": 1,
+     "problem_sample": []
+    },
+    "missed_detection_delta": {
+     "numbers_missed": 1,
+     "family_missed": 1,
+     "evidence_missed": 4,
+     "registry_missed": 1,
+     "problems": -15
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.0117,
+   "result_bytes": 28087,
+   "input_files_scanned": 2,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 24,
+   "checker_checks_executed_degraded": 1,
+   "checker_checks_disabled_degraded": 4,
+   "items_total": 6,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 0,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 0,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "P01（US20200123456A1）命中 IN-01/IN-02：权利要求 1 逐字摘录『a solid electrolyte layer comprising a sulfide-based conductor and a coating layer having a thickness of 5 to 50 nm』证明主题相关；判定 keep，法律状态登记自 src-uspto（2026-11-19 查询）。",
+   "kind": "reported",
+   "source_id": "P01",
+   "location": "items[0]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[0].abstract",
+     "quote": "a solid electrolyte layer comprising a sulfide-based conductor and a coating layer having a thickness of 5 to 50 nm"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "P02（EP3987654A1）命中 IN-01/IN-02：与 P01 共享优先权 US 16/123,456 构成同族（F-US16123456，simple 口径），判定 keep；法律状态登记自 src-epo（2026-11-19 查询）。",
+   "kind": "reported",
+   "source_id": "P02",
+   "location": "items[1]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[1].abstract",
+     "quote": "European publication EP 3987654 A1, counterpart of US 2020/0123456 A1 sharing priority US 16/123,456"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "P04（WO2021098765A1）主题命中 IN-01，但优先权字段被 OCR 截断（missing_metadata=priority），族归属无法机械判定，标 pending 并登记待复核；权利要求摘录逐字留证。",
+   "kind": "reported",
+   "source_id": "P04",
+   "location": "items[3]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[3].abstract",
+     "quote": "a cathode comprising the solid electrolyte of any one of claims 1-8"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "P05 命中 IN-03：技术文献对目标专利 US 2020/0123456 A1 有明确引证（逐字摘录），判定 keep 并登记 npl_cites_patent 交叉引用（P05→P01）。",
+   "kind": "reported",
+   "source_id": "P05",
+   "location": "items[4]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[4].abstract",
+     "quote": "Cites US 2020/0123456 A1 as representative coating patent"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "P04 优先权与族归属（OCR 截断）",
+   "P01/P02 法律状态为登记快照转述，未经官方实时核验"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "P04 待人工回 PCT 登记库核对"
+  ],
+  "summary": "合成示例：6 条候选全部判定；1 条待复核（OCR 截断），2 项不可验证项如实登记"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step2-4",
+   "change": "逐条判定与登记回填"
+  },
+  {
+   "step": "step3",
+   "change": "norm_family 引擎回填"
+  },
+  {
+   "step": "step5-6",
+   "change": "增益探针与校验回写"
+  }
+ ],
+ "self_check": [],
+ "unbacked_numbers": [],
+ "validator_verdict": null,
+ "gates": []
+}

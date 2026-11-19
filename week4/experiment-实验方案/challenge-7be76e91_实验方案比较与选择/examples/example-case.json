@@ -1,0 +1,17 @@
+{
+  "case_id": "demo-plancompare-001",
+  "research_question": "在 48 小时内、预算 ≤2000 元的约束下，为某酶固定化载体材料的实验室制备选择一条可行路线，并测得载量（mmol/g）",
+  "constraints": "总预算 ≤2000 元；总周期 ≤48 小时（含表征排队）；可用设备：恒温摇床（自由使用）、高压反应釜（需预约，机时费 80 元/小时）、行星球磨机（需预约，机时费 120 元/小时）；实验人员 3 名",
+  "materials": [
+    {"item": "壳聚糖粉", "spec": "脱乙酰度 ≥90%", "price_yuan": 260},
+    {"item": "戊二醛 25% 水溶液", "spec": "500 mL/瓶", "price_yuan": 85},
+    {"item": "高压反应釜", "booking": "本周仅剩周四 14:00-20:00 空窗", "hour_rate_yuan": 80},
+    {"item": "行星球磨机", "booking": "周三/周五全天可约", "hour_rate_yuan": 120}
+  ],
+  "candidate_plans": [
+    {"plan_id": "P1", "name": "水热交联法", "summary": "高压反应釜内 120°C 水热交联 6 小时制备壳聚糖微球载体", "organizer_note": "载量上限高（文献 0.45 mmol/g），但依赖反应釜排期"},
+    {"plan_id": "P2", "name": "溶胶-凝胶法", "summary": "室温溶胶-凝胶成球，无需大型设备", "organizer_note": "设备门槛低但批次重复性差（历史 RSD 18%）"},
+    {"plan_id": "P3", "name": "机械球磨法", "summary": "行星球磨机固相研磨 4 小时制备载体", "organizer_note": "周期最短成本最低，但载量上限低（文献 0.25 mmol/g）"}
+  ],
+  "output_contract": {"fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]}
+}

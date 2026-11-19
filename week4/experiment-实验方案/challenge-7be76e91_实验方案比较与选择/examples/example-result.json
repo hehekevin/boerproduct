@@ -1,0 +1,1458 @@
+{
+ "case_id": "demo-plancompare-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.13.14",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "开发机实测；平台以实际运行环境为准"
+  },
+  "research_question": {
+   "question": "在 48 小时内、预算 ≤2000 元的约束下，为某酶固定化载体材料的实验室制备选择一条可行路线，并测得载量（mmol/g）",
+   "scope": "仅做候选方案的统一口径比较、机械打分、敏感性分析与选择登记；不做路线的原始设计创新与数据建模",
+   "constraints": "预算 ≤2000 元；周期 ≤48 小时（含表征排队）；反应釜周四 14:00-20:00 空窗、球磨机周三/周五可约"
+  },
+  "rubric": {
+   "weights": {
+    "scientific_value": 0.3,
+    "feasibility": 0.25,
+    "cost": 0.15,
+    "duration": 0.1,
+    "risk_control": 0.2
+   },
+   "tie_break": [
+    "fused_score 降序",
+    "risk_control 降序",
+    "plan_id 升序"
+   ],
+   "normalization": "各维度 0-1 标度（1 优 0 劣），按统一 scoring_rule 打分后线性加权，不做其他变换",
+   "declared_at": "step1（任何方案排序之前声明，此后禁止调整）"
+  },
+  "comparability": {
+   "dimensions": [
+    {
+     "dim": "scientific_value",
+     "definition": "方案对核心指标（载量上限与证据强度）的贡献",
+     "scale": "0-1",
+     "scoring_rule": "以文献载量上限归一：0.45→1.0，0.25→0.4，内插"
+    },
+    {
+     "dim": "feasibility",
+     "definition": "本实验室现在可做的程度（设备可得性+技能匹配）",
+     "scale": "0-1",
+     "scoring_rule": "设备在本周排期内可得且无需新技能=0.9-1.0；需抢排期=0.7-0.8；无排期=≤0.6"
+    },
+    {
+     "dim": "cost",
+     "definition": "耗材+机时+人力工日的总成本核算（一次性与按次分开）",
+     "scale": "0-1",
+     "scoring_rule": "总成本 ≤1000 元→1.0；≤1500→0.8；≤2000→0.6；>2000 不可行"
+    },
+    {
+     "dim": "duration",
+     "definition": "含样品准备、设备排期、表征排队与返工的总周期",
+     "scale": "0-1",
+     "scoring_rule": "≤24h→1.0；≤36h→0.8；≤48h→0.7；>48h 不可行"
+    },
+    {
+     "dim": "risk_control",
+     "definition": "失败模式有判据、止损与回退路径的完备程度",
+     "scale": "0-1",
+     "scoring_rule": "全部失败模式有判据+止损+回退=0.8-1.0；缺回退=0.5-0.7；无判据=≤0.4"
+    }
+   ],
+   "unified_note": "三个候选方案全部用同一字段结构逐维度填格，先定口径（本节）再打分，禁止各方案各用一套描述"
+  },
+  "plan_versions": [
+   {
+    "plan_id": "P1",
+    "name": "水热交联法",
+    "summary": "高压反应釜内 120°C 水热交联 6 小时制备壳聚糖微球载体",
+    "source": "organizer-case",
+    "factors": {
+     "scientific_value": 0.85,
+     "feasibility": 0.8,
+     "cost": 0.7,
+     "duration": 0.75,
+     "risk_control": 0.8
+    },
+    "factors_detail": {
+     "scientific_value": {
+      "score": 0.85,
+      "basis": "文献载量上限 0.45 mmol/g 为三方案最高，归一 0.85",
+      "evidence_ref": "c-01"
+     },
+     "feasibility": {
+      "score": 0.8,
+      "basis": "反应釜本周仅周四 14:00-20:00 空窗，需抢排期故不满分",
+      "evidence_ref": "c-02"
+     },
+     "cost": {
+      "score": 0.7,
+      "basis": "耗材约 420 元+机时 480 元+人力 2 工日，合计约 1400 元档",
+      "evidence_ref": "c-03"
+     },
+     "duration": {
+      "score": 0.75,
+      "basis": "执行约 30h，加表征排队合计约 36h 档",
+      "evidence_ref": "c-04"
+     },
+     "risk_control": {
+      "score": 0.8,
+      "basis": "反应釜超时有改约回退路径，判据与止损齐备",
+      "evidence_ref": "c-05"
+     }
+    },
+    "fused_score": 0.795,
+    "rank": 1,
+    "changes": "保持组织方原始方案，未做取舍"
+   },
+   {
+    "plan_id": "P2",
+    "name": "溶胶-凝胶法",
+    "summary": "室温溶胶-凝胶成球，无需大型设备",
+    "source": "organizer-case",
+    "factors": {
+     "scientific_value": 0.8,
+     "feasibility": 0.6,
+     "cost": 0.5,
+     "duration": 0.55,
+     "risk_control": 0.6
+    },
+    "factors_detail": {
+     "scientific_value": {
+      "score": 0.8,
+      "basis": "文献载量约 0.40 mmol/g，仅低于 P1",
+      "evidence_ref": "c-06"
+     },
+     "feasibility": {
+      "score": 0.6,
+      "basis": "无需大型设备但历史批次 RSD 18%，重复性差拉低可行性",
+      "evidence_ref": "c-07"
+     },
+     "cost": {
+      "score": 0.5,
+      "basis": "耗材约 380 元但返工率高（历史返工 1.5 次/批），按次成本上浮",
+      "evidence_ref": "c-08"
+     },
+     "duration": {
+      "score": 0.55,
+      "basis": "单批 20h，含返工与表征排队约 40h 档",
+      "evidence_ref": "c-09"
+     },
+     "risk_control": {
+      "score": 0.6,
+      "basis": "重复性失败模式有判据但无可靠回退路径",
+      "evidence_ref": "c-10"
+     }
+    },
+    "fused_score": 0.64,
+    "rank": 3,
+    "changes": "保持组织方原始方案，未做取舍"
+   },
+   {
+    "plan_id": "P3",
+    "name": "机械球磨法",
+    "summary": "行星球磨机固相研磨 4 小时制备载体",
+    "source": "organizer-case",
+    "factors": {
+     "scientific_value": 0.7,
+     "feasibility": 0.9,
+     "cost": 0.85,
+     "duration": 0.85,
+     "risk_control": 0.65
+    },
+    "factors_detail": {
+     "scientific_value": {
+      "score": 0.7,
+      "basis": "文献载量上限 0.25 mmol/g，低于研究目标 0.40 的要求",
+      "evidence_ref": "c-11"
+     },
+     "feasibility": {
+      "score": 0.9,
+      "basis": "球磨机周三/周五全天可约，无需抢排期",
+      "evidence_ref": "c-12"
+     },
+     "cost": {
+      "score": 0.85,
+      "basis": "耗材约 300 元+机时 480 元，合计约 1000 元档",
+      "evidence_ref": "c-13"
+     },
+     "duration": {
+      "score": 0.85,
+      "basis": "执行 12h，加表征约 24h 档，三方案最快",
+      "evidence_ref": "c-14"
+     },
+     "risk_control": {
+      "score": 0.65,
+      "basis": "载量不达标风险有判据，但无提升载量的回退路径",
+      "evidence_ref": "c-15"
+     }
+    },
+    "fused_score": 0.7775,
+    "rank": 2,
+    "changes": "保持组织方原始方案，未做取舍"
+   }
+  ],
+  "plan_ranking": {
+   "ordered_ids": [
+    "P1",
+    "P3",
+    "P2"
+   ],
+   "ties": [],
+   "top_k": [
+    "P1"
+   ],
+   "k_value": 1,
+   "tie_break_rule": "fused_score 降序 → risk_control 降序 → plan_id 升序"
+  },
+  "sensitivity": {
+   "available": true,
+   "method": "对每个维度权重施加 ±0.05/0.10/0.15/0.20 扰动（其余四维按比例归一），按主排序同一平局规则复算 winner",
+   "base_winner": "P1",
+   "variants": [
+    {
+     "variant": "scientific_value+0.05",
+     "weights": {
+      "scientific_value": 0.333333,
+      "feasibility": 0.238095,
+      "cost": 0.142857,
+      "duration": 0.095238,
+      "risk_control": 0.190476
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "scientific_value+0.10",
+     "weights": {
+      "scientific_value": 0.363636,
+      "feasibility": 0.227273,
+      "cost": 0.136364,
+      "duration": 0.090909,
+      "risk_control": 0.181818
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "scientific_value+0.15",
+     "weights": {
+      "scientific_value": 0.391304,
+      "feasibility": 0.217391,
+      "cost": 0.130435,
+      "duration": 0.086957,
+      "risk_control": 0.173913
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "scientific_value+0.20",
+     "weights": {
+      "scientific_value": 0.416667,
+      "feasibility": 0.208333,
+      "cost": 0.125,
+      "duration": 0.083333,
+      "risk_control": 0.166667
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "scientific_value-0.05",
+     "weights": {
+      "scientific_value": 0.263158,
+      "feasibility": 0.263158,
+      "cost": 0.157895,
+      "duration": 0.105263,
+      "risk_control": 0.210526
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "scientific_value-0.10",
+     "weights": {
+      "scientific_value": 0.222222,
+      "feasibility": 0.277778,
+      "cost": 0.166667,
+      "duration": 0.111111,
+      "risk_control": 0.222222
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "scientific_value-0.15",
+     "weights": {
+      "scientific_value": 0.176471,
+      "feasibility": 0.294118,
+      "cost": 0.176471,
+      "duration": 0.117647,
+      "risk_control": 0.235294
+     },
+     "winner_id": "P3",
+     "winner_changed": true
+    },
+    {
+     "variant": "scientific_value-0.20",
+     "weights": {
+      "scientific_value": 0.125,
+      "feasibility": 0.3125,
+      "cost": 0.1875,
+      "duration": 0.125,
+      "risk_control": 0.25
+     },
+     "winner_id": "P3",
+     "winner_changed": true
+    },
+    {
+     "variant": "feasibility+0.05",
+     "weights": {
+      "scientific_value": 0.285714,
+      "feasibility": 0.285714,
+      "cost": 0.142857,
+      "duration": 0.095238,
+      "risk_control": 0.190476
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "feasibility+0.10",
+     "weights": {
+      "scientific_value": 0.272727,
+      "feasibility": 0.318182,
+      "cost": 0.136364,
+      "duration": 0.090909,
+      "risk_control": 0.181818
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "feasibility+0.15",
+     "weights": {
+      "scientific_value": 0.26087,
+      "feasibility": 0.347826,
+      "cost": 0.130435,
+      "duration": 0.086957,
+      "risk_control": 0.173913
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "feasibility+0.20",
+     "weights": {
+      "scientific_value": 0.25,
+      "feasibility": 0.375,
+      "cost": 0.125,
+      "duration": 0.083333,
+      "risk_control": 0.166667
+     },
+     "winner_id": "P3",
+     "winner_changed": true
+    },
+    {
+     "variant": "feasibility-0.05",
+     "weights": {
+      "scientific_value": 0.315789,
+      "feasibility": 0.210526,
+      "cost": 0.157895,
+      "duration": 0.105263,
+      "risk_control": 0.210526
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "feasibility-0.10",
+     "weights": {
+      "scientific_value": 0.333333,
+      "feasibility": 0.166667,
+      "cost": 0.166667,
+      "duration": 0.111111,
+      "risk_control": 0.222222
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "feasibility-0.15",
+     "weights": {
+      "scientific_value": 0.352941,
+      "feasibility": 0.117647,
+      "cost": 0.176471,
+      "duration": 0.117647,
+      "risk_control": 0.235294
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "feasibility-0.20",
+     "weights": {
+      "scientific_value": 0.375,
+      "feasibility": 0.0625,
+      "cost": 0.1875,
+      "duration": 0.125,
+      "risk_control": 0.25
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "cost+0.05",
+     "weights": {
+      "scientific_value": 0.285714,
+      "feasibility": 0.238095,
+      "cost": 0.190476,
+      "duration": 0.095238,
+      "risk_control": 0.190476
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "cost+0.10",
+     "weights": {
+      "scientific_value": 0.272727,
+      "feasibility": 0.227273,
+      "cost": 0.227273,
+      "duration": 0.090909,
+      "risk_control": 0.181818
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "cost+0.15",
+     "weights": {
+      "scientific_value": 0.26087,
+      "feasibility": 0.217391,
+      "cost": 0.26087,
+      "duration": 0.086957,
+      "risk_control": 0.173913
+     },
+     "winner_id": "P3",
+     "winner_changed": true
+    },
+    {
+     "variant": "cost+0.20",
+     "weights": {
+      "scientific_value": 0.25,
+      "feasibility": 0.208333,
+      "cost": 0.291667,
+      "duration": 0.083333,
+      "risk_control": 0.166667
+     },
+     "winner_id": "P3",
+     "winner_changed": true
+    },
+    {
+     "variant": "cost-0.05",
+     "weights": {
+      "scientific_value": 0.315789,
+      "feasibility": 0.263158,
+      "cost": 0.105263,
+      "duration": 0.105263,
+      "risk_control": 0.210526
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "cost-0.10",
+     "weights": {
+      "scientific_value": 0.333333,
+      "feasibility": 0.277778,
+      "cost": 0.055556,
+      "duration": 0.111111,
+      "risk_control": 0.222222
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "cost-0.15",
+     "weights": {
+      "scientific_value": 0.352941,
+      "feasibility": 0.294118,
+      "cost": 0.0,
+      "duration": 0.117647,
+      "risk_control": 0.235294
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "cost-0.20",
+     "weights": {
+      "scientific_value": 0.352941,
+      "feasibility": 0.294118,
+      "cost": 0.0,
+      "duration": 0.117647,
+      "risk_control": 0.235294
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "duration+0.05",
+     "weights": {
+      "scientific_value": 0.285714,
+      "feasibility": 0.238095,
+      "cost": 0.142857,
+      "duration": 0.142857,
+      "risk_control": 0.190476
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "duration+0.10",
+     "weights": {
+      "scientific_value": 0.272727,
+      "feasibility": 0.227273,
+      "cost": 0.136364,
+      "duration": 0.181818,
+      "risk_control": 0.181818
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "duration+0.15",
+     "weights": {
+      "scientific_value": 0.26087,
+      "feasibility": 0.217391,
+      "cost": 0.130435,
+      "duration": 0.217391,
+      "risk_control": 0.173913
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "duration+0.20",
+     "weights": {
+      "scientific_value": 0.25,
+      "feasibility": 0.208333,
+      "cost": 0.125,
+      "duration": 0.25,
+      "risk_control": 0.166667
+     },
+     "winner_id": "P3",
+     "winner_changed": true
+    },
+    {
+     "variant": "duration-0.05",
+     "weights": {
+      "scientific_value": 0.315789,
+      "feasibility": 0.263158,
+      "cost": 0.157895,
+      "duration": 0.052632,
+      "risk_control": 0.210526
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "duration-0.10",
+     "weights": {
+      "scientific_value": 0.333333,
+      "feasibility": 0.277778,
+      "cost": 0.166667,
+      "duration": 0.0,
+      "risk_control": 0.222222
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "duration-0.15",
+     "weights": {
+      "scientific_value": 0.333333,
+      "feasibility": 0.277778,
+      "cost": 0.166667,
+      "duration": 0.0,
+      "risk_control": 0.222222
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "duration-0.20",
+     "weights": {
+      "scientific_value": 0.333333,
+      "feasibility": 0.277778,
+      "cost": 0.166667,
+      "duration": 0.0,
+      "risk_control": 0.222222
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "risk_control+0.05",
+     "weights": {
+      "scientific_value": 0.285714,
+      "feasibility": 0.238095,
+      "cost": 0.142857,
+      "duration": 0.095238,
+      "risk_control": 0.238095
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "risk_control+0.10",
+     "weights": {
+      "scientific_value": 0.272727,
+      "feasibility": 0.227273,
+      "cost": 0.136364,
+      "duration": 0.090909,
+      "risk_control": 0.272727
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "risk_control+0.15",
+     "weights": {
+      "scientific_value": 0.26087,
+      "feasibility": 0.217391,
+      "cost": 0.130435,
+      "duration": 0.086957,
+      "risk_control": 0.304348
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "risk_control+0.20",
+     "weights": {
+      "scientific_value": 0.25,
+      "feasibility": 0.208333,
+      "cost": 0.125,
+      "duration": 0.083333,
+      "risk_control": 0.333333
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "risk_control-0.05",
+     "weights": {
+      "scientific_value": 0.315789,
+      "feasibility": 0.263158,
+      "cost": 0.157895,
+      "duration": 0.105263,
+      "risk_control": 0.157895
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "risk_control-0.10",
+     "weights": {
+      "scientific_value": 0.333333,
+      "feasibility": 0.277778,
+      "cost": 0.166667,
+      "duration": 0.111111,
+      "risk_control": 0.111111
+     },
+     "winner_id": "P1",
+     "winner_changed": false
+    },
+    {
+     "variant": "risk_control-0.15",
+     "weights": {
+      "scientific_value": 0.352941,
+      "feasibility": 0.294118,
+      "cost": 0.176471,
+      "duration": 0.117647,
+      "risk_control": 0.058824
+     },
+     "winner_id": "P3",
+     "winner_changed": true
+    },
+    {
+     "variant": "risk_control-0.20",
+     "weights": {
+      "scientific_value": 0.375,
+      "feasibility": 0.3125,
+      "cost": 0.1875,
+      "duration": 0.125,
+      "risk_control": 0.0
+     },
+     "winner_id": "P3",
+     "winner_changed": true
+    }
+   ],
+   "flip_conditions": [
+    {
+     "dim": "scientific_value",
+     "direction": "-",
+     "min_flip_delta": 0.15,
+     "winner_after": "P3"
+    },
+    {
+     "dim": "feasibility",
+     "direction": "+",
+     "min_flip_delta": 0.2,
+     "winner_after": "P3"
+    },
+    {
+     "dim": "cost",
+     "direction": "+",
+     "min_flip_delta": 0.15,
+     "winner_after": "P3"
+    },
+    {
+     "dim": "duration",
+     "direction": "+",
+     "min_flip_delta": 0.2,
+     "winner_after": "P3"
+    },
+    {
+     "dim": "risk_control",
+     "direction": "-",
+     "min_flip_delta": 0.15,
+     "winner_after": "P3"
+    }
+   ],
+   "overall_stable": false,
+   "note": "winner_changed=true 的变体即选择结论翻转的权重条件；overall_stable=false 时须在 final_choice.reasons 说明翻转条件"
+  },
+  "final_choice": {
+   "chosen_id": "P1",
+   "choice_reasons": [
+    "fused_score 0.795 为三者最高（rubric 权重机械复算一致）",
+    "敏感性：scientific_value−0.15 / feasibility+0.20 / cost+0.15 / duration+0.20 / risk_control−0.15 共 5 个扰动方向上 P3 反超（overall_stable=false 已如实登记）——本研究目标以载量上限为核心指标，基线权重下 P1 稳健；若决策者更看重成本与周期应改选 P3",
+    "P1 载量上限 0.45 mmol/g 高于研究目标 0.40 mmol/g 的达标线，P3（0.25）不满足"
+   ],
+   "expert_confirmation_needed": [
+    "高压反应釜操作资质与档期（pending，见 confirmations）"
+   ],
+   "rejected": [
+    {
+     "plan_id": "P2",
+     "rejection_reason": "历史批次 RSD 18% 超出判读标准 ±10%，重复性失败模式无可靠回退；且含返工的成本上浮后性价比低于 P1",
+     "tradeoff": "若反应釜排期彻底失守，可降级改选 P2，代价是接受 RSD 18% 并增加 1.5 次/批返工"
+    },
+    {
+     "plan_id": "P3",
+     "rejection_reason": "文献载量上限 0.25 mmol/g 低于研究目标 0.40 mmol/g 的达标线，科学价值维度不足以支撑选择，尽管其周期与成本最优",
+     "tradeoff": "若研究目标放宽到载量 ≥0.25 mmol/g，P3 综合成本最低应改选 P3"
+    }
+   ]
+  },
+  "hypotheses": [
+   {
+    "hypothesis_id": "H-01",
+    "text": "P1 路线制备的壳聚糖微球载体载量 ≥0.40 mmol/g",
+    "testable": true
+   },
+   {
+    "hypothesis_id": "H-02",
+    "text": "P1 路线三批次间载量 RSD ≤10%",
+    "testable": true
+   }
+  ],
+  "variables": {
+   "independent": [
+    {
+     "var_id": "IV-01",
+     "name": "交联温度",
+     "operational_definition": "水热釜控温单元设定温度",
+     "measurement": "釜控温单元读数+独立温度计复核",
+     "unit": "°C",
+     "range": "110-130",
+     "level_count": 1
+    }
+   ],
+   "dependent": [
+    {
+     "var_id": "DV-01",
+     "name": "载量",
+     "operational_definition": "单位质量载体上固定化的酶活性位点毫摩尔数",
+     "measurement": "EDTA 络合滴定",
+     "unit": "mmol/g",
+     "range": "0-0.60",
+     "level_count": null
+    }
+   ],
+   "control": [
+    {
+     "var_id": "CV-01",
+     "name": "交联时间",
+     "operational_definition": "釜内达到设定温度后的保温时长",
+     "measurement": "控温单元计时",
+     "unit": "h",
+     "range": "6.0 恒定",
+     "level_count": 1
+    }
+   ]
+  },
+  "controls": [
+   {
+    "control_id": "CTL-01",
+    "type": "negative",
+    "group_id": "G-02",
+    "excludes_confound": "排除载体本底吸附对载量读数的贡献",
+    "basis": "不加戊二醛的空白微球同批制备"
+   }
+  ],
+  "groups": [
+   {
+    "group_id": "G-01",
+    "name": "P1 处理组",
+    "treatment": "水热交联全流程",
+    "n": 3,
+    "randomization": "同批混样分装后随机编号"
+   },
+   {
+    "group_id": "G-02",
+    "name": "阴性对照",
+    "treatment": "不加戊二醛的空白微球",
+    "n": 3,
+    "randomization": "同批混样分装后随机编号"
+   }
+  ],
+  "power_basis": {
+   "n_registry": [
+    {
+     "group_id": "G-01",
+     "n": 3,
+     "method": "单样本 t 检验，效应量 0.40 vs 0.25 mmol/g，alpha=0.05，power=0.80，n=3 为平行样下限",
+     "source": "预实验记录（合成示例）"
+    },
+    {
+     "group_id": "G-02",
+     "n": 3,
+     "method": "与处理组同批同量的阴性对照，n 对齐 G-01",
+     "source": "预实验记录（合成示例）"
+    }
+   ]
+  },
+  "protocol": [
+   {
+    "step_id": "S1",
+    "action": "称量壳聚糖并乙酸溶解",
+    "equipment": "恒温摇床",
+    "reagents": "壳聚糖粉、乙酸",
+    "params": [
+     {
+      "name": "壳聚糖质量",
+      "value": 2.0,
+      "unit": "g",
+      "range": "1.5-2.5",
+      "basis": "literature"
+     },
+     {
+      "name": "乙酸浓度",
+      "value": 2.0,
+      "unit": "vol%",
+      "range": "1-3",
+      "basis": "literature"
+     }
+    ],
+    "duration_min": 30,
+    "cost_yuan": 90
+   },
+   {
+    "step_id": "S2",
+    "action": "水热交联",
+    "equipment": "高压反应釜",
+    "reagents": "戊二醛 25% 水溶液",
+    "params": [
+     {
+      "name": "交联温度",
+      "value": 120,
+      "unit": "°C",
+      "range": "110-130",
+      "basis": "manual"
+     },
+     {
+      "name": "保温时长",
+      "value": 6.0,
+      "unit": "h",
+      "range": "5-7",
+      "basis": "manual"
+     }
+    ],
+    "duration_min": 400,
+    "cost_yuan": 560
+   },
+   {
+    "step_id": "S3",
+    "action": "洗涤干燥与载量滴定",
+    "equipment": "恒温摇床、滴定装置",
+    "reagents": "EDTA 溶液",
+    "params": [
+     {
+      "name": "洗涤次数",
+      "value": 3,
+      "unit": "次",
+      "range": "3-5",
+      "basis": "pilot"
+     }
+    ],
+    "duration_min": 240,
+    "cost_yuan": 150
+   }
+  ],
+  "measurements": [
+   {
+    "metric_id": "M-01",
+    "dv_ref": "DV-01",
+    "instrument": "EDTA 络合滴定装置",
+    "unit": "mmol/g",
+    "precision": "±0.02",
+    "timing": "交联后 24h 内"
+   }
+  ],
+  "analysis_plan": [
+   {
+    "analysis_id": "A-01",
+    "hypothesis_id": "H-01",
+    "dv_ref": "DV-01",
+    "test": "单样本 t 检验（n=3 平行样 vs 目标值 0.40）",
+    "alpha": 0.05,
+    "tool": "手算/表格"
+   },
+   {
+    "analysis_id": "A-02",
+    "hypothesis_id": "H-02",
+    "dv_ref": "DV-01",
+    "test": "批次 RSD 描述统计（阈值 10%）",
+    "alpha": 0.05,
+    "tool": "手算/表格"
+   }
+  ],
+  "risks": [
+   {
+    "risk_id": "R-01",
+    "failure_mode": "反应釜档期失守（周四空窗被占用）",
+    "judge_criterion": "预约确认晚于周三 18:00",
+    "stop_loss": "改约失败即触发，转投 P2 并接受 RSD 18% 代价",
+    "fallback": "P2 溶胶-凝胶法（弃选代价已登记 final_choice.rejected）"
+   },
+   {
+    "risk_id": "R-02",
+    "failure_mode": "载量不达标",
+    "judge_criterion": "三次平行样均 <0.40 mmol/g",
+    "stop_loss": "终止 P1 路线，复核 P3 可行性并重跑选择流程",
+    "fallback": "P3 机械球磨法（目标需放宽至 0.25）"
+   }
+  ],
+  "confirmations": [
+   {
+    "item": "高压反应釜操作资质与安全审批",
+    "kind": "safety",
+    "status": "pending"
+   },
+   {
+    "item": "反应釜周四 14:00-20:00 档期确认",
+    "kind": "equipment",
+    "status": "pending"
+   },
+   {
+    "item": "载量判读标准 0.40 mmol/g 的专家确认",
+    "kind": "expert",
+    "status": "pending"
+   }
+  ],
+  "completeness": {
+   "candidates_total": 3,
+   "dimensions_declared": 5,
+   "scored_cells": 15,
+   "backed_cells": 15,
+   "sensitivity_variants": 40,
+   "rejected_registered": 2,
+   "claims_total": 19,
+   "ratio": 1.0
+  },
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与要素清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "五维权重事前声明 + 统一口径声明",
+    "command": "（Agent 填写 result.rubric / result.comparability，同步 /app/work/rubric.json）",
+    "output_ref": "result.rubric",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "逐方案逐维度打分并回证 claims",
+    "command": "（Agent 填写 plan_versions.factors_detail + claims）",
+    "output_ref": "result.plan_versions",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "选中方案执行要素（假设/变量/对照/功效/步骤/风险/确认项）",
+    "command": "（Agent 填写 hypotheses…confirmations）",
+    "output_ref": "result.protocol",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "机械排序与敏感性分析",
+    "command": "python3 /skills/weekly-skill/scripts/score_plan.py --result /app/output/result.json --k 1",
+    "output_ref": "result.plan_ranking / result.sensitivity",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "增益对照与污染反例",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "双重自检",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "/app/work/verify_check.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "selected",
+  "verdict_basis": "三方案五维口径统一打分齐备、fused_score 机械复算一致、敏感性分析可复算、最终选择与放弃理由登记完整，选中 P1",
+  "gain_evidence": {
+   "available": false,
+   "reason": "示例文件为示意输出，正式运行时由 gain_probe.py 回填真实双跑数字"
+  },
+  "efficiency": {
+   "available": false,
+   "reason": "示例文件为示意输出，正式运行时由 gain_probe.py 回填"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "P1 科学价值 0.85：文献载量上限 0.45 mmol/g 归一",
+   "kind": "inferred",
+   "source_id": "P1",
+   "location": "case.candidate_plans[P1]",
+   "evidence": [
+    {
+     "paragraph_id": "candidate_plans.P1",
+     "quote": "载量上限高（文献 0.45 mmol/g）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "P1 可行性 0.80：反应釜仅周四 14:00-20:00 空窗需抢排期",
+   "kind": "reported",
+   "source_id": "P1",
+   "location": "case.materials[2]",
+   "evidence": [
+    {
+     "paragraph_id": "materials.反应釜",
+     "quote": "本周仅剩周四 14:00-20:00 空窗"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "P1 成本 0.70：耗材 420 元+机时 480 元+人力 2 工日合计约 1400 元",
+   "kind": "inferred",
+   "source_id": "P1",
+   "location": "case.materials",
+   "evidence": [
+    {
+     "paragraph_id": "materials.反应釜",
+     "quote": "机时费 80 元/小时"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "P1 周期 0.75：执行约 30h 加表征排队合计约 36h 档",
+   "kind": "inferred",
+   "source_id": "P1",
+   "location": "case.constraints",
+   "evidence": [
+    {
+     "paragraph_id": "constraints",
+     "quote": "总周期 ≤48 小时（含表征排队）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "P1 风险控制 0.80：反应釜超时有改约回退路径",
+   "kind": "inferred",
+   "source_id": "P1",
+   "location": "result.risks[R-01]",
+   "evidence": [
+    {
+     "paragraph_id": "risks.R-01",
+     "quote": "改约失败即触发，转投 P2"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-06",
+   "text": "P2 科学价值 0.80：文献载量约 0.40 mmol/g",
+   "kind": "inferred",
+   "source_id": "P2",
+   "location": "case.candidate_plans[P2]",
+   "evidence": [
+    {
+     "paragraph_id": "candidate_plans.P2",
+     "quote": "设备门槛低但批次重复性差"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-07",
+   "text": "P2 可行性 0.60：历史批次 RSD 18% 重复性差",
+   "kind": "reported",
+   "source_id": "P2",
+   "location": "case.candidate_plans[P2]",
+   "evidence": [
+    {
+     "paragraph_id": "candidate_plans.P2",
+     "quote": "历史 RSD 18%"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-08",
+   "text": "P2 成本 0.50：耗材 380 元但历史返工 1.5 次/批推高按次成本",
+   "kind": "inferred",
+   "source_id": "P2",
+   "location": "case.candidate_plans[P2]",
+   "evidence": [
+    {
+     "paragraph_id": "candidate_plans.P2",
+     "quote": "批次重复性差（历史 RSD 18%）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-09",
+   "text": "P2 周期 0.55：单批 20h 含返工与表征约 40h 档",
+   "kind": "inferred",
+   "source_id": "P2",
+   "location": "case.constraints",
+   "evidence": [
+    {
+     "paragraph_id": "constraints",
+     "quote": "总周期 ≤48 小时（含表征排队）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-10",
+   "text": "P2 风险控制 0.60：重复性失败有判据但无可靠回退",
+   "kind": "inferred",
+   "source_id": "P2",
+   "location": "result.risks",
+   "evidence": [
+    {
+     "paragraph_id": "risks",
+     "quote": "重复性失败模式有判据但无可靠回退路径"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-11",
+   "text": "P3 科学价值 0.70：文献载量上限 0.25 mmol/g 低于目标 0.40",
+   "kind": "reported",
+   "source_id": "P3",
+   "location": "case.candidate_plans[P3]",
+   "evidence": [
+    {
+     "paragraph_id": "candidate_plans.P3",
+     "quote": "载量上限低（文献 0.25 mmol/g）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-12",
+   "text": "P3 可行性 0.90：球磨机周三/周五全天可约无需抢排期",
+   "kind": "reported",
+   "source_id": "P3",
+   "location": "case.materials[3]",
+   "evidence": [
+    {
+     "paragraph_id": "materials.球磨机",
+     "quote": "周三/周五全天可约"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-13",
+   "text": "P3 成本 0.85：耗材 300 元+机时 480 元合计约 1000 元档",
+   "kind": "inferred",
+   "source_id": "P3",
+   "location": "case.materials",
+   "evidence": [
+    {
+     "paragraph_id": "materials.球磨机",
+     "quote": "机时费 120 元/小时"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-14",
+   "text": "P3 周期 0.85：执行 12h 加表征约 24h 档，三方案最快",
+   "kind": "inferred",
+   "source_id": "P3",
+   "location": "case.candidate_plans[P3]",
+   "evidence": [
+    {
+     "paragraph_id": "candidate_plans.P3",
+     "quote": "周期最短成本最低"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-15",
+   "text": "P3 风险控制 0.65：载量不达标有判据但无提升载量的回退",
+   "kind": "inferred",
+   "source_id": "P3",
+   "location": "result.risks",
+   "evidence": [
+    {
+     "paragraph_id": "risks",
+     "quote": "载量不达标风险有判据，但无提升载量的回退路径"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-16",
+   "text": "S2 步骤参数：交联温度 120°C（设备手册口径）",
+   "kind": "reported",
+   "source_id": "P1",
+   "location": "protocol[S2]",
+   "evidence": [
+    {
+     "paragraph_id": "candidate_plans.P1",
+     "quote": "120°C 水热交联"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-17",
+   "text": "S2 步骤参数：保温时长 6.0 h",
+   "kind": "reported",
+   "source_id": "P1",
+   "location": "protocol[S2]",
+   "evidence": [
+    {
+     "paragraph_id": "candidate_plans.P1",
+     "quote": "水热交联 6 小时"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-18",
+   "text": "S1 步骤参数：壳聚糖 2.0 g（文献常用配比）",
+   "kind": "inferred",
+   "source_id": "P1",
+   "location": "protocol[S1]",
+   "evidence": [
+    {
+     "paragraph_id": "literature",
+     "quote": "文献常用配比 2.0 g 壳聚糖"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-19",
+   "text": "S1 步骤参数：乙酸浓度 2.0 vol%（文献溶解体系）",
+   "kind": "inferred",
+   "source_id": "P1",
+   "location": "protocol[S1]",
+   "evidence": [
+    {
+     "paragraph_id": "literature",
+     "quote": "乙酸浓度 2.0 vol% 溶解体系"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "文献载量数值未在案例材料中给出原始出处页码，按组织方 organizer_note 采信"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "载量判读标准 0.40 mmol/g 待专家确认"
+  ],
+  "summary": "示意输出：三方案统一口径比较完成，P1 选中；文献数值与排期窗口需专家/设备方复核"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step1",
+   "change": "五维权重与统一口径事前声明"
+  },
+  {
+   "step": "step2",
+   "change": "三方案五维打分并回证 19 条 claims"
+  },
+  {
+   "step": "step4",
+   "change": "score_plan 机械排序与敏感性分析回填"
+  },
+  {
+   "step": "step6",
+   "change": "双重自检 PASS"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "rubric.weights_valid",
+   "template_value": "五维权重非负数值且合计=1.0",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "rubric.declared_at",
+   "template_value": "declared_at 必填（任何排序之前声明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "comparability.dimensions_declared",
+   "template_value": "五维口径定义逐条声明",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "comparability.cells_complete",
+   "template_value": "每方案×每维度 score+basis+evidence_ref 齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "evidence.score_backchain",
+   "template_value": "逐维度打分依据回证 claims（quote 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "evidence.protocol_params",
+   "template_value": "选中方案数值参数逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "evidence.risks_complete",
+   "template_value": "风险含失败模式+判据+止损",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "plan_versions[0].fused_recompute",
+   "template_value": "rubric 权重机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "plan_versions[1].fused_recompute",
+   "template_value": "rubric 权重机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "plan_versions[2].fused_recompute",
+   "template_value": "rubric 权重机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "plan_ranking.order_recompute",
+   "template_value": "期望顺序逐位对照",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "sensitivity.present",
+   "template_value": "敏感性分析存在（variants 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "sensitivity.recompute_match",
+   "template_value": "逐变体 winner 与独立复算一致",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "choice.top_consistent",
+   "template_value": "chosen_id == plan_ranking 第 1 名",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "choice.reasons",
+   "template_value": "选择理由非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "choice.rejections_registered",
+   "template_value": "全部落选方案登记放弃理由",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "rubric_ledger",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "skill_scripts",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "plan_ranking_recompute",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "sensitivity_recompute",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS"
+}

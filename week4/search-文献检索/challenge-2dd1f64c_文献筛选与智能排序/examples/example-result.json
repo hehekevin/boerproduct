@@ -1,0 +1,753 @@
+{
+ "_note": "示意输出（synthetic，非正式答案）：对应 examples/example-case.json 的合成案例，用于演示接口与完整使用流程，不冒充正式案例结果。",
+ "case_id": "demo-litscreen-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.13.x",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "本地自测环境"
+  },
+  "research_question": {
+   "question": "睡眠剥夺对人类工作记忆表现的急性影响",
+   "scope": "实验性研究（RCT/对照实验），人类被试，结局含工作记忆测量",
+   "time_range": "2015-2025"
+  },
+  "criteria": {
+   "inclusion": [
+    {
+     "criterion_id": "IN-01",
+     "text": "研究对象为人类，且测量结局包含工作记忆（working memory）"
+    },
+    {
+     "criterion_id": "IN-02",
+     "text": "研究设计为实验性研究（RCT/对照实验），睡眠剥夺为操纵变量"
+    }
+   ],
+   "exclusion": [
+    {
+     "criterion_id": "EX-01",
+     "text": "测量结局不是工作记忆（如仅长期记忆、警觉性）"
+    },
+    {
+     "criterion_id": "EX-02",
+     "text": "非人类被试（动物/细胞/计算模型）"
+    },
+    {
+     "criterion_id": "EX-03",
+     "text": "综述、评论或二次研究（无原始数据）"
+    },
+    {
+     "criterion_id": "EX-04",
+     "text": "与其他候选重复（同一研究的预印本/多篇报道），合并保留正式发表版本"
+    }
+   ]
+  },
+  "rubric": {
+   "weights": {
+    "relevance": 0.5,
+    "quality": 0.3,
+    "recency": 0.2
+   },
+   "tie_break": [
+    "fused_score 降序",
+    "recency 降序",
+    "item_id 升序"
+   ],
+   "normalization": "relevance: direct=1.0/indirect=0.5/irrelevant=0.0；quality: 设计与样本量 0-1；recency: (year-2015)/10 截断到 0-1",
+   "declared_at": "step1（任何排序之前）"
+  },
+  "items": [
+   {
+    "item_id": "P01",
+    "source_ref": "candidates[0]",
+    "title": "Acute sleep restriction impairs working memory updating: a randomized controlled trial",
+    "venue_type": "published",
+    "relevance": "direct",
+    "label": "keep",
+    "criteria_hit": [
+     "IN-01",
+     "IN-02"
+    ],
+    "excluded_by": [],
+    "evidence_quote": "Sleep-restricted participants showed significantly reduced working memory accuracy (p < .01)",
+    "evidence_location": "candidates[0].abstract 结果段",
+    "confidence": "high",
+    "rationale": "RCT 设计、48 名人类被试、结局为 n-back 工作记忆，同时命中 IN-01/IN-02；2022 年发表，设计证据等级最高。",
+    "factors": {
+     "relevance": 1.0,
+     "quality": 0.9,
+     "recency": 0.7
+    },
+    "fused_score": 0.91,
+    "rank": 1,
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "P02",
+    "source_ref": "candidates[1]",
+    "title": "One night of total sleep deprivation and working memory capacity in young adults",
+    "venue_type": "published",
+    "relevance": "direct",
+    "label": "keep",
+    "criteria_hit": [
+     "IN-01",
+     "IN-02"
+    ],
+    "excluded_by": [],
+    "evidence_quote": "剥夺后容量显著下降，且与主观困倦程度部分相关",
+    "evidence_location": "candidates[1].abstract 结果句",
+    "confidence": "high",
+    "rationale": "36 名青年被试的一夜睡眠剥夺对照实验，结局为工作记忆容量，命中 IN-01/IN-02；2019 年发表，较 P01 旧。",
+    "factors": {
+     "relevance": 1.0,
+     "quality": 0.8,
+     "recency": 0.4
+    },
+    "fused_score": 0.82,
+    "rank": 2,
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "P03",
+    "source_ref": "candidates[2]",
+    "title": "One night of total sleep deprivation and working memory capacity in young adults (preprint v1)",
+    "venue_type": "preprint",
+    "relevance": "direct",
+    "label": "exclude",
+    "criteria_hit": [],
+    "excluded_by": [
+     "EX-04"
+    ],
+    "evidence_quote": "本预印本为 P02 同一研究的早期版本",
+    "evidence_location": "candidates[2].abstract 首句",
+    "confidence": "high",
+    "rationale": "与 P02 为同一研究的预印本与正式发表版本，按 EX-04 合并保留正式发表版本（P02）。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": "P02",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "P04",
+    "source_ref": "candidates[3]",
+    "title": "Effects of partial sleep restriction on cognitive performance",
+    "venue_type": "published",
+    "relevance": "indirect",
+    "label": "pending",
+    "criteria_hit": [],
+    "excluded_by": [],
+    "evidence_quote": "报告了反应时与准确率的变化，并在附注中提到部分执行功能任务的表现下降",
+    "evidence_location": "candidates[3].abstract 结果句",
+    "confidence": "low",
+    "rationale": "部分睡眠限制与认知表现相关，但摘要未明确是否测量工作记忆、也未报告被试是否人类，无法确认 IN-01。",
+    "factors": {
+     "relevance": 0.5,
+     "quality": 0.5,
+     "recency": 0.9
+    },
+    "fused_score": 0.58,
+    "rank": 3,
+    "duplicate_of": null,
+    "missing_metadata": [
+     "population",
+     "sample_size"
+    ],
+    "pending_reason": "摘要未报告被试人群与样本量，且未明确测量工作记忆，无法判定 IN-01 是否满足",
+    "judged": true
+   },
+   {
+    "item_id": "P05",
+    "source_ref": "candidates[4]",
+    "title": "Sleep and memory consolidation: a narrative review",
+    "venue_type": "published",
+    "relevance": "irrelevant",
+    "label": "exclude",
+    "criteria_hit": [],
+    "excluded_by": [
+     "EX-03"
+    ],
+    "evidence_quote": "本叙述性综述系统梳理了睡眠与记忆巩固关系的现有证据，不涉及原始数据收集",
+    "evidence_location": "candidates[4].abstract",
+    "confidence": "high",
+    "rationale": "叙述性综述，无原始数据，命中排除标准 EX-03；且结局为长期记忆巩固而非工作记忆。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "P06",
+    "source_ref": "candidates[5]",
+    "title": "Sleep deprivation alters prefrontal activity in mice during a working memory task",
+    "venue_type": "published",
+    "relevance": "irrelevant",
+    "label": "exclude",
+    "criteria_hit": [],
+    "excluded_by": [
+     "EX-02"
+    ],
+    "evidence_quote": "在小鼠模型中，睡眠剥夺改变前额叶皮层在 T 迷宫工作记忆任务中的神经活动",
+    "evidence_location": "candidates[5].abstract 首句",
+    "confidence": "high",
+    "rationale": "被试为小鼠，命中排除标准 EX-02（非人类被试），虽任务涉及工作记忆但不满足纳入范围。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   }
+  ],
+  "ranking": {
+   "ordered_ids": [
+    "P01",
+    "P02",
+    "P04"
+   ],
+   "ties": [],
+   "top_k": [
+    "P01",
+    "P02",
+    "P04"
+   ],
+   "k_value": 3,
+   "rubric_weights": {
+    "relevance": 0.5,
+    "quality": 0.3,
+    "recency": 0.2
+   },
+   "tie_break": [
+    "fused_score 降序",
+    "recency 降序",
+    "item_id 升序"
+   ]
+  },
+  "coverage": {
+   "total_candidates": 6,
+   "judged_items": 6,
+   "keep": 2,
+   "pending": 1,
+   "exclude": 3,
+   "duplicates_merged": 1,
+   "ratio": 1.0
+  },
+  "conflicts": [
+   {
+    "item_ids": [
+     "P02",
+     "P03"
+    ],
+    "kind": "duplicate_versions",
+    "resolution": "merged",
+    "evidence": "P03 为 P02 同一研究的预印本（摘要表述一致），按 EX-04 合并保留正式发表版本 P02"
+   }
+  ],
+  "pending_review": [
+   {
+    "item_id": "P04",
+    "reason": "摘要未报告被试人群与样本量，且未明确测量工作记忆，无法判定 IN-01 是否满足",
+    "needed_action": "回原文核对方法学段落；仍不能确认则维持待定并注明缺摘要证据"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与候选清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "result.items",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明纳排标准与打分口径（排序前）",
+    "command": null,
+    "output_ref": "result.criteria / result.rubric",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "逐条判定 6 条候选的相关性、标签与证据",
+    "command": null,
+    "output_ref": "result.items[].relevance/label/evidence_quote",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "机械复算多因子分数并排序",
+    "command": "python3 /skills/weekly-skill/scripts/score_rank.py --result /app/output/result.json --k 3",
+    "output_ref": "result.ranking",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "业务校验与结构守卫",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json",
+    "output_ref": "validator_verdict",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence / result.efficiency",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "screened",
+  "verdict_basis": "6/6 条候选全部逐条判定（2 keep / 1 pending / 3 exclude），重复版本已合并，排序按事前权重机械复算，全部判定理由含纳排命中与摘要证据。",
+  "gain_evidence": {
+   "probe_version": "1.0",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "demo-litscreen-001",
+   "input": {
+    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-2dd1f64c\\submission\\examples\\example-result.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-2dd1f64c\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "consistency_violations_objective": 0,
+      "consistency_caught": 0,
+      "consistency_missed": 0,
+      "ranking_violations_objective": 0,
+      "ranking_caught": 0,
+      "ranking_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "pending_violations_objective": 0,
+      "pending_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "missing_factors": 0,
+       "unjudged": 0,
+       "consistency_missed": 0,
+       "ranking_missed": 0,
+       "pending_missed": 0
+      },
+      "steps_count": 19,
+      "steps_detail": {
+       "checks_executed": 13,
+       "checks_disabled": 0,
+       "flow_steps_total": 6,
+       "flow_steps_done": 6
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0006
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "consistency_violations_objective": 0,
+      "consistency_caught": 0,
+      "consistency_missed": 0,
+      "ranking_violations_objective": 0,
+      "ranking_caught": 0,
+      "ranking_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "pending_violations_objective": 0,
+      "pending_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "missing_factors": 0,
+       "unjudged": 0,
+       "consistency_missed": 0,
+       "ranking_missed": 0,
+       "pending_missed": 0
+      },
+      "steps_count": 7,
+      "steps_detail": {
+       "checks_executed": 1,
+       "checks_disabled": 4,
+       "flow_steps_total": 6,
+       "flow_steps_done": 6
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0004
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "consistency_missed": 0,
+    "ranking_missed": 0,
+    "evidence_missed": 0,
+    "pending_missed": 0,
+    "manual_review_items": 0,
+    "steps_count": 12,
+    "clarification_rounds": 0
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "consistency_missed",
+     "mechanism": "纳入排除一致性检查（keep⇒criteria_hit、exclude⇒excluded_by、pending⇒pending_reason、跨级矛盾）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后 keep 无纳入依据、跨级矛盾不再被判 FAIL，漏检数上升"
+    },
+    {
+     "metric": "ranking_missed",
+     "mechanism": "fused_score 机械复算 + 期望顺序逐位对照（rubric 事前权重）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后分数被篡改或顺序错乱不再可检出，排序依据不可追溯"
+    },
+    {
+     "metric": "evidence_missed",
+     "mechanism": "claims 证据链回证（keep/pending 须有 source_id 对应 claim；fused_score 数字须出现在 claim text/quote）",
+     "formula": "无回证的 keep/pending 条目数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后证据链缺失不再判 FAIL，理由完备性退化为自述"
+    },
+    {
+     "metric": "pending_missed",
+     "mechanism": "待复核登记检查（pending⇒pending_review 含 reason+needed_action；escalated 冲突须进入待复核）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后待定条目可静默漏登记，人工复核入口丢失"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "漏检 + 缺因子（仅 keep/pending 计）+ 未判定条目合计",
+     "formula": "missing_factors(keep/pending) + unjudged + 四类漏检",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "七步线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "退化模式关闭四组检查（consistency/ranking/evidence/pending），枚举、结构守卫、coverage 汇总一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "四类违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，契约字段校验跳过。",
+    "rubric 未事前声明时排序复算真值不可得，ranking_missed 记 0 但属『无法判定』而非『无违规』。",
+    "把 --ablate 的退化结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\w4b\\gain_probe_polluted.json",
+    "injected": [
+     "P01 改为 keep 但清空 criteria_hit/evidence_quote 并篡改 fused_score",
+     "P04 标 pending 但清空 pending_reason",
+     "清空 pending_review（待复核登记丢失）",
+     "清空 claims（证据链缺失）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 9,
+     "consistency_missed": 0,
+     "ranking_missed": 0,
+     "evidence_missed": 0,
+     "pending_missed": 0,
+     "problem_sample": [
+      "P01 标 keep 但未命中任何纳入标准（criteria_hit 空）",
+      "P04 标 pending 但 pending_reason 为空",
+      "P01 fused_score 复算不符（期望 0.91，实际 9.9999）",
+      "P01 标 keep 但无摘要证据（evidence_quote 空）",
+      "P01 的 evidence_quote 在 claims 证据链中无逐字回证",
+      "P02 的 evidence_quote 在 claims 证据链中无逐字回证",
+      "P04 的 evidence_quote 在 claims 证据链中无逐字回证",
+      "P04 标 pending 但未登记进 pending_review（缺 reason/needed_action）"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "PASS",
+     "problems": 0,
+     "consistency_missed": 2,
+     "ranking_missed": 1,
+     "evidence_missed": 3,
+     "pending_missed": 1,
+     "problem_sample": []
+    },
+    "missed_detection_delta": {
+     "consistency_missed": 2,
+     "ranking_missed": 1,
+     "evidence_missed": 3,
+     "pending_missed": 1,
+     "problems": -9
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.0104,
+   "result_bytes": 25587,
+   "input_files_scanned": 2,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 13,
+   "checker_checks_executed_degraded": 1,
+   "checker_checks_disabled_degraded": 4,
+   "items_total": 6,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 0,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 0,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "P01 摘要原文含关键结果句；本方 fused_score=0.91（0.5*1.0 + 0.3*0.9 + 0.2*0.7），标签 keep 依据 IN-01/IN-02 双命中。",
+   "kind": "reported",
+   "source_id": "P01",
+   "location": "items[0]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[0].abstract",
+     "quote": "Sleep-restricted participants showed significantly reduced working memory accuracy (p < .01)"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "P02 摘要报告一夜睡眠剥夺后工作记忆容量显著下降；本方 fused_score=0.82（0.5*1.0 + 0.3*0.8 + 0.2*0.4），标签 keep 依据 IN-01/IN-02 双命中。",
+   "kind": "reported",
+   "source_id": "P02",
+   "location": "items[1]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[1].abstract",
+     "quote": "剥夺后容量显著下降，且与主观困倦程度部分相关"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "P04 摘要只报告反应时与准确率，未明确工作记忆测量与被试人群；本方 relevance=indirect（0.5），fused_score=0.58（0.5*0.5 + 0.3*0.5 + 0.2*0.9），标 pending 待回原文核对。",
+   "kind": "inferred",
+   "source_id": "P04",
+   "location": "items[3]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[3].abstract",
+     "quote": "报告了反应时与准确率的变化，并在附注中提到部分执行功能任务的表现下降"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "P03 摘要自述为 P02 同一研究的早期预印本版本；按 EX-04 与 P02 合并，保留正式发表版本。",
+   "kind": "reported",
+   "source_id": "P03",
+   "location": "items[2]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[2].abstract",
+     "quote": "本预印本为 P02 同一研究的早期版本"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "P05 为叙述性综述且自述不涉及原始数据，命中 EX-03 排除。",
+   "kind": "reported",
+   "source_id": "P05",
+   "location": "items[4]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[4].abstract",
+     "quote": "本叙述性综述系统梳理了睡眠与记忆巩固关系的现有证据，不涉及原始数据收集"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-06",
+   "text": "P06 被试为小鼠模型，命中 EX-02 排除（非人类被试）。",
+   "kind": "reported",
+   "source_id": "P06",
+   "location": "items[5]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[5].abstract",
+     "quote": "在小鼠模型中，睡眠剥夺改变前额叶皮层在 T 迷宫工作记忆任务中的神经活动"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [],
+  "conflicts": [],
+  "human_review": [
+   "P04 需回原文核对方法学段落后再定 keep/exclude"
+  ],
+  "summary": "示例数据为合成案例；1 条待定（P04）已登记待复核，1 组预印本重复已合并。"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step2",
+   "change": "6 条候选逐条判定完成"
+  },
+  {
+   "step": "step3",
+   "change": "score_rank 机械复算分数与排序（P01>P02>P04）"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "items[0].consistency_inclusion",
+   "template_value": "keep ⇒ criteria_hit 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[1].consistency_inclusion",
+   "template_value": "keep ⇒ criteria_hit 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].consistency_inclusion",
+   "template_value": "keep ⇒ criteria_hit 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[3].consistency_inclusion",
+   "template_value": "keep ⇒ criteria_hit 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[4].consistency_inclusion",
+   "template_value": "keep ⇒ criteria_hit 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[5].consistency_inclusion",
+   "template_value": "keep ⇒ criteria_hit 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "rubric.weights_sum",
+   "template_value": "三项权重合计=1.0",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[0].fused_recompute",
+   "template_value": "rubric 权重机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[1].fused_recompute",
+   "template_value": "rubric 权重机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[3].fused_recompute",
+   "template_value": "rubric 权重机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "ranking.order_recompute",
+   "template_value": "期望顺序逐位对照",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[3].pending_registered",
+   "template_value": "pending ⇒ 登记入 pending_review",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].conflict_recorded",
+   "template_value": "duplicate_of ⇒ conflicts 登记 merged/escalated",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "rubric_ledger",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "ranking_recompute",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "score_rank_output",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS"
+}

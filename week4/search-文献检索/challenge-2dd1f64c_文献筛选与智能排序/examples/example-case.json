@@ -1,0 +1,33 @@
+{
+  "_note": "合成示意案例（非正式答案、非真实文献）：仅用于本地自测整条链路。所有标题/摘要均为虚构。",
+  "case_id": "demo-litscreen-001",
+  "task_type": "literature_screening_ranking",
+  "research_question": {
+    "question": "睡眠剥夺对人类工作记忆表现的急性影响",
+    "scope": "实验性研究（RCT/对照实验），人类被试，结局含工作记忆测量",
+    "time_range": "2015-2025"
+  },
+  "criteria": {
+    "inclusion": [
+      {"criterion_id": "IN-01", "text": "研究对象为人类，且测量结局包含工作记忆（working memory）"},
+      {"criterion_id": "IN-02", "text": "研究设计为实验性研究（RCT/对照实验），睡眠剥夺为操纵变量"}
+    ],
+    "exclusion": [
+      {"criterion_id": "EX-01", "text": "测量结局不是工作记忆（如仅长期记忆、警觉性）"},
+      {"criterion_id": "EX-02", "text": "非人类被试（动物/细胞/计算模型）"},
+      {"criterion_id": "EX-03", "text": "综述、评论或二次研究（无原始数据）"},
+      {"criterion_id": "EX-04", "text": "与其他候选重复（同一研究的预印本/多篇报道），合并保留正式发表版本"}
+    ]
+  },
+  "candidates": [
+    {"paper_id": "P01", "title": "Acute sleep restriction impairs working memory updating: a randomized controlled trial", "year": 2022, "venue_type": "published", "abstract": "背景：工作记忆对睡眠高度敏感。方法：48 名健康成人随机分配至完全睡眠剥夺组（n=24）与正常睡眠对照组（n=24），完成 n-back 工作记忆任务。结果：Sleep-restricted participants showed significantly reduced working memory accuracy (p < .01)。结论：急性睡眠剥夺显著损害工作记忆更新功能。"},
+    {"paper_id": "P02", "title": "One night of total sleep deprivation and working memory capacity in young adults", "year": 2019, "venue_type": "published", "abstract": "本研究在 36 名青年被试中比较一夜完全睡眠剥夺前后工作记忆容量的变化，采用复杂广度任务。剥夺后容量显著下降，且与主观困倦程度部分相关。"},
+    {"paper_id": "P03", "title": "One night of total sleep deprivation and working memory capacity in young adults (preprint v1)", "year": 2018, "venue_type": "preprint", "abstract": "本预印本为 P02 同一研究的早期版本：在 36 名青年被试中比较一夜完全睡眠剥夺前后工作记忆容量的变化，采用复杂广度任务。"},
+    {"paper_id": "P04", "title": "Effects of partial sleep restriction on cognitive performance", "year": 2024, "venue_type": "published", "abstract": "本研究考察部分睡眠限制对认知表现的多项指标影响，报告了反应时与准确率的变化，并在附注中提到部分执行功能任务的表现下降。"},
+    {"paper_id": "P05", "title": "Sleep and memory consolidation: a narrative review", "year": 2023, "venue_type": "published", "abstract": "本叙述性综述系统梳理了睡眠与记忆巩固关系的现有证据，讨论长期记忆巩固机制，不涉及原始数据收集。"},
+    {"paper_id": "P06", "title": "Sleep deprivation alters prefrontal activity in mice during a working memory task", "year": 2021, "venue_type": "published", "abstract": "在小鼠模型中，睡眠剥夺改变前额叶皮层在 T 迷宫工作记忆任务中的神经活动。结果提示睡眠剥夺对啮齿类工作记忆脑区活动的影响。"}
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

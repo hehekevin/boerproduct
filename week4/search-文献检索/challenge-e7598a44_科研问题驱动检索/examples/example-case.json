@@ -1,0 +1,32 @@
+{
+  "case_id": "demo-quest-001",
+  "note": "合成示例（示意，非正式案例）：仅用于演示 Skill 接口与本地自测链路，不代表平台正式案例内容，文献记录均为虚构。",
+  "task": "围绕给定研究问题检索并筛选文献，输出可追溯候选集、相关性依据与缺口登记",
+  "research_question_raw": "固态电解质中锂离子-空位复合体的形成机制如何影响离子电导率？（虚构示例问题）",
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  },
+  "records": [
+    {
+      "record_id": "R1",
+      "title": "Vacancy-ordered Li6PS5Cl argyrodite: vacancy clustering and ionic conductivity",
+      "year": 2019,
+      "venue": "Journal of Synthetic Materials",
+      "abstract_excerpt": "We show that vacancy clustering in Li6PS5Cl creates percolating Li-ion pathways, raising conductivity by one order of magnitude."
+    },
+    {
+      "record_id": "R2",
+      "title": "Machine-learning screening of superionic conductors with vacancy features",
+      "year": 2021,
+      "venue": "Synthetic Computational Chemistry",
+      "abstract_excerpt": "A random-forest model using vacancy-formation-energy features screens 1200 candidates for superionic conduction."
+    },
+    {
+      "record_id": "R3",
+      "title": "Grain-boundary resistance in Li3xLa2/3-xTiO3 perovskite electrolytes",
+      "year": 2015,
+      "venue": "Journal of Imaginary Ceramics",
+      "abstract_excerpt": "Total conductivity of LLTO is dominated by grain-boundary resistance rather than bulk vacancy dynamics."
+    }
+  ]
+}

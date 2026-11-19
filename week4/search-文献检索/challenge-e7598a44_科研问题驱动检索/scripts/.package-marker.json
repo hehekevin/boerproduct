@@ -1,0 +1,7 @@
+{
+  "package": "quest-search",
+  "challenge": "challenge-e7598a44",
+  "title": "科研问题驱动检索 Skill",
+  "version": "v1",
+  "note": "标志文件：定位脚本一律走固定路径并用本文件校验命中，禁止 find|head -1 式定位（会串包）。"
+}

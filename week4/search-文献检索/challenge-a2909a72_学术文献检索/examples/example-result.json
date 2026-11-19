@@ -1,0 +1,935 @@
+{
+ "case_id": "demo-lit-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "PubMed 响应材料未随案例提供（databases_used 标 not_tried）"
+  ],
+  "environment": {
+   "python_version": "3.12.1",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "本地合成案例自测"
+  },
+  "research_question": "Does graph neural network pretraining improve molecular property prediction?",
+  "scope": {
+   "years": "2019-2024",
+   "databases": [
+    "Crossref",
+    "EuropePMC",
+    "OpenAlex"
+   ]
+  },
+  "query_plan": [
+   {
+    "round": 1,
+    "query": "graph neural network molecular property prediction",
+    "databases": [
+     "Crossref",
+     "EuropePMC"
+    ],
+    "purpose": "核心术语首查",
+    "status": "planned"
+   },
+   {
+    "round": 2,
+    "query": "MPNN molecular property prediction",
+    "databases": [
+     "EuropePMC",
+     "OpenAlex"
+    ],
+    "purpose": "缩写扩展召回",
+    "status": "planned"
+   },
+   {
+    "round": 3,
+    "query": "molecular representation learning survey review",
+    "databases": [
+     "Crossref"
+    ],
+    "purpose": "相关与上位术语补查",
+    "status": "planned"
+   },
+   {
+    "round": 4,
+    "query": "graph neural network pretraining benchmark dataset",
+    "databases": [
+     "Crossref",
+     "EuropePMC",
+     "OpenAlex"
+    ],
+    "purpose": "补漏与验证：数据集/基准方向反查遗漏",
+    "status": "planned"
+   }
+  ],
+  "keyword_expansion": [
+   {
+    "term": "MPNN",
+    "kind": "abbreviation",
+    "source_basis": "material m1"
+   },
+   {
+    "term": "pre-training",
+    "kind": "variant",
+    "source_basis": "rule:hyphen_space"
+   },
+   {
+    "term": "molecular representation learning",
+    "kind": "related_term",
+    "source_basis": "material m3"
+   },
+   {
+    "term": "graph neural networks",
+    "kind": "variant",
+    "source_basis": "rule:plural_add"
+   }
+  ],
+  "queries_executed": [
+   {
+    "query_id": "q1",
+    "round": 1,
+    "query": "graph neural network molecular property prediction",
+    "database": "Crossref",
+    "result_count": 1,
+    "status": "executed",
+    "notes": "命中 m1"
+   },
+   {
+    "query_id": "q2",
+    "round": 1,
+    "query": "graph neural network molecular property prediction",
+    "database": "EuropePMC",
+    "result_count": 1,
+    "status": "executed",
+    "notes": "命中 m2"
+   },
+   {
+    "query_id": "q3",
+    "round": 2,
+    "query": "MPNN molecular property prediction",
+    "database": "Crossref",
+    "result_count": 0,
+    "status": "executed",
+    "notes": "缩写扩展查询，空结果"
+   },
+   {
+    "query_id": "q4",
+    "round": 2,
+    "query": "graph neural network pretraining molecular",
+    "database": "EuropePMC",
+    "result_count": 1,
+    "status": "executed",
+    "notes": "命中 m5"
+   },
+   {
+    "query_id": "q5",
+    "round": 3,
+    "query": "molecular representation learning",
+    "database": "OpenAlex",
+    "result_count": 2,
+    "status": "executed",
+    "notes": "命中 m3/m4（后经去重合并）"
+   }
+  ],
+  "databases_used": [
+   {
+    "name": "Crossref",
+    "status": "accessible",
+    "queries": 2,
+    "results_count": 1,
+    "note": "q3 空结果"
+   },
+   {
+    "name": "EuropePMC",
+    "status": "accessible",
+    "queries": 2,
+    "results_count": 2,
+    "note": ""
+   },
+   {
+    "name": "OpenAlex",
+    "status": "accessible",
+    "queries": 1,
+    "results_count": 2,
+    "note": "含一对重复记录"
+   },
+   {
+    "name": "PubMed",
+    "status": "not_tried",
+    "queries": 0,
+    "results_count": 0,
+    "note": "响应材料未提供"
+   }
+  ],
+  "papers": [
+   {
+    "paper_id": "p1",
+    "title": "Message passing neural networks for molecular property prediction",
+    "authors": "Gilmer et al.",
+    "year": 2019,
+    "venue": "Journal of Chemical Information and Modeling",
+    "doi": "10.1021/acs.jcim.9b00237",
+    "url": null,
+    "source_db": "Crossref",
+    "matched_queries": [
+     "q1"
+    ],
+    "relevance_score": 0.9,
+    "rationale": "直接研究消息传递神经网络用于分子性质预测，与科研问题核心方法一致",
+    "duplicate_of": null,
+    "metadata_missing": []
+   },
+   {
+    "paper_id": "p2",
+    "title": "Strategies for pre-training graph neural networks on molecular graphs",
+    "authors": "Hu et al.",
+    "year": 2020,
+    "venue": null,
+    "doi": "10.48550/arXiv.1905.12265",
+    "url": null,
+    "source_db": "EuropePMC",
+    "matched_queries": [
+     "q2",
+     "q4"
+    ],
+    "relevance_score": 0.85,
+    "rationale": "图神经网络预训练策略的系统研究，直接回答科研问题",
+    "duplicate_of": null,
+    "metadata_missing": [
+     "venue"
+    ]
+   },
+   {
+    "paper_id": "p3",
+    "title": "MolBERT: molecular representation learning",
+    "authors": null,
+    "year": 2021,
+    "venue": "Journal of Cheminformatics",
+    "doi": "10.1186/s13321-021-00520-9",
+    "url": null,
+    "source_db": "OpenAlex",
+    "matched_queries": [
+     "q5"
+    ],
+    "relevance_score": 0.8,
+    "rationale": "分子表示学习代表工作，覆盖预训练表征方向",
+    "duplicate_of": null,
+    "metadata_missing": [
+     "authors"
+    ]
+   },
+   {
+    "paper_id": "p4",
+    "title": "MolBERT molecular representation learning",
+    "authors": null,
+    "year": 2021,
+    "venue": "Journal of Cheminformatics",
+    "doi": null,
+    "url": null,
+    "source_db": "OpenAlex",
+    "matched_queries": [
+     "q5"
+    ],
+    "relevance_score": 0.75,
+    "rationale": "与 p3 同题记录，元数据较少，标记为重复",
+    "duplicate_of": "p3",
+    "metadata_missing": [
+     "doi",
+     "authors"
+    ]
+   },
+   {
+    "paper_id": "p5",
+    "title": "A survey of molecular representation learning 2019-2024",
+    "authors": null,
+    "year": 2024,
+    "venue": null,
+    "doi": null,
+    "url": null,
+    "source_db": "EuropePMC",
+    "matched_queries": [
+     "q4",
+     "q5"
+    ],
+    "relevance_score": 0.6,
+    "rationale": "综述性预印本，提供领域全景与遗漏反查线索",
+    "duplicate_of": null,
+    "metadata_missing": [
+     "venue",
+     "authors",
+     "doi"
+    ]
+   }
+  ],
+  "dedup": {
+   "criteria": "归一化标题（小写/去标点/空白折叠）+ 归一化 DOI；DOI 命中优先",
+   "clusters_found": 1,
+   "removed_duplicates": 1,
+   "dedup_rate": 0.2,
+   "note": "p4 与 p3 同题且无 DOI，按归一化标题合并，保留元数据更全的 p3"
+  },
+  "coverage": {
+   "total_raw": 5,
+   "total_unique": 4,
+   "traceable_items": 5,
+   "traceability_ratio": 1.0,
+   "per_db_counts": {
+    "Crossref": 1,
+    "EuropePMC": 2,
+    "OpenAlex": 2
+   }
+  },
+  "gaps": [
+   {
+    "gap_id": "g1",
+    "kind": "empty_result",
+    "description": "q3（MPNN molecular property prediction，Crossref）空结果",
+    "follow_up": "改用全称查询或换库重试"
+   },
+   {
+    "gap_id": "g2",
+    "kind": "missing_metadata",
+    "description": "p5 缺 venue/authors/doi，p2 缺 venue，p3/p4 缺 authors",
+    "follow_up": "如需补全请回原始库取详细记录"
+   },
+   {
+    "gap_id": "g3",
+    "kind": "suspected_miss",
+    "description": "2019-2024 区间内可能存在未召回的『预训练+分子性质』实证研究",
+    "follow_up": "round4 基准/数据集方向反查后复核"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与材料清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "changelog[0]",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "查询规划与关键词扩展",
+    "command": "python3 /skills/weekly-skill/scripts/plan_queries.py --case /input/case.json --result /app/output/result.json --work-dir /app/work",
+    "output_ref": "query_plan",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "执行 5 次查询并逐条登记文献与来源",
+    "command": "（阅读材料 m1-m5 并登记 papers/queries_executed）",
+    "output_ref": "papers",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "去重聚类与覆盖统计",
+    "command": "python3 /skills/weekly-skill/scripts/dedup_records.py --result /app/output/result.json --work-dir /app/work",
+    "output_ref": "dedup",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "增益对照与双重自检",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "gain_evidence",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": "3 个数据库响应材料齐备，5 条文献全部登记且来源可追溯；空查询、元数据缺失与疑似遗漏已登记 gaps",
+   "manual_takeover": []
+  },
+  "verdict": "complete",
+  "verdict_basis": "5 条文献全部可追溯（ratio=1.0），去重后 4 条唯一；空结果与元数据缺失已显式登记"
+ },
+ "claims": [
+  {
+   "claim_id": "k-01",
+   "text": "来源 m1 摘录论文 Message passing neural networks for molecular property prediction（2019 年）；本方判断相关度 0.9，因其直接命中科研问题核心方法",
+   "kind": "reported",
+   "source_id": "m1",
+   "location": "papers[0]",
+   "evidence": [
+    {
+     "paragraph_id": "m1",
+     "quote": "Message passing neural networks for molecular property prediction. Journal of Chemical Information and Modeling, 2019"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-02",
+   "text": "来源 m2 摘录论文 Strategies for pre-training graph neural networks on molecular graphs（2020 年）；本方判断相关度 0.85，因其系统研究图神经网络预训练策略",
+   "kind": "reported",
+   "source_id": "m2",
+   "location": "papers[1]",
+   "evidence": [
+    {
+     "paragraph_id": "m2",
+     "quote": "Strategies for pre-training graph neural networks on molecular graphs. 2020"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-03",
+   "text": "来源 m3 摘录 MolBERT: molecular representation learning（2021 年，Journal of Cheminformatics）；本方判断相关度 0.8；来源 m4 为同题记录（2021 年，无 DOI），相关度 0.75，已按归一化标题标记为 p3 的重复",
+   "kind": "inferred",
+   "source_id": "m3/m4",
+   "location": "papers[2]/papers[3]",
+   "evidence": [
+    {
+     "paragraph_id": "m3",
+     "quote": "MolBERT: molecular representation learning, Journal of Cheminformatics, 2021, doi:10.1186/s13321-021-00520-9"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-04",
+   "text": "来源 m5 摘录综述 A survey of molecular representation learning 2019-2024（区间年份取末端 2024 年登记）；本方判断相关度 0.6，因提供领域全景与遗漏反查线索",
+   "kind": "reported",
+   "source_id": "m5",
+   "location": "papers[4]",
+   "evidence": [
+    {
+     "paragraph_id": "m5",
+     "quote": "A survey of molecular representation learning 2019-2024, arXiv preprint 2024"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-05",
+   "text": "本方去重与覆盖统计（实际运行 dedup_records.py 得出）：total_raw 5、total_unique 4、clusters_found 1、removed_duplicates 1、dedup_rate 0.2、traceable_items 5、traceability_ratio 1.0",
+   "kind": "inferred",
+   "source_id": "dedup_records",
+   "location": "dedup/coverage",
+   "evidence": [
+    {
+     "paragraph_id": "m3/m4",
+     "quote": "MolBERT: molecular representation learning"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [
+   "m3/m4 均未提供 authors"
+  ],
+  "unverifiable": [
+   "p5 为预印本，正式发表信息无法从现有材料确认"
+  ],
+  "conflicts": [
+   "p3 与 p4 同题但 m4 声明 duplicate record 且无 DOI，按标题合并并登记"
+  ],
+  "human_review": [],
+  "summary": "合成试验仅验证流程与校验机制，非正式检索结论；文献元数据均逐字摘自材料。"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step1",
+   "change": "plan_queries 生成 4 轮计划与 4 条扩展词"
+  },
+  {
+   "step": "step2",
+   "change": "执行 5 次查询，登记 5 条文献（含 1 对重复）"
+  },
+  {
+   "step": "step3",
+   "change": "dedup_records 去重：1 簇移除 1 条，rate=0.2"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "case_id",
+   "template_value": "case_id 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "top_fields",
+   "template_value": "status/result/claims/uncertainties 全键",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "status_enum",
+   "template_value": "status ∈ answered/partial/insufficient_evidence/input_error",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "query_plan.present",
+   "template_value": "须有多轮查询计划 query_plan",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "query_plan[0].query",
+   "template_value": "须写明查询串 query",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "query_plan[0].databases",
+   "template_value": "须写明数据库组合 databases",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "query_plan[1].query",
+   "template_value": "须写明查询串 query",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "query_plan[1].databases",
+   "template_value": "须写明数据库组合 databases",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "query_plan[2].query",
+   "template_value": "须写明查询串 query",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "query_plan[2].databases",
+   "template_value": "须写明数据库组合 databases",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "query_plan[3].query",
+   "template_value": "须写明查询串 query",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "query_plan[3].databases",
+   "template_value": "须写明数据库组合 databases",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "query_plan.multi_round",
+   "template_value": "计划须 ≥2 轮（多轮规划）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "keyword_expansion.present",
+   "template_value": "须有关键词扩展 keyword_expansion",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "keyword_expansion[0].kind",
+   "template_value": "kind ∈ variant/abbreviation/synonym/related_term/translation/acronym_backform/synonym_expansion",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "keyword_expansion[0].basis",
+   "template_value": "扩展须带 source_basis（规则名或材料位置）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "keyword_expansion[1].kind",
+   "template_value": "kind ∈ variant/abbreviation/synonym/related_term/translation/acronym_backform/synonym_expansion",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "keyword_expansion[1].basis",
+   "template_value": "扩展须带 source_basis（规则名或材料位置）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "keyword_expansion[2].kind",
+   "template_value": "kind ∈ variant/abbreviation/synonym/related_term/translation/acronym_backform/synonym_expansion",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "keyword_expansion[2].basis",
+   "template_value": "扩展须带 source_basis（规则名或材料位置）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "keyword_expansion[3].kind",
+   "template_value": "kind ∈ variant/abbreviation/synonym/related_term/translation/acronym_backform/synonym_expansion",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "keyword_expansion[3].basis",
+   "template_value": "扩展须带 source_basis（规则名或材料位置）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed.present",
+   "template_value": "须有查询执行记录 queries_executed",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed[0].status",
+   "template_value": "status ∈ executed/failed/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed[0].database",
+   "template_value": "executed 记录须写明 database",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed[1].status",
+   "template_value": "status ∈ executed/failed/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed[1].database",
+   "template_value": "executed 记录须写明 database",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed[2].status",
+   "template_value": "status ∈ executed/failed/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed[2].database",
+   "template_value": "executed 记录须写明 database",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed[3].status",
+   "template_value": "status ∈ executed/failed/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed[3].database",
+   "template_value": "executed 记录须写明 database",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed[4].status",
+   "template_value": "status ∈ executed/failed/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "queries_executed[4].database",
+   "template_value": "executed 记录须写明 database",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases_used[0].status",
+   "template_value": "status ∈ accessible/rate_limited/unavailable/not_tried",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases_used[1].status",
+   "template_value": "status ∈ accessible/rate_limited/unavailable/not_tried",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases_used[2].status",
+   "template_value": "status ∈ accessible/rate_limited/unavailable/not_tried",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases_used[3].status",
+   "template_value": "status ∈ accessible/rate_limited/unavailable/not_tried",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].title",
+   "template_value": "须有标题 title",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].trace",
+   "template_value": "来源可追溯：source_db + matched_queries + rationale 齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].numbers_backed",
+   "template_value": "year 须在 quote / relevance_score 须在 claim text 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].title",
+   "template_value": "须有标题 title",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].trace",
+   "template_value": "来源可追溯：source_db + matched_queries + rationale 齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].numbers_backed",
+   "template_value": "year 须在 quote / relevance_score 须在 claim text 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[2].title",
+   "template_value": "须有标题 title",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[2].trace",
+   "template_value": "来源可追溯：source_db + matched_queries + rationale 齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[2].numbers_backed",
+   "template_value": "year 须在 quote / relevance_score 须在 claim text 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[3].title",
+   "template_value": "须有标题 title",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[3].trace",
+   "template_value": "来源可追溯：source_db + matched_queries + rationale 齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[3].numbers_backed",
+   "template_value": "year 须在 quote / relevance_score 须在 claim text 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[4].title",
+   "template_value": "须有标题 title",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[4].trace",
+   "template_value": "来源可追溯：source_db + matched_queries + rationale 齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[4].numbers_backed",
+   "template_value": "year 须在 quote / relevance_score 须在 claim text 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "dedup.present",
+   "template_value": "须有去重统计 dedup",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "dedup.removed_matches",
+   "template_value": "removed_duplicates=1 须等于实际标记数 1",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "dedup.rate_recompute",
+   "template_value": "dedup_rate 须复算成立（0.2）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage.present",
+   "template_value": "须有覆盖统计 coverage",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage.total_raw",
+   "template_value": "total_raw 须等于 papers 行数 5",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage.traceable",
+   "template_value": "traceable_items 须等于实际可追溯数 5",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage.ratio_recompute",
+   "template_value": "traceability_ratio 须复算成立（1.0）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage.total_unique",
+   "template_value": "total_unique 须等于未标重复行数 4",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "counts.numbers_backed",
+   "template_value": "计数须回证（未回证 0 处）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gaps[0].kind",
+   "template_value": "kind ∈ empty_result/conflict/missing_metadata/access_denied/rate_limited/suspected_miss",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gaps[0].description",
+   "template_value": "须写明遗漏描述",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gaps[1].kind",
+   "template_value": "kind ∈ empty_result/conflict/missing_metadata/access_denied/rate_limited/suspected_miss",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gaps[1].description",
+   "template_value": "须写明遗漏描述",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gaps[2].kind",
+   "template_value": "kind ∈ empty_result/conflict/missing_metadata/access_denied/rate_limited/suspected_miss",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gaps[2].description",
+   "template_value": "须写明遗漏描述",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "verdict_enum",
+   "template_value": "∈ complete/partial/empty/cannot_verify",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "verdict_complete",
+   "template_value": "verdict=complete 须 papers 非空且追溯率=1.0",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "run_status.present",
+   "template_value": "须有运行状态 run_status{state,reason}",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "run_status.state",
+   "template_value": "state ∈ success/partial/unable_to_determine/refused",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "run_status.reason",
+   "template_value": "须写明状态原因 reason",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gain_evidence.present",
+   "template_value": "须有 gain_evidence（正常 vs 退化对照）",
+   "applied": true,
+   "match": false
+  },
+  {
+   "item": "efficiency.present",
+   "template_value": "须有 efficiency 效率计数",
+   "applied": true,
+   "match": false
+  },
+  {
+   "item": "steps.present",
+   "template_value": "须有步骤 steps[]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "steps.has_command",
+   "template_value": "至少一条步骤给出可执行命令 command",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims_coverage",
+   "template_value": "有可回证数字则 claims 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "environment.python_version",
+   "template_value": "environment 须有 python_version（或 python）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "numbers_backed",
+   "template_value": "全部可回证数字有逐字回证",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "unbacked_numbers": [],
+ "gates": [
+  {
+   "gate": "result_readable",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "validator_verdict": "FAIL"
+}

@@ -1,0 +1,22 @@
+{
+  "case_id": "demo-lit-001",
+  "_comment": "合成案例：科研问题为『图神经网络预训练是否提升分子性质预测』，材料模拟 Crossref/EuropePMC/OpenAlex 检索响应片段（含一对重复记录、一条空结果、一条区间年份）。仅示意接口与流程，非正式案例。",
+  "_usage_note": "配合 gain_probe.py --emit-into 会把 gain_evidence/efficiency 写回本目录的 example-result.json（运行时产物）；如需保持干净请对副本运行或事后清理。",
+  "output_contract": {
+    "case_id": "案例标识",
+    "status": "运行状态",
+    "result": "主结果",
+    "claims": "证据链",
+    "uncertainties": "不确定性",
+    "changelog": "变更记录"
+  },
+  "research_question": "Does graph neural network pretraining improve molecular property prediction?",
+  "scope": {"years": "2019-2024", "databases": ["Crossref", "EuropePMC", "OpenAlex"]},
+  "materials": [
+    {"material_id": "m1", "kind": "crossref_response", "snippet": "Message passing neural networks for molecular property prediction. Journal of Chemical Information and Modeling, 2019. doi:10.1021/acs.jcim.9b00237"},
+    {"material_id": "m2", "kind": "europepmc_response", "snippet": "Strategies for pre-training graph neural networks on molecular graphs. 2020. doi:10.48550/arXiv.1905.12265"},
+    {"material_id": "m3", "kind": "openalex_response", "snippet": "MolBERT: molecular representation learning, Journal of Cheminformatics, 2021, doi:10.1186/s13321-021-00520-9"},
+    {"material_id": "m4", "kind": "openalex_response", "snippet": "MolBERT molecular representation learning. Journal of Cheminformatics 2021 (duplicate record, no DOI listed)"},
+    {"material_id": "m5", "kind": "europepmc_response", "snippet": "A survey of molecular representation learning 2019-2024, arXiv preprint 2024"}
+  ]
+}

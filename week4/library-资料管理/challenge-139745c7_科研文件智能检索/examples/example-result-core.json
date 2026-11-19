@@ -1,0 +1,1218 @@
+{
+ "case_id": "demo-scifileretrieve-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "F05 扫描件无文本层（示例设定），无法参与内容匹配"
+  ],
+  "environment": {
+   "python_version": "3.13（示例环境，示意值）",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "示例在单机自测环境产出，示意值"
+  },
+  "library": {
+   "root": "/input/library",
+   "total_files": 8,
+   "files": [
+    {
+     "file_id": "F01",
+     "source_ref": "library.files[0]",
+     "title": "projectA_labnote_2023.md",
+     "content_available": true,
+     "content_preview": "项目A实验记录 2023-03。2.1 缓冲液配制：50 mM Tris-HCl（pH 7.5），150 mM NaCl，0.05% Tween-20。2.2 上样量：每孔 20 μL。备注：本记录为批次 batch-07 的母版协议。",
+     "metadata": {
+      "project": "proj-A",
+      "year": 2023,
+      "type": "labnote"
+     },
+     "restricted": false,
+     "restricted_reason": null
+    },
+    {
+     "file_id": "F02",
+     "source_ref": "library.files[1]",
+     "title": "batch07_export.csv",
+     "content_available": true,
+     "content_preview": "导出说明：batch-07 OD450 读数表，行=孔位，列=时间点。数据文件不含配方信息。",
+     "metadata": {
+      "project": "proj-A",
+      "year": 2023,
+      "type": "data"
+     },
+     "restricted": false,
+     "restricted_reason": null
+    },
+    {
+     "file_id": "F03",
+     "source_ref": "library.files[2]",
+     "title": "manuscript_v2.docx",
+     "content_available": true,
+     "content_preview": "投稿稿 v2。Methods 2.3 Buffer preparation：50 mM Tris-HCl pH 7.5 与 150 mM NaCl。Figure 3 shows dose-response of batch-07 samples.",
+     "metadata": {
+      "project": "proj-A",
+      "version": 2,
+      "year": 2023,
+      "type": "manuscript"
+     },
+     "restricted": false,
+     "restricted_reason": null
+    },
+    {
+     "file_id": "F04",
+     "source_ref": "library.files[3]",
+     "title": "manuscript_v3.docx",
+     "content_available": true,
+     "content_preview": "投稿稿 v3（最新）。Methods 2.3 Buffer preparation：50 mM Tris-HCl pH 7.5，150 mM NaCl，新增 0.05% Tween-20。Figure 3 caption: dose-response curves of batch-07.",
+     "metadata": {
+      "project": "proj-A",
+      "version": 3,
+      "year": 2024,
+      "type": "manuscript"
+     },
+     "restricted": false,
+     "restricted_reason": null
+    },
+    {
+     "file_id": "F05",
+     "source_ref": "library.files[4]",
+     "title": "scan_note_003.pdf",
+     "content_available": false,
+     "content_preview": null,
+     "metadata": {
+      "project": "proj-A",
+      "type": "scan",
+      "text_layer": false
+     },
+     "restricted": false,
+     "restricted_reason": null
+    },
+    {
+     "file_id": "F06",
+     "source_ref": "library.files[5]",
+     "title": "external_dataset_raw.xlsx",
+     "content_available": false,
+     "content_preview": null,
+     "metadata": {
+      "project": "proj-B",
+      "type": "data"
+     },
+     "restricted": true,
+     "restricted_reason": "case.json 标记 restricted=true"
+    },
+    {
+     "file_id": "F07",
+     "source_ref": "library.files[6]",
+     "title": "supplement_fig3.png",
+     "content_available": true,
+     "content_preview": "图注：Figure 3. Dose-response of batch-07. 数据来源见 batch07_export.csv。",
+     "metadata": {
+      "project": "proj-A",
+      "type": "figure"
+     },
+     "restricted": false,
+     "restricted_reason": null
+    },
+    {
+     "file_id": "F08",
+     "source_ref": "library.files[7]",
+     "title": "protocol_old_2019.md",
+     "content_available": true,
+     "content_preview": "旧版协议 2019。缓冲液配制：25 mM Tris-HCl（pH 8.0），50 mM NaCl。已被 2023 版协议替代。",
+     "metadata": {
+      "year": 2019,
+      "type": "protocol"
+     },
+     "restricted": false,
+     "restricted_reason": null
+    }
+   ]
+  },
+  "queries": [
+   {
+    "query_id": "Q01",
+    "question": "项目 A 的缓冲液配方写在哪个文件哪一节？要最新版本。",
+    "source_ref": "queries[0]"
+   },
+   {
+    "query_id": "Q02",
+    "question": "Figure 3 对应的是哪一组实验数据？",
+    "source_ref": "queries[1]"
+   },
+   {
+    "query_id": "Q03",
+    "question": "2024 年之后新增的蛋白质浓度测定数据在哪份文件？",
+    "source_ref": "queries[2]"
+   }
+  ],
+  "query_plan": {
+   "scoring": {
+    "weights": {
+     "term_match": 0.4,
+     "metadata_match": 0.2,
+     "content_match": 0.4
+    },
+    "tie_break": [
+     "fused_score 降序",
+     "content_match 降序",
+     "hit_id 升序"
+    ],
+    "normalization": "term_match：命中检索式词面锚点的比例；metadata_match：元数据过滤/字段匹配强度；content_match：内容匹配与原文证据强度。三者均归一化到 0-1。",
+    "declared_at": "step1（任何排序之前声明，声明后不再调整）"
+   },
+   "declared_at": "step1（任何排序之前声明，声明后不再调整）",
+   "per_query": [
+    {
+     "query_id": "Q01",
+     "keywords": [
+      "缓冲液",
+      "配方"
+     ],
+     "synonyms": [
+      "buffer",
+      "Buffer preparation",
+      "配制"
+     ],
+     "content_terms": [
+      "Tris-HCl",
+      "NaCl",
+      "Tween-20",
+      "pH 7.5"
+     ],
+     "metadata_filters": [],
+     "requirement_mapping": "需求=『项目A 缓冲液配方 + 最新版本』：词面锚点=缓冲液/配方/配制/buffer；内容词=具体试剂（Tris-HCl/NaCl/Tween-20/pH 7.5）用于识别配方段落；不设元数据硬过滤（配方可能出现在无 project 字段的实验记录里），版本新旧由 conflicts 版本关系标注（merged 保留最新版）而非过滤。"
+    },
+    {
+     "query_id": "Q02",
+     "keywords": [
+      "Figure 3",
+      "图3"
+     ],
+     "synonyms": [
+      "fig. 3",
+      "figure three"
+     ],
+     "content_terms": [
+      "batch-07",
+      "dose-response",
+      "Dose-response",
+      "batch07_export"
+     ],
+     "metadata_filters": [
+      "project:proj-A"
+     ],
+     "requirement_mapping": "需求=『Figure 3 对应哪组数据』：词面锚点=Figure 3/图3/fig. 3 及大小写变体；内容词=batch-07/dose-response/batch07_export 用于图-数据对应；元数据硬过滤 project:proj-A（该图属项目A，非项目A 文件不判 hit）。"
+    },
+    {
+     "query_id": "Q03",
+     "keywords": [
+      "蛋白质浓度",
+      "BCA"
+     ],
+     "synonyms": [
+      "protein concentration"
+     ],
+     "content_terms": [
+      "mg/mL",
+      "浓度测定"
+     ],
+     "metadata_filters": [],
+     "requirement_mapping": "需求=『2024 年后新增的蛋白质浓度测定数据』：词面锚点=蛋白质浓度/BCA/protein concentration；内容词=mg/mL/浓度测定；不设元数据硬过滤，时间条件（2024 年后）在逐条核对的 no_match_reason 中说明。"
+    }
+   ]
+  },
+  "hits": [
+   {
+    "hit_id": "H001",
+    "query_id": "Q01",
+    "file_id": "F01",
+    "file_ref": "library.files[0]",
+    "label": "hit",
+    "relevance": "high",
+    "matched_terms": [
+     "缓冲液",
+     "配制",
+     "Tris-HCl",
+     "NaCl"
+    ],
+    "filters_applied": [],
+    "evidence_quote": "50 mM Tris-HCl（pH 7.5），150 mM NaCl，0.05% Tween-20",
+    "evidence_location": "2.1 缓冲液配制（章节标题）",
+    "confidence": "high",
+    "rationale": "实验记录母版，2.1 节逐字给出当前配方与试剂浓度，与检索式内容词全部命中。",
+    "factors": {
+     "term_match": 1.0,
+     "metadata_match": 0.5,
+     "content_match": 1.0
+    },
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H002",
+    "query_id": "Q01",
+    "file_id": "F02",
+    "file_ref": "library.files[1]",
+    "label": "no_hit",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "medium",
+    "rationale": "数据导出文件，内容自述『不含配方信息』，无词面与内容命中。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": "数据导出文件，内容自述『不含配方信息』，无词面与内容命中。",
+    "judged": true
+   },
+   {
+    "hit_id": "H003",
+    "query_id": "Q01",
+    "file_id": "F03",
+    "file_ref": "library.files[2]",
+    "label": "hit",
+    "relevance": "high",
+    "matched_terms": [
+     "Buffer preparation",
+     "Tris-HCl",
+     "NaCl"
+    ],
+    "filters_applied": [],
+    "evidence_quote": "Methods 2.3 Buffer preparation：50 mM Tris-HCl pH 7.5 与 150 mM NaCl",
+    "evidence_location": "Methods 2.3（章节标题）",
+    "confidence": "high",
+    "rationale": "投稿稿 v2 的 Methods 2.3 含配方，但已被 v3 取代（缺 Tween-20），登记 version_superseded 合并到最新版。",
+    "factors": {
+     "term_match": 1.0,
+     "metadata_match": 1.0,
+     "content_match": 0.8
+    },
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": "H004",
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H004",
+    "query_id": "Q01",
+    "file_id": "F04",
+    "file_ref": "library.files[3]",
+    "label": "hit",
+    "relevance": "high",
+    "matched_terms": [
+     "Buffer preparation",
+     "Tris-HCl",
+     "NaCl",
+     "Tween-20"
+    ],
+    "filters_applied": [],
+    "evidence_quote": "Methods 2.3 Buffer preparation：50 mM Tris-HCl pH 7.5，150 mM NaCl，新增 0.05% Tween-20",
+    "evidence_location": "Methods 2.3（章节标题）",
+    "confidence": "high",
+    "rationale": "最新版投稿稿（version=3），Methods 2.3 配方最全且与 2023 实验记录一致，排名第一。",
+    "factors": {
+     "term_match": 1.0,
+     "metadata_match": 1.0,
+     "content_match": 1.0
+    },
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H005",
+    "query_id": "Q01",
+    "file_id": "F05",
+    "file_ref": "library.files[4]",
+    "label": "pending",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "low",
+    "rationale": "扫描件无文本层（content_available=false），内容无法匹配。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": "扫描件无文本层（content_available=false），无法做内容匹配。",
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H006",
+    "query_id": "Q01",
+    "file_id": "F06",
+    "file_ref": "library.files[5]",
+    "label": "pending",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "low",
+    "rationale": "文件受限（restricted=true），无读取权限，内容无法核验。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": true,
+    "pending_reason": "文件权限受限（restricted），无读取权限，不脑补内容。",
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H007",
+    "query_id": "Q01",
+    "file_id": "F07",
+    "file_ref": "library.files[6]",
+    "label": "no_hit",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "medium",
+    "rationale": "补充材料图注仅含图与数据来源，无配方内容。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": "补充材料图注仅含图与数据来源，无配方内容。",
+    "judged": true
+   },
+   {
+    "hit_id": "H008",
+    "query_id": "Q01",
+    "file_id": "F08",
+    "file_ref": "library.files[7]",
+    "label": "hit",
+    "relevance": "medium",
+    "matched_terms": [
+     "缓冲液",
+     "配制",
+     "Tris-HCl",
+     "NaCl"
+    ],
+    "filters_applied": [],
+    "evidence_quote": "缓冲液配制：25 mM Tris-HCl（pH 8.0），50 mM NaCl",
+    "evidence_location": "正文第 1 段",
+    "confidence": "medium",
+    "rationale": "2019 旧版协议配方浓度不同（25 mM/pH 8.0），命中但按需求标注为旧版本，不作为最新配方答案。",
+    "factors": {
+     "term_match": 1.0,
+     "metadata_match": 0.5,
+     "content_match": 0.7
+    },
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H009",
+    "query_id": "Q02",
+    "file_id": "F01",
+    "file_ref": "library.files[0]",
+    "label": "no_hit",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "medium",
+    "rationale": "内容提及 batch-07 母版协议，但未提 Figure 3 或图-数据对应关系。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": "内容提及 batch-07 母版协议，但未提 Figure 3 或图-数据对应关系。",
+    "judged": true
+   },
+   {
+    "hit_id": "H010",
+    "query_id": "Q02",
+    "file_id": "F02",
+    "file_ref": "library.files[1]",
+    "label": "hit",
+    "relevance": "high",
+    "matched_terms": [
+     "batch-07"
+    ],
+    "filters_applied": [
+     "project:proj-A"
+    ],
+    "evidence_quote": "batch-07 OD450 读数表，行=孔位，列=时间点",
+    "evidence_location": "导出说明（文件首行）",
+    "confidence": "high",
+    "rationale": "batch07_export.csv 即 batch-07 数据文件本体，与图注来源交叉印证。",
+    "factors": {
+     "term_match": 0.6,
+     "metadata_match": 1.0,
+     "content_match": 0.8
+    },
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H011",
+    "query_id": "Q02",
+    "file_id": "F03",
+    "file_ref": "library.files[2]",
+    "label": "hit",
+    "relevance": "high",
+    "matched_terms": [
+     "Figure 3",
+     "batch-07",
+     "dose-response"
+    ],
+    "filters_applied": [
+     "project:proj-A"
+    ],
+    "evidence_quote": "Figure 3 shows dose-response of batch-07 samples.",
+    "evidence_location": "正文图引用句",
+    "confidence": "medium",
+    "rationale": "v2 正文提及 Figure 3 与 batch-07，但已被 v3 取代，合并到最新版。",
+    "factors": {
+     "term_match": 1.0,
+     "metadata_match": 1.0,
+     "content_match": 0.8
+    },
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": "H012",
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H012",
+    "query_id": "Q02",
+    "file_id": "F04",
+    "file_ref": "library.files[3]",
+    "label": "hit",
+    "relevance": "high",
+    "matched_terms": [
+     "Figure 3",
+     "batch-07",
+     "dose-response"
+    ],
+    "filters_applied": [
+     "project:proj-A"
+    ],
+    "evidence_quote": "Figure 3 caption: dose-response curves of batch-07.",
+    "evidence_location": "Figure 3 图注句",
+    "confidence": "high",
+    "rationale": "最新版投稿稿图注明确 Figure 3 对应 batch-07 剂量响应曲线。",
+    "factors": {
+     "term_match": 1.0,
+     "metadata_match": 1.0,
+     "content_match": 1.0
+    },
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H013",
+    "query_id": "Q02",
+    "file_id": "F05",
+    "file_ref": "library.files[4]",
+    "label": "pending",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "low",
+    "rationale": "扫描件无文本层（content_available=false），内容无法匹配。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": "扫描件无文本层，无法核验是否含 Figure 3 信息。",
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H014",
+    "query_id": "Q02",
+    "file_id": "F06",
+    "file_ref": "library.files[5]",
+    "label": "pending",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "low",
+    "rationale": "文件受限（restricted=true），无读取权限，内容无法核验。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": true,
+    "pending_reason": "文件权限受限，无法核验是否为 Figure 3 相关数据。",
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H015",
+    "query_id": "Q02",
+    "file_id": "F07",
+    "file_ref": "library.files[6]",
+    "label": "hit",
+    "relevance": "high",
+    "matched_terms": [
+     "Figure 3",
+     "batch-07",
+     "Dose-response"
+    ],
+    "filters_applied": [
+     "project:proj-A"
+    ],
+    "evidence_quote": "Figure 3. Dose-response of batch-07. 数据来源见 batch07_export.csv。",
+    "evidence_location": "图注",
+    "confidence": "high",
+    "rationale": "补充材料 Figure 3 图注直接写明数据来源文件，是图-数据对应的最短证据链。",
+    "factors": {
+     "term_match": 1.0,
+     "metadata_match": 1.0,
+     "content_match": 0.9
+    },
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H016",
+    "query_id": "Q02",
+    "file_id": "F08",
+    "file_ref": "library.files[7]",
+    "label": "no_hit",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "medium",
+    "rationale": "2019 旧协议，无 Figure 3 与数据对应信息。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": "2019 旧协议，无 Figure 3 与数据对应信息。",
+    "judged": true
+   },
+   {
+    "hit_id": "H017",
+    "query_id": "Q03",
+    "file_id": "F01",
+    "file_ref": "library.files[0]",
+    "label": "no_hit",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "medium",
+    "rationale": "实验记录止于 2023-03，无蛋白质浓度测定内容，且不满足『2024 年后』。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": "实验记录止于 2023-03，无蛋白质浓度测定内容，且不满足『2024 年后』。",
+    "judged": true
+   },
+   {
+    "hit_id": "H018",
+    "query_id": "Q03",
+    "file_id": "F02",
+    "file_ref": "library.files[1]",
+    "label": "no_hit",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "medium",
+    "rationale": "batch-07 为 OD450 读数，非蛋白质浓度数据，年份 2023 不满足时间条件。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": "batch-07 为 OD450 读数，非蛋白质浓度数据，年份 2023 不满足时间条件。",
+    "judged": true
+   },
+   {
+    "hit_id": "H019",
+    "query_id": "Q03",
+    "file_id": "F03",
+    "file_ref": "library.files[2]",
+    "label": "no_hit",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "medium",
+    "rationale": "投稿稿 v2 无蛋白质浓度测定内容，年份 2023 不满足时间条件。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": "投稿稿 v2 无蛋白质浓度测定内容，年份 2023 不满足时间条件。",
+    "judged": true
+   },
+   {
+    "hit_id": "H020",
+    "query_id": "Q03",
+    "file_id": "F04",
+    "file_ref": "library.files[3]",
+    "label": "no_hit",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "medium",
+    "rationale": "投稿稿 v3 无蛋白质浓度测定内容。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": "投稿稿 v3 无蛋白质浓度测定内容。",
+    "judged": true
+   },
+   {
+    "hit_id": "H021",
+    "query_id": "Q03",
+    "file_id": "F05",
+    "file_ref": "library.files[4]",
+    "label": "pending",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "low",
+    "rationale": "扫描件无文本层（content_available=false），内容无法匹配。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": "扫描件无文本层，无法排除其含 2024 年蛋白质浓度数据。",
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H022",
+    "query_id": "Q03",
+    "file_id": "F06",
+    "file_ref": "library.files[5]",
+    "label": "pending",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "low",
+    "rationale": "文件受限（restricted=true），无读取权限，内容无法核验。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": true,
+    "pending_reason": "文件权限受限，无法排除其含目标数据。",
+    "no_match_reason": null,
+    "judged": true
+   },
+   {
+    "hit_id": "H023",
+    "query_id": "Q03",
+    "file_id": "F07",
+    "file_ref": "library.files[6]",
+    "label": "no_hit",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "medium",
+    "rationale": "补充材料为 Figure 3 图注，无蛋白质浓度测定数据。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": "补充材料为 Figure 3 图注，无蛋白质浓度测定数据。",
+    "judged": true
+   },
+   {
+    "hit_id": "H024",
+    "query_id": "Q03",
+    "file_id": "F08",
+    "file_ref": "library.files[7]",
+    "label": "no_hit",
+    "relevance": null,
+    "matched_terms": [],
+    "filters_applied": [],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "medium",
+    "rationale": "2019 旧协议，无蛋白质浓度测定内容，年份不满足时间条件。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "duplicate_of": null,
+    "restricted": false,
+    "pending_reason": null,
+    "no_match_reason": "2019 旧协议，无蛋白质浓度测定内容，年份不满足时间条件。",
+    "judged": true
+   }
+  ],
+  "ranking": {
+   "per_query": [],
+   "weights": null,
+   "tie_break": null,
+   "declared_at": null,
+   "note": "score_rank.py 回填"
+  },
+  "coverage": {
+   "total_pairs": 24,
+   "judged_pairs": 24,
+   "hit": 8,
+   "pending": 6,
+   "no_hit": 10,
+   "ratio": 1.0,
+   "per_query": {
+    "Q01": {
+     "total": 8,
+     "judged": 8,
+     "hit": 4,
+     "pending": 2,
+     "no_hit": 2
+    },
+    "Q02": {
+     "total": 8,
+     "judged": 8,
+     "hit": 4,
+     "pending": 2,
+     "no_hit": 2
+    },
+    "Q03": {
+     "total": 8,
+     "judged": 8,
+     "hit": 0,
+     "pending": 2,
+     "no_hit": 6
+    }
+   }
+  },
+  "restricted_files": [
+   {
+    "file_id": "F06",
+    "reason": "case.json 标记 restricted=true（external_dataset_raw.xlsx 无读取权限）",
+    "needed_action": "联系数据所有者申请授权；授权前不纳入内容判定"
+   }
+  ],
+  "no_result_queries": [
+   {
+    "query_id": "Q03",
+    "reason": "全部 8 份文件均无蛋白质浓度测定相关内容；库内最新材料为 2024 年投稿稿，无浓度数据文件",
+    "suggestion": "确认相关文件是否已入库，或放宽时间/主题条件后重检"
+   }
+  ],
+  "pending_review": [
+   {
+    "hit_id": "H005",
+    "reason": "扫描件无文本层（content_available=false），无法做内容匹配。",
+    "needed_action": "OCR 提取文本后重跑检索"
+   },
+   {
+    "hit_id": "H006",
+    "reason": "文件权限受限（restricted），无读取权限，不脑补内容。",
+    "needed_action": "向数据所有者申请读取权限后补检"
+   },
+   {
+    "hit_id": "H013",
+    "reason": "扫描件无文本层，无法核验是否含 Figure 3 信息。",
+    "needed_action": "OCR 提取文本后重跑检索"
+   },
+   {
+    "hit_id": "H014",
+    "reason": "文件权限受限，无法核验是否为 Figure 3 相关数据。",
+    "needed_action": "向数据所有者申请读取权限后补检"
+   },
+   {
+    "hit_id": "H021",
+    "reason": "扫描件无文本层，无法排除其含 2024 年蛋白质浓度数据。",
+    "needed_action": "OCR 提取文本后重跑检索"
+   },
+   {
+    "hit_id": "H022",
+    "reason": "文件权限受限，无法排除其含目标数据。",
+    "needed_action": "向数据所有者申请读取权限后补检"
+   }
+  ],
+  "conflicts": [
+   {
+    "item_ids": [
+     "H003",
+     "H004"
+    ],
+    "kind": "version_superseded",
+    "resolution": "merged",
+    "evidence": "F04（v3）为 F03（v2）的修订版：v3 Methods 2.3 新增 Tween-20，合并保留最新版，v2 的命中保留为旧版证据"
+   },
+   {
+    "item_ids": [
+     "H011",
+     "H012"
+    ],
+    "kind": "version_superseded",
+    "resolution": "merged",
+    "evidence": "同一版本关系：Figure 3 图注以 v3 为准，v2 引用合并保留"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与资料库/需求清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明检索式（词表/过滤/权重）",
+    "command": "（Agent 声明，写入 result.query_plan 与 /app/work/query_plan.json）",
+    "output_ref": "result.query_plan",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "逐 (query,file) 判定 hit/pending/no_hit",
+    "command": "（Agent 逐条判定，引用词表并摘录原文证据）",
+    "output_ref": "result.hits",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "机械复算相关性并排序",
+    "command": "python3 /skills/weekly-skill/scripts/score_rank.py --result /app/output/result.json",
+    "output_ref": "result.ranking",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "证据链/空结果/受限登记",
+    "command": "（Agent 回填 claims / no_result_queries / restricted_files）",
+    "output_ref": "claims",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "双重自检",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "/app/work/verify_check.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "searched",
+  "verdict_basis": "24 个 (query,file) 判定对全部逐条判定，覆盖 3 个查询与 8 份文件；空结果与受限文件均已登记。",
+  "gain_evidence": {
+   "note": "gain_probe.py 回填占位"
+  },
+  "efficiency": {
+   "note": "gain_probe.py 回填占位"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "H001 命中 Q01：F01 的 2.1 缓冲液配制（章节标题） 给出依据，matched_terms=['缓冲液', '配制', 'Tris-HCl', 'NaCl']，factors term/metadata/content=[1.0, 0.5, 1.0]，fused_score=0.9，rank=3。",
+   "kind": "reported",
+   "source_id": "H001",
+   "location": "hits[0]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[0].content（F01）",
+     "quote": "50 mM Tris-HCl（pH 7.5），150 mM NaCl，0.05% Tween-20"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "H003 命中 Q01：F03 的 Methods 2.3（章节标题） 给出依据，matched_terms=['Buffer preparation', 'Tris-HCl', 'NaCl']，factors term/metadata/content=[1.0, 1.0, 0.8]，fused_score=0.92，rank=2。",
+   "kind": "reported",
+   "source_id": "H003",
+   "location": "hits[2]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[2].content（F03）",
+     "quote": "Methods 2.3 Buffer preparation：50 mM Tris-HCl pH 7.5 与 150 mM NaCl"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "H004 命中 Q01：F04 的 Methods 2.3（章节标题） 给出依据，matched_terms=['Buffer preparation', 'Tris-HCl', 'NaCl', 'Tween-20']，factors term/metadata/content=[1.0, 1.0, 1.0]，fused_score=1.0，rank=1。",
+   "kind": "reported",
+   "source_id": "H004",
+   "location": "hits[3]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[3].content（F04）",
+     "quote": "Methods 2.3 Buffer preparation：50 mM Tris-HCl pH 7.5，150 mM NaCl，新增 0.05% Tween-20"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "H005 为 pending：F05 未产出命中，登记待复核，不冒充完成。",
+   "kind": "reported",
+   "source_id": "H005",
+   "location": "hits[4]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[4].status（F05）",
+     "quote": "扫描件无文本层（content_available=false），无法做内容匹配。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "H006 为 pending：F06 未产出命中，登记待复核，不冒充完成。",
+   "kind": "reported",
+   "source_id": "H006",
+   "location": "hits[5]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[5].status（F06）",
+     "quote": "文件权限受限（restricted），无读取权限，不脑补内容。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-06",
+   "text": "H008 命中 Q01：F08 的 正文第 1 段 给出依据，matched_terms=['缓冲液', '配制', 'Tris-HCl', 'NaCl']，factors term/metadata/content=[1.0, 0.5, 0.7]，fused_score=0.78，rank=4。",
+   "kind": "reported",
+   "source_id": "H008",
+   "location": "hits[7]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[7].content（F08）",
+     "quote": "缓冲液配制：25 mM Tris-HCl（pH 8.0），50 mM NaCl"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-07",
+   "text": "H010 命中 Q02：F02 的 导出说明（文件首行） 给出依据，matched_terms=['batch-07']，factors term/metadata/content=[0.6, 1.0, 0.8]，fused_score=0.76，rank=4。",
+   "kind": "reported",
+   "source_id": "H010",
+   "location": "hits[9]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[1].content（F02）",
+     "quote": "batch-07 OD450 读数表，行=孔位，列=时间点"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-08",
+   "text": "H011 命中 Q02：F03 的 正文图引用句 给出依据，matched_terms=['Figure 3', 'batch-07', 'dose-response']，factors term/metadata/content=[1.0, 1.0, 0.8]，fused_score=0.92，rank=3。",
+   "kind": "reported",
+   "source_id": "H011",
+   "location": "hits[10]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[2].content（F03）",
+     "quote": "Figure 3 shows dose-response of batch-07 samples."
+    }
+   ]
+  },
+  {
+   "claim_id": "c-09",
+   "text": "H012 命中 Q02：F04 的 Figure 3 图注句 给出依据，matched_terms=['Figure 3', 'batch-07', 'dose-response']，factors term/metadata/content=[1.0, 1.0, 1.0]，fused_score=1.0，rank=1。",
+   "kind": "reported",
+   "source_id": "H012",
+   "location": "hits[11]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[3].content（F04）",
+     "quote": "Figure 3 caption: dose-response curves of batch-07."
+    }
+   ]
+  },
+  {
+   "claim_id": "c-10",
+   "text": "H013 为 pending：F05 未产出命中，登记待复核，不冒充完成。",
+   "kind": "reported",
+   "source_id": "H013",
+   "location": "hits[12]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[4].status（F05）",
+     "quote": "扫描件无文本层，无法核验是否含 Figure 3 信息。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-11",
+   "text": "H014 为 pending：F06 未产出命中，登记待复核，不冒充完成。",
+   "kind": "reported",
+   "source_id": "H014",
+   "location": "hits[13]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[5].status（F06）",
+     "quote": "文件权限受限，无法核验是否为 Figure 3 相关数据。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-12",
+   "text": "H015 命中 Q02：F07 的 图注 给出依据，matched_terms=['Figure 3', 'batch-07', 'Dose-response']，factors term/metadata/content=[1.0, 1.0, 0.9]，fused_score=0.96，rank=2。",
+   "kind": "reported",
+   "source_id": "H015",
+   "location": "hits[14]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[6].content（F07）",
+     "quote": "Figure 3. Dose-response of batch-07. 数据来源见 batch07_export.csv。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-13",
+   "text": "H021 为 pending：F05 未产出命中，登记待复核，不冒充完成。",
+   "kind": "reported",
+   "source_id": "H021",
+   "location": "hits[20]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[4].status（F05）",
+     "quote": "扫描件无文本层，无法排除其含 2024 年蛋白质浓度数据。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-14",
+   "text": "H022 为 pending：F06 未产出命中，登记待复核，不冒充完成。",
+   "kind": "reported",
+   "source_id": "H022",
+   "location": "hits[21]",
+   "evidence": [
+    {
+     "paragraph_id": "library.files[5].status（F06）",
+     "quote": "文件权限受限，无法排除其含目标数据。"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "F05 扫描件内容不可读（无文本层），其是否含相关信息未核验"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "H005",
+   "H006",
+   "H013",
+   "H014",
+   "H021",
+   "H022"
+  ],
+  "summary": "3 个查询 × 8 份文件共 24 个判定对全部逐条判定；1 个查询零命中已登记空结果；1 份受限文件与 1 份无文本层扫描件登记待复核。示意数据均为虚构。"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step1",
+   "change": "声明检索式与三因子权重（排序前）"
+  },
+  {
+   "step": "step2",
+   "change": "24 个判定对逐条判定完成"
+  },
+  {
+   "step": "step3",
+   "change": "score_rank 复算并排序"
+  },
+  {
+   "step": "step4",
+   "change": "claims/空结果/受限登记完成"
+  }
+ ]
+}

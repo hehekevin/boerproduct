@@ -1,0 +1,115 @@
+{
+ "_note": "合成示意案例（非正式答案、非真实科研文件）：仅用于本地自测整条链路。所有文件内容、元数据与权限标记均为虚构。",
+ "case_id": "demo-scifileretrieve-001",
+ "task_type": "research_file_retrieval",
+ "library": {
+  "root": "/input/library",
+  "files": [
+   {
+    "file_id": "F01",
+    "title": "projectA_labnote_2023.md",
+    "content": "项目A实验记录 2023-03。2.1 缓冲液配制：50 mM Tris-HCl（pH 7.5），150 mM NaCl，0.05% Tween-20。2.2 上样量：每孔 20 μL。备注：本记录为批次 batch-07 的母版协议。",
+    "metadata": {
+     "project": "proj-A",
+     "year": 2023,
+     "type": "labnote"
+    }
+   },
+   {
+    "file_id": "F02",
+    "title": "batch07_export.csv",
+    "content": "导出说明：batch-07 OD450 读数表，行=孔位，列=时间点。数据文件不含配方信息。",
+    "metadata": {
+     "project": "proj-A",
+     "year": 2023,
+     "type": "data"
+    }
+   },
+   {
+    "file_id": "F03",
+    "title": "manuscript_v2.docx",
+    "content": "投稿稿 v2。Methods 2.3 Buffer preparation：50 mM Tris-HCl pH 7.5 与 150 mM NaCl。Figure 3 shows dose-response of batch-07 samples.",
+    "metadata": {
+     "project": "proj-A",
+     "version": 2,
+     "year": 2023,
+     "type": "manuscript"
+    }
+   },
+   {
+    "file_id": "F04",
+    "title": "manuscript_v3.docx",
+    "content": "投稿稿 v3（最新）。Methods 2.3 Buffer preparation：50 mM Tris-HCl pH 7.5，150 mM NaCl，新增 0.05% Tween-20。Figure 3 caption: dose-response curves of batch-07.",
+    "metadata": {
+     "project": "proj-A",
+     "version": 3,
+     "year": 2024,
+     "type": "manuscript"
+    }
+   },
+   {
+    "file_id": "F05",
+    "title": "scan_note_003.pdf",
+    "content": "",
+    "metadata": {
+     "project": "proj-A",
+     "type": "scan",
+     "text_layer": false
+    }
+   },
+   {
+    "file_id": "F06",
+    "title": "external_dataset_raw.xlsx",
+    "content": "",
+    "metadata": {
+     "project": "proj-B",
+     "type": "data"
+    },
+    "restricted": true,
+    "permission": "restricted"
+   },
+   {
+    "file_id": "F07",
+    "title": "supplement_fig3.png",
+    "content": "图注：Figure 3. Dose-response of batch-07. 数据来源见 batch07_export.csv。",
+    "metadata": {
+     "project": "proj-A",
+     "type": "figure"
+    }
+   },
+   {
+    "file_id": "F08",
+    "title": "protocol_old_2019.md",
+    "content": "旧版协议 2019。缓冲液配制：25 mM Tris-HCl（pH 8.0），50 mM NaCl。已被 2023 版协议替代。",
+    "metadata": {
+     "year": 2019,
+     "type": "protocol"
+    }
+   }
+  ]
+ },
+ "queries": [
+  {
+   "query_id": "Q01",
+   "question": "项目 A 的缓冲液配方写在哪个文件哪一节？要最新版本。"
+  },
+  {
+   "query_id": "Q02",
+   "question": "Figure 3 对应的是哪一组实验数据？"
+  },
+  {
+   "query_id": "Q03",
+   "question": "2024 年之后新增的蛋白质浓度测定数据在哪份文件？"
+  }
+ ],
+ "output_contract": {
+  "fields": [
+   "case_id",
+   "status",
+   "result",
+   "claims",
+   "uncertainties",
+   "changelog"
+  ]
+ }
+}

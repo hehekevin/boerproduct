@@ -1,0 +1,17 @@
+{
+  "case_id": "demo-library-001",
+  "_note": "合成示例案例（示意用，非正式答案）：8 个内联文件的虚构资料库，含同内容重复、同名不同版本、无内容损坏条目。所有内容均为虚构。",
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  },
+  "files": [
+    {"path": "raw/仪器A_2025_batch1.csv", "content": "sample,time,temp_c\n1,0,21.3\n2,1,21.4\n3,2,21.9\n"},
+    {"path": "backup/仪器A_2025_batch1_副本.csv", "content": "sample,time,temp_c\n1,0,21.3\n2,1,21.4\n3,2,21.9\n"},
+    {"path": "analysis/课题A_report_v1.docx", "content": "课题A分析报告 v1（虚构草稿内容）"},
+    {"path": "analysis/课题A_report_final.docx", "content": "课题A分析报告 定稿（虚构最终内容，与 v1 不同）"},
+    {"path": "scans/仪器B_扫描件_20250312.png", "content": "[虚构 PNG 扫描件字节占位]"},
+    {"path": "docs/meeting_notes_2025.txt", "content": "2025-03 课题组会议纪要（虚构）"},
+    {"path": "docs/paper_draft.pdf", "content": "%PDF-1.4 虚构论文草稿占位"},
+    {"path": "legacy/损坏_2019.dat"}
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "_note": "示例用事前声明的分类规则与命名规范（示意，非正式答案）。declared_at 必须在任何归类之前填写。",
+  "declared_at": "step1-before-any-classification",
+  "declared_by": "agent",
+  "rules": [
+    {"rule_id": "R-01", "priority": 1, "match": {"ext": ["csv", "xlsx", "dat"], "path_contains": [], "name_contains": []}, "category": "raw_data", "basis": "仪器原始数据按扩展名归类"},
+    {"rule_id": "R-02", "priority": 2, "match": {"ext": ["png", "jpg", "jpeg", "tif"], "path_contains": [], "name_contains": []}, "category": "scans", "basis": "扫描件/图像按扩展名归类"},
+    {"rule_id": "R-03", "priority": 3, "match": {"ext": [], "path_contains": [], "name_contains": ["report", "报告", "纪要"]}, "category": "reports", "basis": "报告类按文件名关键词归类（子串匹配，兼容中文）"},
+    {"rule_id": "R-04", "priority": 4, "match": {"ext": ["docx", "pdf", "txt", "md"], "path_contains": [], "name_contains": []}, "category": "documents", "basis": "一般文档按扩展名兜底"},
+    {"rule_id": "R-05", "priority": 5, "match": {"ext": ["log", "tmp"], "path_contains": [], "name_contains": []}, "category": "temp", "basis": "临时文件单独归档待清理"}
+  ],
+  "fallback_category": "unsorted",
+  "naming_convention": {
+    "pattern": "{category}_{stem}{ext}",
+    "regex": "^[a-z_]+_.+\\.[a-z0-9]+$",
+    "example": "raw_data_仪器A_2025_batch1.csv",
+    "target_root": "organized"
+  }
+}

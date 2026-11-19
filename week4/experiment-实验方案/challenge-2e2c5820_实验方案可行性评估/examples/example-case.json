@@ -1,0 +1,58 @@
+{
+  "_note": "合成示意案例（非正式答案、非真实科研方案）：仅用于本地自测整条链路。所有方案、设备、材料、审批状态均为虚构。",
+  "case_id": "demo-feasreview-001",
+  "task_type": "experiment_feasibility_review",
+  "research_objective": "制备 PLGA 载药纳米粒并验证包封率，为后续细胞摄取实验提供材料",
+  "constraints": {
+    "budget_note": "经费上限 2 万元（虚构）",
+    "deadline_note": "6 周内需完成制备与表征",
+    "resource_notes": "设备/耗材/审批状态以 resources 清单为准"
+  },
+  "resources": {
+    "equipment": [
+      {"item": "微流控合成芯片", "status": "共享平台托管，需提前预约（虚构）"},
+      {"item": "高速均质机", "status": "本实验室已有，可自由使用（虚构）"},
+      {"item": "纳米粒度与 Zeta 电位分析仪", "status": "本实验室已有，例行维护每周三停机（虚构）"}
+    ],
+    "materials": [
+      {"item": "PLGA（50:50）", "lead_time_days": 3, "in_stock": true},
+      {"item": "二氯甲烷（色谱纯）", "lead_time_days": 5, "in_stock": false}
+    ],
+    "samples": "细胞系 HEK293（来源与生物安全审批状态未提供，虚构）"
+  },
+  "plans": [
+    {
+      "plan_id": "PL-A",
+      "title": "微流控法制备 PLGA 纳米粒（方案A，虚构）",
+      "hypothesis": "假设药物浓度与包封率在考察范围内呈线性相关，可通过调节两相流速比控制粒径。",
+      "variables": "自变量为水相/有机相流速比（1:3、1:4、1:5），因变量为粒径与包封率。",
+      "controls": "设置空白纳米粒对照组（不含药物），同批制备同批表征。",
+      "steps": [
+        {"step_id": "S1", "name": "分散相与连续相配制"},
+        {"step_id": "S2", "name": "微流控芯片合成"},
+        {"step_id": "S3", "name": "粒径与 PDI 表征"}
+      ],
+      "parameters": "目标粒径 100-150 nm，PDI ≤ 0.2，容差 ±10%，依据合成方法学文献常用区间（虚构引用）。",
+      "risk_notes": "风险：芯片通道堵塞导致粒径分布异常；处置：降级流速 50% 重跑一次，连续两次堵塞转人工排查。",
+      "ethics_note": "未写明细胞系来源证明与生物安全审批状态。"
+    },
+    {
+      "plan_id": "PL-B",
+      "title": "复乳溶剂挥发法制备 PLGA 纳米粒（方案B，虚构）",
+      "hypothesis": "假设均质转速与超声时长共同决定粒径，可在常规设备上完成。",
+      "variables": "自变量为均质转速（8000/12000 rpm），因变量为粒径与 PDI。",
+      "controls": "对照组将在预实验后视结果补充。",
+      "steps": [
+        {"step_id": "S1", "name": "初乳制备"},
+        {"step_id": "S2", "name": "超声与溶剂挥发"},
+        {"step_id": "S3", "name": "粒径与 PDI 表征（超声步骤耗时未给出）"}
+      ],
+      "parameters": "目标粒径 120-180 nm；PDI 目标 ≤ 0.25，但未给出容差依据。",
+      "risk_notes": "未写明异常处置流程。",
+      "ethics_note": "未写明二氯甲烷废液处置与通风柜使用要求。"
+    }
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

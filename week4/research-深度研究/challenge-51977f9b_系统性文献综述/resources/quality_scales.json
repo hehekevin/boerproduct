@@ -1,0 +1,20 @@
+{
+  "scale_id": "QAS-GEN-1",
+  "version": "v1.0",
+  "note": "通用质量评价量表（方法学约定，可按综述替换并声明新版本）。每维度判定取值 yes/partly/no/unclear；分值 yes=1, partly=0.5, no=0, unclear=0；overall_grade 由维度均分机械推导（derive_rule），不得口头指定与推导不一致的等级。",
+  "dimensions": [
+    {"dim_id": "Q1", "text": "研究设计与研究问题匹配（随机化/对照设置明确）"},
+    {"dim_id": "Q2", "text": "研究对象/人群定义清晰，纳入排除可复现"},
+    {"dim_id": "Q3", "text": "暴露/干预与结局测量方法明确、可靠"},
+    {"dim_id": "Q4", "text": "样本量与随访/数据完整性足以支撑结论"},
+    {"dim_id": "Q5", "text": "混杂控制或协变量调整已说明"},
+    {"dim_id": "Q6", "text": "结果报告完整（效应量、不确定性、缺失数据说明）"}
+  ],
+  "allowed_judgments": ["yes", "partly", "no", "unclear"],
+  "scores": {"yes": 1.0, "partly": 0.5, "no": 0.0, "unclear": 0.0},
+  "derive_rule": {
+    "metric": "mean_dimension_score",
+    "thresholds": {"high": 0.8, "moderate": 0.5},
+    "formula": "grade=high 若 mean>=0.8；moderate 若 0.5<=mean<0.8；low 若 mean<0.5；维度缺失或判定非法按 unclear(0) 计并登记 quality_audit 差异"
+  }
+}

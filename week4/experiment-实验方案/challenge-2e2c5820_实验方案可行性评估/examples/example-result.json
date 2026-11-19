@@ -1,0 +1,1275 @@
+{
+ "_note": "示意输出（synthetic，非正式答案）：对应 examples/example-case.json 的合成案例（方案/设备/审批状态均为虚构），用于演示接口与完整使用流程，不冒充正式案例结果。",
+ "case_id": "demo-feasreview-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "两方案均未提供细胞系来源与生物安全审批状态",
+   "PL-B 未提供超声破乳步骤的耗时估算"
+  ],
+  "environment": {
+   "python_version": "3.13.x",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "本地自测环境"
+  },
+  "review_scope": {
+   "objective": "制备 PLGA 载药纳米粒并验证包封率，为后续细胞摄取实验提供材料",
+   "constraints": [
+    "经费上限 2 万元（虚构）",
+    "6 周内完成制备与表征",
+    "设备/耗材/审批状态以 resources 清单为准"
+   ],
+   "plan_ids": [
+    "PL-A",
+    "PL-B"
+   ]
+  },
+  "grading_rubric": {
+   "levels": {
+    "feasible": "现有条件清单或方案文本明确支持，且附逐字证据（设备已在清单、参数在容差内、审批已获）",
+    "conditional": "方向可行但存在明确、可列出的前置条件（预约、补充数据、采购在途），条件全部满足后才可执行",
+    "infeasible": "与现有条件或方案文本直接冲突，或关键设计要素缺失且无替代路径",
+    "unverifiable": "方案未写、条件清单未含或状态不明——无法核实 ≠ 不满足，须登记待复核，不得默认满足"
+   },
+   "evidence_rule": "任何 feasible/conditional/infeasible 判定必须附方案或条件清单的逐字证据；方案未写、条件不明一律判 unverifiable 并登记待复核，不得默认满足。",
+   "declared_at": "step1（任何分级判定之前）"
+  },
+  "dimensions": [
+   {
+    "dimension_id": "D1",
+    "name": "assumptions_variables",
+    "label": "假设与变量"
+   },
+   {
+    "dimension_id": "D2",
+    "name": "controls",
+    "label": "对照组"
+   },
+   {
+    "dimension_id": "D3",
+    "name": "equipment_materials",
+    "label": "设备材料"
+   },
+   {
+    "dimension_id": "D4",
+    "name": "time_cost",
+    "label": "时间成本"
+   },
+   {
+    "dimension_id": "D5",
+    "name": "parameter_ranges",
+    "label": "参数范围"
+   },
+   {
+    "dimension_id": "D6",
+    "name": "risks_exceptions",
+    "label": "风险与异常"
+   },
+   {
+    "dimension_id": "D7",
+    "name": "ethics_safety",
+    "label": "伦理与安全"
+   }
+  ],
+  "plans": [
+   {
+    "plan_id": "PL-A",
+    "title": "微流控法制备 PLGA 纳米粒（方案A，虚构）",
+    "source_ref": "plans[0]"
+   },
+   {
+    "plan_id": "PL-B",
+    "title": "复乳溶剂挥发法制备 PLGA 纳米粒（方案B，虚构）",
+    "source_ref": "plans[1]"
+   }
+  ],
+  "check_items": [
+   {
+    "check_id": "PL-A-D1",
+    "plan_id": "PL-A",
+    "dimension": "D1",
+    "item_text": "假设与自变量/因变量定义是否明确且可检验",
+    "status": "feasible",
+    "conditions": [],
+    "basis_type": "plan",
+    "evidence_quote": "假设药物浓度与包封率在考察范围内呈线性相关，可通过调节两相流速比控制粒径。",
+    "evidence_location": "plans[0].hypothesis",
+    "rationale": "方案写明线性假设与流速比自变量（1:3/1:4/1:5 三水平），假设可检验、变量可操纵，判可行。",
+    "confidence": "high",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-A-D2",
+    "plan_id": "PL-A",
+    "dimension": "D2",
+    "item_text": "是否设置对照并说明对照处置",
+    "status": "feasible",
+    "conditions": [],
+    "basis_type": "plan",
+    "evidence_quote": "设置空白纳米粒对照组（不含药物），同批制备同批表征。",
+    "evidence_location": "plans[0].controls",
+    "rationale": "空白纳米粒对照同批制备同批表征，排除载体本底干扰，对照设计完整。",
+    "confidence": "high",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-A-D3",
+    "plan_id": "PL-A",
+    "dimension": "D3",
+    "item_text": "核心设备（微流控芯片）是否到位",
+    "status": "conditional",
+    "conditions": [
+     "提前 5 天向共享平台预约微流控芯片并获得确认",
+     "预约不可得时切换方案 B（均质机本室已有，设备等价）"
+    ],
+    "basis_type": "resource",
+    "evidence_quote": "共享平台托管，需提前预约（虚构）",
+    "evidence_location": "resources.equipment[0].status",
+    "rationale": "设备不在本室而在共享平台，须预约成功才可执行；降级路径（方案 B）已列为条件之一。",
+    "confidence": "high",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-A-D4",
+    "plan_id": "PL-A",
+    "dimension": "D4",
+    "item_text": "时间成本是否按步骤可解释拆解",
+    "status": "feasible",
+    "conditions": [],
+    "basis_type": "plan",
+    "evidence_quote": "微流控芯片合成",
+    "evidence_location": "plans[0].steps[1].name",
+    "rationale": "按三步拆解为时间行（S1 1.0h + S2 3.0h + S3 2.0h），合计 6.0 小时经 estimate_time 机械复算，口径为设备占用+人工+等待，可复核。",
+    "confidence": "high",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-A-D5",
+    "plan_id": "PL-A",
+    "dimension": "D5",
+    "item_text": "参数范围与容差是否有依据",
+    "status": "feasible",
+    "conditions": [],
+    "basis_type": "plan",
+    "evidence_quote": "目标粒径 100-150 nm，PDI ≤ 0.2，容差 ±10%，依据合成方法学文献常用区间（虚构引用）",
+    "evidence_location": "plans[0].parameters",
+    "rationale": "目标区间与容差均给出依据（方法学文献常用区间），参数可判定合格与否。",
+    "confidence": "medium",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-A-D6",
+    "plan_id": "PL-A",
+    "dimension": "D6",
+    "item_text": "风险与异常处置是否可执行",
+    "status": "feasible",
+    "conditions": [],
+    "basis_type": "plan",
+    "evidence_quote": "风险：芯片通道堵塞导致粒径分布异常；处置：降级流速 50% 重跑一次，连续两次堵塞转人工排查。",
+    "evidence_location": "plans[0].risk_notes",
+    "rationale": "写明风险、降级路径（降流速 50% 重跑一次）与转人工节点（连续两次堵塞），处置可执行。",
+    "confidence": "high",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-A-D7",
+    "plan_id": "PL-A",
+    "dimension": "D7",
+    "item_text": "伦理与安全审批是否具备",
+    "status": "unverifiable",
+    "conditions": [],
+    "basis_type": null,
+    "evidence_quote": null,
+    "evidence_location": "plans[0].ethics_note",
+    "rationale": "方案与条件清单均未提供细胞系来源证明与生物安全审批状态，无法核实；未写 ≠ 满足。",
+    "confidence": null,
+    "pending_reason": "方案未写明细胞系来源证明与生物安全审批状态，条件清单亦未提供，无法核实伦理与安全约束是否满足",
+    "judged": true
+   },
+   {
+    "check_id": "PL-B-D1",
+    "plan_id": "PL-B",
+    "dimension": "D1",
+    "item_text": "假设与自变量/因变量定义是否明确且可检验",
+    "status": "feasible",
+    "conditions": [],
+    "basis_type": "plan",
+    "evidence_quote": "假设均质转速与超声时长共同决定粒径，可在常规设备上完成。",
+    "evidence_location": "plans[1].hypothesis",
+    "rationale": "假设明确（转速+超声时长决定粒径），自变量为均质转速两水平，可检验。",
+    "confidence": "high",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-B-D2",
+    "plan_id": "PL-B",
+    "dimension": "D2",
+    "item_text": "是否设置对照并说明对照处置",
+    "status": "infeasible",
+    "conditions": [],
+    "basis_type": "plan",
+    "evidence_quote": "对照组将在预实验后视结果补充。",
+    "evidence_location": "plans[1].controls",
+    "rationale": "方案未设对照组且以『视结果补充』延后，违反对照设计基本要求；未补对照前该方案不应开工，判不可行（补齐对照设计后可重审）。",
+    "confidence": "high",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-B-D3",
+    "plan_id": "PL-B",
+    "dimension": "D3",
+    "item_text": "核心设备（均质机）是否到位",
+    "status": "feasible",
+    "conditions": [],
+    "basis_type": "resource",
+    "evidence_quote": "本实验室已有，可自由使用（虚构）",
+    "evidence_location": "resources.equipment[1].status",
+    "rationale": "均质机在设备清单内且标注本室已有可自由使用，资源可行。",
+    "confidence": "high",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-B-D4",
+    "plan_id": "PL-B",
+    "dimension": "D4",
+    "item_text": "时间成本是否按步骤可解释拆解",
+    "status": "conditional",
+    "conditions": [
+     "补充超声破乳步骤（S3 相关）的耗时估算后重算方案 B 时间合计"
+    ],
+    "basis_type": "plan",
+    "evidence_quote": "粒径与 PDI 表征（超声步骤耗时未给出）",
+    "evidence_location": "plans[1].steps[2].name",
+    "rationale": "已拆解行合计 4.0 小时，但超声步骤耗时缺失，时间合计不完整；补齐后重算才可执行。",
+    "confidence": "medium",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-B-D5",
+    "plan_id": "PL-B",
+    "dimension": "D5",
+    "item_text": "参数范围与容差是否有依据",
+    "status": "conditional",
+    "conditions": [
+     "补充 PDI 容差的方法学依据（引用文献或预实验数据）"
+    ],
+    "basis_type": "plan",
+    "evidence_quote": "目标粒径 120-180 nm；PDI 目标 ≤ 0.25，但未给出容差依据。",
+    "evidence_location": "plans[1].parameters",
+    "rationale": "粒径区间已给但 PDI 容差无依据，合格判据不完整；补容差依据后方可判定批次合格性。",
+    "confidence": "high",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "check_id": "PL-B-D6",
+    "plan_id": "PL-B",
+    "dimension": "D6",
+    "item_text": "风险与异常处置是否可执行",
+    "status": "unverifiable",
+    "conditions": [],
+    "basis_type": null,
+    "evidence_quote": null,
+    "evidence_location": "plans[1].risk_notes",
+    "rationale": "方案未写明异常处置流程，无降级路径与转人工节点可核实；未写 ≠ 满足。",
+    "confidence": null,
+    "pending_reason": "方案未写明异常处置流程，无降级路径可核实",
+    "judged": true
+   },
+   {
+    "check_id": "PL-B-D7",
+    "plan_id": "PL-B",
+    "dimension": "D7",
+    "item_text": "伦理与安全要求（溶剂处置/通风柜）是否明确",
+    "status": "unverifiable",
+    "conditions": [],
+    "basis_type": null,
+    "evidence_quote": null,
+    "evidence_location": "plans[1].ethics_note",
+    "rationale": "方案未写明二氯甲烷废液处置与通风柜使用要求，安全合规路径无法核实；未写 ≠ 满足。",
+    "confidence": null,
+    "pending_reason": "方案未写明二氯甲烷废液处置与通风柜使用要求，无法核实安全合规路径",
+    "judged": true
+   }
+  ],
+  "time_estimate": {
+   "rows": [
+    {
+     "plan_id": "PL-A",
+     "step_id": "S1",
+     "step_name": "分散相与连续相配制",
+     "equipment_h": 0.5,
+     "labor_h": 0.5,
+     "wait_h": 0.0,
+     "total_h": 1.0
+    },
+    {
+     "plan_id": "PL-A",
+     "step_id": "S2",
+     "step_name": "微流控芯片合成",
+     "equipment_h": 2.0,
+     "labor_h": 1.0,
+     "wait_h": 0.0,
+     "total_h": 3.0
+    },
+    {
+     "plan_id": "PL-A",
+     "step_id": "S3",
+     "step_name": "粒径与 PDI 表征",
+     "equipment_h": 0.5,
+     "labor_h": 0.5,
+     "wait_h": 1.0,
+     "total_h": 2.0
+    },
+    {
+     "plan_id": "PL-B",
+     "step_id": "S1",
+     "step_name": "初乳制备",
+     "equipment_h": 0.5,
+     "labor_h": 0.5,
+     "wait_h": 0.0,
+     "total_h": 1.0
+    },
+    {
+     "plan_id": "PL-B",
+     "step_id": "S2",
+     "step_name": "超声与溶剂挥发",
+     "equipment_h": 1.5,
+     "labor_h": 1.0,
+     "wait_h": 0.5,
+     "total_h": 3.0
+    }
+   ],
+   "totals": {
+    "PL-A": 6.0,
+    "PL-B": 4.0
+   },
+   "note": "可解释估算：等待周期不占设备但占排期；无隐含系数；时间数字须在 claims 中回证（verify_check 复核）",
+   "computed_by": "scripts/estimate_time.py（机械累加：total_h=equipment_h+labor_h+wait_h）"
+  },
+  "coverage": {
+   "total_checks": 14,
+   "judged": 14,
+   "per_dimension": {
+    "D1": 2,
+    "D2": 2,
+    "D3": 2,
+    "D4": 2,
+    "D5": 2,
+    "D6": 2,
+    "D7": 2
+   },
+   "per_status": {
+    "feasible": 7,
+    "conditional": 3,
+    "infeasible": 1,
+    "unverifiable": 3
+   },
+   "missing_dimensions": [],
+   "ratio": 1.0
+  },
+  "risks": [
+   {
+    "risk_id": "R1",
+    "plan_id": "PL-A",
+    "dimension": "D3",
+    "description": "微流控芯片预约不上导致方案 A 无法按期开工",
+    "severity": "high",
+    "trigger": "开工前 5 天未获共享平台预约确认",
+    "mitigation": {
+     "action": "提前 5 天预约；未获确认则切换方案 B（均质机本室已有，设备等价）",
+     "owner": "实验负责人",
+     "trigger_condition": "预约未确认时"
+    },
+    "escalation_to_human": false,
+    "evidence_location": "resources.equipment[0].status"
+   },
+   {
+    "risk_id": "R2",
+    "plan_id": "PL-A",
+    "dimension": "D6",
+    "description": "芯片通道堵塞导致粒径分布异常",
+    "severity": "medium",
+    "trigger": "S2 合成阶段压力异常或粒径分布突增",
+    "mitigation": {
+     "action": "降级流速 50% 重跑一次；连续两次堵塞转人工排查",
+     "owner": "操作人员",
+     "trigger_condition": "堵塞发生时"
+    },
+    "escalation_to_human": false,
+    "evidence_location": "plans[0].risk_notes"
+   },
+   {
+    "risk_id": "R3",
+    "plan_id": "PL-B",
+    "dimension": "D5",
+    "description": "PDI 超出目标导致批次不可用",
+    "severity": "medium",
+    "trigger": "S3 表征 PDI > 0.25",
+    "mitigation": {
+     "action": "延长均质时间至 90 s 重测；仍超标则按容差缺口登记并转专家确认参数（容差依据见 PL-B-D5 条件）",
+     "owner": "实验负责人",
+     "trigger_condition": "PDI 超标时"
+    },
+    "escalation_to_human": false,
+    "evidence_location": "plans[1].parameters"
+   },
+   {
+    "risk_id": "R4",
+    "plan_id": "PL-B",
+    "dimension": "D7",
+    "description": "有机溶剂废液处置路径未明确，存在安全合规风险",
+    "severity": "high",
+    "trigger": "进入 S2 溶剂挥发步骤前",
+    "mitigation": {},
+    "escalation_to_human": true,
+    "evidence_location": "plans[1].ethics_note"
+   }
+  ],
+  "confirmations": [
+   {
+    "confirm_id": "CF1",
+    "plan_id": "PL-A",
+    "topic": "细胞系 HEK293 来源证明与质检记录",
+    "status": "pending_confirmation",
+    "needed_action": "向 PI/细胞库索取来源与质检证明，确认后再进入细胞摄取实验"
+   },
+   {
+    "confirm_id": "CF2",
+    "plan_id": "PL-B",
+    "topic": "生物安全等级（BSL-2）审批状态",
+    "status": "pending_confirmation",
+    "needed_action": "核实审批状态；未获批前不启动任何细胞实验"
+   }
+  ],
+  "pending_review": [
+   {
+    "item_id": "PL-A-D7",
+    "reason": "方案未写明细胞系来源与生物安全审批状态，无法核实伦理与安全约束",
+    "needed_action": "向 PI 核实细胞系来源证明与 BSL-2 审批进度；未确认前维持 unverifiable"
+   },
+   {
+    "item_id": "PL-B-D6",
+    "reason": "方案未写明异常处置流程，无降级路径可核实",
+    "needed_action": "要求方案补充降级路径与转人工节点后重审该检查项"
+   },
+   {
+    "item_id": "PL-B-D7",
+    "reason": "方案未写明溶剂废液处置与通风柜要求，安全合规路径无法核实",
+    "needed_action": "与 R4 同一处置：联系实验室安全员确认后回填"
+   },
+   {
+    "item_id": "R4",
+    "reason": "有风险（废液处置不明）但暂无缓解措施",
+    "needed_action": "联系实验室安全员确认废液处置与通风柜要求后回填 mitigation；确认前不启动溶剂挥发步骤"
+   }
+  ],
+  "conflicts": [],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与方案/检查项槽位",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "result.check_items",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明审查范围与四级分级口径（判定前）",
+    "command": null,
+    "output_ref": "result.review_scope / result.grading_rubric",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "逐项判定 2 方案 × 7 维度共 14 项检查项，拆解时间行",
+    "command": null,
+    "output_ref": "result.check_items[].status / result.time_estimate.rows",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "机械汇总时间成本",
+    "command": "python3 /skills/weekly-skill/scripts/estimate_time.py --result /app/output/result.json",
+    "output_ref": "result.time_estimate.totals",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence / result.efficiency",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "双重自检（业务校验 + 结构守卫）",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "validator_verdict",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "fully_reviewed",
+  "verdict_basis": "2 方案 × 7 维度共 14 项检查项全部逐项判定（7 feasible / 3 conditional / 1 infeasible / 3 unverifiable），分级口径事前声明，判断均含逐字依据并经 claims 回证，时间合计机械复算并回证，4 条风险全部配缓解或转人工；unverifiable≠不满足，均登记待复核。",
+  "gain_evidence": {
+   "probe_version": "1.0",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "demo-feasreview-001",
+   "input": {
+    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-2e2c5820\\submission\\examples\\example-result.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-2e2c5820\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "coverage_violations_objective": 0,
+      "coverage_caught": 0,
+      "coverage_missed": 0,
+      "grading_violations_objective": 0,
+      "grading_caught": 0,
+      "grading_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "risks_violations_objective": 0,
+      "risks_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "unjudged": 0,
+       "coverage_missed": 0,
+       "grading_missed": 0,
+       "evidence_missed": 0,
+       "risks_missed": 0
+      },
+      "steps_count": 55,
+      "steps_detail": {
+       "checks_executed": 49,
+       "checks_disabled": 0,
+       "flow_steps_total": 6,
+       "flow_steps_done": 6
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0009
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "coverage_violations_objective": 0,
+      "coverage_caught": 0,
+      "coverage_missed": 0,
+      "grading_violations_objective": 0,
+      "grading_caught": 0,
+      "grading_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "risks_violations_objective": 0,
+      "risks_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "unjudged": 0,
+       "coverage_missed": 0,
+       "grading_missed": 0,
+       "evidence_missed": 0,
+       "risks_missed": 0
+      },
+      "steps_count": 6,
+      "steps_detail": {
+       "checks_executed": 0,
+       "checks_disabled": 4,
+       "flow_steps_total": 6,
+       "flow_steps_done": 6
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0005
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "coverage_missed": 0,
+    "grading_missed": 0,
+    "evidence_missed": 0,
+    "risks_missed": 0,
+    "manual_review_items": 0,
+    "steps_count": 49,
+    "clarification_rounds": 0
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "coverage_missed",
+     "mechanism": "维度覆盖一致性检查（七类约束逐方案覆盖；feasible⇒逐字证据防『方案没写默认满足』；conditional⇒conditions 非空；unverifiable⇒登记待复核）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后『方案没写』可被默认为满足、有条件可行可不写条件、无法核实的条目可静默漏登记，漏检数上升"
+    },
+    {
+     "metric": "grading_missed",
+     "mechanism": "分级口径一致性检查（四级口径事前声明 + time_estimate.totals 按 rows 机械复算逐项对照）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后口径可事后调整凑结论、时间合计被篡改不再可检出"
+    },
+    {
+     "metric": "evidence_missed",
+     "mechanism": "claims 证据链回证（feasible/conditional/infeasible 判断须有 source_id 对应 claim 逐字回证；时间合计数字须出现在 claim text/quote）",
+     "formula": "无回证的已判定条目数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后判断依据缺失不再判 FAIL，审查结论退化为自述"
+    },
+    {
+     "metric": "risks_missed",
+     "mechanism": "风险-缓解配对检查（每条风险 ⇒ mitigation.action 非空 或 escalation_to_human=true 且登记转人工节点）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后有风险无缓解可静默通过，降级路径与转人工节点丢失"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "漏检 + 未判定条目合计",
+     "formula": "unjudged + 四类漏检",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "七步线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "退化模式关闭四组检查（coverage/grading/evidence/risks），枚举、结构守卫、coverage 汇总一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "四类违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，契约字段校验跳过。",
+    "time_estimate.rows 未填时分级复算真值不可得，grading_missed 记 0 但属『无法判定』而非『无违规』。",
+    "把 --ablate 的退化结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\w4f2b\\wk\\gain_probe_polluted.json",
+    "injected": [
+     "PL-A-D1 判 feasible 但清空 evidence_quote/rationale（判断无据）",
+     "PL-A-D3 判 conditional 但清空 conditions（有条件可行却写不清条件）",
+     "R1 清空 mitigation（有风险无缓解且未转人工）",
+     "PL-A-D7 判 unverifiable 但清空 pending_reason",
+     "清空 pending_review（待复核登记丢失）",
+     "清空 claims（判断依据回证链缺失）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 21,
+     "coverage_missed": 0,
+     "grading_missed": 0,
+     "evidence_missed": 0,
+     "risks_missed": 0,
+     "problem_sample": [
+      "PL-A-D1 判 feasible 但无逐字证据（evidence_quote 空——方案没写 ≠ 方案满足）",
+      "PL-A-D3 判 conditional 但未列出条件（『有条件可行』必须写清有哪些条件）",
+      "PL-A-D7 判 unverifiable 但 pending_reason 为空",
+      "PL-A-D7 判 unverifiable 但未登记进 pending_review（缺 reason/needed_action）",
+      "PL-B-D6 判 unverifiable 但未登记进 pending_review（缺 reason/needed_action）",
+      "PL-B-D7 判 unverifiable 但未登记进 pending_review（缺 reason/needed_action）",
+      "PL-A-D1 已判定但 rationale 为空（判断依据完备性）",
+      "PL-A-D1 的 evidence_quote 在 claims 证据链中无逐字回证"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "PASS",
+     "problems": 0,
+     "coverage_missed": 5,
+     "grading_missed": 0,
+     "evidence_missed": 11,
+     "risks_missed": 2,
+     "problem_sample": []
+    },
+    "missed_detection_delta": {
+     "coverage_missed": 5,
+     "grading_missed": 0,
+     "evidence_missed": 11,
+     "risks_missed": 2,
+     "problems": -21
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.0072,
+   "result_bytes": 44895,
+   "input_files_scanned": 2,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 49,
+   "checker_checks_executed_degraded": 0,
+   "checker_checks_disabled_degraded": 4,
+   "checks_total": 14,
+   "risks_total": 4,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 0,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 0,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "方案 A 假设与变量定义完整：线性假设 + 流速比三水平自变量，判 feasible（D1）。",
+   "kind": "reported",
+   "source_id": "PL-A-D1",
+   "location": "check_items[0]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[0].hypothesis",
+     "quote": "假设药物浓度与包封率在考察范围内呈线性相关，可通过调节两相流速比控制粒径。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "方案 A 设空白纳米粒对照组同批制备表征，判 feasible（D2）。",
+   "kind": "reported",
+   "source_id": "PL-A-D2",
+   "location": "check_items[1]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[0].controls",
+     "quote": "设置空白纳米粒对照组（不含药物），同批制备同批表征。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "微流控芯片为共享平台托管需预约，设备非本室常备，判 conditional（D3），条件含提前 5 天预约与切换方案 B 的降级路径。",
+   "kind": "reported",
+   "source_id": "PL-A-D3",
+   "location": "check_items[2]",
+   "evidence": [
+    {
+     "paragraph_id": "resources.equipment[0].status",
+     "quote": "共享平台托管，需提前预约（虚构）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "方案 A 三步流程完整可拆时间行，判 feasible（D4）；时间合计 6.0 小时（S1 1.0 + S2 3.0 + S3 2.0），设备占用 3.0 小时、人工 2.0 小时、等待 1.0 小时。",
+   "kind": "reported",
+   "source_id": "PL-A-D4",
+   "location": "check_items[3]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[0].steps[1].name",
+     "quote": "微流控芯片合成"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "方案 A 参数区间与容差均给出依据，判 feasible（D5）。",
+   "kind": "reported",
+   "source_id": "PL-A-D5",
+   "location": "check_items[4]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[0].parameters",
+     "quote": "目标粒径 100-150 nm，PDI ≤ 0.2，容差 ±10%，依据合成方法学文献常用区间（虚构引用）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-06",
+   "text": "方案 A 风险处置含降级路径（降流速 50% 重跑一次）与转人工节点（连续两次堵塞），判 feasible（D6）。",
+   "kind": "reported",
+   "source_id": "PL-A-D6",
+   "location": "check_items[5]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[0].risk_notes",
+     "quote": "风险：芯片通道堵塞导致粒径分布异常；处置：降级流速 50% 重跑一次，连续两次堵塞转人工排查。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-07",
+   "text": "方案 B 假设与自变量明确（转速两水平），判 feasible（D1）。",
+   "kind": "reported",
+   "source_id": "PL-B-D1",
+   "location": "check_items[7]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[1].hypothesis",
+     "quote": "假设均质转速与超声时长共同决定粒径，可在常规设备上完成。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-08",
+   "text": "方案 B 对照组延后补充，违反对照设计基本要求，判 infeasible（D2）；补齐对照设计后可重审。",
+   "kind": "inferred",
+   "source_id": "PL-B-D2",
+   "location": "check_items[8]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[1].controls",
+     "quote": "对照组将在预实验后视结果补充。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-09",
+   "text": "均质机本室已有可自由使用，判 feasible（D3）。",
+   "kind": "reported",
+   "source_id": "PL-B-D3",
+   "location": "check_items[9]",
+   "evidence": [
+    {
+     "paragraph_id": "resources.equipment[1].status",
+     "quote": "本实验室已有，可自由使用（虚构）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-10",
+   "text": "方案 B 超声步骤耗时缺失，时间合计不完整，判 conditional（D4）；已拆解行合计 4.0 小时（S1 1.0 + S2 3.0），S3 耗时待补。",
+   "kind": "inferred",
+   "source_id": "PL-B-D4",
+   "location": "check_items[10]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[1].steps[2].name",
+     "quote": "粒径与 PDI 表征（超声步骤耗时未给出）"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-11",
+   "text": "方案 B PDI 容差无依据，判 conditional（D5）。",
+   "kind": "reported",
+   "source_id": "PL-B-D5",
+   "location": "check_items[11]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[1].parameters",
+     "quote": "目标粒径 120-180 nm；PDI 目标 ≤ 0.25，但未给出容差依据。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-12",
+   "text": "方案 A 时间合计 6.0 小时 = S1 1.0 + S2 3.0 + S3 2.0（等待周期不占设备但占排期），由 estimate_time.py 机械累加复算。",
+   "kind": "inferred",
+   "source_id": "time-estimate-PL-A",
+   "location": "result.time_estimate.totals[PL-A]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[0].steps[1].name",
+     "quote": "微流控芯片合成"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-13",
+   "text": "方案 B 已拆解行合计 4.0 小时（S1 1.0 + S2 3.0），超声步骤耗时缺失待补充，暂不计入合计。",
+   "kind": "inferred",
+   "source_id": "time-estimate-PL-B",
+   "location": "result.time_estimate.totals[PL-B]",
+   "evidence": [
+    {
+     "paragraph_id": "plans[1].steps[2].name",
+     "quote": "粒径与 PDI 表征（超声步骤耗时未给出）"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [
+   "两方案均未报告细胞系来源与生物安全审批状态",
+   "PL-B 未报告超声步骤耗时"
+  ],
+  "unverifiable": [
+   "PL-A-D7 / PL-B-D6 / PL-B-D7 因方案未写而无法核实，均已登记待复核"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "R4 废液处置须联系实验室安全员确认（转人工节点）",
+   "CF1/CF2 需 PI 与安全员确认后再进入细胞实验"
+  ],
+  "summary": "示例数据为合成案例；3 项 unverifiable 均登记待复核，1 条风险（R4）显式转人工。"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架（2 方案 × 7 维度 14 槽位）"
+  },
+  {
+   "step": "step2",
+   "change": "14 项检查项逐项判定完成，时间行拆解 5 行"
+  },
+  {
+   "step": "step3",
+   "change": "estimate_time 机械复算（PL-A 6.0h / PL-B 4.0h）"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "check_items[0].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[0].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[1].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[1].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[2].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[2].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[3].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[3].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[4].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[4].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[5].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[5].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[6].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[6].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[7].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[7].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[8].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[8].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[9].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[9].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[10].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[10].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[11].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[11].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[12].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[12].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[13].status_evidence",
+   "template_value": "feasible ⇒ 逐字证据（防『方案没写』默认满足）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[13].conditional_conditions",
+   "template_value": "conditional ⇒ conditions 非空（条件可执行）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage.dimension_complete",
+   "template_value": "每方案×每维度 ≥1 判定或登记 missing_dimensions",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[6].pending_registered",
+   "template_value": "unverifiable ⇒ 登记入 pending_review",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[12].pending_registered",
+   "template_value": "unverifiable ⇒ 登记入 pending_review",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[13].pending_registered",
+   "template_value": "unverifiable ⇒ 登记入 pending_review",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "grading_rubric.declared",
+   "template_value": "四级口径事前声明（declared_at + 四级边界非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "time_estimate.totals_recompute",
+   "template_value": "rows 机械累加复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[0].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[1].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[2].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[3].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[4].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[5].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[7].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[8].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[9].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[10].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "check_items[11].evidence_backed",
+   "template_value": "判断依据在 claims 证据链逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "risks[0].mitigation_pair",
+   "template_value": "每条风险 ⇒ 缓解措施非空 或 转人工节点登记",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "risks[1].mitigation_pair",
+   "template_value": "每条风险 ⇒ 缓解措施非空 或 转人工节点登记",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "risks[2].mitigation_pair",
+   "template_value": "每条风险 ⇒ 缓解措施非空 或 转人工节点登记",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "risks[3].mitigation_pair",
+   "template_value": "每条风险 ⇒ 缓解措施非空 或 转人工节点登记",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "grading_ledger",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "estimate_output",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS"
+}

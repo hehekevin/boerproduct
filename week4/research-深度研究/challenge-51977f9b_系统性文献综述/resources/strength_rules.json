@@ -1,0 +1,14 @@
+{
+  "scale_id": "STRENGTH-GEN-1",
+  "version": "v1.0",
+  "note": "综合结论强度分级规则（方法学约定）。机械复算口径：对每条结论自上而下取第一个满足全部条件的级别；supporting_records 的质量等级取自 quality_appraisal.assessments（缺失按 unknown 处理，unknown 不得支撑 strong/moderate）；conflicting_records 非空视为存在冲突证据。",
+  "levels": ["strong", "moderate", "weak", "insufficient"],
+  "rules": {
+    "strong": {"min_supporting": 3, "max_conflicting": 0, "allowed_support_grades": ["high", "moderate"]},
+    "moderate": {"min_supporting": 2, "max_conflicting": 1, "allowed_support_grades": ["high", "moderate"]},
+    "weak": {"min_supporting": 1, "max_conflicting": 999, "allowed_support_grades": ["high", "moderate", "low", "unknown"]},
+    "insufficient": {"min_supporting": 0, "max_conflicting": 999, "allowed_support_grades": ["high", "moderate", "low", "unknown"]}
+  },
+  "recompute_order": ["strong", "moderate", "weak", "insufficient"],
+  "consistency_rule": "declared strength 必须等于按 recompute_order 机械推导的级别；不一致由 synthesis_check 报差异、verify_check 判 FAIL（结论强度分级一致机检点）。"
+}

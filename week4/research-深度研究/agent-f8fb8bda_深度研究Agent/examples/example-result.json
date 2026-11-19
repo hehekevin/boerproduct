@@ -1,0 +1,903 @@
+{
+ "_note": "示意输出（非正式答案）：合成案例 demo-deepresearch-001 的示意 result.json，全部内容为虚构，仅用于说明接口与自测链路。",
+ "case_id": "demo-deepresearch-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "案例仅提供来源的内容字段，无全文 PDF 可解析",
+   "无实时检索权限，仅基于给定来源集合（sources S01-S06）综合，不补造文献"
+  ],
+  "environment": {
+   "python_version": "3.12.x（示例为合成自测环境）",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "示例值，正式运行由平台环境照实回填"
+  },
+  "research_question": {
+   "question": "急性咖啡因摄入对成年人工作记忆的效应方向与剂量关系",
+   "scope": "实验性研究（RCT/对照实验），健康成年人，结局含工作记忆或注意测量；基于给定来源集合，不做外部实时检索",
+   "time_range": "2019-2024"
+  },
+  "plan": {
+   "declared_at": "step1（任何检索迭代之前声明并锁定，声明后禁止调整）",
+   "sub_questions": [
+    {
+     "sq_id": "SQ-01",
+     "text": "急性咖啡因摄入对成年人工作记忆/注意的主效应方向是什么？",
+     "depends_on": [],
+     "evidence_needs": "至少 2 个独立对照实验的急性效应数据（含结局指标与剂量）",
+     "search_queries": [
+      "caffeine acute working memory RCT",
+      "adenosine antagonism attention"
+     ],
+     "stop_rule": "命中 2 条直接来源或穷尽给定语料即停",
+     "source_ref": "sub_questions[0]"
+    },
+    {
+     "sq_id": "SQ-02",
+     "text": "效应是否存在剂量-反应关系？有效剂量区间是多少？",
+     "depends_on": [
+      "SQ-01"
+     ],
+     "evidence_needs": "覆盖不同剂量水平（0/100/200/400 mg）的对照数据",
+     "search_queries": [
+      "caffeine dose-response cognitive performance"
+     ],
+     "stop_rule": "命中含 ≥3 个剂量水平的来源即停",
+     "source_ref": "sub_questions[1]"
+    },
+    {
+     "sq_id": "SQ-03",
+     "text": "高剂量与个体差异下效应方向是否出现冲突？边界在哪里？",
+     "depends_on": [
+      "SQ-02"
+     ],
+     "evidence_needs": "高剂量/应激条件实验数据与个体差异数据；冲突时须双方并陈",
+     "search_queries": [
+      "high-dose caffeine executive function",
+      "individual differences caffeine response"
+     ],
+     "stop_rule": "冲突双方各 ≥1 条来源，或穷尽给定语料",
+     "source_ref": "sub_questions[2]"
+    }
+   ],
+   "convergence": {
+    "rule": "每个子问题 answered（有 strong/moderate 结论）或登记 open_questions；最多 4 轮；分歧观点必须并陈后停止追加检索",
+    "criteria": [
+     "全部子问题有判定或登记",
+     "分歧观点双方并陈",
+     "未决问题含可执行 needed_action"
+    ]
+   }
+  },
+  "iterations": [
+   {
+    "round_id": "R1",
+    "sq_ids_targeted": [
+     "SQ-01"
+    ],
+    "action": "按计划检索主效应方向",
+    "queries_run": [
+     "caffeine acute working memory RCT",
+     "adenosine antagonism attention"
+    ],
+    "sources_found": [
+     "S01",
+     "S02"
+    ],
+    "synthesis_note": "S01（200mg 双盲 RCT）与 S02（150mg 三项更新任务）方向一致：急性中等剂量改善工作记忆/注意",
+    "gaps_found": [],
+    "next_action": "continue",
+    "artifacts_ref": "iterations/R1-synthesis.md",
+    "status": "done"
+   },
+   {
+    "round_id": "R2",
+    "sq_ids_targeted": [
+     "SQ-02"
+    ],
+    "action": "按计划检索剂量-反应数据",
+    "queries_run": [
+     "caffeine dose-response cognitive performance"
+    ],
+    "sources_found": [
+     "S03",
+     "S04"
+    ],
+    "synthesis_note": "S03 给出 0/100/200/400 mg 四档对照：100-250 mg 一致改善，400 mg 收益消失；S04 报告应激下 400 mg 损害",
+    "gaps_found": [
+     "400 mg 在无应激条件下的方向未定（S03 mixed vs S04 损害）"
+    ],
+    "next_action": "continue",
+    "artifacts_ref": "iterations/R2-synthesis.md",
+    "status": "done"
+   },
+   {
+    "round_id": "R3",
+    "sq_ids_targeted": [
+     "SQ-03"
+    ],
+    "action": "按计划检索高剂量冲突与个体差异",
+    "queries_run": [
+     "high-dose caffeine executive function",
+     "individual differences caffeine response"
+    ],
+    "sources_found": [
+     "S05",
+     "S06"
+    ],
+    "synthesis_note": "S05 综述确认中等剂量改善为主流结论但高剂量方向无一致结论；S06 提示个体遗传差异可能解释不一致；SQ-03 无法给出中等以上强度结论，登记未决问题后收敛",
+    "gaps_found": [
+     "无直接比较高剂量有无应激条件的实验"
+    ],
+    "next_action": "converged",
+    "artifacts_ref": "iterations/R3-synthesis.md",
+    "status": "done"
+   }
+  ],
+  "findings": [
+   {
+    "finding_id": "F1",
+    "text": "急性中等剂量咖啡因（150-200 mg）改善健康成年人工作记忆与注意表现（材料事实，两个独立来源方向一致）",
+    "kind": "material_fact",
+    "strength": "strong",
+    "sq_ids": [
+     "SQ-01"
+    ],
+    "sources": [
+     {
+      "source_id": "S01",
+      "location": "sources[0].content",
+      "quote": "Participants receiving 200 mg caffeine showed significantly faster and more accurate n-back performance than placebo."
+     },
+     {
+      "source_id": "S02",
+      "location": "sources[1].content",
+      "quote": "Working memory accuracy improved after 150 mg caffeine relative to placebo across three updating tasks."
+     }
+    ],
+    "confidence_basis": "两个独立双盲/对照实验方向一致，剂量接近"
+   },
+   {
+    "finding_id": "F2",
+    "text": "剂量-反应关系存在：100-250 mg 区间一致改善工作记忆速度，400 mg 收益消失且个体差异增大（材料事实，单一来源四档对照）",
+    "kind": "material_fact",
+    "strength": "moderate",
+    "sq_ids": [
+     "SQ-02"
+    ],
+    "sources": [
+     {
+      "source_id": "S03",
+      "location": "sources[2].content",
+      "quote": "Moderate doses (100-250 mg) consistently improved working memory speed, while effects at higher doses were mixed."
+     }
+    ],
+    "confidence_basis": "单一来源但为多剂量对照设计"
+   },
+   {
+    "finding_id": "F3",
+    "text": "高剂量急性效应方向存在分歧：S04 报告应激下 400 mg 工作记忆准确率下降伴焦虑升高，而 S03 称高剂量效应 mixed、S05 综述称方向无一致结论；双方观点并陈如下（divergent_views V1）",
+    "kind": "material_fact",
+    "strength": "weak",
+    "sq_ids": [
+     "SQ-03"
+    ],
+    "sources": [
+     {
+      "source_id": "S04",
+      "location": "sources[3].content",
+      "quote": "At 400 mg, participants showed decreased working memory accuracy and increased anxiety ratings."
+     },
+     {
+      "source_id": "S03",
+      "location": "sources[2].content",
+      "quote": "Moderate doses (100-250 mg) consistently improved working memory speed, while effects at higher doses were mixed."
+     }
+    ],
+    "confidence_basis": "两条来源方向冲突，只能给弱证据并登记分歧"
+   },
+   {
+    "finding_id": "F4",
+    "text": "合理推断：S06 提示的个体遗传差异可能是高剂量结果不一致的原因之一；此为推断而非材料事实，来源未直接检验该解释",
+    "kind": "inference",
+    "strength": "weak",
+    "sq_ids": [
+     "SQ-03"
+    ],
+    "sources": [],
+    "confidence_basis": "推断，无直接来源支持，不越过证据范围"
+   }
+  ],
+  "divergent_views": [
+   {
+    "topic_id": "V1",
+    "topic": "高剂量（400 mg）咖啡因的急性工作记忆效应方向",
+    "views": [
+     {
+      "side": "损害",
+      "claim": "应激条件下 400 mg 降低工作记忆准确率并升高焦虑（S04）",
+      "source_ids": [
+       "S04"
+      ]
+     },
+     {
+      "side": "无一致改善/方向不定",
+      "claim": "多剂量对照中高剂量效应 mixed，应激外证据不足（S03、S05）",
+      "source_ids": [
+       "S03",
+       "S05"
+      ]
+     }
+    ],
+    "handling": "unresolved",
+    "open_question_ref": "OQ-01",
+    "note": "双方并陈，不做取舍；登记为未决问题"
+   }
+  ],
+  "open_questions": [
+   {
+    "oq_id": "OQ-01",
+    "question": "高剂量（≥400 mg）咖啡因对工作记忆的急性效应方向：S04 报告应激下损害，S03/S05 称方向不定——是否为剂量-应激交互或任务差异所致？",
+    "related_sq_ids": [
+     "SQ-03"
+    ],
+    "reason": "两条来源结论冲突且语料内无直接比较高剂量有无应激条件的实验（R2/R3 gaps_found 均指向该缺口）",
+    "needed_action": "补充 400 mg × 应激/无应激双因素对照实验证据，或对既有研究做剂量-应激交互分析后重评 SQ-03"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架/子问题/来源清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "计划事前声明并审计",
+    "command": "python3 /skills/weekly-skill/scripts/plan_audit.py --result /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/work/plan_ledger.json",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "R1 检索-综合-缺口（SQ-01）",
+    "command": "（Agent 迭代轮次，记录见 result.iterations[0] 与 artifacts_ref）",
+    "output_ref": "iterations/R1-synthesis.md",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "R2 检索-综合-缺口（SQ-02）",
+    "command": "（Agent 迭代轮次，记录见 result.iterations[1]）",
+    "output_ref": "iterations/R2-synthesis.md",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "R3 检索-综合-缺口并收敛（SQ-03）",
+    "command": "（Agent 迭代轮次，记录见 result.iterations[2]）",
+    "output_ref": "iterations/R3-synthesis.md",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "覆盖面/强度机械汇总",
+    "command": "python3 /skills/weekly-skill/scripts/coverage_calc.py --result /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/work/coverage_ledger.json",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "/app/work/gain_evidence.json",
+    "status": "done"
+   },
+   {
+    "step": "step7",
+    "action": "业务校验+结构守卫",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "/app/work/verify_check.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "partially_synthesized",
+  "verdict_basis": "3 个子问题中 SQ-01/SQ-02 有中等及以上强度结论（answered=2），SQ-03 仅弱证据且已登记未决问题 OQ-01 与分歧并陈 V1",
+  "plan_audit": {
+   "state": "declared",
+   "declared_at": "step1（任何检索迭代之前声明并锁定，声明后禁止调整）",
+   "sq_count": 3,
+   "digest": "3f0869ba8adb651d",
+   "problems": [],
+   "audited_at_step": "step1",
+   "note": "计划在任何检索迭代之前声明并锁定（sha256 前 16 位指纹）；声明后禁止调整。"
+  },
+  "coverage": {
+   "sub_questions_total": 3,
+   "answered": 2,
+   "partially_answered": 1,
+   "unanswered": 0,
+   "findings_total": 4,
+   "iterations_count": 3,
+   "sources_total": 4,
+   "answered_ratio": 0.6667,
+   "sq_states": {
+    "SQ-01": "answered",
+    "SQ-02": "answered",
+    "SQ-03": "partially_answered"
+   },
+   "rule": "answered=含 strong/moderate 结论；partially=仅 weak/unverified 结论；unanswered=无结论。answered_ratio=answered/子问题总数。"
+  },
+  "strength_summary": {
+   "strong": 1,
+   "moderate": 1,
+   "weak": 2,
+   "unverified": 0,
+   "total": 4
+  },
+  "gain_evidence": {
+   "probe_version": "1.0",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "demo-deepresearch-001",
+   "input": {
+    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\agent-f8fb8bda\\submission\\examples\\example-result.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\agent-f8fb8bda\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "plan_violations_objective": 0,
+      "plan_missed": 0,
+      "trace_violations_objective": 0,
+      "trace_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "registry_violations_objective": 0,
+      "registry_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "plan_missed": 0,
+       "trace_missed": 0,
+       "evidence_missed": 0,
+       "registry_missed": 0,
+       "orphan_findings": 0
+      },
+      "steps_count": 44,
+      "steps_detail": {
+       "checks_executed": 36,
+       "checks_disabled": 0,
+       "flow_steps_total": 8,
+       "flow_steps_done": 8
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0005
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "plan_violations_objective": 0,
+      "plan_missed": 0,
+      "trace_violations_objective": 0,
+      "trace_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "registry_violations_objective": 0,
+      "registry_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "plan_missed": 0,
+       "trace_missed": 0,
+       "evidence_missed": 0,
+       "registry_missed": 0,
+       "orphan_findings": 0
+      },
+      "steps_count": 8,
+      "steps_detail": {
+       "checks_executed": 0,
+       "checks_disabled": 4,
+       "flow_steps_total": 8,
+       "flow_steps_done": 8
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0003
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "plan_missed": 0,
+    "trace_missed": 0,
+    "evidence_missed": 0,
+    "registry_missed": 0,
+    "manual_review_items": 0,
+    "steps_count": 36,
+    "clarification_rounds": 0
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "plan_missed",
+     "mechanism": "计划事前声明检查（declared_at/convergence 声明、子问题编号唯一、依赖无环、findings/iterations 对齐计划集合）",
+     "formula": "客观违规数（正常模式开启时漏检记 0）",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后计划可事后补造、子问题越界与依赖违规不再判 FAIL"
+    },
+    {
+     "metric": "trace_missed",
+     "mechanism": "迭代留痕检查（每轮 queries_run/synthesis_note/artifacts_ref 齐全；结论来源必须出现在某轮 sources_found）",
+     "formula": "客观违规数（正常模式开启时漏检记 0）",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后轮次可无检索式空转、结论来源可凭空出现，路径不可回放"
+    },
+    {
+     "metric": "evidence_missed",
+     "mechanism": "结论-证据对齐（strong⇒≥2 带引文来源、material_fact⇒有来源、引文在 claims 逐字回证）",
+     "formula": "客观违规数（正常模式开启时漏检记 0）",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后强度标注与来源脱钩、引文可凭空捏造，结论退化为自述"
+    },
+    {
+     "metric": "registry_missed",
+     "mechanism": "未决问题登记检查（unanswered/partially 子问题⇒open_questions；unresolved 分歧⇒open_question_ref）",
+     "formula": "客观违规数（正常模式开启时漏检记 0）",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后证据缺口与分歧可静默吞掉，未决问题不进人工复核入口"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "四类漏检 + 越界结论合计",
+     "formula": "plan+trace+evidence+registry 漏检 + orphan_findings",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "Step 0-7 线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "退化模式关闭四组检查（plan/trace/evidence/registry），枚举、coverage/strength 汇总一致性、verdict 一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "四类违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，契约字段校验跳过。",
+    "把 --ablate 的退化结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\wk8\\gain_probe_polluted.json",
+    "injected": [
+     "F1 保持 strength=strong 但清空 sources（对齐违规）",
+     "清空 claims（结论-证据对齐失据）",
+     "清空 open_questions（未决问题登记丢失）",
+     "清空 plan.declared_at（计划事前声明缺失）",
+     "R1 清空 queries_run（迭代留痕不全）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 10,
+     "plan_missed": 0,
+     "trace_missed": 0,
+     "evidence_missed": 0,
+     "registry_missed": 0,
+     "problem_sample": [
+      "计划未事前声明（declared_at/convergence.rule 为空）——计划必须在任何检索迭代之前写定",
+      "iterations[0] 留痕不全（缺 queries_run/synthesis_note/artifacts_ref/sq_ids_targeted）",
+      "F1 strength=strong 但带 quote+location 的来源只有 0 个（须≥2）",
+      "F1 kind=material_fact 但无来源（材料事实必须回链来源）",
+      "F2 来源 S03 的引文在 claims 证据链中无逐字回证",
+      "F3 来源 S04 的引文在 claims 证据链中无逐字回证",
+      "F3 来源 S03 的引文在 claims 证据链中无逐字回证",
+      "子问题 SQ-03 无中等及以上强度结论但未登记进 open_questions"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "PASS",
+     "problems": 0,
+     "plan_missed": 1,
+     "trace_missed": 1,
+     "evidence_missed": 7,
+     "registry_missed": 2,
+     "problem_sample": []
+    },
+    "missed_detection_delta": {
+     "plan_missed": 1,
+     "trace_missed": 1,
+     "evidence_missed": 7,
+     "registry_missed": 2,
+     "problems": -10
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.0049,
+   "result_bytes": 22023,
+   "input_files_scanned": 2,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 36,
+   "checker_checks_executed_degraded": 0,
+   "checker_checks_disabled_degraded": 4,
+   "sub_questions_total": 3,
+   "findings_total": 4,
+   "iterations_total": 3,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 0,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 0,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "F1：急性中等剂量咖啡因改善工作记忆与注意（strength=strong，来源 S01+S02 方向一致）",
+   "kind": "reported",
+   "source_id": "F1",
+   "location": "result.findings[0]",
+   "evidence": [
+    {
+     "paragraph_id": "sources[0].content",
+     "quote": "Participants receiving 200 mg caffeine showed significantly faster and more accurate n-back performance than placebo."
+    },
+    {
+     "paragraph_id": "sources[1].content",
+     "quote": "Working memory accuracy improved after 150 mg caffeine relative to placebo across three updating tasks."
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "F2：100-250 mg 一致改善、400 mg 收益消失（strength=moderate，来源 S03 四档对照）",
+   "kind": "reported",
+   "source_id": "F2",
+   "location": "result.findings[1]",
+   "evidence": [
+    {
+     "paragraph_id": "sources[2].content",
+     "quote": "Moderate doses (100-250 mg) consistently improved working memory speed, while effects at higher doses were mixed."
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "F3：高剂量方向冲突，双方并陈（strength=weak，来源 S04 vs S03/S05）",
+   "kind": "reported",
+   "source_id": "F3",
+   "location": "result.findings[2]",
+   "evidence": [
+    {
+     "paragraph_id": "sources[3].content",
+     "quote": "At 400 mg, participants showed decreased working memory accuracy and increased anxiety ratings."
+    },
+    {
+     "paragraph_id": "sources[2].content",
+     "quote": "Moderate doses (100-250 mg) consistently improved working memory speed, while effects at higher doses were mixed."
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [
+   "语料未提供 400 mg 无应激条件的直接数据"
+  ],
+  "unverifiable": [
+   "个体遗传差异是否解释高剂量冲突（F4 为推断，无直接来源）"
+  ],
+  "conflicts": [
+   "S04（应激下 400 mg 损害）与 S03/S05（高剂量方向不定）冲突，已并陈并登记 OQ-01"
+  ],
+  "human_review": [
+   "OQ-01 待补充高剂量×应激双因素证据后由人工重评"
+  ],
+  "summary": "结论不越过给定来源范围；SQ-03 仅弱证据，分歧并陈、未决问题登记"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架与子问题/来源清单"
+  },
+  {
+   "step": "step1",
+   "change": "计划事前声明并通过 plan_audit"
+  },
+  {
+   "step": "step2-4",
+   "change": "R1-R3 迭代留痕"
+  },
+  {
+   "step": "step5",
+   "change": "coverage_calc 机械汇总"
+  },
+  {
+   "step": "step6",
+   "change": "gain_probe 增益对照"
+  },
+  {
+   "step": "step7",
+   "change": "verify_check/schema_guard 自检"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "plan.declared_before_iterations",
+   "template_value": "plan.declared_at 非空且 convergence.rule 已声明",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "plan.sub_questions[0].declared",
+   "template_value": "sq_id/text/evidence_needs/search_queries 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "plan.sub_questions[1].declared",
+   "template_value": "sq_id/text/evidence_needs/search_queries 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "plan.sub_questions[2].declared",
+   "template_value": "sq_id/text/evidence_needs/search_queries 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].sq_in_plan",
+   "template_value": "sq_ids ⊆ 计划子问题集合",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].sq_in_plan",
+   "template_value": "sq_ids ⊆ 计划子问题集合",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].sq_in_plan",
+   "template_value": "sq_ids ⊆ 计划子问题集合",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].sq_in_plan",
+   "template_value": "sq_ids ⊆ 计划子问题集合",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "iterations[0].sq_in_plan",
+   "template_value": "sq_ids_targeted ⊆ 计划子问题集合",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "iterations[1].sq_in_plan",
+   "template_value": "sq_ids_targeted ⊆ 计划子问题集合",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "iterations[2].sq_in_plan",
+   "template_value": "sq_ids_targeted ⊆ 计划子问题集合",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "iterations[0].round_id_sequential",
+   "template_value": "round_id 顺序编号 R1",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "iterations[0].trace_complete",
+   "template_value": "queries_run/synthesis_note/artifacts_ref/sq_ids_targeted 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "iterations[1].round_id_sequential",
+   "template_value": "round_id 顺序编号 R2",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "iterations[1].trace_complete",
+   "template_value": "queries_run/synthesis_note/artifacts_ref/sq_ids_targeted 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "iterations[2].round_id_sequential",
+   "template_value": "round_id 顺序编号 R3",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "iterations[2].trace_complete",
+   "template_value": "queries_run/synthesis_note/artifacts_ref/sq_ids_targeted 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].source_in_trace",
+   "template_value": "来源必须出现在某轮 sources_found",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].source_in_trace",
+   "template_value": "来源必须出现在某轮 sources_found",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].source_in_trace",
+   "template_value": "来源必须出现在某轮 sources_found",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].source_in_trace",
+   "template_value": "来源必须出现在某轮 sources_found",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "trace.replayable",
+   "template_value": "迭代轮次留痕完整可回放（留痕齐全 + 来源可回放 + 末轮收敛记录）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].strength_min_sources",
+   "template_value": "strong⇒≥2 带引文来源；moderate⇒≥1；unverified⇒无来源",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].claim_backed",
+   "template_value": "每条来源引文在 claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].strength_min_sources",
+   "template_value": "strong⇒≥2 带引文来源；moderate⇒≥1；unverified⇒无来源",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].claim_backed",
+   "template_value": "每条来源引文在 claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].strength_min_sources",
+   "template_value": "strong⇒≥2 带引文来源；moderate⇒≥1；unverified⇒无来源",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].claim_backed",
+   "template_value": "每条来源引文在 claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].strength_min_sources",
+   "template_value": "strong⇒≥2 带引文来源；moderate⇒≥1；unverified⇒无来源",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].claim_backed",
+   "template_value": "每条来源引文在 claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "divergent_views[0].side_by_side",
+   "template_value": "分歧观点双方并陈且各带来源",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "sub_questions.SQ-01.registered",
+   "template_value": "unanswered/partially ⇒ open_questions 登记",
+   "applied": true,
+   "match": false
+  },
+  {
+   "item": "sub_questions.SQ-02.registered",
+   "template_value": "unanswered/partially ⇒ open_questions 登记",
+   "applied": true,
+   "match": false
+  },
+  {
+   "item": "sub_questions.SQ-03.registered",
+   "template_value": "unanswered/partially ⇒ open_questions 登记",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "open_questions[0].complete",
+   "template_value": "oq_id/question/reason/needed_action 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "divergent_views[0].unresolved_registered",
+   "template_value": "unresolved 分歧 ⇒ 指向 open_questions",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "plan_ledger",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "iteration_replay",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "findings_chain",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS"
+}

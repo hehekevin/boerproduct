@@ -1,0 +1,461 @@
+{
+ "schema": "gain_evidence/v1",
+ "case_id": "demo-case",
+ "generated_by": "scripts/gain_probe.py",
+ "baseline_kind": "skill_mechanism_ablation",
+ "baseline_disclaimer": "本对照为本 Skill 机制消融基线，非平台「基础 Agent 不加载 Skill」白板；平台分数由平台生成，本包不预置、不编造。",
+ "mechanism_to_metric": [
+  {
+   "mechanism": "M1 MathML 五级容错 + 结构化优先还原",
+   "switch": "mathml2latex.py --ablate（关闭结构化优先还原）",
+   "metrics": [
+    "formula_yield_rate",
+    "structure_fidelity_rate",
+    "full_conversion_rate"
+   ],
+   "expected_direction": "关闭后 structure_fidelity_rate / full_conversion_rate 下降",
+   "evidence_type": "real_double_run"
+  },
+  {
+   "mechanism": "M2 逐符号语义层（semantics + provenance 三级 + source_location）",
+   "switch": "消融投影 P2（移除 semantics 与 variables）",
+   "metrics": [
+    "variable_table_completeness",
+    "symbol_coverage_rate"
+   ],
+   "expected_direction": "关闭后变量表完整率归零（对照人工手写变量表）",
+   "evidence_type": "declared_projection"
+  },
+  {
+   "mechanism": "M3 推导留痕（evidence 逐字摘录 + intermediate_value）",
+   "switch": "消融投影 P3（移除 evidence/intermediate_value）",
+   "metrics": [
+    "step_traceability_rate",
+    "claim_evidence_rate",
+    "manual_review_items"
+   ],
+   "expected_direction": "关闭后步骤可追溯率与论断带证据率归零",
+   "evidence_type": "declared_projection"
+  },
+  {
+   "mechanism": "M4 数值核验（inputs 带 units+source，expected/computed 双值）",
+   "switch": "消融投影 P4（verification 全降级 not_recomputable）",
+   "metrics": [
+    "numeric_verification_pass_rate",
+    "declared_verified_rate"
+   ],
+   "expected_direction": "关闭后核验通过率归零（对照手工代入复算）",
+   "evidence_type": "declared_projection"
+  },
+  {
+   "mechanism": "M2+M3+M4 合成校验（同一套校验器对两臂实测判定）",
+   "switch": "gain_probe.validator_dual_run：完整臂 vs 消融基线臂各跑一次 formula_check.py + semantic_check.py",
+   "metrics": [
+    "validator_total_fail",
+    "formula_check_problems",
+    "semantic_check_fails"
+   ],
+   "expected_direction": "完整臂 FAIL 数为 0，消融臂 FAIL 数 > 0",
+   "evidence_type": "real_validator_dual_run"
+  }
+ ],
+ "projection_rules": [
+  "P1 M1 结构化还原关闭：公式层指标取自真实 --ablate 子进程运行结果，不做模拟。",
+  "P2 M2 语义层关闭：formulas[].semantics 整体移除，变量表完整性按「definition+units+first_defined_at 三项齐全」判定。",
+  "P3 M3 推导留痕关闭：derivations[] 仅保留 step_no/expression，evidence/intermediate_value/recomputable 移除。",
+  "P4 M4 数值核验关闭：verification[] 全部降级为 status=not_recomputable 且 computed=None。",
+  "P5 上述投影为确定性函数（同一 result.json 必得同一 baseline），可由第三方复算。",
+  "P6 基线臂公式层采用 --ablate 真实子进程产物（而非完整模式 LaTeX），使「退化转换 + 无三层解读」这一基线定义自洽可复核。"
+ ],
+ "validator_dual_run": {
+  "available": true,
+  "arms": {
+   "skill_full": {
+    "formula_check": {
+     "script": "formula_check.py",
+     "ok": true,
+     "fail_count": 0,
+     "warn_count": 0,
+     "problem_count": 0,
+     "returncode": 0,
+     "wall_seconds": 0.344,
+     "detail_head": [],
+     "stdout_tail": "[formula_check] PASS（{'formulas': 1, 'variables': 3, 'derivations': 1, 'verification': 1, 'claims': 1, 'gates': 7}）\n",
+     "stderr_tail": "",
+     "report_error": null
+    },
+    "semantic_check": {
+     "script": "semantic_check.py",
+     "ok": true,
+     "fail_count": 0,
+     "warn_count": 0,
+     "problem_count": 0,
+     "returncode": 0,
+     "wall_seconds": 0.322,
+     "detail_head": [],
+     "stdout_tail": "[semantic_check] PASS（0 处 WARN）{'formulas': 1, 'semantics_covered': 3, 'derivations': 1, 'recomputable_steps': 1, 'verified': 1, 'not_recomputable': 0, 'claims': 1}\n",
+     "stderr_tail": "",
+     "report_error": null
+    },
+    "total_fail": 0
+   },
+   "skill_mechanism_ablation": {
+    "formula_check": {
+     "script": "formula_check.py",
+     "ok": false,
+     "fail_count": 0,
+     "warn_count": 0,
+     "problem_count": 1,
+     "returncode": 0,
+     "wall_seconds": 0.322,
+     "detail_head": [
+      "claims 数组为空（每条关键论断都应带 evidence 指回原文）"
+     ],
+     "stdout_tail": "[formula_check] FAIL（1 处，已写报告；修复一轮，仍失败如实交付，退出码恒 0）\n  - claims 数组为空（每条关键论断都应带 evidence 指回原文）\n",
+     "stderr_tail": "",
+     "report_error": null
+    },
+    "semantic_check": {
+     "script": "semantic_check.py",
+     "ok": false,
+     "fail_count": 2,
+     "warn_count": 2,
+     "problem_count": 0,
+     "returncode": 0,
+     "wall_seconds": 0.35,
+     "detail_head": [
+      "F1 [f1] 缺 semantics（逐符号含义/量纲解读）——讲得清维度未达标",
+      "F6 [f1] not_recomputable 但 missing 为空（须逐项登记缺失输入）"
+     ],
+     "stdout_tail": "[semantic_check] FAIL（2 处 FAIL，2 处 WARN；报告已写，退出码恒 0 不得中断交付）\n  FAIL F1 [f1] 缺 semantics（逐符号含义/量纲解读）——讲得清维度未达标\n  FAIL F6 [f1] not_recomputable 但 missing 为空（须逐项登记缺失输入）\n  warn W3 [step1] 推导步既无 using/depends_on 也未标 gap（读者无法判断为何成立）\n  warn W4 claims=0 少于公式数=1（每条公式建议至少一条带证据的解读论断）\n",
+     "stderr_tail": "",
+     "report_error": null
+    },
+    "total_fail": 3
+   }
+  },
+  "note": "同一套校验器、同一份输入，两臂各真实跑一次；完整臂 FAIL 数应显著低于消融臂。"
+ },
+ "arms": {
+  "skill_full": {
+   "arm_kind": "本 Skill 完整运行产物（result.json + 完整模式转换产物）",
+   "formula_layer": {
+    "available": true,
+    "mode": "full",
+    "items_total": 1,
+    "latex_non_empty": 1,
+    "formula_yield_rate": 1.0,
+    "conversion_full": 1,
+    "conversion_partial": 0,
+    "conversion_failed": 0,
+    "full_conversion_rate": 1.0,
+    "items_with_structural_latex": 1,
+    "structure_fidelity_rate": 1.0,
+    "structure_fidelity_scored_formulas": 1,
+    "structure_fidelity_note": "逐公式口径：源 MathML 含结构算子（分式/根号/上下标/矩阵）的公式逐条比对，源无结构的公式不计入分母。",
+    "source_structural_ops": [
+     "\\frac",
+     "_{"
+    ],
+    "produced_structural_ops": [
+     "\\frac",
+     "_{"
+    ],
+    "structural_op_recall": 1.0,
+    "notes": []
+   },
+   "variable_table": {
+    "latex_symbols_detected": 3,
+    "variables_declared": 3,
+    "variables_with_full_definition": 3,
+    "symbol_coverage_rate": 1.0,
+    "variable_table_completeness": 1.0,
+    "symbols_detected": [
+     "P_in",
+     "P_out",
+     "η"
+    ],
+    "symbols_covered": [
+     "P_in",
+     "P_out",
+     "η"
+    ],
+    "symbols_uncovered": []
+   },
+   "numeric_verification": {
+    "verification_entries": 1,
+    "declared_verified": 1,
+    "declared_verified_rate": 1.0,
+    "recomputed_within_5pct": 1,
+    "numeric_verification_pass_rate": 1.0,
+    "recompute_mismatch": [],
+    "not_recomputable": 0
+   },
+   "derivation": {
+    "derivation_steps": 1,
+    "recomputable_steps": 1,
+    "steps_with_evidence_and_intermediate": 1,
+    "step_traceability_rate": 1.0,
+    "claims": 1,
+    "claims_with_evidence": 1,
+    "claims_with_verbatim_quote": 1,
+    "claim_evidence_rate": 1.0
+   },
+   "manual_review": {
+    "total": 0,
+    "degraded_formulas": 0,
+    "ambiguity_notes": 0,
+    "derivation_gaps": 0,
+    "missing_inputs": 0,
+    "common_knowledge_symbols": 0,
+    "registered_human_review": 0
+   }
+  },
+  "skill_mechanism_ablation": {
+   "arm_kind": "本 Skill 机制消融基线（同输入同产物，关闭 M2/M3/M4 语义层机制）",
+   "formula_layer": {
+    "available": true,
+    "mode": "ablate",
+    "items_total": 1,
+    "latex_non_empty": 1,
+    "formula_yield_rate": 1.0,
+    "conversion_full": 0,
+    "conversion_partial": 1,
+    "conversion_failed": 0,
+    "full_conversion_rate": 0.0,
+    "items_with_structural_latex": 0,
+    "structure_fidelity_rate": 0.0,
+    "structure_fidelity_scored_formulas": 1,
+    "structure_fidelity_note": "逐公式口径：源 MathML 含结构算子（分式/根号/上下标/矩阵）的公式逐条比对，源无结构的公式不计入分母。",
+    "source_structural_ops": [
+     "\\frac",
+     "_{"
+    ],
+    "produced_structural_ops": [],
+    "structural_op_recall": 0.0,
+    "notes": []
+   },
+   "variable_table": {
+    "latex_symbols_detected": 4,
+    "variables_declared": 0,
+    "variables_with_full_definition": 0,
+    "symbol_coverage_rate": 0.0,
+    "variable_table_completeness": 0.0,
+    "symbols_detected": [
+     "P",
+     "in",
+     "out",
+     "η"
+    ],
+    "symbols_covered": [],
+    "symbols_uncovered": [
+     "P",
+     "in",
+     "out",
+     "η"
+    ]
+   },
+   "numeric_verification": {
+    "verification_entries": 1,
+    "declared_verified": 0,
+    "declared_verified_rate": 0.0,
+    "recomputed_within_5pct": 0,
+    "numeric_verification_pass_rate": 0.0,
+    "recompute_mismatch": [],
+    "not_recomputable": 1
+   },
+   "derivation": {
+    "derivation_steps": 1,
+    "recomputable_steps": 0,
+    "steps_with_evidence_and_intermediate": 0,
+    "step_traceability_rate": null,
+    "claims": 0,
+    "claims_with_evidence": 0,
+    "claims_with_verbatim_quote": 0,
+    "claim_evidence_rate": null
+   },
+   "manual_review": {
+    "total": 2,
+    "degraded_formulas": 1,
+    "ambiguity_notes": 1,
+    "derivation_gaps": 0,
+    "missing_inputs": 0,
+    "common_knowledge_symbols": 0,
+    "registered_human_review": 0
+   }
+  }
+ },
+ "comparison": {
+  "formula_yield_rate": {
+   "skill_full": 1.0,
+   "skill_mechanism_ablation": 1.0,
+   "delta": 0.0,
+   "source": "real_double_run"
+  },
+  "full_conversion_rate": {
+   "skill_full": 1.0,
+   "skill_mechanism_ablation": 0.0,
+   "delta": 1.0,
+   "source": "real_double_run"
+  },
+  "structure_fidelity_rate": {
+   "skill_full": 1.0,
+   "skill_mechanism_ablation": 0.0,
+   "delta": 1.0,
+   "source": "real_double_run"
+  },
+  "structural_op_recall": {
+   "skill_full": 1.0,
+   "skill_mechanism_ablation": 0.0,
+   "delta": 1.0,
+   "source": "real_double_run"
+  },
+  "variable_table_completeness": {
+   "skill_full": 1.0,
+   "skill_mechanism_ablation": 0.0,
+   "delta": 1.0,
+   "source": "declared_projection"
+  },
+  "symbol_coverage_rate": {
+   "skill_full": 1.0,
+   "skill_mechanism_ablation": 0.0,
+   "delta": 1.0,
+   "source": "declared_projection"
+  },
+  "numeric_verification_pass_rate": {
+   "skill_full": 1.0,
+   "skill_mechanism_ablation": 0.0,
+   "delta": 1.0,
+   "source": "declared_projection"
+  },
+  "step_traceability_rate": {
+   "skill_full": 1.0,
+   "skill_mechanism_ablation": null,
+   "delta": null,
+   "source": "declared_projection"
+  },
+  "claim_evidence_rate": {
+   "skill_full": 1.0,
+   "skill_mechanism_ablation": null,
+   "delta": null,
+   "source": "declared_projection"
+  },
+  "manual_review_items": {
+   "skill_full": 0,
+   "skill_mechanism_ablation": 2,
+   "delta": -2,
+   "source": "declared_projection"
+  },
+  "derivation_steps": {
+   "skill_full": 1,
+   "skill_mechanism_ablation": 1,
+   "delta": 0,
+   "source": "declared_projection"
+  },
+  "variables_with_full_definition": {
+   "skill_full": 3,
+   "skill_mechanism_ablation": 0,
+   "delta": 3,
+   "source": "declared_projection"
+  },
+  "symbols_covered_count": {
+   "skill_full": 3,
+   "skill_mechanism_ablation": 0,
+   "delta": 3,
+   "source": "declared_projection"
+  },
+  "steps_with_evidence_and_intermediate": {
+   "skill_full": 1,
+   "skill_mechanism_ablation": 0,
+   "delta": 1,
+   "source": "declared_projection"
+  },
+  "claims_with_verbatim_quote": {
+   "skill_full": 1,
+   "skill_mechanism_ablation": 0,
+   "delta": 1,
+   "source": "declared_projection"
+  },
+  "recomputed_verified_count": {
+   "skill_full": 1,
+   "skill_mechanism_ablation": 0,
+   "delta": 1,
+   "source": "declared_projection"
+  },
+  "validator_total_fail": {
+   "skill_full": 0,
+   "skill_mechanism_ablation": 3,
+   "delta": -3,
+   "source": "real_validator_dual_run"
+  },
+  "formula_check_problems": {
+   "skill_full": 0,
+   "skill_mechanism_ablation": 1,
+   "delta": -1,
+   "source": "real_validator_dual_run"
+  },
+  "semantic_check_fails": {
+   "skill_full": 0,
+   "skill_mechanism_ablation": 2,
+   "delta": -2,
+   "source": "real_validator_dual_run"
+  }
+ },
+ "boundaries": [
+  "同输入双跑只覆盖「公式还原层」（M1）：转换器是确定性程序，故双跑差异可直接归因。",
+  "M2/M3/M4 为声明式消融投影，反映本 Skill 机制缺失时的**下界**，不是平台基础 Agent 的实测值；平台白板由平台生成，本包不代为编造。",
+  "validator_dual_run 是**校验器实测对照**：同一套校验器、同一份输入，两臂各跑一次，FAIL 数差由机器判定。它证明「本 Skill 的机制是产物通过校验的必要条件」，不等价于平台基础 Agent 的分数差。",
+  "数值核验通过率只统计 expected/computed 均为数值的条目；not_recomputable 条目计入分母、不计入分子（避免用缺失抬高通过率）。",
+  "变量表完整率用启发式符号抽取（规则见 latex_symbols），希腊字母已归一（\\eta→η）；多字母下标按 X_sub 形态对齐，人工复核可能微调。",
+  "真实双跑只跑一次每臂，不做多次重复取均值；脚本耗时受沙箱负载影响，只作数量级参考不作性能承诺。"
+ ],
+ "failure_conditions": [
+  "输入无 MathML 表示（C02 类）：无 source-formulas.xml 时 M1 双跑不可执行，公式层指标标记 available=false 并保留真实缺失分支说明，不以 0 冒充。",
+  "转换器产物为空或不可读：conversion 指标缺失，gain_evidence 仍落盘并注明原因。",
+  "result.json 缺 result/variables/derivations/verification：对应指标为 null，不得默认按 0 处理（0 与「未测」必须可区分）。",
+  "子进程非 0 退出或超时：记录 returncode 与 stderr，指标按实测照实填写。",
+  "同一 result.json 两次投影必得同一 baseline（P5 确定性），若两次结果不同说明投影被外部状态污染，应作废本次取证。",
+  "校验器对照跑失败（校验器缺失/超时）：validator_dual_run.available=false，对应指标标 unavailable，不用 0 冒充通过。"
+ ],
+ "source_xml_note": null,
+ "run_log": [
+  {
+   "script": "mathml2latex.py",
+   "argv": [
+    "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week3-final\\challenge-7c37626c\\submission\\scripts\\mathml2latex.py",
+    "--convert",
+    "examples/demo.xml",
+    "--out",
+    "D:/hzm/workbuddy/2026-11-11-12-12-42/bohrium-week3-final/challenge-7c37626c/submission/../_selftest/work/ge_demo.json.conv_full.json"
+   ],
+   "returncode": 0,
+   "wall_seconds": 0.404,
+   "stderr_tail": ""
+  },
+  {
+   "script": "mathml2latex.py",
+   "argv": [
+    "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week3-final\\challenge-7c37626c\\submission\\scripts\\mathml2latex.py",
+    "--convert",
+    "examples/demo.xml",
+    "--out",
+    "D:/hzm/workbuddy/2026-11-11-12-12-42/bohrium-week3-final/challenge-7c37626c/submission/../_selftest/work/ge_demo.json.conv_ablate.json",
+    "--ablate"
+   ],
+   "returncode": 0,
+   "wall_seconds": 0.401,
+   "stderr_tail": ""
+  },
+  {
+   "script": "formula_check.py + semantic_check.py",
+   "argv": [
+    "（对照双跑：完整臂 + 消融基线臂各一次）"
+   ],
+   "returncode": 0,
+   "wall_seconds": 1.338,
+   "stderr_tail": ""
+  }
+ ],
+ "load_error": null,
+ "_note": "合成示例（examples/demo.xml）的真实双跑产物，用于展示 gain_evidence 的结构与两臂对照口径；不含平台正式案例答案或官方分数。"
+}

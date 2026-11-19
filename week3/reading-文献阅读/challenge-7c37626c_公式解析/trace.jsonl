@@ -1,0 +1,42 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「公式解析与数学推理」（challenge-id: challenge-7c37626c）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] 完整：`η = \\frac{P_{\\mathrm{out}}}{P_{\\mathrm{in}}} \\times 100 %`（conversion=full）"}
+{"role":"assistant","content":"[第3步] 消融：`η = P out P in \\times 100 %`（文本拼接，conversion=partial）"}
+{"role":"assistant","content":"[第4步] - claims 数组为空（每条关键论断都应带 evidence 指回原文）"}
+{"role":"assistant","content":"[第5步] - F1 [m-f1] 缺 semantics（逐符号含义/量纲解读）——讲得清维度未达标"}
+{"role":"assistant","content":"[第6步] - F1 [m-f2] 缺 semantics —— 讲得清维度未达标"}
+{"role":"assistant","content":"[第7步] - F1 [m-f3] 缺 semantics —— 讲得清维度未达标"}
+{"role":"assistant","content":"[第8步] - F6 [m-f1] not_recomputable 但 missing 为空（须逐项登记缺失输入）"}
+{"role":"assistant","content":"[第9步] - F6 [m-f2] not_recomputable 但 missing 为空"}
+{"role":"assistant","content":"[第10步] - F6 [m-f3] not_recomputable 但 missing 为空"}
+{"role":"assistant","content":"[第11步] - [m-f3] conversion=full 但 latex 为空"}
+{"role":"assistant","content":"[第12步] - [m-f3] latex 为空串（产物非空生命线被破坏）"}
+{"role":"assistant","content":"[第13步] - coverage.not_recomputable=true 但 verification[0] 有 computed（编造检测）   ×3"}
+{"role":"assistant","content":"[第14步] `gain_probe` 的 baseline 是**本 Skill 机制消融基线**，**不是**平台「基础 Agent 不加载"}
+{"role":"assistant","content":"[第15步] `real_validator_dual_run` 证明的是「本 Skill 的机制是产物通过校验的必要条件」，"}
+{"role":"assistant","content":"[第16步] 同源规则存在「自己尺子量自己」的固有局限（README §8 已明写）；外部复核仍需人眼看"}
+{"role":"assistant","content":"[第17步] 自测夹具为**合成输入**，数字仅证明机制自洽，不冒充正式案例表现。"}
+{"role":"assistant","content":"[第18步] 完整模式：`η = \\frac{P_{\\mathrm{out}}}{P_{\\mathrm{in}}}`（conversion=full）"}
+{"role":"assistant","content":"[第19步] 消融模式：`η = P out P in`（文本拼接，conversion=partial，ambiguity_notes 已记）"}
+{"role":"assistant","content":"[第20步] - gates[mathml_converted] 状态非法: 'bogus'（只允许 enforced/not_found/skipped_not_provided/unreadable）"}
+{"role":"assistant","content":"[第21步] `gain_probe` 的 baseline 是**本 Skill 机制消融基线**（同输入同产物、关闭本 Skill"}
+{"role":"assistant","content":"[第22步] `model_requests` 亦置 null（平台记录），不自行编造。"}
+{"role":"assistant","content":"[第23步] 消融投影是确定性函数（P5），同一 result.json 必得同一 baseline，可被第三方复算。"}
+{"role":"assistant","content":"[第24步] 无 MathML 表示时（C02 类）公式层指标标 `available=false` 并保留真实缺失分支说明，"}
+{"role":"assistant","content":"[第25步] 未提交平台（按主控要求由主控统一提交）。"}
+{"role":"assistant","content":"[第26步] `examples/ablation-demo.json` 为合成样例的真实双跑产物，**不含正式案例答案**；"}
+{"role":"assistant","content":"[第27步] 遗留限制不变：mtable 大矩阵 partial（显式标注）；文本通道产物保守需人工校对；"}
+{"role":"assistant","content":"[第28步] - F1 每条 `conversion!=failed` 公式必须有 `semantics` 逐符号块（symbol+meaning）；"}
+{"role":"assistant","content":"[第29步] - F2 provenance 三级枚举校验，原文定义必须带 `source_location`（可指回原文）；"}
+{"role":"assistant","content":"[第30步] - F3 `recomputable:true` 推导步必须有 `evidence`（逐字摘录论文参数）；"}
+{"role":"assistant","content":"[第31步] - F4 `recomputable:true` 推导步必须有 `intermediate_value`（中间值留痕）；"}
+{"role":"assistant","content":"[第32步] - F5 `verified` 核验的 inputs 每项必须带 `units` + `source`（可复跑）；"}
+{"role":"assistant","content":"[第33步] - F6 `not_recomputable` 必须 missing 逐项清单；"}
+{"role":"assistant","content":"[第34步] - F7 claims evidence 必须逐字 quote；"}
+{"role":"assistant","content":"[第35步] - W1-W4 警告：latex 中 `\\mathrm{...}` 标识未进变量表/语义块（漏变量检测）、"}
+{"role":"assistant","content":"[第36步] **正向**：examples/demo-result.json → PASS（formulas=1, semantics_covered=3,"}
+{"role":"assistant","content":"[第37步] **负向**：构造 6 处缺陷（删 semantics、删推导步 evidence 与 intermediate_value、"}
+{"role":"assistant","content":"[第38步] v4 三级遗留不变：mtable 大矩阵 partial 显式标注；文本通道产物保守需人工校对；"}
+{"role":"assistant","content":"[第39步] 未提交平台（按主控要求由主控统一提交）；tests/out*/bad-*.json 为本地测试产物，"}
+{"role":"assistant","content":"[第40步] 完成全部交付物。最终文件清单：\nexamples/ablation-demo.json (16457 bytes)\nexamples/demo-result.json (3857 bytes)\nexamples/demo.xml (466 bytes)\nREADME.md (15022 bytes)\nreferences/result-schema.md (5923 bytes)\nscripts/formula_check.py (7171 bytes)\nscripts/gain_probe.py (44435 bytes)\nscripts/mathml2latex.py (17577 bytes)\nscripts/result_scaffold.py (11769 bytes)\nscripts/schema_guard.py (5626 bytes)\nscripts/semantic_check.py (10075 bytes)\nSKILL.md (12667 bytes)\nworklog.md (26212 bytes)"}
+{"role":"assistant","content":"[第41步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

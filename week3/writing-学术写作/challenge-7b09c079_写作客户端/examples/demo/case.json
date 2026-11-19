@@ -1,0 +1,20 @@
+{
+  "case_id": "demo-acwrite-001",
+  "title": "示例：含公式与引用密集片段的合成学术稿件",
+  "note": "本文件是自带的合成示例（非正式测试案例、非预置答案），仅用于演示调用方式与跑通自检。",
+  "output_contract": {
+    "case_id": "本次运行的案例标识",
+    "status": "complete | partial | failed | blocked",
+    "result": "目标产物 / 修订记录 / 裁决 / 导出 / 版本与边界",
+    "claims": "事实与来源映射：每条含逐字证据",
+    "uncertainties": "未执行指令 / 歧义 / 人工确认 / 材料缺口"
+  },
+  "task_instruction": "按下列指令修订稿件，保留逐条修订与来源，导出可编辑文档。",
+  "revision_instructions": [
+    {"iid": "I01", "level": "措辞", "target": "§3.2 第2段", "action": "替换", "note": "把『显著提升』改为『提升』，避免无统计支撑的强化表述"},
+    {"iid": "I02", "level": "引用", "target": "§3.2 第2段 与 参考文献表", "action": "重编号", "note": "正文引用 [1] 改为 [2]，参考文献表同步重排"},
+    {"iid": "I03", "level": "术语", "target": "§4.1 第1段", "action": "替换", "note": "全文统一术语『基线模型』"},
+    {"iid": "I04", "level": "结构", "target": "§2 标题", "action": "替换", "note": "标题层级措辞对齐期刊体例"},
+    {"iid": "I05", "level": "内容", "target": "§5 第1段", "action": "补充", "note": "补一句结论限定语；材料未给出数值，需标记待人工确认"}
+  ]
+}

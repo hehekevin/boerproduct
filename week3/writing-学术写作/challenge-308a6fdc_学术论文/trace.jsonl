@@ -1,0 +1,10 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「写作01｜学术论文写作」（challenge-id: challenge-308a6fdc）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] **正例（合成 case 全链路）**：ledger 8 条 → docx_build 合并 2 章 → fact_check checked=7 **unmatched=0**、checks_rows=7（逐条带 source/quote）→ consistency verdict=pass、gates 枚举完整（citations/terms=skipped_not_provided + gate_note）→ result.json 含 sections=2、draft_text、claims=1（kind/evidence/source_id/location 齐全）、section_check.match=True、status=complete。"}
+{"role":"assistant","content":"[第3步] **反例（脏数据注入）**：S01.json 写坏 + 注入自补数字 3.7%/256 例 + 删「3 讨论」章节 → docx_build **跳过坏文件留痕 skipped**；fact_check **unmatched=2 逐条抓出**、verdict=fail；consistency **missing=['1 材料与方法','3 讨论']** 抓到、section_check.match=False；build_result status=partial 如实降级。所有校验器均抓到注入的脏数据，fail 计入退出码。"}
+{"role":"assistant","content":"[第4步] result.json 每步可解析；docx stdlib 兜底路径可用。"}
+{"role":"assistant","content":"[第5步] 64 次请求 / 900 秒内可完成 5 步（逐章分批 + 熔断 48 次/700 秒保留）。"}
+{"role":"assistant","content":"[第6步] 16384 token/响应：单响应只写 1 章 ≤1500 字，不会超限。"}
+{"role":"assistant","content":"[第7步] 3 案例 × 3 重复：任何一次中断 result.json 仍完整可解析（骨架先行 + 每步回填）。"}
+{"role":"assistant","content":"[第8步] 完成全部交付物。最终文件清单：\nexamples/example_input.json (1035 bytes)\nREADME.md (6612 bytes)\nscripts/build_result.py (17240 bytes)\nscripts/consistency_check.py (13231 bytes)\nscripts/docx_build.py (14161 bytes)\nscripts/extract_materials.py (10671 bytes)\nscripts/fact_ledger.py (10715 bytes)\nscripts/gain_evidence.py (6506 bytes)\nscripts/render_preview.py (3854 bytes)\nscripts/_rlog.py (2184 bytes)\nSKILL.md (12313 bytes)\nworklog.md (3758 bytes)"}
+{"role":"assistant","content":"[第9步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

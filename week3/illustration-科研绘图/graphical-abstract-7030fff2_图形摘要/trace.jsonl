@@ -1,0 +1,16 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「Graphical Abstract（图形摘要）」（challenge-id: graphical-abstract-7030fff2）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] 基线：`bohrium-week3-plotfix/graphical-abstract-7030fff2/submission/`（当前最优包，平台 73.33，第5/21；第1名 83）。"}
+{"role":"assistant","content":"[第3步] 本次按 FORMULA-83 六要素逐条对照查缺，只做增量增强，不推翻不重构。"}
+{"role":"assistant","content":"[第4步] 逐键抄契约、立即落骨架、分批写盘 ≤200 行、路径动态定位（`find /skills /app`）、渲染回退链 + `--check` 像素校验、渲染失败不回滚（保留 SVG + exceptions + partial）、异常处置表、自检清单、行数纪律（SKILL.md ≤150 行）。"}
+{"role":"assistant","content":"[第5步] **正例**（合规 SVG，1200×600、36/20/18px、四图层、四分区）：`AUDIT fail=0`，退出码 0；gates：6 项 enforced + edit_diff=skipped_not_provided（非编辑工单，正确跳过）。"}
+{"role":"assistant","content":"[第6步] **反例**（注入脏数据：画布 1000×600、12px 文字、`<image>` 标签、缺 layer-legend、缺 data-zone、超宽溢出文字）：9 项 fail 全部逐条命中注入项，退出码 1（冒泡）。"}
+{"role":"assistant","content":"[第7步] **编辑 diff 反测**：正例删除元素 p2 后 `--baseline work/pos.svg` 复检 → `removed:['p2']`、preserved=10、退出码 1。"}
+{"role":"assistant","content":"[第8步] 渲染脚本原样复制 v2.0 已修复版（cairosvg Exception 捕获、--check 缺文件返回码 2、浏览器回退 file:/// 规范化）；本机无渲染后端时如实 `PNG FAIL`（文档化降级路径，未伪造产物）。"}
+{"role":"assistant","content":"[第9步] [x] SKILL.md（108 行，wc -l 实测；硬约束 ≤150 行达标）"}
+{"role":"assistant","content":"[第10步] [x] scripts/render_svg.py（185 行，原样复制已验证版）"}
+{"role":"assistant","content":"[第11步] [x] scripts/svg_audit.py（272 行，新增机检对账）"}
+{"role":"assistant","content":"[第12步] [x] README.md（含依赖/调用/双测证据/示意示例标注\"非正式案例结果\"）"}
+{"role":"assistant","content":"[第13步] 产出目录：`bohrium-week3-final/graphical-abstract-7030fff2/submission/`，未提交（按指令仅产出）。"}
+{"role":"assistant","content":"[第14步] 完成全部交付物。最终文件清单：\nREADME.md (7155 bytes)\nscripts/gain_evidence.py (8271 bytes)\nscripts/render_svg.py (7900 bytes)\nscripts/svg_audit.py (13187 bytes)\nSKILL.md (11243 bytes)\nworklog.md (4051 bytes)"}
+{"role":"assistant","content":"[第15步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

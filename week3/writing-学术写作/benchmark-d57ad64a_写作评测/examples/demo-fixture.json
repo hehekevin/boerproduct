@@ -1,0 +1,108 @@
+{
+  "_note": "合成演示数据（示意，非正式案例、非正式答案）：用于复现 acbench 全链路与 gain_eval 双评分器对照。drafts 为人工编写的演示稿（w-4/w-5 含刻意缺陷以体现 reject 红线与逐字回证机制），scores.csv 与 adjudication.json 内容一并给出，供审阅者逐字复算。",
+  "case_ref": "examples/example-case.json",
+  "run_results": {
+    "case_id": "demo-writing-bench-001",
+    "results": [
+      {
+        "item_id": "w-1",
+        "draft_md": "训练组果蝇（n=30）经 3h 嗅觉训练后，24h 记忆指数为 42.6%，对照组为 12.1%。该结果为陈述句式的方法描述。",
+        "draft_struct": {"genre": "方法摘要", "audience": "同行评审读者", "chars": 68},
+        "evidence": [
+          {"quote": "24h 记忆指数为 42.6%，n=30", "location": "M01"}
+        ]
+      },
+      {
+        "item_id": "w-2",
+        "draft_md": "研究者推测，气味 A 与 B 交替暴露可以增强果蝇的短期记忆，这种增强在 6h 内最为明显。研究者在材料中提出这一推测，尚未给出定论。",
+        "draft_struct": {"genre": "科普改写", "audience": "科普读者", "chars": 78},
+        "evidence": [
+          {"quote": "效果在 6h 内最强", "location": "M02"}
+        ]
+      },
+      {
+        "item_id": "w-3",
+        "draft_md": "记忆指数随时间衰减\n训练后 1h 记忆指数为 38.2%，6h 降至 21.9%，24h 为 9.4%，呈单调衰减。",
+        "draft_struct": {"genre": "结果小节", "title": "记忆指数随时间衰减", "chars": 52},
+        "evidence": [
+          {"quote": "6h=21.9%", "location": "M03"}
+        ]
+      },
+      {
+        "item_id": "w-4",
+        "draft_md": "训练组果蝇（n=30）经 3h 嗅觉训练后，24h 记忆指数为 42.6%，对照组为 12.1%。本研究证明嗅觉训练可显著提升记忆指数，该结论已在所有条件下成立。",
+        "draft_struct": {"genre": "方法摘要", "audience": "同行评审读者", "chars": 96},
+        "evidence": [
+          {"quote": "24h 记忆指数为 42.6%，n=30", "location": "M01"}
+        ]
+      },
+      {
+        "item_id": "w-5",
+        "draft_md": "研究者推测，气味 A 与 B 交替暴露可以增强果蝇的短期记忆，这种增强在 6h 内最为明显。实验在 12h 后仍保持 88.5% 的增强幅度。",
+        "draft_struct": {"genre": "科普改写", "audience": "科普读者", "chars": 84},
+        "evidence": [
+          {"quote": "效果在 6h 内最强", "location": "M02"},
+          {"quote": "12h 后仍保持 88.5% 的增强幅度", "location": "M02"}
+        ]
+      }
+    ]
+  },
+  "scores_csv_rows": [
+    ["w-1", "2", "必需要点4/4 满足；数值 42.6%/12.1% 与 M01 逐字一致，n=30 保留，无 reject 命中", "false", "", "训练组果蝇（n=30）经 3h 嗅觉训练后，24h 记忆指数为 42.6%，对照组为 12.1%。"],
+    ["w-2", "2", "必需要点3/3 满足；'研究者推测'归属保留，6h 限定保留，术语'短期记忆'保留", "false", "", "研究者推测，气味 A 与 B 交替暴露可以增强果蝇的短期记忆……"],
+    ["w-3", "1", "必需要点2/3 满足；21.9% 原样保留，但标题'记忆指数随时间衰减'未直接给出时间/衰减限定语，读者需自行推断", "false", "missing_must_point", "记忆指数随时间衰减\n训练后 1h 记忆指数为 38.2%，6h 降至 21.9%……"],
+    ["w-4", "0", "命中 reject『出现'证明'等超出材料的因果结论词』；且『该结论已在所有条件下成立』超出材料，属 overclaim", "false", "overclaim", "训练组果蝇（n=30）经 3h 嗅觉训练后，24h 记忆指数为 42.6%，对照组为 12.1%。本研究证明……"],
+    ["w-5", "0", "命中 reject『引入表外数值 88.5%』；材料 M02 只给 6h 内最强，无 12h/88.5% 数据，属 text_mismatch + overclaim", "false", "text_mismatch", "研究者推测，气味 A 与 B 交替暴露可以增强果蝇的短期记忆……"]
+  ],
+  "adjudication_json": {
+    "rounds": [
+      {
+        "item_id": "w-3",
+        "judge_a": 2,
+        "judge_b": 1,
+        "delta": 1,
+        "adjudicated": 1,
+        "anchor_revision": "must_point「标题包含'记忆'与时间/衰减含义之一」表述含'之一'，两名评分员对'衰减'是否算作时间含义分歧；按证据裁定保留 1 分，并把该要点改写为「标题需同时含'记忆'与'衰减'或'时间'二者之一且可独立读出衰减含义」",
+        "evidence": "w-3 稿件标题『记忆指数随时间衰减』含『记忆』与『衰减』；judge_b 认为『随时间』未在标题内独立成立"
+      }
+    ]
+  },
+  "failure_samples": [
+    {
+      "item_id": "w-3",
+      "answer_raw_excerpt": "记忆指数随时间衰减\n训练后 1h 记忆指数为 38.2%，6h 降至 21.9%，24h 为 9.4%，呈单调衰减。",
+      "failure_type": "missing_must_point",
+      "why": "标题『记忆指数随时间衰减』中的时间含义需读者自行推断，未独立满足 must_point 对标题的限定要求；数值与表1 逐字一致，无表外数值。"
+    },
+    {
+      "item_id": "w-4",
+      "answer_raw_excerpt": "本研究证明嗅觉训练可显著提升记忆指数，该结论已在所有条件下成立。",
+      "failure_type": "overclaim",
+      "why": "材料只给出单次实验的 42.6% 与对照组 12.1%，稿件使用『证明』『显著』『所有条件下成立』等超出材料的表述，命中 reject。"
+    },
+    {
+      "item_id": "w-5",
+      "answer_raw_excerpt": "实验在 12h 后仍保持 88.5% 的增强幅度。",
+      "failure_type": "text_mismatch",
+      "why": "材料 M02 只记载『效果在 6h 内最强』，稿件引入 12h 与 88.5% 两个材料中不存在的数值；该数值同时出现在 evidence 引文中，回证无法命中材料语料。"
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "c1",
+      "text": "w-1 稿件保留 42.6%、12.1%、n=30 三项关键数值，与 M01 一致",
+      "kind": "reported",
+      "source_id": "M01",
+      "location": "M01",
+      "evidence": [{"quote": "24h 记忆指数为 42.6%，n=30", "location": "M01"}]
+    },
+    {
+      "claim_id": "c2",
+      "text": "w-2 稿件以『研究者推测』归属保留不确定强度，并保留 6h 限定",
+      "kind": "reported",
+      "source_id": "M02",
+      "location": "M02",
+      "evidence": [{"quote": "效果在 6h 内最强", "location": "M02"}]
+    }
+  ]
+}

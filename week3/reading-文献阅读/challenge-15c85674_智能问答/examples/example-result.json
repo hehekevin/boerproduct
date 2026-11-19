@@ -1,0 +1,332 @@
+{
+  "case_id": "demo-001",
+  "status": "partial",
+  "result": {
+    "paper_id": "demo-A",
+    "material_version": "v1",
+    "coverage": {
+      "read_paragraphs": [
+        "p01"
+      ],
+      "unread_sections": [],
+      "note": "示例材料仅 1 段，已全文阅读。"
+    },
+    "answers": [
+      {
+        "question_id": "q1",
+        "answer": "LiFePO4 涂层电极在 1C、200 次循环后容量保持率为 84.3%，未涂层电极为 71.0%；据材料推断，涂层通过抑制界面副反应使保持率高于未涂层约 13.3 个百分点。",
+        "conditions": [
+          "1C 倍率",
+          "200 次循环",
+          "容量保持率口径"
+        ],
+        "status": "answered",
+        "claims": [
+          {
+            "claim_id": "c-01",
+            "text": "涂层电极 200 次循环后保持率 84.3%",
+            "kind": "reported",
+            "source_id": "demo-A",
+            "location": "p01",
+            "evidence": [
+              {
+                "paragraph_id": "p01",
+                "quote": "retained 84.3% capacity after 200 cycles at 1C"
+              }
+            ]
+          },
+          {
+            "claim_id": "c-02",
+            "text": "未涂层电极保持率 71.0%",
+            "kind": "reported",
+            "source_id": "demo-A",
+            "location": "p01",
+            "evidence": [
+              {
+                "paragraph_id": "p01",
+                "quote": "versus 71.0% for the uncoated electrode"
+              }
+            ]
+          },
+          {
+            "claim_id": "c-03",
+            "text": "作者将性能差异归因于界面副反应被抑制",
+            "kind": "reported",
+            "source_id": "demo-A",
+            "location": "p01",
+            "evidence": [
+              {
+                "paragraph_id": "p01",
+                "quote": "attribute this to suppressed interfacial side reactions"
+              }
+            ]
+          },
+          {
+            "claim_id": "c-04",
+            "text": "涂层使保持率高于未涂层约 13.3 个百分点（84.3−71.0）",
+            "kind": "inferred",
+            "source_id": "demo-A",
+            "location": "p01",
+            "evidence": [
+              {
+                "paragraph_id": "p01",
+                "quote": "retained 84.3% capacity after 200 cycles at 1C, versus 71.0%"
+              }
+            ]
+          }
+        ],
+        "unanswered_parts": []
+      },
+      {
+        "question_id": "q2",
+        "answer": "材料未报告热稳定性数据。已检索全部段落（p01，共 1 段），未发现任何热稳定性相关表述。",
+        "conditions": [],
+        "status": "insufficient_evidence",
+        "claims": [],
+        "unanswered_parts": [
+          {
+            "part": "热稳定性表现",
+            "reason": "材料未报告"
+          }
+        ]
+      }
+    ]
+  },
+  "claims": [
+    {
+      "claim_id": "c-01",
+      "text": "涂层电极 200 次循环后保持率 84.3%",
+      "kind": "reported",
+      "source_id": "demo-A",
+      "location": "p01",
+      "evidence": [
+        {
+          "paragraph_id": "p01",
+          "quote": "retained 84.3% capacity after 200 cycles at 1C"
+        }
+      ]
+    },
+    {
+      "claim_id": "c-02",
+      "text": "未涂层电极保持率 71.0%",
+      "kind": "reported",
+      "source_id": "demo-A",
+      "location": "p01",
+      "evidence": [
+        {
+          "paragraph_id": "p01",
+          "quote": "versus 71.0% for the uncoated electrode"
+        }
+      ]
+    },
+    {
+      "claim_id": "c-03",
+      "text": "作者将性能差异归因于界面副反应被抑制",
+      "kind": "reported",
+      "source_id": "demo-A",
+      "location": "p01",
+      "evidence": [
+        {
+          "paragraph_id": "p01",
+          "quote": "attribute this to suppressed interfacial side reactions"
+        }
+      ]
+    },
+    {
+      "claim_id": "c-04",
+      "text": "涂层使保持率高于未涂层约 13.3 个百分点（84.3−71.0）",
+      "kind": "inferred",
+      "source_id": "demo-A",
+      "location": "p01",
+      "evidence": [
+        {
+          "paragraph_id": "p01",
+          "quote": "retained 84.3% capacity after 200 cycles at 1C, versus 71.0%"
+        }
+      ]
+    }
+  ],
+  "uncertainties": {
+    "unreported": [
+      "热稳定性数据（q2）"
+    ],
+    "unverifiable": [],
+    "conflicts": [],
+    "human_review": [
+      "c-04 为计算推断值，建议人工复核"
+    ],
+    "summary": "示例材料仅覆盖循环保持率；热稳定性未报告，已如实标注。"
+  },
+  "verification": {
+    "gate": "literature-qa/check_result.py v5",
+    "state": "enforced",
+    "passed": true,
+    "verdict": "PASS",
+    "n_problems": 0,
+    "n_warns": 2,
+    "n_density_notes": 0,
+    "exit_policy": "always 0：校验失败不阻塞交付，结论以本字段为准",
+    "checks": [
+      {
+        "item": "顶层五字段齐全",
+        "template_value": "['case_id', 'status', 'result', 'claims', 'uncertainties']",
+        "applied": true,
+        "match": true,
+        "detail": "五键齐全"
+      },
+      {
+        "item": "case_id 与输入一致",
+        "template_value": "res.case_id == case.case_id",
+        "applied": true,
+        "match": true,
+        "detail": ""
+      },
+      {
+        "item": "顶层 claims 汇总一致",
+        "template_value": "answers 内 claim_id ⊆ 顶层 claims",
+        "applied": true,
+        "match": true,
+        "detail": "answers 内 4 条，顶层 4 条"
+      },
+      {
+        "item": "question_id 全覆盖",
+        "template_value": "case 问题清单全部出现在 answers",
+        "applied": true,
+        "match": true,
+        "detail": "覆盖 2 问"
+      },
+      {
+        "item": "[q1] c[c-01] 四要素",
+        "template_value": "kind/source_id/location/evidence 齐全",
+        "applied": true,
+        "match": true,
+        "detail": "齐全"
+      },
+      {
+        "item": "[q1] c[c-02] 四要素",
+        "template_value": "kind/source_id/location/evidence 齐全",
+        "applied": true,
+        "match": true,
+        "detail": "齐全"
+      },
+      {
+        "item": "[q1] c[c-03] 四要素",
+        "template_value": "kind/source_id/location/evidence 齐全",
+        "applied": true,
+        "match": true,
+        "detail": "齐全"
+      },
+      {
+        "item": "[q1] c[c-04] 四要素",
+        "template_value": "kind/source_id/location/evidence 齐全",
+        "applied": true,
+        "match": true,
+        "detail": "齐全"
+      },
+      {
+        "item": "[q1] quote 逐字子串",
+        "template_value": "全部 quote 空白归一化后为对应段落子串",
+        "applied": true,
+        "match": true,
+        "detail": "4 条 claim，4 条 evidence"
+      },
+      {
+        "item": "[q1] 数值逐字回证",
+        "template_value": "answer 中每个 ≥2 位数值出现在某条 quote（inferred 文本可豁免）",
+        "applied": true,
+        "match": true,
+        "detail": "全部回证"
+      },
+      {
+        "item": "[q2] 检索范围说明",
+        "template_value": "insufficient_evidence 需写明已检索范围",
+        "applied": true,
+        "match": true,
+        "detail": ""
+      },
+      {
+        "item": "[q2] quote 逐字子串",
+        "template_value": "全部 quote 空白归一化后为对应段落子串",
+        "applied": true,
+        "match": true,
+        "detail": "0 条 claim，0 条 evidence"
+      },
+      {
+        "item": "输入标识 case_id 与输入一致",
+        "template_value": "res.case_id == case.case_id",
+        "applied": true,
+        "match": true,
+        "detail": "res='demo-001' case='demo-001'"
+      },
+      {
+        "item": "输入标识 paper_id 与输入一致",
+        "template_value": "res.paper_id == case.paper_id",
+        "applied": true,
+        "match": true,
+        "detail": "res='demo-A' case='demo-A'"
+      },
+      {
+        "item": "输入标识 material_version 与输入一致",
+        "template_value": "res.material_version == case.material_version",
+        "applied": true,
+        "match": true,
+        "detail": "res='v1' case='v1'"
+      },
+      {
+        "item": "answers[] 每项含 question_id/answer/conditions",
+        "template_value": "逐题回答：question_id + 回答文本 + 成立条件列表",
+        "applied": true,
+        "match": true,
+        "detail": "2 项齐全"
+      },
+      {
+        "item": "answers[].status 四态枚举",
+        "template_value": "answered | input_error | insufficient_evidence | partial",
+        "applied": true,
+        "match": true,
+        "detail": "全部合法"
+      },
+      {
+        "item": "claims[] 含 claim_id/text/kind/evidence[paragraph_id,quote]",
+        "template_value": "论断与证据：claim_id + 论断文本 + reported|inferred + 逐字引文",
+        "applied": true,
+        "match": true,
+        "detail": "全部齐备"
+      },
+      {
+        "item": "unanswered_parts[] 每项列明部分与原因",
+        "template_value": "未完成部分：未回答部分 + 原因；没有则为空列表",
+        "applied": true,
+        "match": true,
+        "detail": "全部列明"
+      },
+      {
+        "item": "coverage 说明已读/未读章节及原因",
+        "template_value": "阅读范围：已读章节 + 未读章节及原因",
+        "applied": true,
+        "match": true,
+        "detail": "read_paragraphs=1 条，unread_sections=0 条"
+      },
+      {
+        "item": "gain_evidence 同输入对照证据",
+        "template_value": "result.json 顶层含 gain_evidence 对象",
+        "applied": true,
+        "match": false,
+        "detail": "缺失（需运行 measure_gain.py --embed 生成）"
+      },
+      {
+        "item": "efficiency 自动采集计数",
+        "template_value": "result.json 顶层含 efficiency 对象",
+        "applied": true,
+        "match": false,
+        "detail": "缺失（需运行 measure_gain.py --embed 生成）"
+      }
+    ],
+    "gates": [],
+    "problems": [],
+    "warns": [
+      "顶层 gain_evidence 缺失：请运行 measure_gain.py --embed 生成",
+      "顶层 efficiency 缺失：请运行 measure_gain.py --embed 生成"
+    ]
+  }
+}

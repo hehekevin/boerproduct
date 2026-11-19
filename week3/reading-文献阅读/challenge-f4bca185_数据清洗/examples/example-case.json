@@ -1,0 +1,5 @@
+{"case_id": "demo-001", "records": [
+  {"row_id": "r1", "source": "PaperA", "cap_ug_g": "250 ug/g", "condition": "25C pH7"},
+  {"row_id": "r2", "source": "PaperA", "cap_ug_g": "250 ug/g", "condition": "25C pH7"},
+  {"row_id": "r3", "source": "PaperB", "cap_ug_g": "12 xyz", "condition": "25C pH7"},
+  {"row_id": "r4", "source": "PaperB", "cap_ug_g": "3.1-4.4 mg/L", "condition": "25C pH8"}]}

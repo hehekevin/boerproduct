@@ -1,0 +1,427 @@
+{
+ "generated_at": "2026-11-17T16:48:08",
+ "case_source": "本地构造的合成材料（biomedical 风格），非平台正式案例、非预置答案",
+ "normal_vs_degraded": {
+  "input": {
+   "segments": 4,
+   "identical_input_for_both_runs": true,
+   "draft_description": "同一份含漂移的初译稿（禁用变体 / 四舍五入 / 漏引 / 漏译）",
+   "note": "两遍使用完全相同的 segments/terminology/translation 输入"
+  },
+  "full": {
+   "config": "全部机制开启 + 确定性自动修复",
+   "metrics": {
+    "segments": 4,
+    "translated": 3,
+    "term_consistency_rate": 0.75,
+    "number_unit_fidelity_rate": 0.5,
+    "citation_alignment_rate": 0.75,
+    "omission_rate": 0.5,
+    "needs_human_items": 4,
+    "hard_issues": 3,
+    "soft_issues": 1,
+    "detected_by_pipeline": {
+     "segment": 0,
+     "number": 2,
+     "citation": 0,
+     "term": 4,
+     "coverage": 3,
+     "soft": 1
+    },
+    "detected_total": 10,
+    "detection_recall": 0.6,
+    "auto_fixed_items": 3,
+    "verdict": "fail",
+    "fail_count": 2,
+    "pre_fix_metrics": {
+     "segments": 4,
+     "translated": 3,
+     "term_consistency_rate": 0.25,
+     "number_unit_fidelity_rate": 0.25,
+     "citation_alignment_rate": 0.75,
+     "omission_rate": 1.0,
+     "needs_human_items": 11,
+     "hard_issues": 10,
+     "soft_issues": 1
+    }
+   },
+   "auto_fix_changes": [
+    {
+     "seg": "S001",
+     "kind": "term_fix",
+     "from": "肿瘤环境",
+     "to": "肿瘤微环境",
+     "term": "tumor microenvironment",
+     "rule": "禁用变体 → 锁定译法（术语表显式登记，确定性可修）"
+    },
+    {
+     "seg": "S002",
+     "kind": "term_fix",
+     "from": "拉索回归",
+     "to": "最小绝对收缩与选择算子（LASSO）",
+     "term": "least absolute shrinkage and selection operator (LASSO)",
+     "rule": "禁用变体 → 锁定译法（术语表显式登记，确定性可修）"
+    },
+    {
+     "seg": "S003",
+     "kind": "number_fix",
+     "before": "图 1. 5 年总生存期为 68%，治疗剂量为 12.4 毫克/千克 [2]。",
+     "after": "图 1. 5 年总生存期为 67.8%，治疗剂量为 12.4 毫克/千克 [2]。",
+     "detail": [
+      {
+       "src": "67.8",
+       "was": "68",
+       "now": "67.8"
+      }
+     ],
+     "rule": "数值与原文不符 → 回写原文绝对值（保持译文量级风格）"
+    }
+   ]
+  },
+  "ablated": {
+   "config": "退化：term_lock,num_verify,cite_anchor,coverage",
+   "metrics": {
+    "segments": 4,
+    "translated": 3,
+    "term_consistency_rate": 0.25,
+    "number_unit_fidelity_rate": 0.25,
+    "citation_alignment_rate": 0.75,
+    "omission_rate": 1.0,
+    "needs_human_items": 11,
+    "hard_issues": 10,
+    "soft_issues": 1,
+    "detected_by_pipeline": {
+     "segment": 0,
+     "number": 0,
+     "citation": 0,
+     "term": 0,
+     "coverage": 0,
+     "soft": 0
+    },
+    "detected_total": 0,
+    "detection_recall": 0.0,
+    "auto_fixed_items": 0,
+    "verdict": "pass",
+    "fail_count": 0,
+    "pre_fix_metrics": {
+     "segments": 4,
+     "translated": 3,
+     "term_consistency_rate": 0.25,
+     "number_unit_fidelity_rate": 0.25,
+     "citation_alignment_rate": 0.75,
+     "omission_rate": 1.0,
+     "needs_human_items": 11,
+     "hard_issues": 10,
+     "soft_issues": 1
+    }
+   },
+   "auto_fix_changes": []
+  },
+  "deltas": {
+   "term_consistency_rate": {
+    "full": 0.75,
+    "ablated": 0.25,
+    "delta": 0.5
+   },
+   "number_unit_fidelity_rate": {
+    "full": 0.5,
+    "ablated": 0.25,
+    "delta": 0.25
+   },
+   "citation_alignment_rate": {
+    "full": 0.75,
+    "ablated": 0.75,
+    "delta": 0.0
+   },
+   "omission_rate": {
+    "full": 0.5,
+    "ablated": 1.0,
+    "delta": -0.5
+   },
+   "needs_human_items": {
+    "full": 4,
+    "ablated": 11,
+    "delta": -7
+   },
+   "detected_total": {
+    "full": 10,
+    "ablated": 0,
+    "delta": 10
+   },
+   "detection_recall": {
+    "full": 0.6,
+    "ablated": 0.0,
+    "delta": 0.6
+   },
+   "auto_fixed_items": {
+    "full": 3,
+    "ablated": 0,
+    "delta": 3
+   }
+  },
+  "per_segment_comparison": [
+   {
+    "seg": "S001",
+    "full": {
+     "term_ok": true,
+     "num_ok": false,
+     "cite_ok": true,
+     "omitted": true
+    },
+    "ablated": {
+     "term_ok": false,
+     "num_ok": false,
+     "cite_ok": true,
+     "omitted": true
+    },
+    "differs": true
+   },
+   {
+    "seg": "S002",
+    "full": {
+     "term_ok": true,
+     "num_ok": true,
+     "cite_ok": true,
+     "omitted": false
+    },
+    "ablated": {
+     "term_ok": false,
+     "num_ok": true,
+     "cite_ok": true,
+     "omitted": true
+    },
+    "differs": true
+   },
+   {
+    "seg": "S003",
+    "full": {
+     "term_ok": true,
+     "num_ok": true,
+     "cite_ok": true,
+     "omitted": false
+    },
+    "ablated": {
+     "term_ok": true,
+     "num_ok": false,
+     "cite_ok": true,
+     "omitted": true
+    },
+    "differs": true
+   },
+   {
+    "seg": "S004",
+    "full": {
+     "term_ok": false,
+     "num_ok": false,
+     "cite_ok": false,
+     "omitted": true
+    },
+    "ablated": {
+     "term_ok": false,
+     "num_ok": false,
+     "cite_ok": false,
+     "omitted": true
+    },
+    "differs": false
+   }
+  ],
+  "segments_changed_by_mechanism": [
+   "S001",
+   "S002",
+   "S003"
+  ],
+  "elapsed_sec": 0.002
+ },
+ "clean_no_false_positive": {
+  "verdict": "pass",
+  "detected_total": 1,
+  "metrics": {
+   "segments": 4,
+   "translated": 4,
+   "term_consistency_rate": 1.0,
+   "number_unit_fidelity_rate": 1.0,
+   "citation_alignment_rate": 1.0,
+   "omission_rate": 0.0,
+   "needs_human_items": 1,
+   "hard_issues": 0,
+   "soft_issues": 1,
+   "detected_by_pipeline": {
+    "segment": 0,
+    "number": 0,
+    "citation": 0,
+    "term": 0,
+    "coverage": 0,
+    "soft": 1
+   },
+   "detected_total": 1,
+   "detection_recall": null,
+   "auto_fixed_items": 0,
+   "verdict": "pass",
+   "fail_count": 0,
+   "pre_fix_metrics": {
+    "segments": 4,
+    "translated": 4,
+    "term_consistency_rate": 1.0,
+    "number_unit_fidelity_rate": 1.0,
+    "citation_alignment_rate": 1.0,
+    "omission_rate": 0.0,
+    "needs_human_items": 1,
+    "hard_issues": 0,
+    "soft_issues": 1
+   }
+  },
+  "problem_types": [],
+  "passed": true
+ },
+ "contamination_counterexample": {
+  "expectation": "verdict=fail 且 exit_code=0（抓到问题但不中断交付）",
+  "verdict": "fail",
+  "fail_count": 2,
+  "detected_total": 10,
+  "problem_types": [
+   "number_mismatch",
+   "omission",
+   "term_violation"
+  ],
+  "artifact_metrics": {
+   "segments": 4,
+   "translated": 3,
+   "term_consistency_rate": 0.25,
+   "number_unit_fidelity_rate": 0.25,
+   "citation_alignment_rate": 0.75,
+   "omission_rate": 1.0,
+   "needs_human_items": 11,
+   "hard_issues": 10,
+   "soft_issues": 1
+  },
+  "cli_check": {
+   "exit_code": 0,
+   "stdout": "{\"verdict\": \"fail\", \"segments\": 4, \"translated\": 4, \"fail\": 2, \"detected_total\": 10, \"fixes\": 3, \"ablate\": [], \"elapsed_sec\": 0.001}",
+   "verdict": "fail"
+  },
+  "passed": true
+ },
+ "numeric_scale_units": {
+  "probes": [
+   {
+    "src": "1.2 million features",
+    "tgt": "120 万个特征",
+    "values_equal": true,
+    "expect_equal": true,
+    "ok": true,
+    "src_values": [
+     1200000.0
+    ],
+    "tgt_values": [
+     1200000.0
+    ]
+   },
+   {
+    "src": "2.5 billion cells",
+    "tgt": "25 亿个细胞",
+    "values_equal": true,
+    "expect_equal": true,
+    "ok": true,
+    "src_values": [
+     2500000000.0
+    ],
+    "tgt_values": [
+     2500000000.0
+    ]
+   },
+   {
+    "src": "1.2 million features",
+    "tgt": "1200 万个特征",
+    "values_equal": false,
+    "expect_equal": false,
+    "ok": true,
+    "src_values": [
+     1200000.0
+    ],
+    "tgt_values": [
+     12000000.0
+    ]
+   },
+   {
+    "src": "12,345 patients",
+    "tgt": "12,345 例",
+    "values_equal": true,
+    "expect_equal": true,
+    "ok": true,
+    "src_values": [
+     12345.0
+    ],
+    "tgt_values": [
+     12345.0
+    ]
+   },
+   {
+    "src": "12,345 patients",
+    "tgt": "12,300 例",
+    "values_equal": false,
+    "expect_equal": false,
+    "ok": true,
+    "src_values": [
+     12345.0
+    ],
+    "tgt_values": [
+     12300.0
+    ]
+   },
+   {
+    "src": "67.8% survival",
+    "tgt": "67.8%",
+    "values_equal": true,
+    "expect_equal": true,
+    "ok": true,
+    "src_values": [
+     67.8
+    ],
+    "tgt_values": [
+     67.8
+    ]
+   },
+   {
+    "src": "67.8% survival",
+    "tgt": "68%",
+    "values_equal": false,
+    "expect_equal": false,
+    "ok": true,
+    "src_values": [
+     67.8
+    ],
+    "tgt_values": [
+     68.0
+    ]
+   },
+   {
+    "src": "12.4 mg/kg",
+    "tgt": "12.4 毫克/千克",
+    "values_equal": true,
+    "expect_equal": true,
+    "ok": true,
+    "src_values": [
+     12.4
+    ],
+    "tgt_values": [
+     12.4
+    ]
+   },
+   {
+    "src": "12.4 mg/kg",
+    "tgt": "12.4 毫克/升",
+    "values_equal": true,
+    "expect_equal": false,
+    "ok": false,
+    "src_values": [
+     12.4
+    ],
+    "tgt_values": [
+     12.4
+    ]
+   }
+  ],
+  "passed": false
+ },
+ "all_passed": false
+}

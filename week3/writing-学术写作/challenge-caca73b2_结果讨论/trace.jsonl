@@ -1,0 +1,24 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「写作10｜结果与讨论章节写作」（challenge-id: challenge-caca73b2）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] 未提交（按指令）；未改 docx_build/render_preview/extract_materials/fact_ledger/boundary_check/consistency_check。"}
+{"role":"assistant","content":"[第3步] boundary_check.py 未接入 gates 枚举（其核心 fail 项已冒泡退出码；如需可在下轮统一）。"}
+{"role":"assistant","content":"[第4步] `trace_audit.py` 完整模式：verdict=**fail**、fail_count=**7**、unmatched=2、crossref=fail、strength_fail=1、separation_confusion=1 → **exit=0** ✅（verdict 照实记录，未中断交付）"}
+{"role":"assistant","content":"[第5步] `trace_audit.py` 退化模式：verdict=pass、fail_count=0 → exit=0（护栏未生效，如实以 `not_enforced_ablate` 闸门暴露）"}
+{"role":"assistant","content":"[第6步] `boundary_check.py` 污染稿：verdict=fail、fail=1、types=[explanatory_in_results, reading_trace_note] → **exit=0** ✅"}
+{"role":"assistant","content":"[第7步] `consistency_check.py`：verdict=fail（citations:fail / figures_order:warn）→ **exit=0** ✅"}
+{"role":"assistant","content":"[第8步] `fact_ledger.py check`：checked=5、unmatched=1、verdict=fail → **exit=0** ✅"}
+{"role":"assistant","content":"[第9步] 缺失 readings：`gates.readings=not_found`、crossref=skipped、如实枚举 → **exit=0** ✅"}
+{"role":"assistant","content":"[第10步] `--strict-exit` 污染稿 → **exit=1**（CI 用，非零码能力保留）"}
+{"role":"assistant","content":"[第11步] 未做「基础 Agent vs Skill Agent」的**模型输出对照**：那需要平台在固定案例上跑两个条件，本包无法代跑，亦不得预置其结果。gain_evidence 只声明「同一草稿的机制开关对照」，证明护栏检出能力，不冒充平台对照。"}
+{"role":"assistant","content":"[第12步] 效率以步骤数与人工负担为代理指标；真实模型请求数/耗时由平台记录，本包不虚构。"}
+{"role":"assistant","content":"[第13步] 退化基线计数归零属统计假象，已在 result.json `gain_evidence.boundaries` 明示，避免被误读为「基线质量更好」。"}
+{"role":"assistant","content":"[第14步] `dclaims.jsonl` 与 `readings.jsonl` 的联动（did ↔ claim 文本）目前只做条数绑定（`dclaims_file_bound`），未做语义级对齐；留待下一轮。"}
+{"role":"assistant","content":"[第15步] boundary_check 的 `reading_trace_note` 项仍为提示性（完整数值核查以 fact_ledger 为准），未升级为硬 fail。"}
+{"role":"assistant","content":"[第16步] 未做「基础 Agent vs Skill Agent」的模型输出对照：那需平台在固定案例上跑两个条件，本包无法代跑，亦不得预置其结果。gain_evidence 只声明「同一草稿的机制开关对照」，证明护栏检出能力，不冒充平台对照。"}
+{"role":"assistant","content":"[第17步] 效率以步骤数与人工负担为代理指标；真实模型请求数/耗时由平台记录，本包不虚构。"}
+{"role":"assistant","content":"[第18步] 退化基线计数归零属统计假象，已在 `gain_evidence.boundaries`（6 条）明示，避免被误读为「基线质量更好」。"}
+{"role":"assistant","content":"[第19步] `dclaims.jsonl` 与 `readings.jsonl` 的联动仍是条数绑定，未做语义级对齐。"}
+{"role":"assistant","content":"[第20步] boundary_check 的 `reading_trace_note` 仍为提示性，完整数值核查以 fact_ledger check 为准。"}
+{"role":"assistant","content":"[第21步] 本轮未加新脚本（保持 ≤8），全部增强在既有 8 个脚本内增量完成。"}
+{"role":"assistant","content":"[第22步] 完成全部交付物。最终文件清单：\nexamples/example_input.json (1373 bytes)\nexamples/gain_evidence_example.json (14459 bytes)\nREADME.md (23272 bytes)\nscripts/boundary_check.py (7310 bytes)\nscripts/build_result.py (32656 bytes)\nscripts/consistency_check.py (9224 bytes)\nscripts/docx_build.py (11733 bytes)\nscripts/extract_materials.py (10399 bytes)\nscripts/fact_ledger.py (9521 bytes)\nscripts/render_preview.py (4745 bytes)\nscripts/trace_audit.py (35971 bytes)\nSKILL.md (16611 bytes)\nworklog.md (26391 bytes)"}
+{"role":"assistant","content":"[第23步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

@@ -1,0 +1,9 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「文献结论与数据提取」（challenge-id: challenge-105b70ee）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] skeleton.py：5 行字段骨架 + 3 段段落库收割成功，JSON 可解析。"}
+{"role":"assistant","content":"[第3步] check.py 对 example-result.json：PASS（5 字段/5 claims，reported×5），退出码 0。"}
+{"role":"assistant","content":"[第4步] 未提交（按指示）。"}
+{"role":"assistant","content":"[第5步] 评测材料为 PDF 时段落收割可能拿不到文本：check 降级为警告跳过逐字校验，逐字责任"}
+{"role":"assistant","content":"[第6步] search_log 五源以实际材料为准，材料没有的源登记\"材料未提供\"而不是跳过。"}
+{"role":"assistant","content":"[第7步] 完成全部交付物。最终文件清单：\nexamples/bench-fields.json (995 bytes)\nexamples/bench-input.json (2187 bytes)\nexamples/example-fields.json (622 bytes)\nexamples/example-input.json (989 bytes)\nexamples/example-result.json (6333 bytes)\nREADME.md (6937 bytes)\nscripts/check.py (16747 bytes)\nscripts/extract.py (31671 bytes)\nscripts/gain.py (17404 bytes)\nscripts/gain_evidence.py (6723 bytes)\nscripts/skeleton.py (10718 bytes)\nSKILL.md (13983 bytes)\nworklog.md (3402 bytes)"}
+{"role":"assistant","content":"[第8步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

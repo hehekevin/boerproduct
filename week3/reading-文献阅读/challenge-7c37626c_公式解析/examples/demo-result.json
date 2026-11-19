@@ -1,0 +1,61 @@
+{
+  "case_id": "demo-case",
+  "status": "answered",
+  "result": {
+    "formulas": [
+      {"formula_id": "f1", "source_locator": "demo.xml#f1 / Eq.(3) §3.1",
+       "latex": "\\eta = \\frac{P_{out}}{P_{in}}", "conversion": "full",
+       "ambiguity_notes": null, "mathml_raw_present": true,
+       "semantics": [
+         {"symbol": "η", "meaning": "系统热效率，输出功率占输入功率之比",
+          "dimension": "无量纲", "typical_value": 0.42,
+          "provenance": "原文定义", "source_location": "§3.1 Eq.(3)"},
+         {"symbol": "P_out", "meaning": "输出功率", "dimension": "W",
+          "typical_value": 41.9, "provenance": "原文定义", "source_location": "§3.1"},
+         {"symbol": "P_in", "meaning": "输入功率", "dimension": "W",
+          "typical_value": 100.0, "provenance": "原文定义", "source_location": "§3.1"}
+       ]}
+    ],
+    "variables": [
+      {"symbol": "η", "latex": "\\eta", "definition": "热效率", "units": "无量纲",
+       "range": "0-1", "first_defined_at": "§3.1 Eq.(3)", "provenance": "原文定义"},
+      {"symbol": "P_out", "latex": "P_{out}", "definition": "输出功率", "units": "W",
+       "range": ">0", "first_defined_at": "§3.1", "provenance": "原文定义"},
+      {"symbol": "P_in", "latex": "P_{in}", "definition": "输入功率", "units": "W",
+       "range": ">0", "first_defined_at": "§3.1", "provenance": "原文定义"}
+    ],
+    "derivations": [
+      {"step_no": 1, "expression": "η = 41.9 / 100.0", "recomputable": true,
+       "using": ["稳态工况"], "depends_on": ["Eq.(3)"], "why_valid": "定义式直接代入",
+       "gap": false, "intermediate_value": "η = 0.419",
+       "evidence": [{"paragraph_id": "p03", "quote": "P_out = 41.9 W was measured at steady state with P_in = 100.0 W"}]}
+    ],
+    "verification": [
+      {"formula_id": "f1",
+       "inputs": [{"symbol": "P_out", "value": 41.9, "units": "W", "source": "§3.1 p03"},
+                  {"symbol": "P_in", "value": 100.0, "units": "W", "source": "§3.1 p03"}],
+       "expected": 0.42, "computed": 0.419, "within_tolerance": true,
+       "notes": "相对误差 0.24%，原文保留两位小数", "status": "verified", "missing": []}
+    ],
+    "coverage": {"formulas_total": 1, "converted_full": 1, "variables_defined": 3,
+                 "derivation_steps": 1, "verified": 1, "not_recomputable": false,
+                 "semantics_covered": 3, "recomputed_steps": 1},
+    "gates": {
+      "case_readable": {"status": "enforced", "gate_note": "case_id=demo-case"},
+      "formula_source_readable": {"status": "enforced", "gate_note": "公式对象 1 条，其中 LaTeX 非空 1 条"},
+      "mathml_converted": {"status": "enforced", "gate_note": "已产出 LaTeX 的公式 1 条"},
+      "semantics_written": {"status": "enforced", "gate_note": "含逐符号语义块的公式数 1"},
+      "derivations_written": {"status": "enforced", "gate_note": "推导步 1 条"},
+      "verification_written": {"status": "enforced", "gate_note": "核验条目 1 条"},
+      "gain_evidence_written": {"status": "not_found", "gate_note": "示例文件未嵌入 gain_evidence（由 gain_probe.py --embed 写入）"}
+    }
+  },
+  "claims": [
+    {"claim_id": "k-01", "text": "效率公式为 η=P_out/P_in，按论文给出的 P_out=41.9 W、P_in=100.0 W 复算 η=0.419，与原文报告的 0.42 一致",
+     "kind": "reported", "source_id": "demo-case", "location": "§3.1 Eq.(3)",
+     "evidence": [{"paragraph_id": "p03", "quote": "P_out = 41.9 W was measured at steady state with P_in = 100.0 W"}]}
+  ],
+  "uncertainties": {"unreported": [], "unverifiable": [], "conflicts": [],
+                    "human_review": [], "summary": "演示输出（示意），全部符号原文可溯"},
+  "changelog": [{"step": "demo", "change": "合成示例，非正式案例答案"}]
+}

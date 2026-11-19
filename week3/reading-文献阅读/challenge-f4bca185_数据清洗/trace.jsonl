@@ -1,0 +1,42 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「文献数据清洗与标准化」（challenge-id: challenge-f4bca185）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] 正例（examples/example-case.json + 测试规则）：skeleton→profile→run→check 全链路"}
+{"role":"assistant","content":"[第3步] 反例1：篡改 changelog[C0001].trace.value_final 0.25→0.9 → check 抓到"}
+{"role":"assistant","content":"[第4步] 反例2：删除契约键 claims → check 抓到「缺少 output_contract 字段: claims」，"}
+{"role":"assistant","content":"[第5步] 脏值链路：`12 xyz` 逐条登记 dirty_values + pending 同号关联，PASS。"}
+{"role":"assistant","content":"[第6步] 平台 3 个固定案例实际运行（本次不提交，由团队统一提交）。"}
+{"role":"assistant","content":"[第7步] 全部命令 `python` → `python3`；新增动态定位脚本路径说明。"}
+{"role":"assistant","content":"[第8步] 新增：自动规则推导（优先不手写）、`--rows`、长表透视、`evidence` 第6步、efficiency、退出码恒 0。"}
+{"role":"assistant","content":"[第9步] 完整 JSON schema 移出到 `resources/result-schema.md`，SKILL.md 第2节改为紧凑字段清单（134 行 ≤150 硬约束）。"}
+{"role":"assistant","content":"[第10步] 逐项核验 83 要素关键词 20/20 齐备（脚本化断言）。"}
+{"role":"assistant","content":"[第11步] x1：`adsorption_capacity` `'250 ug/g'` → `0.25`（换算）；`removal_rate` `'88 %'` → `88.0`（定型）"}
+{"role":"assistant","content":"[第12步] x2：`'0.25 mg/g'` → `0.25`，与 x1 判定键同且值相容 → 合并到 x1（merged_groups=1）"}
+{"role":"assistant","content":"[第13步] x3：`'12 xyz'` → 原值保留 + P0001 unknown_unit + dirty_values 逐条登记"}
+{"role":"assistant","content":"[第14步] x4：`'3.1-4.4 mg/L'` → 与目标单位 mg/g **异量纲**，不猜换算 → P0002 + dirty_values"}
+{"role":"assistant","content":"[第15步] 未出现科学冲突误报（缺失值不再参与冲突判定）"}
+{"role":"assistant","content":"[第16步] - ablate_unit : convert 3→0, pending 2→1, dirty 2→0 | 注入3处换算错误: 抓出3 漏检0"}
+{"role":"assistant","content":"[第17步] - ablate_dirty: convert 3→3, pending 2→2, dirty 2→0 | 注入3处换算错误: 抓出3 漏检0"}
+{"role":"assistant","content":"[第18步] - ablate_spot : convert 3→3, pending 2→2, dirty 2→2 | 注入3处换算错误: 抓出0 漏检3"}
+{"role":"assistant","content":"[第19步] - ablate_dedup: convert 3→3, pending 2→2, dirty 2→2 | 注入3处换算错误: 抓出3 漏检0"}
+{"role":"assistant","content":"[第20步] **单位换算机制**：关闭后换算格数 3→0（数值不再归一到统一单位/统一数据类型）。"}
+{"role":"assistant","content":"[第21步] **脏值登记机制**：关闭后脏值登记 2→0（无法清洗的值被静默丢弃，不可发现）。"}
+{"role":"assistant","content":"[第22步] **换算抽检机检**：故障注入 3 处换算错误，正常档抓出 3 漏检 0；`ablate_spot` 档抓出 **0** 漏检 **3** —— 换算错误漏检数实测为 3，非估算。"}
+{"role":"assistant","content":"[第23步] **重复判定机制**：`ablate_dedup` 档 pending 2→1（少登记 1 条待人工核对项）。"}
+{"role":"assistant","content":"[第24步] efficiency 实测：wall_seconds 0.0012（单趟），evidence 五档合计 0.003，rules_evaluated=7。"}
+{"role":"assistant","content":"[第25步] - 缺少 output_contract 字段: claims"}
+{"role":"assistant","content":"[第26步] - changed_cells=999 与 changelog 条数=7 不一致"}
+{"role":"assistant","content":"[第27步] - 行 r1.value ledger 变更号不在 __changes__"}
+{"role":"assistant","content":"[第28步] - 行 r3.condition ledger 变更号不在 __changes__"}
+{"role":"assistant","content":"[第29步] - 行 r4.value ledger 变更号不在 __changes__"}
+{"role":"assistant","content":"[第30步] - 换算抽检不通过: changelog[C0001] 期望 0.25 实得 2.0250000000000004"}
+{"role":"assistant","content":"[第31步] - 换算抽检不通过: changelog[C0002] 期望 0.25 实得 2.0250000000000004"}
+{"role":"assistant","content":"[第32步] - 换算抽检不通过: changelog[C0003].end1 期望 0.0031 实得 1.1114700000000002"}
+{"role":"assistant","content":"[第33步] - 换算抽检不通过: changelog[C0003].end2 期望 0.0044 实得 1.1162800000000002"}
+{"role":"assistant","content":"[第34步] - 换算抽检不通过: changelog[C0004] 期望 25.0 实得 93.6"}
+{"role":"assistant","content":"[第35步] - 换算抽检不通过: changelog[C0005] 期望 25.0 实得 93.6"}
+{"role":"assistant","content":"[第36步] - 换算抽检不通过: changelog[C0006] 期望 25.0 实得 93.6"}
+{"role":"assistant","content":"[第37步] 平台 3 个固定案例实际运行（本次不提交，由团队统一提交）。"}
+{"role":"assistant","content":"[第38步] 案例若为 PDF 抽取结果，需先用平台 pdf-text-tool 转 csv/tsv/jsonl 再用 `--rows` 传入；引擎不解析 PDF（已在 README 限制与 FAQ 中写明）。"}
+{"role":"assistant","content":"[第39步] 重放方差 ±5，本次不预测分数。"}
+{"role":"assistant","content":"[第40步] 完成全部交付物。最终文件清单：\nexamples/example-case.json (392 bytes)\nexamples/example-result.json (24317 bytes)\nexamples/example-rules.json (2355 bytes)\nREADME.md (18580 bytes)\nresources/result-schema.md (10669 bytes)\nresources/rules-template.json (5499 bytes)\nresources/units-table.md (4774 bytes)\nscripts/clean_run.py (111850 bytes)\nSKILL.md (16769 bytes)\nworklog.md (16880 bytes)"}
+{"role":"assistant","content":"[第41步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

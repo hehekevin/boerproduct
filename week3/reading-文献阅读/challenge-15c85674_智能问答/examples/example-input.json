@@ -1,0 +1,15 @@
+{
+  "case_id": "demo-001",
+  "paper_id": "demo-A",
+  "material_version": "v1",
+  "paragraphs": [
+    {
+      "paragraph_id": "p01",
+      "text": "The LiFePO4 coating retained 84.3% capacity after 200 cycles at 1C, versus 71.0% for the uncoated electrode. The authors attribute this to suppressed interfacial side reactions."
+    }
+  ],
+  "questions": [
+    {"question_id": "q1", "text": "涂层的循环保持率是多少？与未涂层相比如何？"},
+    {"question_id": "q2", "text": "热稳定性表现如何？"}
+  ]
+}

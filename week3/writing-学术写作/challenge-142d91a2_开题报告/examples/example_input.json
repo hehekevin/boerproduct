@@ -1,0 +1,39 @@
+{
+  "_comment": "示意输入结构（示例，非正式案例结果）。运行时真实输入为 /input/case.json + /input/task.md + 材料文件。",
+  "case_id": "example-case-001",
+  "task": "依据给定的课题指南、前期数据与文献，撰写一份开题报告（研究背景、问题定义、目标、技术路线、阶段计划、风险、预期成果七要素齐全），里程碑落在 3 年周期内。",
+  "output_contract": {
+    "fields": [
+      "proposal_md",
+      "seven_elements_checklist",
+      "question_goal_alignment",
+      "milestone_plan",
+      "risk_table",
+      "source_mapping",
+      "uncertainty",
+      "status"
+    ]
+  },
+  "materials": [
+    {"kind": "md", "name": "topic_guide.md", "note": "课题指南：周期3年、经费上限、考核指标"},
+    {"kind": "pdf", "name": "preliminary_data.pdf", "note": "前期数据"},
+    {"kind": "docx", "name": "related_work.docx", "note": "组内文献综述"}
+  ],
+  "_example_run": [
+    "python $SD/extract_materials.py --input /input --outdir /app/work/extracted",
+    "python $SD/fact_ledger.py build --sources /app/work/extracted --out /app/work/fact_ledger.jsonl",
+    "# 模型分片写 draft_p1/p2/p3.json + plan.jsonl + milestones.jsonl + risk_table.jsonl",
+    "python $SD/docx_build.py /app/work/draft_p1.json /app/work/draft_p2.json /app/work/draft_p3.json --out-docx /app/output/proposal.docx --out-md /app/output/proposal.md",
+    "python $SD/fact_ledger.py check --draft /app/output/proposal.md --ledger /app/work/fact_ledger.jsonl --allow /app/work/plan.jsonl /app/work/milestones.jsonl /app/work/risk_table.jsonl --out /app/output/fact_check.json",
+    "python $SD/plan_check.py --plan /app/work/plan.jsonl --milestones /app/work/milestones.jsonl --risks /app/work/risk_table.jsonl --constraints /app/work/constraints.json --out /app/output/plan_check.json",
+    "python $SD/render_preview.py --src /app/output/proposal.docx --outdir /app/output/previews",
+    "python $SD/build_result.py --case /input/case.json --out /app/output/result.json --artifact proposal.docx --artifact-md proposal.md --embed-file /app/output/proposal.md --embed-key deliverable_content --status complete"
+  ],
+  "_example_result_skeleton": {
+    "case_id": "example-case-001",
+    "proposal_md": "(契约字段——由 --set 或模型回填)",
+    "deliverable_content": "(主产物全文内嵌字符串，embed_chars>0)",
+    "status": "complete",
+    "uncertainty": ["材料缺口/待确认项逐条列出"]
+  }
+}

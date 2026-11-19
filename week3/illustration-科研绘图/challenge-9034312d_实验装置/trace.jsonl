@@ -1,0 +1,18 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「实验装置与技术路线图」（challenge-id: challenge-9034312d）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] - 机检模式：`svg_verify.py figure.svg --map content_map.json --out verify_report.json`，五项逐条 `{item, template_value, applied, match}`：layer-* 分层 ≥4 类 / 语义 id（part-*/edge-*/stage-*）存在且唯一 / 文字均为 `<text>`（无位图文字）/ legend 层非空 / content_map ↔ SVG id 双向一致（in_svg_not_in_map、in_map_not_in_svg 逐条列出）。fail 冒泡退出码。"}
+{"role":"assistant","content":"[第3步] - diff 模式：`svg_verify.py edited.svg --diff original.svg`，对**所有带 id 元素**（含图层）逐条输出 `{element_id, changed, before, after}`；changed=false 构成 source-preserving 保留证据，changed=true 应能对应工单/content_map 依据。整份 edit_diff 可嵌入 result.json。"}
+{"role":"assistant","content":"[第4步] **正例**：合成 figure.svg（2 部件 + 1 连接 + 4 层 + legend）+ content_map.json（3 条）→ `svg_verify.py --map` → status=pass，fail_count=0，exit=0。"}
+{"role":"assistant","content":"[第5步] **反例**：注入脏数据（删 layer-legend 层 + 把 edge-01 篡改为 edge-XX）→ 机检抓到 legend_present=False、map_consistency=False，fail_count=2，exit=1。"}
+{"role":"assistant","content":"[第6步] **编辑 diff 正例**：只改 layer-labels 内文字 → diff 模式报 total=8 / changed=1（layer-labels）/ unchanged=7，其余图层与部件全部 preserved——即 source-preserving 机械证据。"}
+{"role":"assistant","content":"[第7步] **发现并修复的盲点**：diff 初版只比对 part-*/edge-*/stage- 前缀元素，layer-labels 的修改抓不到；已改为比对所有带 id 元素（含图层 id），重测通过。正例回归重跑仍 pass。"}
+{"role":"assistant","content":"[第8步] 渲染脚本 render_svg.py 与基线一致未改动（基线已实测其回退链与 --check）。"}
+{"role":"assistant","content":"[第9步] SKILL.md（114 行）"}
+{"role":"assistant","content":"[第10步] scripts/render_svg.py（基线复制，未改）"}
+{"role":"assistant","content":"[第11步] scripts/svg_verify.py（新增）"}
+{"role":"assistant","content":"[第12步] README.md（同步更新）"}
+{"role":"assistant","content":"[第13步] worklog.md（本文件）"}
+{"role":"assistant","content":"[第14步] 新增机检脚本不改变绘图执行路径，只在步骤④追加校验调用；正/反例均实测通过。"}
+{"role":"assistant","content":"[第15步] content_map.json 的落盘格式（步骤③已要求 content_map 存在）与 --map 参数对齐；若运行时未落盘 map 文件，机检退化为前四项（脚本对 --map 缺省容错），SVG 编辑仍受 layer/id/text 检查保护。"}
+{"role":"assistant","content":"[第16步] 完成全部交付物。最终文件清单：\nREADME.md (9268 bytes)\nscripts/gain_evidence.py (8271 bytes)\nscripts/render_svg.py (7716 bytes)\nscripts/svg_verify.py (7605 bytes)\nSKILL.md (12673 bytes)\nworklog.md (4176 bytes)"}
+{"role":"assistant","content":"[第17步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

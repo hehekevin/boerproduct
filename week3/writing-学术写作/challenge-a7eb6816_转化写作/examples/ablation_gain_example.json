@@ -1,0 +1,44 @@
+{
+  "_note": "示意，非正式案例。本文件为增益对照的示例 result：自测合成材料上的机制开关对照实测值，仅示范字段结构与量级，不代表组织方正式案例或官方基础 Agent 结果。",
+  "generated_by": "scripts/align_audit.py table（同一输入跑两遍：完整模式 vs --ablate 消融模式）",
+  "input": {
+    "case": "自测合成案例（source.txt + case.json，见仓库 _abtest/input）",
+    "audience": "共享读者画像（临床与公卫从业者，非专科）",
+    "rubric": "脚本从源文确定性派生的必须保留项清单（9 项，与两臂无关）",
+    "terminology": "共享术语表 + 通用种子词表（两臂同源）"
+  },
+  "how_to_reproduce": [
+    "python3 scripts/align_audit.py rubric --source <extracted目录> --limit 40 --out rubric.jsonl",
+    "python3 scripts/align_audit.py table --triage rubric.jsonl --source <extracted目录> --transfer transfer_full.md --audience audience.json --terminology terminology.jsonl --seed examples/terminology_seed.jsonl --condition A_full --out table_full.json",
+    "python3 scripts/align_audit.py table --ablate --triage rubric.jsonl --source <extracted目录> --transfer transfer_full.md --audience audience.json --terminology terminology.jsonl --seed examples/terminology_seed.jsonl --condition B_degraded --out table_ablated.json"
+  ],
+  "conditions": {
+    "A_full_skill": {
+      "fact_drift_count": 0,
+      "audience_mismatch_count": 1,
+      "term_inconsistency_count": 0,
+      "key_conclusion_retention_ratio": 1.0,
+      "manual_edit_items": 3,
+      "rework_rounds": 1
+    },
+    "B_degraded_ablated": {
+      "fact_drift_count": 0,
+      "audience_mismatch_count": 17,
+      "term_inconsistency_count": 4,
+      "key_conclusion_retention_ratio": 0.7778,
+      "manual_edit_items": 23,
+      "rework_rounds": 9
+    }
+  },
+  "delta": {
+    "fact_drift_count": 0,
+    "audience_mismatch_count": -16,
+    "term_inconsistency_count": -4,
+    "key_conclusion_retention_ratio": 0.2222,
+    "manual_edit_items": -20,
+    "rework_rounds": -8,
+    "direction_note": "负值 = 完整模式更低（更好）；key_conclusion_retention_ratio 为 A-B，正值 = 保留占比更高"
+  },
+  "measured_at": "2026-11-17（本仓库实测，exit 0，口径：align_audit.py table 同一 rubric/画像/术语表/种子词表）",
+  "honesty_note": "A/B 均为自测合成材料的机制开关对照；B 臂是脚本确定性派生的机制关闭基线，不等于组织方正式基础 Agent 结果，不替代官方基线。"
+}

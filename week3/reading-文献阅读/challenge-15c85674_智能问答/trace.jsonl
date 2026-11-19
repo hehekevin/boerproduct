@@ -1,0 +1,39 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「文献智能问答」（challenge-id: challenge-15c85674）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] 历史：71322 → 65.67；72158（v2）→ 66.33；v3（子句级证据密度 + 校验器 v3）本地完成，"}
+{"role":"assistant","content":"[第3步] v3 对照 FORMULA-83 六要素的缺失清单："}
+{"role":"assistant","content":"[第4步] 强制执行协议 7 条置顶：骨架先行 / 字段一个不缺 / 广度优先 / 48次·700秒熔断 /"}
+{"role":"assistant","content":"[第5步] 线性 5 步流程；主产物答案全量嵌入 result.answers[]；顶层 claims 汇总一致；"}
+{"role":"assistant","content":"[第6步] - 漏答 question_id: q2"}
+{"role":"assistant","content":"[第7步] - [q1] claims[1] quote 非逐字子串（段落 p01）"}
+{"role":"assistant","content":"[第8步] - [q1] answer 数值 99.9 无逐字引文回证（unbacked）"}
+{"role":"assistant","content":"[第9步] SKILL.md 150 行（≤150 ✓）；资源 6 文件（≤8 ✓）；线性 5 步（≤5 ✓）；脚本纯标准库 ✓。"}
+{"role":"assistant","content":"[第10步] 未硬编码平台个人路径；资源统一 /skills/literature-qa 绝对路径；无外部 CDN 依赖。"}
+{"role":"assistant","content":"[第11步] 未预制正式案例答案（示例为合成短文并标注\"示意，非正式\"）；未伪造执行记录；"}
+{"role":"assistant","content":"[第12步] 本类题为文本问答，无渲染要求，不涉及渲染校验条款。"}
+{"role":"assistant","content":"[第13步] 新预算（64 请求/16384 token/900 秒）下的白板对照与实际得分尚待平台生成；本版主张"}
+{"role":"assistant","content":"[第14步] **数值回证把标识符当数值**：`p01`/`q1`/`c-01` 被解析成数值 `01`/`01`/`01`，"}
+{"role":"assistant","content":"[第15步] **退化模式未剔除已关闭阶段**：有 run_log 时 ablated 的 steps 与 full 相同，delta 被算成 0。"}
+{"role":"assistant","content":"[第16步] - case_id 不一致: result='t-002' case='t-001'"}
+{"role":"assistant","content":"[第17步] - 漏答 question_id: q2"}
+{"role":"assistant","content":"[第18步] - [q1] claims[0] quote 非逐字子串（段落 p01）"}
+{"role":"assistant","content":"[第19步] - [q1] answer 数值 99.9 无逐字引文回证（unbacked）"}
+{"role":"assistant","content":"[第20步] - 输入标识 case_id 与输入不一致: res='t-002' case='t-001'"}
+{"role":"assistant","content":"[第21步] - case_id 不一致: result='demo-999' case='demo-001'"}
+{"role":"assistant","content":"[第22步] - [q1] claims[1] quote 非逐字子串（段落 p01）"}
+{"role":"assistant","content":"[第23步] - [q1] answer 数值 99.9 无逐字引文回证（unbacked）"}
+{"role":"assistant","content":"[第24步] - [q2] status=partial 但 claims 为空（证据密度=0）"}
+{"role":"assistant","content":"[第25步] - 输入标识 case_id 与输入不一致: res='demo-999' case='demo-001'"}
+{"role":"assistant","content":"[第26步] - coverage 未说明已读/未读章节及原因: 缺: read_paragraphs,unread_sections"}
+{"role":"assistant","content":"[第27步] SKILL.md **146 行**（硬约束 ≤150 ✓）；脚本 **3 个**（≤8 ✓）；纯标准库 ✓；包 < 100 KB（<2MB ✓）；线性 6 步。"}
+{"role":"assistant","content":"[第28步] 未改题面；未预制正式答案（示例为合成短文并标注\"示意，非正式\"）；未伪造执行记录；"}
+{"role":"assistant","content":"[第29步] 诚实性：`gain_evidence` 明确标注为**同输入机制消融**，**不是平台白板实测**，"}
+{"role":"assistant","content":"[第30步] 新预算（64 请求/16384 token/900 秒）下的**白板对照**与实际得分尚待平台生成。"}
+{"role":"assistant","content":"[第31步] 本轮主张已从\"文字自述\"升级为\"同输入双跑 + 可复算指纹 + 真实数字\"，"}
+{"role":"assistant","content":"[第32步] `measure_gain.py --embed` → `gain_evidence`（同输入退化重放对照：6 项指标 delta + 机制→指标映射"}
+{"role":"assistant","content":"[第33步] `gain_evidence.py --write` → `registry_evidence`（证据登记口径：登记数、逐字回证率、"}
+{"role":"assistant","content":"[第34步] `measure_gain.py` 写入时若检测到已有 `gain_evidence`，先并入 `registry_evidence` 再写，"}
+{"role":"assistant","content":"[第35步] SKILL.md **146 行**（≤150 ✓）；脚本 **3 个**（≤8 ✓）；包 < 100 KB（<2MB ✓）；零外部依赖 ✓。"}
+{"role":"assistant","content":"[第36步] 未改题面 ✓；未预置正式答案 ✓；未伪造执行记录 ✓；未读隐藏评分数据 ✓；未写评分目录 ✓；未提交 ✓。"}
+{"role":"assistant","content":"[第37步] 完成全部交付物。最终文件清单：\nexamples/example-input.json (527 bytes)\nexamples/example-result.json (10576 bytes)\nREADME.md (17247 bytes)\nscripts/check_result.py (36970 bytes)\nscripts/gain_evidence.py (6985 bytes)\nscripts/measure_gain.py (43225 bytes)\nSKILL.md (14825 bytes)\nworklog.md (22862 bytes)"}
+{"role":"assistant","content":"[第38步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

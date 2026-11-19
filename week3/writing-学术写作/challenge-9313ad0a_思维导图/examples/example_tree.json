@@ -1,0 +1,53 @@
+{
+  "root": "血脑屏障纳米给药研究",
+  "nodes": [
+   {
+    "id": "N01",
+    "parent": null,
+    "label": "血脑屏障限制药物递送",
+    "type": "core_concept",
+    "note": "研究背景",
+    "src": "M01"
+   },
+   {
+    "id": "N02",
+    "parent": "N01",
+    "label": "转铁蛋白修饰脂质体",
+    "type": "method",
+    "note": "方法：制备转铁蛋白修饰脂质体",
+    "src": "M01"
+   },
+   {
+    "id": "N03",
+    "parent": "N01",
+    "label": "穿透率为对照组的3.2倍",
+    "type": "evidence",
+    "note": "结果：n=12，p<0.05",
+    "src": "M01"
+   },
+   {
+    "id": "N04",
+    "parent": "N01",
+    "label": "小鼠模型与人体差异限制转化",
+    "type": "risk",
+    "note": "局限：模型外推限制",
+    "src": "M01"
+   },
+   {
+    "id": "N05",
+    "parent": "N01",
+    "label": "建议先开展大动物验证",
+    "type": "conclusion",
+    "note": "结论：建议先开展大动物验证",
+    "src": "M01"
+   },
+   {
+    "id": "N06",
+    "parent": "N05",
+    "label": "大动物验证成本高",
+    "type": "risk",
+    "note": "风险：大动物验证成本高、周期长",
+    "src": "M01"
+   }
+  ]
+ }

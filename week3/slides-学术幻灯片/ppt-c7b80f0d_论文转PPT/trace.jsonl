@@ -1,0 +1,9 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「论文转学术 PPT」（challenge-id: ppt-c7b80f0d）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] - `PLAN` 构建前模式：quote 逐字回证（空白归一化子串匹配）+ 数字回证 + 证据覆盖 + 页面卫生（notes 40-800 字非复述/要点≤5/单页≤700 字符）——fail 不修完不准构建；"}
+{"role":"assistant","content":"[第3步] - pptx 构建后模式：沿用 710fbc72 全部检查（页数/标题/密度/notes/图/几何）+ 新增 quote_gate；"}
+{"role":"assistant","content":"[第4步] - 两个模式都输出 `slides_embed` 与四态闸门状态；`summary.quote_gate_status/quote_gate_fails/numeric_unbacked/coverage_fail_slides` 全部机器生成。"}
+{"role":"assistant","content":"[第5步] 本地无 python-pptx/soffice，模板真实继承路径（probe→build theme_inherit→fit_audit 对账）未在本机端到端实跑；该路径为 710fbc72 原样代码（其 worklog 有完整实测记录：probe 11 layouts / font_mode=theme_inherit / fit_match_rate=1.0），本包未改动其逻辑。"}
+{"role":"assistant","content":"[第6步] 环境预装 python-pptx 时全链路走完整路径，stdlib 兜底仅作降级保险。"}
+{"role":"assistant","content":"[第7步] 完成全部交付物。最终文件清单：\nREADME.md (5895 bytes)\nscripts/extract_pdf.py (4419 bytes)\nscripts/fit_audit.py (19453 bytes)\nscripts/gain_evidence.py (5903 bytes)\nscripts/layout_budget.py (4672 bytes)\nscripts/pptx_build.py (20505 bytes)\nscripts/pptx_minimal.py (25437 bytes)\nscripts/pptx_verify.py (21641 bytes)\nscripts/probe_template.py (5887 bytes)\nscripts/render_preview.py (5833 bytes)\nSKILL.md (13567 bytes)\nworklog.md (5965 bytes)"}
+{"role":"assistant","content":"[第8步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

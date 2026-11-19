@@ -1,0 +1,39 @@
+{
+ "ok": false,
+ "problems": [
+  "[cl-1] subclaims[0] type 非法: 'correlation'",
+  "[cl-1] subclaims[1] modifiers 缺字段: significance",
+  "verdict_summary 与实际不符: {'supported': 99, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0} vs {'supported': 2, 'partially_supported': 0, 'contradicted': 0, 'insufficient_evidence': 0}"
+ ],
+ "warnings": [
+  "WARNING[ablate] 漏核验且未登记 uncovered 的 claim_id: cl-2",
+  "WARNING[ablate] [cl-1] subclaims[0] quote 改写/不在 p02（空白归一化匹配失败）"
+ ],
+ "summary": {
+  "supported": 2,
+  "partially_supported": 0,
+  "contradicted": 0,
+  "insufficient_evidence": 0
+ },
+ "gates": {
+  "coverage_audit": "ablated_off",
+  "quote_verification": "ablated_off",
+  "modifier_preservation": "enforced",
+  "gain_evidence_audit": "skipped_not_provided",
+  "verdict_summary_audit": "enforced"
+ },
+ "gate_notes": [
+  "gate coverage_audit = ablated_off：该闸未运行，下游不得宣称已核对",
+  "gate quote_verification = ablated_off：该闸未运行，下游不得宣称已核对",
+  "gate gain_evidence_audit = skipped_not_provided：该闸未运行，下游不得宣称已核对"
+ ],
+ "ablation": {
+  "active": true,
+  "switch": "--ablate 或环境变量 CLAIM_AUDIT_ABLATE=1",
+  "disabled_gates": [
+   "coverage_audit",
+   "quote_verification"
+  ]
+ },
+ "exit_code": 0
+}

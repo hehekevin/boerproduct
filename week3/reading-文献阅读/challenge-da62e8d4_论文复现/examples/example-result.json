@@ -1,0 +1,199 @@
+{
+ "case_id": "demo-repro-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "原作者代码仓库未随包提供",
+   "原始训练数据未随包提供（候选方法自带合成数据）"
+  ],
+  "environment": {
+   "python_version": "3.12.1",
+   "packages": "stdlib-only",
+   "seed": 42,
+   "hardware_note": "评测容器 2CPU"
+  },
+  "parameters": [
+   {
+    "parameter": "拟合阶数",
+    "value": 2,
+    "source_class": "paper_explicit",
+    "source_location": "§2",
+    "conflict": null,
+    "recomputable": true,
+    "missing_for_recompute": null
+   },
+   {
+    "parameter": "随机种子",
+    "value": 42,
+    "source_class": "self_set",
+    "source_location": "self_set:论文未报告种子，为可复算固定 42",
+    "conflict": "论文未报告种子",
+    "recomputable": false,
+    "missing_for_recompute": "论文未报告随机种子，无法核对原始设定"
+   }
+  ],
+  "candidates": [
+   {
+    "candidate_id": "candidate-A",
+    "entry": "method_a.py::fit",
+    "ran": true,
+    "run_log": "RMSE=0.0312",
+    "failure_stage": null,
+    "failure_reason": null
+   },
+   {
+    "candidate_id": "candidate-B",
+    "entry": "method_b.py::fit",
+    "ran": true,
+    "run_log": "RMSE=0.0497",
+    "failure_stage": null,
+    "failure_reason": null
+   }
+  ],
+  "metric_checks": [
+   {
+    "metric": "RMSE",
+    "candidate_id": "candidate-A",
+    "paper_value": 0.031,
+    "computed_value": 0.0312,
+    "tolerance": "±10%",
+    "within_tolerance": true,
+    "notes": "同口径 RMSE，样本数一致；合成试验",
+    "recomputable": true,
+    "missing_for_recompute": null
+   },
+   {
+    "metric": "RMSE",
+    "candidate_id": "candidate-B",
+    "paper_value": 0.031,
+    "computed_value": 0.0497,
+    "tolerance": "±10%",
+    "within_tolerance": false,
+    "notes": "超容差；合成试验",
+    "recomputable": true,
+    "missing_for_recompute": null
+   }
+  ],
+  "attributions": [
+   {
+    "metric": "RMSE(candidate-B)",
+    "delta": 0.0187,
+    "attribution": "implementation",
+    "evidence": "method_b.py 使用一阶多项式（代码第 12 行），与论文 §2 声明的阶数不一致",
+    "follow_up": "改用二次拟合后重跑"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step1",
+    "action": "读论文 §2 抽取拟合阶数与 RMSE 声明，逐字摘录入 claims",
+    "command": "（阅读，无命令）",
+    "output_ref": "claims[2]",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "用复原参数实际运行两个候选方法",
+    "command": "python method_a.py --degree 2",
+    "output_ref": "candidates[0].run_log",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "按事前容差 ±10% 复算 within_tolerance 并归因",
+    "command": "（计算，已由 verify_check 复算）",
+    "output_ref": "metric_checks[0..1]",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "跑双重自检与增益对照探针，回写 self_check/gates/gain_evidence",
+    "command": "python scripts/verify_check.py --result /app/output/result.json --case /input/case.json",
+    "output_ref": "self_check",
+    "status": "done"
+   }
+  ],
+  "declared_tolerances": [
+   {
+    "metric": "RMSE",
+    "tolerance": "±10%",
+    "basis": "论文 §2 未给容差，按该指标量级保守取 ±10%（本技能声明）",
+    "declared_at": "step1（任何验算之前）"
+   }
+  ],
+  "recomputability": {
+   "total_items": 4,
+   "recomputable_items": 3,
+   "non_recomputable_items": 1,
+   "ratio": 0.75,
+   "note": "条目数 = parameters 2 行 + metric_checks 2 行；不可复算项为随机种子（论文未报告）"
+  },
+  "run_status": {
+   "state": "partial",
+   "reason": "候选方法与论文指标已完成对照；原作者仓库与原始数据未提供，全量复现无法判定",
+   "manual_takeover": [
+    "如需核对论文未报告的随机种子，需取得作者原始运行配置"
+   ]
+  },
+  "verdict": "partially_reproduced",
+  "verdict_basis": "candidate-A 容差内；candidate-B 超容差且归因到实现差异"
+ },
+ "claims": [
+  {
+   "claim_id": "k-01",
+   "text": "论文声明 RMSE=0.031；本方复算 candidate-A 得 0.0312，相对偏差 0.6%，在事前 ±10% 容差内",
+   "kind": "inferred",
+   "source_id": "demo-repro-001",
+   "location": "metric_checks[0]",
+   "evidence": [
+    {
+     "paragraph_id": "§2",
+     "quote": "RMSE 0.031"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-02",
+   "text": "论文声明拟合阶数 degree=2；candidate-B 实现为一阶，复算 RMSE=0.0497 超容差，与论文值差 0.0187，归因到实现差异",
+   "kind": "inferred",
+   "source_id": "candidate-B",
+   "location": "attributions[0]",
+   "evidence": [
+    {
+     "paragraph_id": "§2",
+     "quote": "we adopt a second-order polynomial (degree=2)"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-03",
+   "text": "论文报告 RMSE 0.031",
+   "kind": "reported",
+   "source_id": "demo-repro-001",
+   "location": "§2 Table 1",
+   "evidence": [
+    {
+     "paragraph_id": "§2",
+     "quote": "RMSE 0.031"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [
+   "论文未报告随机种子"
+  ],
+  "unverifiable": [
+   "原始数据不可得，无法全量复现"
+  ],
+  "conflicts": [],
+  "human_review": [],
+  "summary": "合成试验仅验证候选方法与论文声明的一致性，非原作者复现。"
+ },
+ "changelog": [
+  {
+   "step": "step2",
+   "change": "两候选均实际运行"
+  }
+ ]
+}

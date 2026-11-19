@@ -1,0 +1,12 @@
+{
+  "note": "合成示例的段落锚点索引（非正式案例、非预置答案）。仅用于演示与自检；真实运行由 Agent 从原稿现场生成。",
+  "paragraphs": [
+    {"pid": "P01", "locator": "§1 para1", "heading": "1 引言", "text": "本文提出一套基于锚点索引的修订流程，使每处改动都可逐条回溯 [1]。"},
+    {"pid": "P02", "locator": "§2 para1", "heading": "2 相关工作", "text": "已有工作在公开数据集上完成了完整复现，显著提升了检索效率。"},
+    {"pid": "P03", "locator": "§3.1 para1", "heading": "3.1 修订台账", "text": "修订台账以 JSONL 逐行记录 eid、pid、before、after 与依据。"},
+    {"pid": "P04", "locator": "§3.2 para1", "heading": "3.2 锚点索引", "text": "本方法在公开数据集上完成了完整复现，显著提升了检索效率。"},
+    {"pid": "P05", "locator": "§4.1 para1", "heading": "4.1 实验设置", "text": "我们在固定随机种子下比较基准模型与本方法。"},
+    {"pid": "P06", "locator": "§5.1 para1", "heading": "5.1 术语与范围", "text": "全文统一使用基线模型这一术语，不涉及其他变体 [3]。"},
+    {"pid": "P07", "locator": "§6 para1", "heading": "6 结论", "text": "实验表明该方法具有实用价值。"}
+  ]
+}

@@ -1,0 +1,13 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「学术写作 Benchmark 与评测工具」（challenge-id: benchmark-d57ad64a）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] `norm_ws()`/`corpus_from_case()`：quote 回证的空白归一化语料（case.json 全字符串值）。"}
+{"role":"assistant","content":"[第3步] `cmd_verify` 重构：gate(name, ran, errs, skipped) 辅助函数，每个校验域登记状态；"}
+{"role":"assistant","content":"[第4步] `cmd_embed`：新增读取 report.md 全文与 adjudication.json 嵌入。"}
+{"role":"assistant","content":"[第5步] 正例（example-case.json 全链路）：init→稿件/评分/裁定/claims 写入→diff→techcheck→"}
+{"role":"assistant","content":"[第6步] 反例 A（注入脏数据）：幽灵评分行 ghost-9/非法分值 5/disputed 无裁定/编造 quote"}
+{"role":"assistant","content":"[第7步] 反例 B（case.json 截断损坏）：init 兜底题卡不崩溃产全套文件；verify 如实 FAIL 6 处，"}
+{"role":"assistant","content":"[第8步] evidence 回证语料仅 case.json；/input 独立材料文件需 Agent 手工核对后补入（SKILL"}
+{"role":"assistant","content":"[第9步] 退出码恒 0（平台流程不中断优先），问题通过 verify 报告 FAIL + status 降级 + gate"}
+{"role":"assistant","content":"[第10步] 资源 5 文件（SKILL/README/worklog/example-case/acbench.py）远低于 50 文件上限；"}
+{"role":"assistant","content":"[第11步] 完成全部交付物。最终文件清单：\nexamples/demo-fixture.json (6492 bytes)\nexamples/example-case.json (4123 bytes)\nREADME.md (8271 bytes)\nscripts/acbench.py (66529 bytes)\nscripts/gain_eval.py (31296 bytes)\nscripts/gain_evidence.py (6506 bytes)\nSKILL.md (17449 bytes)\nworklog.md (3114 bytes)"}
+{"role":"assistant","content":"[第12步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

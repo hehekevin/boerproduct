@@ -1,0 +1,11 @@
+{
+  "_comment": "合成示例 case（仅示意 organizer_supplied_scope 工单结构，非正式案例）",
+  "case_id": "demo-chart-001",
+  "organizer_supplied_scope": {
+    "required_actual_image_files": [
+      {"file": "artifacts/demo-fig1.png", "sha256": null}
+    ],
+    "required_literal_source_table_ids": ["DEMO-P001"],
+    "task": "解析清单内真实图片与全部字面表格。"
+  }
+}

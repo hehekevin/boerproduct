@@ -1,0 +1,9 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「写作12｜学术翻译与双语写作」（challenge-id: challenge-bb17a294）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，确认题目主题、评分维度、交付要求与 Harbor 运行契约。计划：阅读题面 -> 设计 Skill 方案 -> 编写 SKILL.md 与配套资源 -> 编写使用说明与最小示例 -> 自查资源限制（不超过50个文本文件、单文件500KB、总量2MB）。"}
+{"role":"assistant","content":"[第2步] **Case A 干净路径**：2 段（body + figure_caption）、含 12,345/67.8%/[1]/n=320 → verdict=pass, num_bad=0, term_viol=0（证明量词后缀归一化不误报）"}
+{"role":"assistant","content":"[第3步] **Case B 禁用变体**：译文故意用\"肿瘤环境\"\"存活率\" → verdict=fail, term_viol=2（禁用变体扫描命中）"}
+{"role":"assistant","content":"[第4步] **Case C 嵌入**：build_result.py → result.json 含 bilingual_pairs(2)/glossary(2)/fidelity_table/契约字段回填/case_id/status，key 集完整"}
+{"role":"assistant","content":"[第5步] 未提交（按指示）。"}
+{"role":"assistant","content":"[第6步] docx_build/render_preview 沿用旧版，若平台环境无 LibreOffice，预览走降级路径，不阻断主流程。"}
+{"role":"assistant","content":"[第7步] 完成全部交付物。最终文件清单：\nexamples/example_input.json (917 bytes)\nREADME.md (5828 bytes)\nscripts/align_check.py (29259 bytes)\nscripts/build_result.py (15515 bytes)\nscripts/docx_build.py (10484 bytes)\nscripts/extract_materials.py (10399 bytes)\nscripts/fact_ledger.py (9000 bytes)\nscripts/gain_evidence.py (6506 bytes)\nscripts/render_preview.py (3567 bytes)\nscripts/selftest.py (12658 bytes)\nselftest_report.json (9401 bytes)\nSKILL.md (10713 bytes)\nworklog.md (2846 bytes)"}
+{"role":"assistant","content":"[第8步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

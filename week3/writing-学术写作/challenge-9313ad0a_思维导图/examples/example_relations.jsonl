@@ -1,0 +1,2 @@
+{"rel": "R01", "from": "N02", "to": "N03", "type": "causal", "basis": "M01:p2|para3 转铁蛋白修饰使穿透率提升", "evidence_state": "fact"}
+{"rel": "R02", "from": "N04", "to": "N05", "type": "contrast", "basis": "M01:p5|para1 作者指出动物模型与人体差异限制转化", "evidence_state": "summary"}

@@ -1,0 +1,15 @@
+{
+  "_comment": "合成比较工单示例（仅示意接口，非正式答案）。实际评测以 /input/comparison-workorder.json 为准。",
+  "fields": [
+    {"field_id": "research_object", "definition": "研究对象/体系", "unit_expectation": "文本"},
+    {"field_id": "material_system", "definition": "所用材料", "unit_expectation": "文本"},
+    {"field_id": "max_adsorption_capacity", "definition": "最大吸附量", "unit_expectation": "mg/g"},
+    {"field_id": "evaluation_metric", "definition": "评价指标及口径", "unit_expectation": "文本"},
+    {"field_id": "main_finding", "definition": "主要结论", "unit_expectation": "文本"}
+  ],
+  "documents": [
+    {"source_document_id": "DOC-A", "title": "MOF 吸附甲基蓝研究（合成示例）"},
+    {"source_document_id": "DOC-B", "title": "颗粒活性炭吸附甲基蓝研究（合成示例）"}
+  ],
+  "comparison_dimensions": ["task", "metric", "units", "material", "pollutant", "budget"]
+}

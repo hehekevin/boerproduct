@@ -1,0 +1,1125 @@
+{
+ "case_id": "example-case-track-01",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "R8 缺 published_date 字段，无法机械判定是否窗内新增"
+  ],
+  "environment": {
+   "python_version": "3.12.3",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "本地示例环境（示意，非正式案例运行环境）"
+  },
+  "research_question": {
+   "topic": "大模型低秩微调与显存优化",
+   "scope": "跟踪主题的新文献、版本更替、重复转载与撤稿，不负责全文阅读与综述撰写",
+   "sources": [
+    "crossref-feed",
+    "arxiv-feed",
+    "aggregator-feed"
+   ]
+  },
+  "window": {
+   "start": "2026-05-01",
+   "end": "2026-05-31",
+   "timezone": "UTC",
+   "boundary_rule": "start <= published_date <= end（ISO 8601，按声明时区）"
+  },
+  "watermark": {
+   "previous_snapshot_ref": "case.previous_snapshot（2 条，Quantized Low-Rank Adapters at Scale / Activation Checkpointing for LLM Training）",
+   "watermark_date": "2026-04-30",
+   "window_index": 3,
+   "declared_at": "step1"
+  },
+  "dedup_policy": {
+   "title_normalization": "casefold + 去标点空白（\\w 含 CJK 汉字，不用 isalpha）",
+   "id_precedence": "doi > arxiv_id > title_norm",
+   "version_link_rule": "同 dedup_key 或同 title_norm 按发表日升序构成版本链",
+   "declared_at": "step1",
+   "applied": {
+    "title_norm_example": "loraxlowrankadaptationwithsparsekernels",
+    "engine_version": "1.0"
+   }
+  },
+  "rubric": {
+   "weights": {
+    "relevance": 0.5,
+    "recency": 0.3,
+    "confidence": 0.2
+   },
+   "tie_break": [
+    "track_score 降序",
+    "published_date 降序",
+    "item_id 升序"
+   ],
+   "normalization": "relevance direct=1.0/indirect=0.5/irrelevant=0.0；recency=(published_date−窗口起点)/(窗口天数) 截断 0-1；confidence high=0.9/medium=0.7/low=0.3",
+   "declared_at": "step1"
+  },
+  "items": [
+   {
+    "item_id": "R1",
+    "source_ref": "records[0]",
+    "title": "LoRA-X: Low-Rank Adaptation with Sparse Kernels",
+    "published_date": "2026-05-12",
+    "indexed_date": "2026-05-13",
+    "venue_type": "published",
+    "version_tag": null,
+    "doi": "10.9999/lora-x",
+    "arxiv_id": null,
+    "dedup_key": "doi:10.9999/lora-x",
+    "in_window": true,
+    "event": "new",
+    "related_to": null,
+    "relevance": "direct",
+    "label": "push",
+    "excluded_by": [],
+    "evidence_quote": "sparse-kernel variant of low-rank adaptation that cuts peak memory by 38%",
+    "evidence_location": "records[0].abstract",
+    "confidence": "high",
+    "rationale": "命中 IN-01+IN-02：低秩微调主题、窗内首次入库的新文献，摘要给出显存削减证据",
+    "factors": {
+     "relevance": 1.0,
+     "recency": 0.3548,
+     "confidence": 0.9
+    },
+    "track_score": 0.7864,
+    "rank": 3,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R2",
+    "source_ref": "records[1]",
+    "title": "Sparse Attention Distillation for Edge Inference",
+    "published_date": "2026-04-20",
+    "indexed_date": "2026-05-02",
+    "venue_type": "preprint",
+    "version_tag": "v1",
+    "doi": null,
+    "arxiv_id": "2604.01234v1",
+    "dedup_key": "arxiv:2604.01234",
+    "in_window": false,
+    "event": "backfill",
+    "related_to": null,
+    "relevance": "direct",
+    "label": "hold",
+    "excluded_by": [],
+    "evidence_quote": "compresses sparse attention into edge-deployable models, reporting 2.1x latency reduction",
+    "evidence_location": "records[1].abstract",
+    "confidence": "medium",
+    "rationale": "命中 IN-01 但发表日早于窗口起点、本期才被索引（延迟入库补回）；预印本已被正式版 R3 取代，按提醒抑制规则待确认是否合并推送",
+    "factors": {
+     "relevance": 1.0,
+     "recency": 0.0,
+     "confidence": 0.6
+    },
+    "track_score": 0.62,
+    "rank": 5,
+    "missing_metadata": [],
+    "pending_reason": "预印本已被正式版 R3 取代，待确认是否合并推送",
+    "judged": true
+   },
+   {
+    "item_id": "R3",
+    "source_ref": "records[2]",
+    "title": "Sparse Attention Distillation for Edge Inference",
+    "published_date": "2026-05-18",
+    "indexed_date": "2026-05-20",
+    "venue_type": "published",
+    "version_tag": "v2",
+    "doi": "10.8888/sad",
+    "arxiv_id": null,
+    "dedup_key": "doi:10.8888/sad",
+    "in_window": true,
+    "event": "version_update",
+    "related_to": "R2",
+    "relevance": "direct",
+    "label": "push",
+    "excluded_by": [],
+    "evidence_quote": "adds a memory-analysis section",
+    "evidence_location": "records[2].abstract",
+    "confidence": "high",
+    "rationale": "命中 IN-01+IN-02：R2 预印本的正式发表版（title_norm 相同归并），窗内版本更新，新增记忆分析章节",
+    "factors": {
+     "relevance": 1.0,
+     "recency": 0.5484,
+     "confidence": 0.9
+    },
+    "track_score": 0.8445,
+    "rank": 2,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R4",
+    "source_ref": "records[3]",
+    "title": "lora-x:  Low-Rank Adaptation, with sparse kernels!",
+    "published_date": "2026-05-12",
+    "indexed_date": "2026-05-14",
+    "venue_type": "published",
+    "version_tag": null,
+    "doi": "10.9999/lora-x",
+    "arxiv_id": null,
+    "dedup_key": "doi:10.9999/lora-x",
+    "in_window": true,
+    "event": "duplicate",
+    "related_to": "R1",
+    "relevance": "direct",
+    "label": "exclude",
+    "excluded_by": [
+     "EX-01"
+    ],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "high",
+    "rationale": "命中 EX-01：与 R1 同 DOI 的聚合源转载（仅标题标点/大小写差异），保留首次入库的 R1，不重复推送",
+    "factors": {},
+    "track_score": null,
+    "rank": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R5",
+    "source_ref": "records[4]",
+    "title": "Memory-Efficient Fine-Tuning: A Survey",
+    "published_date": "2026-05-25",
+    "indexed_date": "2026-05-26",
+    "venue_type": "published",
+    "version_tag": null,
+    "doi": "10.7777/mef-survey",
+    "arxiv_id": null,
+    "dedup_key": "doi:10.7777/mef-survey",
+    "in_window": true,
+    "event": "new",
+    "related_to": null,
+    "relevance": "indirect",
+    "label": "hold",
+    "excluded_by": [],
+    "evidence_quote": "A survey of memory-efficient fine-tuning methods, including low-rank adaptation families",
+    "evidence_location": "records[4].abstract",
+    "confidence": "medium",
+    "rationale": "命中 IN-01 但相关性为间接（综述而非新方法），窗内新增；是否纳入推送需人工判断",
+    "factors": {
+     "relevance": 0.5,
+     "recency": 0.7742,
+     "confidence": 0.7
+    },
+    "track_score": 0.6223,
+    "rank": 4,
+    "missing_metadata": [],
+    "pending_reason": "综述相关性为间接，待人工判断是否纳入推送",
+    "judged": true
+   },
+   {
+    "item_id": "R6",
+    "source_ref": "records[5]",
+    "title": "Retraction Notice: Adversarial Fragility in Low-Rank Adapters",
+    "published_date": "2026-05-28",
+    "indexed_date": "2026-05-29",
+    "venue_type": "published",
+    "version_tag": "retraction",
+    "doi": "10.6666/retract-01",
+    "arxiv_id": null,
+    "dedup_key": "doi:10.6666/retract-01",
+    "in_window": true,
+    "event": "retraction",
+    "related_to": null,
+    "relevance": "direct",
+    "label": "hold",
+    "excluded_by": [],
+    "evidence_quote": "This article has been retracted at the request of the editors",
+    "evidence_location": "records[5].abstract",
+    "confidence": "high",
+    "rationale": "命中 EX-02：撤稿通告只可登记并以更正通知形式提示，不得作为新文献推送；待人工确认后走更正通道",
+    "factors": {
+     "relevance": 1.0,
+     "recency": 0.871,
+     "confidence": 0.9
+    },
+    "track_score": 0.9413,
+    "rank": 1,
+    "missing_metadata": [],
+    "pending_reason": "撤稿通告不得作为新文献推送，待确认后走更正通道",
+    "judged": true
+   },
+   {
+    "item_id": "R7",
+    "source_ref": "records[6]",
+    "title": "Gradient Checkpointing Revisited",
+    "published_date": "2026-03-10",
+    "indexed_date": "2026-03-11",
+    "venue_type": "published",
+    "version_tag": null,
+    "doi": "10.4444/gc-rev",
+    "arxiv_id": null,
+    "dedup_key": "doi:10.4444/gc-rev",
+    "in_window": false,
+    "event": "out_of_window",
+    "related_to": null,
+    "relevance": "indirect",
+    "label": "exclude",
+    "excluded_by": [
+     "EX-03"
+    ],
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "high",
+    "rationale": "命中 EX-03：发表与索引均早于窗口起点，属上次快照应已覆盖的旧条目被聚合源重复投喂",
+    "factors": {},
+    "track_score": null,
+    "rank": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R8",
+    "source_ref": "records[7]",
+    "title": "KV Cache Compression via Low-Rank Sketching",
+    "published_date": null,
+    "indexed_date": "2026-05-30",
+    "venue_type": "preprint",
+    "version_tag": "v1",
+    "doi": null,
+    "arxiv_id": "2605.09876v1",
+    "dedup_key": "arxiv:2605.09876",
+    "in_window": null,
+    "event": null,
+    "related_to": null,
+    "relevance": "direct",
+    "label": "hold",
+    "excluded_by": [],
+    "evidence_quote": "sketching low-rank compression of KV caches",
+    "evidence_location": "records[7].abstract",
+    "confidence": "low",
+    "rationale": "命中 IN-01 但 published_date 缺失，无法机械判定是否窗内新增；低秩 KV 压缩与主题相关，待人工补查日期",
+    "factors": {
+     "relevance": 1.0,
+     "recency": 0.0,
+     "confidence": 0.3
+    },
+    "track_score": 0.56,
+    "rank": 6,
+    "missing_metadata": [
+     "published_date"
+    ],
+    "pending_reason": "published_date 缺失，无法判定是否窗内新增",
+    "judged": true
+   }
+  ],
+  "ranking": {
+   "ordered_ids": [
+    "R6",
+    "R3",
+    "R1",
+    "R5",
+    "R2",
+    "R8"
+   ],
+   "ties": [],
+   "top_k": [
+    "R6",
+    "R3"
+   ],
+   "k_value": 2,
+   "rubric_weights": {
+    "relevance": "relevance",
+    "recency": "recency",
+    "confidence": "confidence"
+   },
+   "tie_break": [
+    "track_score 降序",
+    "published_date 降序",
+    "item_id 升序"
+   ],
+   "window": {
+    "start": "2026-05-01",
+    "end": "2026-05-31"
+   }
+  },
+  "coverage": {
+   "total": 8,
+   "in_window": 5,
+   "judged": 8,
+   "push": 2,
+   "hold": 4,
+   "exclude": 2,
+   "new": 2,
+   "version_update": 1,
+   "duplicates_merged": 1,
+   "backfilled": 1,
+   "retracted": 1,
+   "out_of_window": 1,
+   "ratio": 1.0
+  },
+  "version_chains": [
+   {
+    "chain_id": "vc-01",
+    "dedup_key": "doi:10.9999/lora-x",
+    "alt_keys": [
+     "doi:10.9999/lora-x"
+    ],
+    "member_ids": [
+     "R1",
+     "R4"
+    ],
+    "members": [
+     {
+      "item_id": "R1",
+      "published_date": "2026-05-12",
+      "venue_type": "published",
+      "version_tag": null
+     },
+     {
+      "item_id": "R4",
+      "published_date": "2026-05-12",
+      "venue_type": "published",
+      "version_tag": null
+     }
+    ],
+    "kind": "multi_version",
+    "canonical": "R1",
+    "resolution": "merged",
+    "evidence": "同 dedup_key=doi:10.9999/lora-x，按发表日升序"
+   },
+   {
+    "chain_id": "vc-02",
+    "dedup_key": "arxiv:2604.01234",
+    "alt_keys": [
+     "arxiv:2604.01234",
+     "doi:10.8888/sad"
+    ],
+    "member_ids": [
+     "R2",
+     "R3"
+    ],
+    "members": [
+     {
+      "item_id": "R2",
+      "published_date": "2026-04-20",
+      "venue_type": "preprint",
+      "version_tag": "v1"
+     },
+     {
+      "item_id": "R3",
+      "published_date": "2026-05-18",
+      "venue_type": "published",
+      "version_tag": "v2"
+     }
+    ],
+    "kind": "multi_version",
+    "canonical": "R2",
+    "resolution": "merged",
+    "evidence": "title_norm 相同跨键归并（keys=arxiv:2604.01234;doi:10.8888/sad），按发表日升序"
+   },
+   {
+    "chain_id": "vc-03",
+    "dedup_key": "doi:10.6666/retract-01",
+    "alt_keys": [],
+    "member_ids": [
+     "R6"
+    ],
+    "members": [
+     {
+      "item_id": "R6",
+      "published_date": "2026-05-28",
+      "venue_type": "published",
+      "version_tag": "retraction"
+     }
+    ],
+    "kind": "retraction",
+    "canonical": "R6",
+    "resolution": "merged",
+    "evidence": "独立撤稿通告（dedup_key=doi:10.6666/retract-01）"
+   }
+  ],
+  "source_registry": [
+   {
+    "source_id": "S1",
+    "name": "crossref-feed",
+    "query": "low-rank adaptation LLM memory",
+    "retrieved_at": "2026-06-01T00:05:00Z",
+    "count_returned": 5,
+    "status": "ok"
+   },
+   {
+    "source_id": "S2",
+    "name": "arxiv-feed",
+    "query": "low-rank adaptation",
+    "retrieved_at": "2026-06-01T00:06:00Z",
+    "count_returned": 2,
+    "status": "ok"
+   },
+   {
+    "source_id": "S3",
+    "name": "aggregator-feed",
+    "query": "low-rank adaptation",
+    "retrieved_at": "2026-06-01T00:07:00Z",
+    "count_returned": 2,
+    "status": "ok",
+    "note": "含 1 条重复转载与 1 条窗外旧条目"
+   }
+  ],
+  "conflicts": [
+   {
+    "item_ids": [
+     "R1",
+     "R4"
+    ],
+    "kind": "duplicate_feed",
+    "resolution": "merged",
+    "evidence": "同 DOI 10.9999/lora-x，aggregator 转载（标题仅标点/大小写差异），保留首次入库的 R1"
+   },
+   {
+    "item_ids": [
+     "R2",
+     "R3"
+    ],
+    "kind": "preprint_published",
+    "resolution": "merged",
+    "evidence": "title_norm 相同：arXiv:2604.01234v1（2026-04-20）→ 正式版 DOI 10.8888/sad（2026-05-18）"
+   }
+  ],
+  "pending_review": [
+   {
+    "item_id": "R2",
+    "reason": "延迟入库补回的预印本已被正式版 R3 取代",
+    "needed_action": "人工确认是否与 R3 合并为一次推送（提醒抑制）"
+   },
+   {
+    "item_id": "R5",
+    "reason": "综述相关性为间接",
+    "needed_action": "人工判断是否纳入推送清单"
+   },
+   {
+    "item_id": "R6",
+    "reason": "撤稿通告不得作为新文献推送",
+    "needed_action": "人工确认后以更正通知形式单独提醒订阅者"
+   },
+   {
+    "item_id": "R8",
+    "reason": "published_date 缺失，无法判定是否窗内新增",
+    "needed_action": "人工补查发表日期后重跑时间窗判定"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与候选清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明窗口/水位/去重键/权重口径",
+    "command": "（Agent 写入 result.window / result.watermark / result.dedup_policy / result.rubric 与 /app/work/track_policy.json）",
+    "output_ref": "track_policy.json",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "逐条判定相关性/标签/证据",
+    "command": "（Agent 填写 result.items[]）",
+    "output_ref": "result.items",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "机械引擎：去重键/时间窗/版本链/时效排序",
+    "command": "python3 /skills/weekly-skill/scripts/track_engine.py --result /app/output/result.json --case /input/case.json",
+    "output_ref": "result.ranking",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "登记待复核与证据链",
+    "command": "（Agent 填写 result.pending_review / claims）",
+    "output_ref": "claims",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "自检与交付",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "/app/work/verify_check.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "tracked",
+  "verdict_basis": "8/8 条逐条判定，事件/版本链/来源登记完整，窗口口径一致",
+  "gain_evidence": {
+   "probe_version": "1.0",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "example-case-track-01",
+   "input": {
+    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-1e85736f\\submission\\examples\\example-result.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-1e85736f\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "consistency_violations_objective": 0,
+      "consistency_caught": 0,
+      "consistency_missed": 0,
+      "order_violations_objective": 0,
+      "order_caught": 0,
+      "order_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "registry_violations_objective": 0,
+      "registry_caught": 0,
+      "registry_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "missing_factors": 0,
+       "unjudged": 0,
+       "consistency_missed": 0,
+       "order_missed": 0,
+       "evidence_missed": 0,
+       "registry_missed": 0
+      },
+      "steps_count": 38,
+      "steps_detail": {
+       "checks_executed": 31,
+       "checks_disabled": 0,
+       "flow_steps_total": 7,
+       "flow_steps_done": 7
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0009
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "consistency_violations_objective": 0,
+      "consistency_caught": 0,
+      "consistency_missed": 0,
+      "order_violations_objective": 0,
+      "order_caught": 0,
+      "order_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "registry_violations_objective": 0,
+      "registry_caught": 0,
+      "registry_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "missing_factors": 0,
+       "unjudged": 0,
+       "consistency_missed": 0,
+       "order_missed": 0,
+       "evidence_missed": 0,
+       "registry_missed": 0
+      },
+      "steps_count": 9,
+      "steps_detail": {
+       "checks_executed": 2,
+       "checks_disabled": 4,
+       "flow_steps_total": 7,
+       "flow_steps_done": 7
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0005
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "consistency_missed": 0,
+    "order_missed": 0,
+    "evidence_missed": 0,
+    "registry_missed": 0,
+    "manual_review_items": 0,
+    "steps_count": 29,
+    "clarification_rounds": 0
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "consistency_missed",
+     "mechanism": "事件-标签一致性检查（push ⇒ 可推送事件+窗内+direct+有证据；out_of_window⇒exclude；duplicate⇒related_to；retraction 不推送）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后窗外/重复/撤稿条目可被误推送，误报不再被判 FAIL"
+    },
+    {
+     "metric": "order_missed",
+     "mechanism": "track_score 机械复算 + 期望顺序逐位对照（rubric 事前权重，track_score 降序 → published_date 降序 → item_id 升序）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后分数被篡改或时效顺序错乱不再可检出，排序依据不可追溯"
+    },
+    {
+     "metric": "evidence_missed",
+     "mechanism": "claims 证据链回证（push/hold 须有 source_id 对应 claim；track_score 数字须出现在 claim text/quote）",
+     "formula": "无回证的 push/hold 条目数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后证据链缺失不再判 FAIL，提醒依据退化为自述"
+    },
+    {
+     "metric": "registry_missed",
+     "mechanism": "登记完整性检查（hold⇒pending_review；duplicate⇒conflicts merged/escalated；version_update/retraction⇒version_chains；source_registry 非空）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后待定条目可静默漏登记，版本链与来源快照记录丢失，增量不可复算"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "漏检 + 缺因子（仅 push/hold 计）+ 未判定条目合计",
+     "formula": "missing_factors(push/hold) + unjudged + 四类漏检",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "七步线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "退化模式关闭四组检查（consistency/order/evidence/registry），枚举、结构守卫、coverage 汇总一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "四类违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，契约字段校验跳过。",
+    "rubric 未事前声明时排序复算真值不可得，order_missed 记 0 但属『无法判定』而非『无违规』。",
+    "把 --ablate 的退化结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\wkfinal\\gain_probe_polluted.json",
+    "injected": [
+     "R1 保持 push 但清空 evidence_quote、relevance 降为 indirect 并篡改 track_score",
+     "R4 保持 event=duplicate 但清空 related_to",
+     "R2 标 hold 但清空 pending_reason",
+     "清空 pending_review（待复核登记丢失）",
+     "清空 claims（证据链缺失）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 16,
+     "consistency_missed": 2,
+     "order_missed": 0,
+     "evidence_missed": 0,
+     "registry_missed": 0,
+     "problem_sample": [
+      "R1 标 push 但 relevance='indirect'（须 direct）",
+      "R1 标 push 但无摘要证据（evidence_quote 空）",
+      "R2 标 hold 但 pending_reason 为空",
+      "R4 event=duplicate 但 related_to 为空（须指向保留条目）",
+      "R1 track_score 复算不符（期望 0.7864，实际 9.9999）",
+      "R1 的证据在 claims 证据链中无逐字回证",
+      "R2 的证据在 claims 证据链中无逐字回证",
+      "R3 的证据在 claims 证据链中无逐字回证"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "PASS",
+     "problems": 0,
+     "consistency_missed": 3,
+     "order_missed": 1,
+     "evidence_missed": 6,
+     "registry_missed": 4,
+     "problem_sample": []
+    },
+    "missed_detection_delta": {
+     "consistency_missed": 1,
+     "order_missed": 1,
+     "evidence_missed": 6,
+     "registry_missed": 4,
+     "problems": -16
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.0094,
+   "result_bytes": 36262,
+   "input_files_scanned": 2,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 31,
+   "checker_checks_executed_degraded": 2,
+   "checker_checks_disabled_degraded": 4,
+   "items_total": 8,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 0,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 0,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "R1 为窗内新增（IN-01+IN-02），track_score=0.7864，摘要证据：sparse-kernel variant of low-rank adaptation that cuts peak memory by 38%",
+   "kind": "reported",
+   "source_id": "R1",
+   "location": "items[0]",
+   "evidence": [
+    {
+     "paragraph_id": "records[0].abstract",
+     "quote": "We propose LoRA-X, a sparse-kernel variant of low-rank adaptation that cuts peak memory by 38% during fine-tuning of large language models"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "R2 为延迟入库补回（backfill）且被 R3 正式版取代，暂缓推送待确认，track_score=0.62",
+   "kind": "inferred",
+   "source_id": "R2",
+   "location": "items[1]",
+   "evidence": [
+    {
+     "paragraph_id": "records[1].abstract",
+     "quote": "compresses sparse attention into edge-deployable models, reporting 2.1x latency reduction"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "R3 为 R2 的正式发表版（版本更新 IN-02），track_score=0.8445，新增记忆分析章节",
+   "kind": "reported",
+   "source_id": "R3",
+   "location": "items[2]",
+   "evidence": [
+    {
+     "paragraph_id": "records[2].abstract",
+     "quote": "This journal version extends the earlier preprint with new ablations: distilling sparse attention into edge-deployable models yields 2.1x latency reduction and adds a memory-analysis section"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "R5 为窗内新增但相关性间接，track_score=0.6223，摘要证据：survey of memory-efficient fine-tuning methods",
+   "kind": "reported",
+   "source_id": "R5",
+   "location": "items[4]",
+   "evidence": [
+    {
+     "paragraph_id": "records[4].abstract",
+     "quote": "A survey of memory-efficient fine-tuning methods, including low-rank adaptation families, covering 120 papers from 2020 to 2026"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "R6 为撤稿通告（EX-02，不作为新文献推送），track_score=0.9413，摘要证据：has been retracted at the request of the editors",
+   "kind": "reported",
+   "source_id": "R6",
+   "location": "items[5]",
+   "evidence": [
+    {
+     "paragraph_id": "records[5].abstract",
+     "quote": "This article has been retracted at the request of the editors: the reported robustness numbers for low-rank adapters could not be reproduced"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-06",
+   "text": "R8 发表日期缺失无法判定窗内新增，track_score=0.56，摘要证据：low-rank compression of KV caches",
+   "kind": "inferred",
+   "source_id": "R8",
+   "location": "items[7]",
+   "evidence": [
+    {
+     "paragraph_id": "records[7].abstract",
+     "quote": "A preprint sketching low-rank compression of KV caches; the feed record lacks a publication date field"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "R8 是否窗内新增取决于缺失的发表日期"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "R2",
+   "R5",
+   "R6",
+   "R8"
+  ],
+  "summary": "示例（示意输出，非正式案例结果）：8 条全部逐条判定，4 条进入待复核"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "落骨架"
+  },
+  {
+   "step": "step2",
+   "change": "逐条判定 8 条"
+  },
+  {
+   "step": "step3",
+   "change": "track_engine 复算去重键/事件/排序"
+  },
+  {
+   "step": "step6",
+   "change": "自检 PASS 后交付"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "items[0].consistency_event_label",
+   "template_value": "push ⇒ 可推送事件 + 窗内 + direct + 有证据",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[1].consistency_event_label",
+   "template_value": "push ⇒ 可推送事件 + 窗内 + direct + 有证据",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].consistency_event_label",
+   "template_value": "push ⇒ 可推送事件 + 窗内 + direct + 有证据",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[3].consistency_event_label",
+   "template_value": "push ⇒ 可推送事件 + 窗内 + direct + 有证据",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[4].consistency_event_label",
+   "template_value": "push ⇒ 可推送事件 + 窗内 + direct + 有证据",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[5].consistency_event_label",
+   "template_value": "push ⇒ 可推送事件 + 窗内 + direct + 有证据",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[6].consistency_event_label",
+   "template_value": "push ⇒ 可推送事件 + 窗内 + direct + 有证据",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[7].consistency_event_label",
+   "template_value": "push ⇒ 可推送事件 + 窗内 + direct + 有证据",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "window.iso_consistency",
+   "template_value": "start<=end 且为 ISO 日期且 timezone 已声明",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "rubric.weights_sum",
+   "template_value": "三项权重合计=1.0",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[0].score_recompute",
+   "template_value": "rubric 权重机械复算 track_score",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[1].score_recompute",
+   "template_value": "rubric 权重机械复算 track_score",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].score_recompute",
+   "template_value": "rubric 权重机械复算 track_score",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[4].score_recompute",
+   "template_value": "rubric 权重机械复算 track_score",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[5].score_recompute",
+   "template_value": "rubric 权重机械复算 track_score",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[7].score_recompute",
+   "template_value": "rubric 权重机械复算 track_score",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "ranking.order_recompute",
+   "template_value": "期望顺序逐位对照",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[0].dedup_recompute",
+   "template_value": "dedup_key 按 doi>arxiv>title_norm 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[1].dedup_recompute",
+   "template_value": "dedup_key 按 doi>arxiv>title_norm 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].dedup_recompute",
+   "template_value": "dedup_key 按 doi>arxiv>title_norm 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[3].dedup_recompute",
+   "template_value": "dedup_key 按 doi>arxiv>title_norm 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[4].dedup_recompute",
+   "template_value": "dedup_key 按 doi>arxiv>title_norm 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[5].dedup_recompute",
+   "template_value": "dedup_key 按 doi>arxiv>title_norm 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[6].dedup_recompute",
+   "template_value": "dedup_key 按 doi>arxiv>title_norm 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[7].dedup_recompute",
+   "template_value": "dedup_key 按 doi>arxiv>title_norm 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[1].hold_registered",
+   "template_value": "hold ⇒ 登记入 pending_review",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].duplicate_recorded",
+   "template_value": "related_to ⇒ conflicts 登记 merged/escalated",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[3].duplicate_recorded",
+   "template_value": "related_to ⇒ conflicts 登记 merged/escalated",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[4].hold_registered",
+   "template_value": "hold ⇒ 登记入 pending_review",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[5].hold_registered",
+   "template_value": "hold ⇒ 登记入 pending_review",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[7].hold_registered",
+   "template_value": "hold ⇒ 登记入 pending_review",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS",
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "policy_ledger",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "ranking_recompute",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "track_engine_output",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "_note": "示意输出（非正式答案，标题/摘要/DOI/编号均为虚构）：由本地合成案例按 build_skeleton → track_engine → verify_check → schema_guard → gain_probe 全链路实跑生成；运行时绝对路径为制作机临时目录，正式运行时以 /app/output 为准。"
+}

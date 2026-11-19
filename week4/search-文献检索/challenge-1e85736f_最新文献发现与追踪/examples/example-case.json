@@ -1,0 +1,105 @@
+{
+  "case_id": "example-case-track-01",
+  "note": "合成示例案例（非正式答案）：标题、摘要、DOI、编号均为虚构，仅用于演示与本地自测。",
+  "task": "按时间窗识别新增文献，跟踪主题演进：判定新增/版本更新/重复/回补/撤稿，时效排序并登记来源。",
+  "topic": "大模型低秩微调与显存优化",
+  "window": {"start": "2026-05-01", "end": "2026-05-31", "timezone": "UTC"},
+  "previous_snapshot": [
+    {"title": "Quantized Low-Rank Adapters at Scale", "doi": "10.5555/qlora-old", "published_date": "2026-03-15"},
+    {"title": "Activation Checkpointing for LLM Training", "doi": "10.5555/ckpt-old", "published_date": "2026-02-02"}
+  ],
+  "records": [
+    {
+      "item_id": "R1",
+      "title": "LoRA-X: Low-Rank Adaptation with Sparse Kernels",
+      "abstract": "We propose LoRA-X, a sparse-kernel variant of low-rank adaptation that cuts peak memory by 38% during fine-tuning of large language models while matching full fine-tuning accuracy on three benchmarks.",
+      "published_date": "2026-05-12",
+      "indexed_date": "2026-05-13",
+      "venue": "Journal of Efficient ML",
+      "venue_type": "published",
+      "doi": "10.9999/lora-x",
+      "source": "crossref-feed"
+    },
+    {
+      "item_id": "R2",
+      "title": "Sparse Attention Distillation for Edge Inference",
+      "abstract": "This preprint introduces a distillation pipeline that compresses sparse attention into edge-deployable models, reporting 2.1x latency reduction on-device.",
+      "published_date": "2026-04-20",
+      "indexed_date": "2026-05-02",
+      "venue": "arXiv",
+      "venue_type": "preprint",
+      "arxiv_id": "2604.01234v1",
+      "source": "arxiv-feed"
+    },
+    {
+      "item_id": "R3",
+      "title": "Sparse Attention Distillation for Edge Inference",
+      "abstract": "This journal version extends the earlier preprint with new ablations: distilling sparse attention into edge-deployable models yields 2.1x latency reduction and adds a memory-analysis section.",
+      "published_date": "2026-05-18",
+      "indexed_date": "2026-05-20",
+      "venue": "Journal of Efficient ML",
+      "venue_type": "published",
+      "doi": "10.8888/sad",
+      "source": "crossref-feed"
+    },
+    {
+      "item_id": "R4",
+      "title": "lora-x:  Low-Rank Adaptation, with sparse kernels!",
+      "abstract": "We propose LoRA-X, a sparse-kernel variant of low-rank adaptation that cuts peak memory by 38% during fine-tuning of large language models while matching full fine-tuning accuracy on three benchmarks.",
+      "published_date": "2026-05-12",
+      "indexed_date": "2026-05-14",
+      "venue": "aggregator-feed",
+      "venue_type": "published",
+      "doi": "10.9999/lora-x",
+      "source": "aggregator-feed"
+    },
+    {
+      "item_id": "R5",
+      "title": "Memory-Efficient Fine-Tuning: A Survey",
+      "abstract": "A survey of memory-efficient fine-tuning methods, including low-rank adaptation families, covering 120 papers from 2020 to 2026.",
+      "published_date": "2026-05-25",
+      "indexed_date": "2026-05-26",
+      "venue": "Survey Letters",
+      "venue_type": "published",
+      "doi": "10.7777/mef-survey",
+      "source": "crossref-feed"
+    },
+    {
+      "item_id": "R6",
+      "title": "Retraction Notice: Adversarial Fragility in Low-Rank Adapters",
+      "abstract": "This article has been retracted at the request of the editors: the reported robustness numbers for low-rank adapters could not be reproduced.",
+      "published_date": "2026-05-28",
+      "indexed_date": "2026-05-29",
+      "venue": "Journal of Efficient ML",
+      "venue_type": "published",
+      "doi": "10.6666/retract-01",
+      "is_retraction": true,
+      "source": "crossref-feed"
+    },
+    {
+      "item_id": "R7",
+      "title": "Gradient Checkpointing Revisited",
+      "abstract": "A study of gradient checkpointing schedules published in March; included here only because an aggregator re-fed the record.",
+      "published_date": "2026-03-10",
+      "indexed_date": "2026-03-11",
+      "venue": "Workshop Notes",
+      "venue_type": "published",
+      "doi": "10.4444/gc-rev",
+      "source": "aggregator-feed"
+    },
+    {
+      "item_id": "R8",
+      "title": "KV Cache Compression via Low-Rank Sketching",
+      "abstract": "A preprint sketching low-rank compression of KV caches; the feed record lacks a publication date field.",
+      "published_date": null,
+      "indexed_date": "2026-05-30",
+      "venue": "arXiv",
+      "venue_type": "preprint",
+      "arxiv_id": "2605.09876v1",
+      "source": "arxiv-feed"
+    }
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

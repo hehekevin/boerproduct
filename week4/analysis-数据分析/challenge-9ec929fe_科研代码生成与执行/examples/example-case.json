@@ -1,0 +1,31 @@
+{
+  "case_id": "demo-sci-code-001",
+  "note": "合成示例案例，数据与要求均为虚构，仅用于接口演示与本地自测，非正式答案。",
+  "task": "对仪器导出的两批次测量数据 exp_a 完成清洗与统计：剔除缺失、按主键去重、只保留 A/B 两个批次、截断超量程值，输出各批次 score 均值与清洗后样本数，全程保留清洗口径与异常登记。",
+  "data_dictionary": {
+    "version": "dd-demo-v1",
+    "fields": [
+      {"name": "record_id", "dtype": "int", "unit": "-", "missing_marker": null, "notes": "记录主键，用于去重"},
+      {"name": "batch", "dtype": "str", "unit": "-", "missing_marker": null, "notes": "批次编号，取值 A/B/C，仅 A/B 在统计范围内"},
+      {"name": "score", "dtype": "float", "unit": "score-unit", "missing_marker": "空串", "notes": "测量得分，量程 [0,100]，允许缺失"},
+      {"name": "conc_mmol", "dtype": "float", "unit": "mmol/L", "missing_marker": "空串", "notes": "浓度，本题不统计，仅随行"}
+    ]
+  },
+  "datasets": [
+    {
+      "name": "exp_a",
+      "format": "csv_inline",
+      "content": "record_id,batch,score,conc_mmol\n1,A,10.2,0.5\n2,A,,0.6\n3,B,8.4,0.55\n3,B,8.4,0.55\n5,B,250,0.5\n6,C,9.1,0.52\n7,A,11.0,0.58\n"
+    }
+  ],
+  "requirements": [
+    {"req_id": "R1", "text": "score 缺失值处理：剔除并登记，不得按 0 参与均值"},
+    {"req_id": "R2", "text": "重复记录按 record_id 去重，保留首条并登记"},
+    {"req_id": "R3", "text": "仅统计 batch ∈ {A, B}，其余批次剔除并登记"},
+    {"req_id": "R4", "text": "输出各 batch 的 score 均值与清洗后样本数"},
+    {"req_id": "R5", "text": "score 超出量程 [0,100] 的异常值按声明规则截断并登记，不静默删除"}
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

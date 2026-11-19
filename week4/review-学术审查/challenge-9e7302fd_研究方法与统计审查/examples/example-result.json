@@ -1,0 +1,1296 @@
+{
+ "_note": "示意输出（synthetic，非正式答案）：对应 examples/example-case.json 的合成案例（虚构 RCT 稿件，统计量组合为演示复算机制而故意构造），用于演示接口与完整使用流程，不冒充正式案例结果。",
+ "case_id": "demo-researchstat-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "图2 为图像形式且本示例未随附可读图像，图内数值与正文一致性未检查"
+  ],
+  "environment": {
+   "python_version": "3.13.x",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "本地自测环境"
+  },
+  "manuscript_overview": {
+   "title": "正念训练对大学生考试焦虑的干预效果：一项随机对照试验（虚构示例稿）",
+   "sections": [
+    {
+     "section_id": "S1",
+     "name": "摘要",
+     "source_ref": "manuscript.sections[0]"
+    },
+    {
+     "section_id": "S2",
+     "name": "方法",
+     "source_ref": "manuscript.sections[1]"
+    },
+    {
+     "section_id": "S3",
+     "name": "结果",
+     "source_ref": "manuscript.sections[2]"
+    },
+    {
+     "section_id": "S4",
+     "name": "讨论",
+     "source_ref": "manuscript.sections[3]"
+    },
+    {
+     "section_id": "S5",
+     "name": "结论",
+     "source_ref": "manuscript.sections[4]"
+    }
+   ],
+   "reference_count": 2
+  },
+  "severity_rubric": {
+   "levels": {
+    "critical": "统计结论错误或数据矛盾直接推翻主要结论：p 值与复算矛盾、CI/SE/自由度组合不自洽、无对照基础却断言显著性",
+    "major": "方法或报告缺陷影响结论可信度但不必然推翻：随机化/盲法细节缺失、多重比较未校正、样本量无估算依据、关键统计量缺失",
+    "minor": "规范或表述问题，不改变结论：报告细节缺项、术语不一致、可补强的建议性内容"
+   },
+   "declared_at": "step1（任何逐条判定之前）",
+   "note": "三级口径在 Step 1 事前声明并写入 /app/work/severity_rubric.json，之后禁止调整"
+  },
+  "suppression_rules": [
+   {
+    "rule_id": "FP-01",
+    "text": "学科写作惯例（作者自陈局限、惯用转承语）不算缺陷"
+   },
+   {
+    "rule_id": "FP-02",
+    "text": "期刊格式差异（引用样式、图表编号风格、效应量指标选择）不算缺陷"
+   },
+   {
+    "rule_id": "FP-03",
+    "text": "作者有意取舍（篇幅/期刊要求内的省略）不算缺陷"
+   },
+   {
+    "rule_id": "FP-04",
+    "text": "超出研究方法与统计范围的意见（文献检索、语言润色、投稿决策）不判缺陷"
+   }
+  ],
+  "facets": {
+   "research_design": "研究设计：设计类型与研究问题匹配、对照/随机化/盲法、偏倚控制、主要终点",
+   "variable_definition": "变量定义：暴露/结局/协变量的定义、测量方式、编码、切点与单位换算",
+   "stat_method": "统计方法：检验与数据结构/分布/独立性匹配、多重比较、重复测量、交互与敏感性分析",
+   "sample_power": "样本量与效能：估算依据、效应量来源、α 与把握度、实际入组/失访/剔除处理",
+   "result_reporting": "结果报告：效应量与 CI、精确 p 值、统计量与自由度、图表与正文一致、报告规范",
+   "norms_consistency": "规范与一致性：摘要/正文/图表数值一致、声明齐备、术语一致、可发表性"
+  },
+  "findings": [
+   {
+    "finding_id": "F01",
+    "source_ref": "manuscript.sections[0].text",
+    "section_id": "S1",
+    "location": "S1 摘要 第 2 句",
+    "facet": "norms_consistency",
+    "category": "fact_error",
+    "severity": "major",
+    "quote": "共纳入本科生 48 名",
+    "evidence": "S2 方法节写明招募 36 名，摘要与正文样本量自相矛盾（方法节为实际入组口径），属前后不一致的事实错误",
+    "revision_suggestion": "按方法节核实实际入组与分析人数后统一全文样本量表述，并补充失访/剔除说明",
+    "status": "confirmed",
+    "defect_class": "method_defect",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F02",
+    "source_ref": "manuscript.sections[0].text",
+    "section_id": "S1",
+    "location": "S1 摘要 第 4 句",
+    "facet": "stat_method",
+    "category": "fact_error",
+    "severity": "critical",
+    "quote": "r=0.32, n=48, p<0.001",
+    "evidence": "机械复算 t=r*sqrt((n-2)/(1-r^2))≈2.29（df=46），正态近似双侧 p≈0.022，与宣称 p<0.001 矛盾，显著性被夸大约一个数量级，直接支撑了摘要的政策建议",
+    "revision_suggestion": "更正为精确 p 值（约 0.02）并弱化『显著相关』表述，或提供可复核的原始检验输出",
+    "status": "confirmed",
+    "defect_class": "method_defect",
+    "stat_claim": {
+     "type": "r_to_t",
+     "params": {
+      "r": 0.32,
+      "n": 48
+     },
+     "claimed": {
+      "p_max": 0.001
+     }
+    },
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F03",
+    "source_ref": "manuscript.sections[2].text",
+    "section_id": "S3",
+    "location": "S3 结果 第 1 句",
+    "facet": "result_reporting",
+    "category": "fact_error",
+    "severity": "major",
+    "quote": "t(52)=2.10, p=0.04",
+    "evidence": "S2 报告总样本 36 名、两组设计，两组 t 检验自由度应为 n-2=34；报告 df=52 超出 n-1=35 的机械上界，统计量与样本量矛盾",
+    "revision_suggestion": "核对自由度计算（df=n-2=34）并在全文统一更正，同时重报对应精确 p 值",
+    "status": "confirmed",
+    "defect_class": "method_defect",
+    "stat_claim": {
+     "type": "df_vs_n",
+     "params": {
+      "n": 36,
+      "design": "two_group"
+     },
+     "claimed": {
+      "df": 52
+     }
+    },
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F04",
+    "source_ref": "manuscript.sections[2].text",
+    "section_id": "S3",
+    "location": "S3 结果 第 1 句",
+    "facet": "result_reporting",
+    "category": "fact_error",
+    "severity": "major",
+    "quote": "均数差 95% CI [0.20, 0.30]，SE=0.10",
+    "evidence": "机械复算 95% CI 宽应≈2*1.96*SE=0.392，报告宽仅 0.10（相对偏差 74%），CI 与 SE 关系不自洽；且 MD/SE=2.5 与报告 t=2.10 也不一致",
+    "revision_suggestion": "按原始数据重算 CI 与 SE，使 CI、SE、t 三者自洽后统一报告",
+    "status": "confirmed",
+    "defect_class": "method_defect",
+    "stat_claim": {
+     "type": "ci_from_se",
+     "params": {
+      "est": 0.25,
+      "se": 0.1,
+      "level": 0.95
+     },
+     "claimed": {
+      "ci_low": 0.2,
+      "ci_high": 0.3
+     }
+    },
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F05",
+    "source_ref": "manuscript.sections[1].text",
+    "section_id": "S2",
+    "location": "S2 方法 第 1 句",
+    "facet": "stat_method",
+    "category": "fact_error",
+    "severity": "major",
+    "quote": "随机分配至干预组与对照组，研究预设六项结局指标",
+    "evidence": "六项结局指标未见任何多重比较校正说明，六次比较下家族误差约 26%，单次 p=0.04 的显著性断言稳健性存疑",
+    "revision_suggestion": "报告多重比较校正方法（如 Holm/Bonferroni）或按预设主要终点重新组织显著性表述",
+    "status": "confirmed",
+    "defect_class": "method_defect",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F06",
+    "source_ref": "manuscript.sections[1].text",
+    "section_id": "S2",
+    "location": "S2 方法 第 1 句",
+    "facet": "research_design",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "随机分配至干预组与对照组",
+    "evidence": "仅陈述『随机分配』，未报告随机序列生成方法、分配隐藏与施测者/评估者盲法，RCT 偏倚控制不可评估——属报告不全而非设计必然有错",
+    "revision_suggestion": "按 CONSORT 补充随机化细节（序列生成、分配隐藏、盲法对象与破盲规程）",
+    "status": "confirmed",
+    "defect_class": "reporting_gap",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F07",
+    "source_ref": "manuscript.sections[1].text",
+    "section_id": "S2",
+    "location": "S2 方法 第 1 句",
+    "facet": "sample_power",
+    "category": "insufficient_evidence",
+    "severity": "minor",
+    "quote": "本研究在某高校招募本科生 36 名",
+    "evidence": "未报告样本量估算依据（效应量来源、α 与把握度设定），也未说明失访与剔除的处理——属报告不全",
+    "revision_suggestion": "补充样本量计算依据与实际入组/失访/分析人数流程（CONSORT 流程图）",
+    "status": "confirmed",
+    "defect_class": "reporting_gap",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F08",
+    "source_ref": "manuscript.sections[4].text",
+    "section_id": "S5",
+    "location": "S5 结论 第 2 句",
+    "facet": "stat_method",
+    "category": "suggestion",
+    "severity": "minor",
+    "quote": "建议未来研究扩大样本并开展多中心验证",
+    "evidence": "可在建议中一并补充预设主要终点、敏感性分析与效应量报告要求，提升后续研究的可检验性",
+    "revision_suggestion": "将未来研究建议细化为：预设主要终点、报告样本量估算与多重比较校正方案",
+    "status": "confirmed",
+    "defect_class": "not_applicable",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F09",
+    "source_ref": "manuscript.sections[2].text",
+    "section_id": "S3",
+    "location": "S3 结果 第 3 句",
+    "facet": "result_reporting",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "图2 展示了两组焦虑得分的前后变化",
+    "evidence": "图2 为图像形式且本示例未随附可读图像，图内数值与正文/CI 的一致性无法核对，不凭空补结论",
+    "revision_suggestion": null,
+    "status": "pending",
+    "defect_class": "cannot_classify",
+    "pending_reason": "图2 无法读取（材料缺口），图内数值一致性无法核对，标待复核",
+    "suppressed_by": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F10",
+    "source_ref": "manuscript.sections[3].text",
+    "section_id": "S4",
+    "location": "S4 讨论 第 2 句",
+    "facet": "norms_consistency",
+    "category": "suggestion",
+    "severity": "minor",
+    "quote": "本研究样本量有限，结论外推需谨慎",
+    "evidence": "作者自陈局限性陈述，属学科写作惯例，按误报抑制规则 FP-01 不判为缺陷",
+    "revision_suggestion": "无需修改；保留为局限性讨论",
+    "status": "suppressed",
+    "defect_class": "not_applicable",
+    "pending_reason": null,
+    "suppressed_by": "FP-01",
+    "judged": true
+   },
+   {
+    "finding_id": "F11",
+    "source_ref": "manuscript.sections[2].text",
+    "section_id": "S3",
+    "location": "S3 结果 第 1 句",
+    "facet": "norms_consistency",
+    "category": "norm_issue",
+    "severity": "minor",
+    "quote": "干预组焦虑得分显著低于对照组（t(52)=2.10, p=0.04）",
+    "evidence": "t=2.10 与 p=0.04 的数值组合经独立复算自洽（正态近似双侧 p≈0.036，容差内），为复算一致的正例记录；但该结论依赖的 df 与 CI 均有矛盾（见 F03/F04），应作为关联条目整体更正",
+    "revision_suggestion": "保持 t 与 p 对应关系的同时，按 F03 更正 df 后重报精确 p 值，并按 F04 修复 CI 与 SE 的自洽性",
+    "status": "confirmed",
+    "defect_class": "method_defect",
+    "stat_claim": {
+     "type": "t_to_p",
+     "params": {
+      "t": 2.1,
+      "df": 34
+     },
+     "claimed": {
+      "p": 0.04
+     }
+    },
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true
+   }
+  ],
+  "suppressed": [
+   {
+    "finding_id": "F10",
+    "rule_id": "FP-01",
+    "reason": "『本研究样本量有限，结论外推需谨慎』为作者自陈局限性陈述，属学科写作惯例（FP-01），不判为缺陷"
+   }
+  ],
+  "pending_review": [
+   {
+    "finding_id": "F09",
+    "reason": "图2 无法读取，图内数值与正文/CI 一致性无法核对",
+    "needed_action": "获取可读图像后核对图内数值与正文统计量的一致性，再决定确认或登记材料缺口"
+   }
+  ],
+  "clearances": [
+   {
+    "scope": "facet:variable_definition",
+    "reason": "稿件未涉及分类切点/编码/单位换算类问题；测量工具（STAI）定义与施测流程报告规范，显式豁免该分面"
+   },
+   {
+    "scope": "artifact:图2",
+    "reason": "图像不可读（已另登记 F09 待复核与 material_gaps），图内一致性检查豁免"
+   }
+  ],
+  "stat_recompute": {
+   "tool": "scripts/stat_recompute.py",
+   "supported_types": [
+    "r_to_t",
+    "t_to_p",
+    "ci_from_se",
+    "ci_vs_null",
+    "df_vs_n",
+    "group_shares"
+   ],
+   "checks": [
+    {
+     "finding_id": "F02",
+     "type": "r_to_t",
+     "claimed": {
+      "p_max": 0.001
+     },
+     "params": {
+      "r": 0.32,
+      "n": 48
+     },
+     "computed": {
+      "t": 2.2908,
+      "df": 46,
+      "p_approx": 0.02197
+     },
+     "consistent": false,
+     "detail": "t=r*sqrt((n-2)/(1-r^2))=2.2908，正态近似 p=0.02197；核对项：p_max"
+    },
+    {
+     "finding_id": "F03",
+     "type": "df_vs_n",
+     "claimed": {
+      "df": 52
+     },
+     "params": {
+      "n": 36,
+      "design": "two_group"
+     },
+     "computed": {
+      "expected_df": 34.0,
+      "n_minus_1": 35.0
+     },
+     "consistent": false,
+     "detail": "two_group 设计期望 df=34（n=36），报告 df=52；df 超出 n-1，与样本量矛盾"
+    },
+    {
+     "finding_id": "F04",
+     "type": "ci_from_se",
+     "claimed": {
+      "ci_low": 0.2,
+      "ci_high": 0.3
+     },
+     "params": {
+      "est": 0.25,
+      "se": 0.1,
+      "level": 0.95
+     },
+     "computed": {
+      "expected_width": 0.392,
+      "claimed_width": 0.1,
+      "z": 1.96,
+      "level": 0.95,
+      "est_within_ci": true
+     },
+     "consistent": false,
+     "detail": "95% CI 宽应≈2*z*se=0.39200，报告宽=0.10000（相对差 74.5%，容差 5%）"
+    },
+    {
+     "finding_id": "F11",
+     "type": "t_to_p",
+     "claimed": {
+      "p": 0.04
+     },
+     "params": {
+      "t": 2.1,
+      "df": 34
+     },
+     "computed": {
+      "p_approx": 0.03573,
+      "approx": "normal",
+      "tolerance": 0.01
+     },
+     "consistent": true,
+     "detail": "正态近似双侧 p(|t|=2.1)=0.03573（df≥30 或未报）；核对项：p=0.04"
+    }
+   ],
+   "counts": {
+    "claims_total": 4,
+    "consistent": 1,
+    "inconsistent": 3,
+    "indeterminate": 0
+   },
+   "approx_note": "p 值由正态近似复算（标准库无 t 分布分位数），df<30 时容差 0.015；CI 复算相对容差 5%；consistent=false 表示稿件报告的统计量组合与复算矛盾，是缺陷证据而非脚本错误。"
+  },
+  "coverage": {
+   "total_sections": 5,
+   "sections_with_findings": 5,
+   "total_findings": 11,
+   "judged": 11,
+   "confirmed": 9,
+   "pending": 1,
+   "suppressed": 1,
+   "facet_counts": {
+    "research_design": 1,
+    "variable_definition": 0,
+    "stat_method": 3,
+    "sample_power": 1,
+    "result_reporting": 3,
+    "norms_consistency": 3
+   },
+   "category_counts": {
+    "fact_error": 5,
+    "insufficient_evidence": 3,
+    "norm_issue": 1,
+    "suggestion": 2
+   },
+   "severity_counts": {
+    "critical": 1,
+    "major": 6,
+    "minor": 4
+   },
+   "per_section": {
+    "S1": 2,
+    "S2": 3,
+    "S3": 4,
+    "S4": 1,
+    "S5": 1
+   },
+   "manuscript_stats": {
+    "chars": 819,
+    "en_words": 33,
+    "note": "字符数按全部 case 文本计；英文词数用正则统计（规避 isalpha 汉字陷阱）"
+   },
+   "input_files": 2,
+   "note": "由 coverage_audit.py 机械计数生成；unchecked 为机械缺口清单，非空时 verdict 不得为 audited（verify_check 强制）。"
+  },
+  "unchecked": [],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与稿件结构清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明严重度三级口径与误报抑制规则（判定前）",
+    "command": "手写 result.severity_rubric 与 suppression_rules，同步 /app/work/severity_rubric.json",
+    "output_ref": "result.severity_rubric",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "六分面逐条审查并定位到句，附 stat_claim 与 defect_class",
+    "command": "Agent 通读稿件逐分面审查，写入 result.findings",
+    "output_ref": "result.findings",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "六分面覆盖机械审计",
+    "command": "python3 /skills/weekly-skill/scripts/coverage_audit.py --result /app/output/result.json --case /input/case.json --emit-into",
+    "output_ref": "result.coverage",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "统计量数值复算（p 值边界 / CI 与 SE / df 与样本量）",
+    "command": "python3 /skills/weekly-skill/scripts/stat_recompute.py --result /app/output/result.json --emit-into",
+    "output_ref": "result.stat_recompute",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "待复核与误报抑制登记、证据链落盘",
+    "command": "Agent 写入 result.pending_review / result.suppressed / claims",
+    "output_ref": "claims",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence",
+    "status": "done"
+   },
+   {
+    "step": "step7",
+    "action": "双重自检与交付",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --ledger /app/work/severity_rubric.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "/app/work/schema_guard.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "audited",
+  "verdict_basis": "六分面全部覆盖（variable_definition 有显式豁免登记）、五个章节均有发现、11 条发现全部判定且 unchecked 为空",
+  "gain_evidence": {
+   "probe_version": "1.1",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "demo-researchstat-001",
+   "input": {
+    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-9e7302fd\\submission\\examples\\example-result.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-9e7302fd\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "location_violations_objective": 0,
+      "location_caught": 0,
+      "location_missed": 0,
+      "severity_violations_objective": 0,
+      "severity_caught": 0,
+      "severity_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "pending_violations_objective": 0,
+      "pending_caught": 0,
+      "pending_missed": 0,
+      "stat_violations_objective": 0,
+      "stat_caught": 0,
+      "stat_missed": 0,
+      "defect_violations_objective": 0,
+      "defect_caught": 0,
+      "defect_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "unjudged": 0,
+       "no_revision_suggestion": 0,
+       "location_missed": 0,
+       "severity_missed": 0,
+       "evidence_missed": 0,
+       "pending_missed": 0,
+       "stat_missed": 0,
+       "defect_missed": 0
+      },
+      "steps_count": 57,
+      "steps_detail": {
+       "checks_executed": 49,
+       "checks_disabled": 0,
+       "flow_steps_total": 8,
+       "flow_steps_done": 8
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.001
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "location_violations_objective": 0,
+      "location_caught": 0,
+      "location_missed": 0,
+      "severity_violations_objective": 0,
+      "severity_caught": 0,
+      "severity_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "pending_violations_objective": 0,
+      "pending_caught": 0,
+      "pending_missed": 0,
+      "stat_violations_objective": 0,
+      "stat_caught": 0,
+      "stat_missed": 0,
+      "defect_violations_objective": 0,
+      "defect_caught": 0,
+      "defect_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "unjudged": 0,
+       "no_revision_suggestion": 0,
+       "location_missed": 0,
+       "severity_missed": 0,
+       "evidence_missed": 0,
+       "pending_missed": 0,
+       "stat_missed": 0,
+       "defect_missed": 0
+      },
+      "steps_count": 8,
+      "steps_detail": {
+       "checks_executed": 0,
+       "checks_disabled": 6,
+       "flow_steps_total": 8,
+       "flow_steps_done": 8
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0007
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "location_missed": 0,
+    "severity_missed": 0,
+    "evidence_missed": 0,
+    "pending_missed": 0,
+    "stat_missed": 0,
+    "defect_missed": 0,
+    "manual_review_items": 0,
+    "steps_count": 49,
+    "clarification_rounds": 0
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "location_missed",
+     "mechanism": "定位可回证（quote 空白归一化后须逐字出现在稿件原文中 + location 非空）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后引文张冠李戴、位置缺失不再被判 FAIL，清单不可回原文核对"
+    },
+    {
+     "metric": "severity_missed",
+     "mechanism": "严重度分级口径（suggestion⇒minor、fact_error⇒critical/major，口径判定前声明）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后严重度可随意抬升/压低，分级口径失效"
+    },
+    {
+     "metric": "evidence_missed",
+     "mechanism": "claims 证据链回证（confirmed 须有 source_id 对应条目且 quote 逐字回证；fact_error 须给对照依据）",
+     "formula": "无回证的 confirmed 发现数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后证据链缺失不再判 FAIL，判断退化为自述"
+    },
+    {
+     "metric": "pending_missed",
+     "mechanism": "待复核与误报抑制登记（pending⇒pending_review 含 reason+needed_action；suppressed⇒suppressed[] 且 rule_id 须在事前规则表内）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后待定条目可静默漏登记、误报抑制可绕过规则表，人工复核入口丢失"
+    },
+    {
+     "metric": "stat_missed",
+     "mechanism": "统计量复算一致（stat_claim 须有复算记录，且记录的 consistent 须与独立复算一致）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后复算记录可缺失、被篡改为「一致」不再被抓——p 值夸大、CI 与 SE/df 与样本量矛盾等统计造假将穿透交付"
+    },
+    {
+     "metric": "defect_missed",
+     "mechanism": "缺陷/报告不全区分（fact_error⇒method_defect；reporting_gap⇒insufficient_evidence/norm_issue；suggestion⇒not_applicable）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后「作者做错了」与「作者没报告」可混为一谈，review 意见不可交办"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "漏检 + 未判定 + 缺修改建议合计",
+     "formula": "unjudged + no_revision_suggestion + 六类漏检",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "八步线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "退化模式关闭六组检查（location/severity/evidence/pending/stat/defect），枚举、结构守卫、coverage 汇总一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "六类违规的客观真值由探针独立复算（复算引擎纯函数独立调用 + 区分规则单实现），与 verify_check 的记录比对逻辑分开，口径一致时漏检数才可信。",
+    "统计复算用正态近似（标准库无 t 分布分位数），p 值容差 0.01/0.015、CI 容差 5%；边界值统计量可能被判 indeterminate，此时不算违规。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，定位回证退化为不可判（src 为空）。",
+    "stat_recompute 未跑时复算记录缺失，stat 违规按真值计入（缺失记录=违规）。",
+    "severity_rubric 未事前声明时分级口径真值不可得，severity_missed 记违规而非『无违规』。",
+    "把 --ablate 的退化结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\wk-rs\\gain_probe_polluted.json",
+    "injected": [
+     "F01 清空 quote/location（定位失据）",
+     "F09 标 pending 但清空 pending_reason",
+     "F01 fact_error 但清空对照依据 evidence",
+     "清空 pending_review（待复核登记丢失）",
+     "清空 claims（证据链缺失）",
+     "F02 复算记录被篡改为「一致」（客观复算为矛盾——统计量被篡改/CI 与样本量矛盾被掩盖）",
+     "F03 复算记录被篡改为「一致」（客观复算为矛盾——统计量被篡改/CI 与样本量矛盾被掩盖）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 15,
+     "location_missed": 0,
+     "severity_missed": 0,
+     "evidence_missed": 0,
+     "pending_missed": 1,
+     "stat_missed": 0,
+     "defect_missed": 0,
+     "problem_sample": [
+      "F01 quote 不在稿件原文中或过短（定位可回证失败）",
+      "F01 location（原文位置）为空",
+      "F01 confirmed 但 claims 证据链无逐字回证",
+      "F01 category=fact_error 但对照依据 evidence 为空",
+      "F02 confirmed 但 claims 证据链无逐字回证",
+      "F03 confirmed 但 claims 证据链无逐字回证",
+      "F04 confirmed 但 claims 证据链无逐字回证",
+      "F05 confirmed 但 claims 证据链无逐字回证",
+      "F06 confirmed 但 claims 证据链无逐字回证",
+      "F07 confirmed 但 claims 证据链无逐字回证"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "PASS",
+     "problems": 0,
+     "location_missed": 1,
+     "severity_missed": 0,
+     "evidence_missed": 9,
+     "pending_missed": 2,
+     "stat_missed": 2,
+     "defect_missed": 0,
+     "problem_sample": []
+    },
+    "missed_detection_delta": {
+     "location_missed": 1,
+     "severity_missed": 0,
+     "evidence_missed": 9,
+     "pending_missed": 1,
+     "stat_missed": 2,
+     "defect_missed": 0,
+     "problems": -15
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.0109,
+   "result_bytes": 46039,
+   "input_files_scanned": 2,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 49,
+   "checker_checks_executed_degraded": 0,
+   "checker_checks_disabled_degraded": 6,
+   "findings_total": 11,
+   "stat_claims_total": 4,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 0,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 0,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "F01 规范一致性：摘要样本量 48 名与方法节 36 名矛盾（fact_error/major）",
+   "kind": "reported",
+   "source_id": "F01",
+   "location": "findings[0]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[0].text",
+     "quote": "共纳入本科生 48 名"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "F02 统计方法：r=0.32,n=48 复算 p≈0.022，与 p<0.001 矛盾（fact_error/critical）",
+   "kind": "inferred",
+   "source_id": "F02",
+   "location": "findings[1]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[0].text",
+     "quote": "r=0.32, n=48, p<0.001"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "F03 结果报告：df=52 与两组设计 n=36（df 应为 34）矛盾（fact_error/major）",
+   "kind": "inferred",
+   "source_id": "F03",
+   "location": "findings[2]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[2].text",
+     "quote": "t(52)=2.10, p=0.04"
+    },
+    {
+     "paragraph_id": "manuscript.sections[1].text",
+     "quote": "本研究在某高校招募本科生 36 名"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "F04 结果报告：95% CI 宽 0.10 与 SE=0.10（应≈0.39）矛盾（fact_error/major）",
+   "kind": "inferred",
+   "source_id": "F04",
+   "location": "findings[3]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[2].text",
+     "quote": "均数差 95% CI [0.20, 0.30]，SE=0.10"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "F05 统计方法：六项结局指标未报告多重比较校正（fact_error/major）",
+   "kind": "reported",
+   "source_id": "F05",
+   "location": "findings[4]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[1].text",
+     "quote": "随机分配至干预组与对照组，研究预设六项结局指标"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-06",
+   "text": "F06 研究设计：随机化细节与盲法未报告（insufficient_evidence/major，报告不全）",
+   "kind": "reported",
+   "source_id": "F06",
+   "location": "findings[5]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[1].text",
+     "quote": "随机分配至干预组与对照组"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-07",
+   "text": "F07 样本量与效能：样本量估算依据缺失（insufficient_evidence/minor，报告不全）",
+   "kind": "reported",
+   "source_id": "F07",
+   "location": "findings[6]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[1].text",
+     "quote": "本研究在某高校招募本科生 36 名"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-08",
+   "text": "F08 统计方法：建议细化未来研究设计要求（suggestion/minor）",
+   "kind": "inferred",
+   "source_id": "F08",
+   "location": "findings[7]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[4].text",
+     "quote": "建议未来研究扩大样本并开展多中心验证"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-09",
+   "text": "F11 规范一致性：t=2.10 与 p=0.04 数值组合复算自洽（norm_issue/minor）",
+   "kind": "inferred",
+   "source_id": "F11",
+   "location": "findings[10]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[2].text",
+     "quote": "干预组焦虑得分显著低于对照组（t(52)=2.10, p=0.04）"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "图2 无法读取，图内数值一致性待复核（F09）"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "F09 待获取可读图像后人工复核"
+  ],
+  "summary": "1 条待复核（图2 不可读）与 1 项材料缺口已如实登记；统计量复算 4 条（3 矛盾 1 一致）均落盘可复核，未凭空补结论"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step2",
+   "change": "六分面逐条审查，产出 11 条发现（9 confirmed / 1 pending / 1 suppressed），其中 4 条附 stat_claim"
+  },
+  {
+   "step": "step3",
+   "change": "coverage_audit 回写六分面覆盖与章节覆盖"
+  },
+  {
+   "step": "step4",
+   "change": "stat_recompute 复算 4 条统计量断言"
+  },
+  {
+   "step": "step6",
+   "change": "gain_probe 回写正常 vs 退化对照与效率计数"
+  },
+  {
+   "step": "step7",
+   "change": "verify_check + schema_guard 双自检 PASS 后交付"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "findings[0].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[5].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[6].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[7].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[10].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "severity_rubric.declared",
+   "template_value": "三级口径判定前声明（declared_at + levels 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[5].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[6].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[7].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[8].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[9].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[10].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[5].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[6].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[7].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[10].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[8].pending_registered",
+   "template_value": "pending ⇒ 登记 pending_review（reason+needed_action）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[9].suppression_registered",
+   "template_value": "suppressed ⇒ 登记 suppressed[]（rule_id 须在事前规则表内）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].stat_recompute_present",
+   "template_value": "stat_claim ⇒ result.stat_recompute.checks 有复算记录",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].stat_recompute_consistent",
+   "template_value": "复算记录的 consistent 与独立复算一致（复算记录不得被篡改）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].stat_recompute_present",
+   "template_value": "stat_claim ⇒ result.stat_recompute.checks 有复算记录",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].stat_recompute_consistent",
+   "template_value": "复算记录的 consistent 与独立复算一致（复算记录不得被篡改）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].stat_recompute_present",
+   "template_value": "stat_claim ⇒ result.stat_recompute.checks 有复算记录",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].stat_recompute_consistent",
+   "template_value": "复算记录的 consistent 与独立复算一致（复算记录不得被篡改）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[10].stat_recompute_present",
+   "template_value": "stat_claim ⇒ result.stat_recompute.checks 有复算记录",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[10].stat_recompute_consistent",
+   "template_value": "复算记录的 consistent 与独立复算一致（复算记录不得被篡改）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].defect_class_mapping",
+   "template_value": "缺陷/报告不全映射（fact_error⇒method_defect；reporting_gap⇒insufficient_evidence/norm_issue；suggestion⇒not_applicable）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].defect_class_mapping",
+   "template_value": "缺陷/报告不全映射（fact_error⇒method_defect；reporting_gap⇒insufficient_evidence/norm_issue；suggestion⇒not_applicable）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].defect_class_mapping",
+   "template_value": "缺陷/报告不全映射（fact_error⇒method_defect；reporting_gap⇒insufficient_evidence/norm_issue；suggestion⇒not_applicable）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].defect_class_mapping",
+   "template_value": "缺陷/报告不全映射（fact_error⇒method_defect；reporting_gap⇒insufficient_evidence/norm_issue；suggestion⇒not_applicable）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].defect_class_mapping",
+   "template_value": "缺陷/报告不全映射（fact_error⇒method_defect；reporting_gap⇒insufficient_evidence/norm_issue；suggestion⇒not_applicable）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[5].defect_class_mapping",
+   "template_value": "缺陷/报告不全映射（fact_error⇒method_defect；reporting_gap⇒insufficient_evidence/norm_issue；suggestion⇒not_applicable）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[6].defect_class_mapping",
+   "template_value": "缺陷/报告不全映射（fact_error⇒method_defect；reporting_gap⇒insufficient_evidence/norm_issue；suggestion⇒not_applicable）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[7].defect_class_mapping",
+   "template_value": "缺陷/报告不全映射（fact_error⇒method_defect；reporting_gap⇒insufficient_evidence/norm_issue；suggestion⇒not_applicable）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[10].defect_class_mapping",
+   "template_value": "缺陷/报告不全映射（fact_error⇒method_defect；reporting_gap⇒insufficient_evidence/norm_issue；suggestion⇒not_applicable）",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "severity_ledger",
+   "state": "not_found",
+   "note": "/app/work/severity_rubric.json 台账缺失，下游不得宣称已核对"
+  },
+  {
+   "gate": "coverage_audit_output",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "stat_recompute_output",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS"
+}

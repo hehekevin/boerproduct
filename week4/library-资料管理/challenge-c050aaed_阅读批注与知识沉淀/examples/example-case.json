@@ -1,0 +1,47 @@
+{
+  "case_id": "demo-readnote-001",
+  "note": "【合成示例，非正式案例答案】材料与批注均为虚构，仅用于演示接口与自测链路。",
+  "task": {
+    "goal": "从给定科研材料中提取批注，完成批注定位、类型标注、知识卡片沉淀、主题归纳与待查证登记",
+    "material_root": "examples/materials"
+  },
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  },
+  "materials": [
+    {
+      "material_id": "M01",
+      "title": "Synthetic Paper A: Sleep restriction and cognition (fictional)",
+      "kind": "text_excerpt",
+      "excerpts": [
+        {"locator": "p.2 §3 para1", "text": "Sleep-restricted participants showed significantly reduced working memory accuracy (p < .01)."},
+        {"locator": "p.3 §4 para2", "text": "Our findings align with the two-process model of sleep regulation."}
+      ]
+    },
+    {
+      "material_id": "M02",
+      "title": "Synthetic Paper B: Adjusted effects of short sleep (fictional)",
+      "kind": "text_excerpt",
+      "excerpts": [
+        {"locator": "p.1 §1 para3", "text": "We did not control for circadian phase in the analysis."},
+        {"locator": "p.5 §7 para1", "text": "The effect persisted after adjusting for age and sex."}
+      ]
+    },
+    {
+      "material_id": "M03",
+      "title": "Synthetic Paper B (duplicate download, fictional)",
+      "kind": "text_excerpt",
+      "duplicate_of": "M02",
+      "excerpts": [
+        {"locator": "p.5 §7 para1", "text": "The effect persisted after adjusting for age and sex."}
+      ]
+    }
+  ],
+  "annotations": [
+    {"ann_id": "A01", "material_id": "M01", "locator": "p.2 §3 para1", "kind": "highlight", "type_label": "疑问", "quote": "Sleep-restricted participants showed significantly reduced working memory accuracy (p < .01)", "note": "样本量是否足以支撑该结论？"},
+    {"ann_id": "A02", "material_id": "M01", "locator": "p.3 §4 para2", "kind": "underline", "type_label": "补充", "quote": "Our findings align with the two-process model of sleep regulation", "note": "补充：与双过程模型一致，可复用为背景论据"},
+    {"ann_id": "A03", "material_id": "M02", "locator": "p.1 §1 para3", "kind": "margin", "type_label": "质疑", "quote": "We did not control for circadian phase in the analysis", "note": "未控制昼夜节律相位，结论强度存疑"},
+    {"ann_id": "A04", "material_id": "M02", "locator": "p.5 §7 para1", "kind": "text_selection", "type_label": "联想", "quote": "The effect persisted after adjusting for age and sex", "note": "联想：与 A01 的记忆准确率下降可能共享机制"},
+    {"ann_id": "A05", "material_id": "M03", "locator": "p.5 §7 para1", "kind": "text_selection", "type_label": "补充", "quote": "The effect persisted after adjusting for age and sex", "note": "重复下载版本上的重复批注，应与 A04 归并"}
+  ]
+}

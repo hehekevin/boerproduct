@@ -1,0 +1,420 @@
+{
+ "case_id": "demo-readnote-001",
+ "status": "answered",
+ "note": "【示意输出，非正式案例答案】materials 与 annotations 均为合成虚构内容，仅演示 schema 与自测链路。",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.13.x",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "合成示例，非正式运行环境记录"
+  },
+  "research_question": {
+   "question": "示例：把睡眠与认知主题的散落批注整理为可检索的知识卡片",
+   "scope": "仅处理输入材料内的批注",
+   "time_range": null
+  },
+  "source_materials": [
+   {
+    "material_id": "M01",
+    "source_ref": "materials[0]",
+    "title": "Synthetic Paper A (fictional)",
+    "sha256": null,
+    "kind": "text_excerpt",
+    "version_of": null,
+    "access_note": "合成示例，哈希留空"
+   },
+   {
+    "material_id": "M02",
+    "source_ref": "materials[1]",
+    "title": "Synthetic Paper B (fictional)",
+    "sha256": null,
+    "kind": "text_excerpt",
+    "version_of": null,
+    "access_note": "合成示例，哈希留空"
+   },
+   {
+    "material_id": "M03",
+    "source_ref": "materials[2]",
+    "title": "Synthetic Paper B duplicate (fictional)",
+    "sha256": null,
+    "kind": "text_excerpt",
+    "version_of": "M02",
+    "access_note": "重复下载版本，与 M02 归并"
+   }
+  ],
+  "input_files": [],
+  "annotation_vocab": {
+   "types": [
+    {
+     "type_id": "question",
+     "label": "疑问",
+     "definition": "对原文表述提出需要查证的问题",
+     "rule": "批注含疑问词且指向原文论断"
+    },
+    {
+     "type_id": "supplement",
+     "label": "补充",
+     "definition": "补充背景、佐证或可用论据",
+     "rule": "批注引入原文之外的可核对信息"
+    },
+    {
+     "type_id": "challenge",
+     "label": "质疑",
+     "definition": "指出方法、数据或结论的弱点",
+     "rule": "批注指出具体缺陷或矛盾"
+    },
+    {
+     "type_id": "association",
+     "label": "联想",
+     "definition": "与其他批注、文献或机制的跨条目联系",
+     "rule": "批注引用另一条批注或外部实体"
+    }
+   ],
+   "declared_at": "step1",
+   "note": "口径在任何批注判定之前声明，之后禁止调整"
+  },
+  "annotations": [
+   {
+    "ann_id": "A01",
+    "source_ref": "materials[0]",
+    "locator": "M01 p.2 §3 para1",
+    "anchor_kind": "highlight",
+    "ann_type": "question",
+    "quote": "Sleep-restricted participants showed significantly reduced working memory accuracy (p < .01)",
+    "quote_location": "materials[0].excerpts[0]",
+    "note_text": "样本量是否足以支撑该结论？",
+    "confidence": "medium",
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "needs_verify": true,
+    "judged": true
+   },
+   {
+    "ann_id": "A02",
+    "source_ref": "materials[0]",
+    "locator": "M01 p.3 §4 para2",
+    "anchor_kind": "underline",
+    "ann_type": "supplement",
+    "quote": "Our findings align with the two-process model of sleep regulation",
+    "quote_location": "materials[0].excerpts[1]",
+    "note_text": "补充：与双过程模型一致，可复用为背景论据",
+    "confidence": "high",
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "needs_verify": false,
+    "judged": true
+   },
+   {
+    "ann_id": "A03",
+    "source_ref": "materials[1]",
+    "locator": "M02 p.1 §1 para3",
+    "anchor_kind": "margin",
+    "ann_type": "challenge",
+    "quote": "We did not control for circadian phase in the analysis",
+    "quote_location": "materials[1].excerpts[0]",
+    "note_text": "未控制昼夜节律相位，结论强度存疑",
+    "confidence": "high",
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "needs_verify": false,
+    "judged": true
+   },
+   {
+    "ann_id": "A04",
+    "source_ref": "materials[1]",
+    "locator": "M02 p.5 §7 para1",
+    "anchor_kind": "text_selection",
+    "ann_type": "association",
+    "quote": "The effect persisted after adjusting for age and sex",
+    "quote_location": "materials[1].excerpts[1]",
+    "note_text": "联想：与 A01 的记忆准确率下降可能共享机制",
+    "confidence": "medium",
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "needs_verify": true,
+    "judged": true
+   },
+   {
+    "ann_id": "A05",
+    "source_ref": "materials[2]",
+    "locator": "M03 p.5 §7 para1",
+    "anchor_kind": "text_selection",
+    "ann_type": "supplement",
+    "quote": "The effect persisted after adjusting for age and sex",
+    "quote_location": "materials[2].excerpts[0]",
+    "note_text": "重复下载版本上的重复批注，归并至 A04",
+    "confidence": "high",
+    "duplicate_of": "A04",
+    "missing_metadata": [],
+    "needs_verify": false,
+    "judged": true
+   }
+  ],
+  "cards": [
+   {
+    "card_id": "C01",
+    "point": "睡眠限制显著降低工作记忆准确率（working memory accuracy）",
+    "evidence": [
+     {
+      "ann_id": "A01",
+      "quote": "Sleep-restricted participants showed significantly reduced working memory accuracy (p < .01)"
+     }
+    ],
+    "source": "M01 p.2 §3 para1（materials[0].excerpts[0]）",
+    "theme_ids": [
+     "T01"
+    ]
+   },
+   {
+    "card_id": "C02",
+    "point": "校正年龄与性别后睡眠效应仍持续，但昼夜节律相位未被控制",
+    "evidence": [
+     {
+      "ann_id": "A04",
+      "quote": "The effect persisted after adjusting for age and sex"
+     },
+     {
+      "ann_id": "A03",
+      "quote": "We did not control for circadian phase in the analysis"
+     }
+    ],
+    "source": "M02 p.5 §7 para1 与 M02 p.1 §1 para3",
+    "theme_ids": [
+     "T02"
+    ]
+   }
+  ],
+  "themes": [
+   {
+    "theme_id": "T01",
+    "label": "睡眠限制与工作记忆",
+    "basis": "A01 提出记忆准确率下降的问题、A02 提供双过程模型佐证，两条批注同指睡眠剥夺对认知表现的影响",
+    "member_anns": [
+     "A01",
+     "A02"
+    ],
+    "member_cards": [
+     "C01"
+    ]
+   },
+   {
+    "theme_id": "T02",
+    "label": "效应稳健性与混杂控制",
+    "basis": "A03 质疑混杂控制缺陷、A04 提供校正后稳健性证据，构成质疑-回应链",
+    "member_anns": [
+     "A03",
+     "A04"
+    ],
+    "member_cards": [
+     "C02"
+    ]
+   }
+  ],
+  "to_verify": [
+   {
+    "item_id": "V01",
+    "question": "A01 所引结论的样本量是否足以支撑？",
+    "related_anns": [
+     "A01"
+    ],
+    "needed_action": "回原文 methods 样本量段落核对后降级或升级置信度",
+    "status": "open"
+   },
+   {
+    "item_id": "V02",
+    "question": "A04 与 A01 的机制关联是否成立？",
+    "related_anns": [
+     "A04"
+    ],
+    "needed_action": "检索共享机制文献后再定级，不得凭术语重合直接连接",
+    "status": "open"
+   }
+  ],
+  "coverage": {
+   "total_annotations": 5,
+   "extracted": 5,
+   "judged": 5,
+   "by_type": {
+    "question": 1,
+    "supplement": 2,
+    "challenge": 1,
+    "association": 1
+   },
+   "cards_total": 2,
+   "themes_total": 2,
+   "to_verify_total": 2,
+   "ratio": 1.0
+  },
+  "conflicts": [
+   {
+    "item_ids": [
+     "A04",
+     "A05"
+    ],
+    "kind": "duplicate_download",
+    "resolution": "merged",
+    "evidence": "M03 为 M02 的重复下载版本，A05 批注与 A04 同句，归并保留 A04"
+   }
+  ],
+  "retrieval": {
+   "index_size": 0,
+   "entries": [],
+   "tokenize_note": "index_search.py 回填",
+   "recall_policy": "index_search.py 回填",
+   "query_demo": null
+  },
+  "theme_stats": [],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与批注清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明四类型口径（annotation_vocab + type_vocab.json）",
+    "command": "（Agent 写入 result.annotation_vocab 与 /app/work/type_vocab.json）",
+    "output_ref": "result.annotation_vocab",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "逐条批注判定与回证、卡片三要素、主题归纳、待查证登记",
+    "command": "（Agent 依据 materials 与批注原文逐条填写）",
+    "output_ref": "result.annotations/cards/themes/to_verify",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "构建检索索引与主题统计",
+    "command": "python3 /skills/weekly-skill/scripts/index_search.py --result /app/output/result.json --query \"memory\"",
+    "output_ref": "result.retrieval",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "双重自检",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "/app/work/verify_check.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "extracted",
+  "verdict_basis": "5 条批注全部逐条判定并回证，卡片/主题/待查证登记齐备",
+  "gain_evidence": {
+   "available": false,
+   "reason": "示例未跑探针；正式运行由 gain_probe.py 回填真实对照数字"
+  },
+  "efficiency": {
+   "available": false,
+   "reason": "示例未跑探针；正式运行由 gain_probe.py 回填"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "A01（question）质疑样本量支撑度，摘录原文 p<.01 结论句，置信度 medium",
+   "kind": "reported",
+   "source_id": "A01",
+   "location": "result.annotations[0]",
+   "evidence": [
+    {
+     "paragraph_id": "materials[0].excerpts[0]",
+     "quote": "Sleep-restricted participants showed significantly reduced working memory accuracy (p < .01)"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "A02（supplement）补充双过程模型背景论据，置信度 high",
+   "kind": "reported",
+   "source_id": "A02",
+   "location": "result.annotations[1]",
+   "evidence": [
+    {
+     "paragraph_id": "materials[0].excerpts[1]",
+     "quote": "Our findings align with the two-process model of sleep regulation"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "A03（challenge）指出昼夜节律相位未受控制的方法学缺陷，置信度 high",
+   "kind": "reported",
+   "source_id": "A03",
+   "location": "result.annotations[2]",
+   "evidence": [
+    {
+     "paragraph_id": "materials[1].excerpts[0]",
+     "quote": "We did not control for circadian phase in the analysis"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "A04（association）联想校正后效应与记忆下降共享机制，置信度 medium，needs_verify=true",
+   "kind": "inferred",
+   "source_id": "A04",
+   "location": "result.annotations[3]",
+   "evidence": [
+    {
+     "paragraph_id": "materials[1].excerpts[1]",
+     "quote": "The effect persisted after adjusting for age and sex"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "A05（supplement）为 M03 重复下载版本批注，与 A04 归并，置信度 high",
+   "kind": "reported",
+   "source_id": "A05",
+   "location": "result.annotations[4]",
+   "evidence": [
+    {
+     "paragraph_id": "materials[2].excerpts[0]",
+     "quote": "The effect persisted after adjusting for age and sex"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [],
+  "conflicts": [],
+  "human_review": [
+   "V01",
+   "V02"
+  ],
+  "summary": "示例：V01/V02 两项待查证登记后由人工跟进"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "示例骨架"
+  },
+  {
+   "step": "step2",
+   "change": "示例逐条判定回填"
+  }
+ ],
+ "self_check": [],
+ "gates": [],
+ "unbacked_numbers": [],
+ "validator_verdict": null
+}

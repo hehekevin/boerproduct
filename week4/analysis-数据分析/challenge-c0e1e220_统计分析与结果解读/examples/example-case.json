@@ -1,0 +1,26 @@
+{
+  "case_id": "demo-stat-audit-001",
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  },
+  "datasets": [
+    {
+      "dataset_id": "ds-exp-01",
+      "title": "【示意数据，全部虚构】田间处理组产量实验（两组随机实验的处理组子集）",
+      "design_type": "experimental",
+      "unit": "kg/plot",
+      "description": "合成示范数据集，仅用于说明接口，非正式案例。数据字典：产量 yield，单位 kg/plot。清洗记录：剔除 2 条重复录入行后保留 12 行有效记录。方法部分原文：经 Shapiro-Wilk 检验两组产量均不拒绝正态（P=0.21/0.34），Levene 检验示方差不齐（P=0.03），故采用 Welch t 检验。报告原文：处理显著提高了产量（p=0.04），证明该处理有效。另一句原文：两组差异采用 Welch t 检验，未报告置信区间与效应量。",
+      "variables": ["yield"],
+      "values": [46.1, 52.7, 58.3, 49.8, 55.0, 61.2, 50.4, 57.6, 47.9, 54.3, 59.1, 51.5]
+    },
+    {
+      "dataset_id": "ds-obs-02",
+      "title": "【示意数据，全部虚构】观察性随访队列暴露水平记录",
+      "design_type": "observational",
+      "unit": "score",
+      "description": "合成示范数据集，仅用于说明接口，非正式案例。数据字典：随访结局评分 score，单位 score；未说明缺失值处理口径。方法部分原文：因结局评分呈偏态分布，采用 Spearman 秩相关分析暴露水平与评分的关联。报告原文：暴露水平与结局评分呈正相关（r=0.42，p=0.03），提示二者存在关联；未给出相关系数的置信区间。",
+      "variables": ["score"],
+      "values": [3.2, 4.1, 5.5, 6.0, 4.8, 7.3, 5.9, 6.6, 3.9, 8.1, 5.2, 4.4, 6.8, 7.7, 3.5, 5.0, 6.3, 4.9, 7.0, 5.6]
+    }
+  ]
+}

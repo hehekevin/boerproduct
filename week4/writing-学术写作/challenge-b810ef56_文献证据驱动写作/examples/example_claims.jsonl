@@ -1,0 +1,4 @@
+{"claim_id": "C01", "section": "干预效果小结", "type": "numeric", "text": "在一项纳入120名患者的随机对照试验中，药物A使收缩压平均下降12.4mmHg", "numbers": ["120", "12.4"], "hedged": false, "strong_wording": false, "universal": false}
+{"claim_id": "C02", "section": "干预效果小结", "type": "interpretive", "text": "结果表明药物A可降低收缩压", "numbers": [], "hedged": false, "strong_wording": false, "universal": false}
+{"claim_id": "C03", "section": "干预效果小结", "type": "numeric", "text": "另一项80人队列报告不良事件发生率8%", "numbers": ["80", "8"], "hedged": false, "strong_wording": false, "universal": false}
+{"claim_id": "C04", "section": "干预效果小结", "type": "interpretive", "text": "综述提示现有证据以小样本研究为主，结论有待更大规模验证", "numbers": [], "hedged": true, "strong_wording": false, "universal": false}

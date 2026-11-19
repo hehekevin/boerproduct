@@ -1,0 +1,30 @@
+{
+  "_disclaimer": "示意，非正式案例结果。展示 gain_evidence / efficiency 回填 result.json 的结构与真实对照方式（本文件数字为示意格式说明，实际数字以 --ablate 真跑输出为准）。",
+  "gain_evidence": {
+    "ok": true,
+    "mechanism_metric_map": {
+      "证据登记与逐字回证机制": ["bound", "verbatim"],
+      "定位锚点（章节/页码/段落）": ["locator_format"],
+      "强度分级与措辞相称规则": ["wording"]
+    },
+    "comparison": {
+      "arm_skill": {"fail_count": 0, "verdict": "PASS", "fail_by_check": {"bound": 0, "verbatim": 0, "locator_format": 0, "in_draft": 0, "wording": 0}},
+      "arm_base": {"fail_count": 8, "verdict": "FAIL", "fail_by_check": {"bound": 4, "verbatim": 4, "locator_format": 4, "in_draft": 0, "wording": 0}},
+      "fail_count_diff_base_minus_skill": 8
+    },
+    "pollution_counterexample": {
+      "arm_polluted_fail_count": 9,
+      "arm_polluted_verdict": "FAIL",
+      "sensitivity_check": "PASS"
+    },
+    "boundary": ["增益以同一校验器 fail_count 差为准，仅在本包规则范围内判定"],
+    "failure_conditions": ["claims 为空 / sources 目录为空时 gain_confirmed=False"],
+    "gain_confirmed": true
+  },
+  "efficiency": {
+    "mechanical_checks": 60,
+    "manual_review_items_skill": 0,
+    "manual_review_items_base": 12,
+    "manual_review_reduction": 12
+  }
+}

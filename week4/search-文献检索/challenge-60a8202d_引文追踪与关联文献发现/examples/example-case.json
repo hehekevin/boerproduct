@@ -1,0 +1,39 @@
+{
+  "case_id": "demo-cite-001",
+  "_comment": "合成案例：种子论文 + 保留引用图（仅示意接口与数据形状，非正式案例答案）。",
+  "_usage_note": "verify_check.py 会把自检三元组回写进 --result 指向的文件；对 example-result.json 原样运行属预期更新，如需保持干净请对副本运行。",
+  "output_contract": {
+    "case_id": "案例标识",
+    "status": "运行状态",
+    "result": "主结果",
+    "claims": "证据链",
+    "uncertainties": "不确定性",
+    "changelog": "变更记录"
+  },
+  "seed": {
+    "seed_id": "S0",
+    "title": "Sparse Mixture Routing for Modular Neural Retrieval",
+    "year": 2024,
+    "doi": "10.9000/smr.2024.001"
+  },
+  "records": {
+    "references": [
+      {"ref_id": "B1", "title": "Memory-Augmented Key-Value Networks", "year": 2019, "doi": "10.9000/mkv.2019.010"},
+      {"ref_id": "B2", "title": "Keyed Memory Layers for Retrieval", "year": 2019, "doi": null},
+      {"ref_id": "B3", "title": "Routing Nets via Soft Gating", "year": 2021, "doi": "10.9000/rsg.2021.004"}
+    ],
+    "citing": [
+      {"node_id": "F1", "title": "Gated Sparse Routing Revisited", "year": 2025, "doi": "10.9000/gsr.2025.002"},
+      {"node_id": "F2", "title": "A Critique of Sparse Routing Benchmarks", "year": 2025, "doi": "10.9000/crb.2025.003"},
+      {"node_id": "F3", "title": "Cross-Modal Sparse Retrieval", "year": 2026, "doi": "10.9000/cms.2026.001"},
+      {"node_id": "B3-ext", "title": "Routing Nets via Soft Gating (extended release)", "year": 2025, "doi": "10.9000/rsg.2025.004"}
+    ],
+    "related": [
+      {"node_id": "P1", "title": "Conditional Memory Expansion for Open-Domain QA", "year": 2023, "doi": "10.9000/cme.2023.005"},
+      {"node_id": "P2", "title": "Latent Index Pruning at Scale", "year": 2024, "doi": "10.9000/lip.2024.002"}
+    ],
+    "imported": [
+      {"node_id": "O1", "title": "Unlinked Retrieval Notes on Sparse Indexing", "year": 2018, "doi": "10.9000/urn.2018.001"}
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "case_id": "demo-merge-001",
+  "_comment": "合成案例：3 个模拟学术库（crossref/europepmc/publisher）对同一科研问题各返回若干记录，另有 pubmed 模拟限流失败。含 DOI 前缀/大小写陷阱、CJK 标题分词陷阱、3 处字段冲突。仅示意接口，非正式案例答案。",
+  "output_contract": {
+    "case_id": "案例标识",
+    "status": "运行状态",
+    "result": "主结果",
+    "claims": "证据链",
+    "uncertainties": "不确定性",
+    "changelog": "变更记录"
+  },
+  "research_question": "蛋白质结构预测中的深度学习方法（合成检索范围：2021-2022）",
+  "databases": {
+    "crossref": {"query_syntax": "title:... AND ...，字段含 DOI/container-title/issued", "fields": ["DOI", "title", "author", "container-title", "issued"]},
+    "europepmc": {"query_syntax": "TITLE:... AND ...，字段含 doi/PMCID/journalInfo", "fields": ["doi", "title", "authorString", "pubYear", "journalInfo"]},
+    "publisher": {"query_syntax": "q=...&field=...，字段含 article-number/pdf_url", "fields": ["doi?", "title", "authors", "year", "venue"]},
+    "pubmed": {"query_syntax": "...[Title] AND ...，本案例模拟 429 限流失败", "fields": []}
+  },
+  "responses": [
+    {"db_id": "crossref", "query_id": "q1", "original_query": "protein structure prediction transformer",
+     "records": [
+       {"DOI": "https://doi.org/10.1000/ABC.2021.001", "title": "Transformer architecture for protein structure prediction",
+        "author": [{"given": "John", "family": "Smith"}, {"given": "Ken", "family": "Lee"}],
+        "container-title": "Nature Methods", "issued": {"date-parts": [[2021]]}},
+       {"DOI": "10.3000/jkl.2020.003", "title": "Benchmarking retrieval across scientific databases",
+        "author": [{"given": "Ahmed", "family": "Hassan"}],
+        "container-title": "Scientometrics", "issued": {"date-parts": [[2020]]}}
+     ]},
+    {"db_id": "crossref", "query_id": "q2", "original_query": "deep learning protein folding",
+     "records": [
+       {"DOI": "10.1000/def.2022.002", "title": "Deep learning for 蛋白质结构预测",
+        "author": [{"given": "Wei", "family": "Zhang"}, {"given": "Na", "family": "Li"}],
+        "container-title": "J. Integr. Bioinform.", "issued": {"date-parts": [[2022]]}}
+     ]},
+    {"db_id": "europepmc", "query_id": "q1", "original_query": "transformer protein structure",
+     "records": [
+       {"doi": "10.1000/abc.2021.001", "title": "Transformer Architecture for Protein Structure Prediction.",
+        "authorString": "Smith J, Lee K", "pubYear": 2021, "journalInfo": {"journal": {"title": "Nature Methods"}}}
+     ]},
+    {"db_id": "europepmc", "query_id": "q3", "original_query": "graph neural network molecule",
+     "records": [
+       {"doi": "10.2000/ghi.2019.777", "title": "Graph neural networks for molecule screening",
+        "authorString": "Maria Garcia", "pubYear": 2019, "journalInfo": {"journal": {"title": "Bioinformatics"}}}
+     ]},
+    {"db_id": "publisher", "query_id": "q2", "original_query": "deep learning protein",
+     "records": [
+       {"title": "Deep Learning for 蛋白质 结构预测", "authors": "Zhang W; Li N",
+        "year": "2022", "venue": "Journal of Integrative Bioinformatics", "article-number": "e2022-002"},
+       {"doi": "10.4000/mno.2018.004", "title": "Efficient sequence alignment with dynamic programming",
+        "authors": "Chen Rui", "year": "2018", "venue": "Methods", "article-number": "e2018-004"}
+     ]},
+    {"db_id": "publisher", "query_id": "q3", "original_query": "graph neural molecule screening",
+     "records": [
+       {"doi": "10.2000/ghi.2019.777", "title": "Graph neural networks for molecule screening",
+        "authors": "Maria Garcia", "year": "2020", "venue": "Bioinformatics", "article-number": "e2019-777"}
+     ]},
+    {"db_id": "pubmed", "query_id": "q1", "original_query": "transformer[Title] AND prediction",
+     "status": "failed", "failure_stage": "rate_limit", "failure_reason": "HTTP 429 Too Many Requests（合成模拟），重试 2 次仍失败", "records": []}
+  ]
+}

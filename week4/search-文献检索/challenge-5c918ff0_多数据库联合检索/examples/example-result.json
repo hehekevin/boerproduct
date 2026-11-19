@@ -1,0 +1,1334 @@
+{
+ "case_id": "demo-merge-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "本案例为合成数据，非真实库响应；pubmed 库模拟限流失败无返回"
+  ],
+  "environment": {
+   "python_version": "3.13.1",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "开发机"
+  },
+  "databases": [
+   {
+    "db_id": "crossref",
+    "db_name": "Crossref（模拟）",
+    "status": "queried",
+    "fields_profile": "DOI/container-title/issued",
+    "queries": [
+     {
+      "query_id": "q1",
+      "original_query": "protein structure prediction transformer",
+      "adapted_query": "title:protein structure AND title:transformer",
+      "adaptation_notes": "按 Crossref 语法改写为 title: 前缀字段限定",
+      "status": "queried",
+      "raw_count": 2,
+      "returned_count": 2
+     },
+     {
+      "query_id": "q2",
+      "original_query": "deep learning protein folding",
+      "adapted_query": "title:deep learning AND title:protein",
+      "adaptation_notes": "字段限定改写；folding→protein 收窄",
+      "status": "queried",
+      "raw_count": 1,
+      "returned_count": 1
+     }
+    ]
+   },
+   {
+    "db_id": "europepmc",
+    "db_name": "EuropePMC（模拟）",
+    "status": "queried",
+    "fields_profile": "doi/authorString/journalInfo",
+    "queries": [
+     {
+      "query_id": "q1",
+      "original_query": "transformer protein structure",
+      "adapted_query": "TITLE:\"protein structure\" AND ABSTRACT:transformer",
+      "adapted_notes": "短语加引号；字段能力与 crossref 不同，未机械复制",
+      "status": "queried",
+      "raw_count": 1,
+      "returned_count": 1
+     },
+     {
+      "query_id": "q3",
+      "original_query": "graph neural network molecule",
+      "adapted_query": "TITLE:\"graph neural\" AND TITLE:molecule",
+      "adaptation_notes": "短语加引号",
+      "status": "queried",
+      "raw_count": 1,
+      "returned_count": 1
+     }
+    ]
+   },
+   {
+    "db_id": "publisher",
+    "db_name": "Publisher API（模拟）",
+    "status": "queried",
+    "fields_profile": "doi 可缺省/article-number",
+    "queries": [
+     {
+      "query_id": "q2",
+      "original_query": "deep learning protein",
+      "adapted_query": "q=deep+learning+protein&field=title,authors,year",
+      "adaptation_notes": "q= 参数式语法；显式声明返回字段",
+      "status": "queried",
+      "raw_count": 2,
+      "returned_count": 2
+     },
+     {
+      "query_id": "q3",
+      "original_query": "graph neural molecule screening",
+      "adapted_query": "q=graph+neural+molecule&field=title,doi,year",
+      "adaptation_notes": "q= 参数式语法",
+      "status": "queried",
+      "raw_count": 1,
+      "returned_count": 1
+     }
+    ]
+   },
+   {
+    "db_id": "pubmed",
+    "db_name": "PubMed（模拟）",
+    "status": "failed",
+    "fields_profile": null,
+    "queries": [
+     {
+      "query_id": "q1",
+      "original_query": "transformer[Title] AND prediction",
+      "adapted_query": "transformer[Title] AND prediction[Title]",
+      "adaptation_notes": "[Title] 字段限定",
+      "status": "failed",
+      "failure_stage": "rate_limit",
+      "failure_reason": "HTTP 429 Too Many Requests（合成模拟），重试 2 次仍失败，缺口已登记",
+      "raw_count": 0,
+      "returned_count": 0
+     }
+    ]
+   }
+  ],
+  "raw_hits": [
+   {
+    "hit_id": "H001",
+    "db_id": "crossref",
+    "query_id": "q1",
+    "raw_ref": "responses/crossref-q1.json :: $.records[0]",
+    "doi": "https://doi.org/10.1000/ABC.2021.001",
+    "title": "Transformer architecture for protein structure prediction",
+    "authors": [
+     "John Smith",
+     "Ken Lee"
+    ],
+    "year": {
+     "date-parts": [
+      [
+       2021
+      ]
+     ]
+    },
+    "venue": "Nature Methods"
+   },
+   {
+    "hit_id": "H002",
+    "db_id": "europepmc",
+    "query_id": "q1",
+    "raw_ref": "responses/europepmc-q1.json :: $.records[0]",
+    "doi": "10.1000/abc.2021.001",
+    "title": "Transformer Architecture for Protein Structure Prediction.",
+    "authors": [
+     "Smith J",
+     "Lee K"
+    ],
+    "year": 2021,
+    "venue": "Nature Methods"
+   },
+   {
+    "hit_id": "H003",
+    "db_id": "crossref",
+    "query_id": "q2",
+    "raw_ref": "responses/crossref-q2.json :: $.records[0]",
+    "doi": "10.1000/def.2022.002",
+    "title": "Deep learning for 蛋白质结构预测",
+    "authors": [
+     "Wei Zhang",
+     "Na Li"
+    ],
+    "year": 2022,
+    "venue": "J. Integr. Bioinform."
+   },
+   {
+    "hit_id": "H004",
+    "db_id": "publisher",
+    "query_id": "q2",
+    "raw_ref": "responses/publisher-q2.json :: $.records[0]",
+    "doi": null,
+    "title": "Deep Learning for 蛋白质 结构预测",
+    "authors": "Zhang W; Li N",
+    "year": "2022",
+    "venue": "Journal of Integrative Bioinformatics"
+   },
+   {
+    "hit_id": "H005",
+    "db_id": "europepmc",
+    "query_id": "q3",
+    "raw_ref": "responses/europepmc-q3.json :: $.records[0]",
+    "doi": "10.2000/ghi.2019.777",
+    "title": "Graph neural networks for molecule screening",
+    "authors": [
+     "Maria Garcia"
+    ],
+    "year": 2019,
+    "venue": "Bioinformatics"
+   },
+   {
+    "hit_id": "H006",
+    "db_id": "publisher",
+    "query_id": "q3",
+    "raw_ref": "responses/publisher-q3.json :: $.records[0]",
+    "doi": "10.2000/ghi.2019.777",
+    "title": "Graph neural networks for molecule screening",
+    "authors": "Maria Garcia",
+    "year": "2020",
+    "venue": "Bioinformatics"
+   },
+   {
+    "hit_id": "H007",
+    "db_id": "crossref",
+    "query_id": "q1",
+    "raw_ref": "responses/crossref-q1.json :: $.records[1]",
+    "doi": "10.3000/jkl.2020.003",
+    "title": "Benchmarking retrieval across scientific databases",
+    "authors": [
+     "Ahmed Hassan"
+    ],
+    "year": 2020,
+    "venue": "Scientometrics"
+   },
+   {
+    "hit_id": "H008",
+    "db_id": "publisher",
+    "query_id": "q2",
+    "raw_ref": "responses/publisher-q2.json :: $.records[1]",
+    "doi": "10.4000/mno.2018.004",
+    "title": "Efficient sequence alignment with dynamic programming",
+    "authors": "Chen Rui",
+    "year": "2018",
+    "venue": "Methods"
+   }
+  ],
+  "dedup_policy": {
+   "title_similarity_threshold": 0.82,
+   "year_tolerance": 1,
+   "require_author_overlap": true,
+   "field_priority": [
+    "crossref",
+    "europepmc",
+    "publisher"
+   ],
+   "basis": "标题 Jaccard 阈值 0.82 为本技能事前声明（案例未给）；年份容差 ±1 吸收电子版/印刷版差异；字段取值按 crossref→europepmc→publisher 优先级",
+   "declared_at": "step1（任何匹配之前）"
+  },
+  "merged_records": [
+   {
+    "record_id": "R001",
+    "sources": [
+     {
+      "hit_id": "H001",
+      "db_id": "crossref"
+     },
+     {
+      "hit_id": "H002",
+      "db_id": "europepmc"
+     }
+    ],
+    "field_sources": {
+     "doi": "crossref",
+     "title": "crossref",
+     "year": "crossref",
+     "venue": "crossref",
+     "authors": "crossref"
+    },
+    "conflicts": [
+     "authors"
+    ],
+    "doi": "10.1000/abc.2021.001",
+    "title": "Transformer architecture for protein structure prediction",
+    "year": 2021,
+    "venue": "Nature Methods",
+    "authors": [
+     "John Smith",
+     "Ken Lee"
+    ]
+   },
+   {
+    "record_id": "R002",
+    "sources": [
+     {
+      "hit_id": "H003",
+      "db_id": "crossref"
+     },
+     {
+      "hit_id": "H004",
+      "db_id": "publisher"
+     }
+    ],
+    "field_sources": {
+     "doi": "crossref",
+     "title": "crossref",
+     "year": "crossref",
+     "venue": "crossref",
+     "authors": "crossref"
+    },
+    "conflicts": [
+     "title",
+     "venue",
+     "authors"
+    ],
+    "doi": "10.1000/def.2022.002",
+    "title": "Deep learning for 蛋白质结构预测",
+    "year": 2022,
+    "venue": "J. Integr. Bioinform.",
+    "authors": [
+     "Wei Zhang",
+     "Na Li"
+    ]
+   },
+   {
+    "record_id": "R003",
+    "sources": [
+     {
+      "hit_id": "H005",
+      "db_id": "europepmc"
+     },
+     {
+      "hit_id": "H006",
+      "db_id": "publisher"
+     }
+    ],
+    "field_sources": {
+     "doi": "europepmc",
+     "title": "europepmc",
+     "year": "europepmc",
+     "venue": "europepmc",
+     "authors": "europepmc"
+    },
+    "conflicts": [
+     "year"
+    ],
+    "doi": "10.2000/ghi.2019.777",
+    "title": "Graph neural networks for molecule screening",
+    "year": 2019,
+    "venue": "Bioinformatics",
+    "authors": [
+     "Maria Garcia"
+    ]
+   },
+   {
+    "record_id": "R004",
+    "sources": [
+     {
+      "hit_id": "H007",
+      "db_id": "crossref"
+     }
+    ],
+    "field_sources": {
+     "doi": "crossref",
+     "title": "crossref",
+     "year": "crossref",
+     "venue": "crossref",
+     "authors": "crossref"
+    },
+    "conflicts": [],
+    "doi": "10.3000/jkl.2020.003",
+    "title": "Benchmarking retrieval across scientific databases",
+    "year": 2020,
+    "venue": "Scientometrics",
+    "authors": [
+     "Ahmed Hassan"
+    ]
+   },
+   {
+    "record_id": "R005",
+    "sources": [
+     {
+      "hit_id": "H008",
+      "db_id": "publisher"
+     }
+    ],
+    "field_sources": {
+     "doi": "publisher",
+     "title": "publisher",
+     "year": "publisher",
+     "venue": "publisher",
+     "authors": "publisher"
+    },
+    "conflicts": [],
+    "doi": "10.4000/mno.2018.004",
+    "title": "Efficient sequence alignment with dynamic programming",
+    "year": 2018,
+    "venue": "Methods",
+    "authors": "Chen Rui"
+   }
+  ],
+  "dedup_decisions": [
+   {
+    "pair": [
+     "H001",
+     "H002"
+    ],
+    "method": "doi_exact",
+    "similarity": 1.0,
+    "decision": "duplicate",
+    "reason": "DOI 归一后完全一致"
+   },
+   {
+    "pair": [
+     "H003",
+     "H004"
+    ],
+    "method": "title_fuzzy",
+    "similarity": 1.0,
+    "decision": "duplicate",
+    "reason": "标题 Jaccard=1.0000 ≥ 阈值 0.82，年份差 0，作者姓氏交集=['li', 'zhang']"
+   },
+   {
+    "pair": [
+     "H005",
+     "H006"
+    ],
+    "method": "doi_exact",
+    "similarity": 1.0,
+    "decision": "duplicate",
+    "reason": "DOI 归一后完全一致"
+   }
+  ],
+  "conflicts": [
+   {
+    "record_id": "R001",
+    "field": "authors",
+    "values": {
+     "H001": [
+      "john",
+      "ken",
+      "lee",
+      "smith"
+     ],
+     "H002": [
+      "lee",
+      "smith"
+     ]
+    },
+    "resolution": "['John Smith', 'Ken Lee']",
+    "basis": "来源优先级首位（crossref），其余值保留备查"
+   },
+   {
+    "record_id": "R002",
+    "field": "title",
+    "values": {
+     "H003": "deep learning for 蛋白质结构预测",
+     "H004": "deep learning for 蛋白质 结构预测"
+    },
+    "resolution": "Deep learning for 蛋白质结构预测",
+    "basis": "来源优先级首位（crossref），其余值保留备查"
+   },
+   {
+    "record_id": "R002",
+    "field": "venue",
+    "values": {
+     "H003": "j integr bioinform",
+     "H004": "journal of integrative bioinformatics"
+    },
+    "resolution": "J. Integr. Bioinform.",
+    "basis": "来源优先级首位（crossref），其余值保留备查"
+   },
+   {
+    "record_id": "R002",
+    "field": "authors",
+    "values": {
+     "H003": [
+      "li",
+      "na",
+      "wei",
+      "zhang"
+     ],
+     "H004": [
+      "li",
+      "zhang"
+     ]
+    },
+    "resolution": "['Wei Zhang', 'Na Li']",
+    "basis": "来源优先级首位（crossref），其余值保留备查"
+   },
+   {
+    "record_id": "R003",
+    "field": "year",
+    "values": {
+     "H005": 2019,
+     "H006": 2020
+    },
+    "resolution": "2019",
+    "basis": "来源优先级首位（europepmc），其余值保留备查"
+   }
+  ],
+  "coverage_matrix": {
+   "crossref": {
+    "doi": "covered",
+    "title": "covered",
+    "authors": "covered",
+    "year": "covered",
+    "venue": "covered"
+   },
+   "europepmc": {
+    "doi": "covered",
+    "title": "covered",
+    "authors": "covered",
+    "year": "covered",
+    "venue": "covered"
+   },
+   "publisher": {
+    "doi": "covered",
+    "title": "covered",
+    "authors": "covered",
+    "year": "covered",
+    "venue": "covered"
+   }
+  },
+  "dedup_metrics": {
+   "raw_hits_total": 8,
+   "merged_records_total": 5,
+   "duplicates_merged": 3,
+   "single_source_records": 2,
+   "method_breakdown": {
+    "doi_exact": 2,
+    "title_fuzzy": 1
+   },
+   "conflicts_detected": 5,
+   "ablate": "none"
+  },
+  "attributions": [],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架并对 /input 做标志式命中扫描",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "raw_hits[]",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明跨库去重策略（阈值 0.82 / 年份容差 1 / 字段优先级）",
+    "command": "（填写 result.dedup_policy 与 /app/work/dedup_policy.json）",
+    "output_ref": "dedup_policy",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "按库适配检索式并登记每库查询与失败状态",
+    "command": "（Agent 按各库语法改写，登记 databases[].queries）",
+    "output_ref": "databases",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "机械执行归一/去重/合并/冲突/覆盖管线",
+    "command": "python3 /skills/weekly-skill/scripts/dedup_core.py --result /app/output/result.json --apply",
+    "output_ref": "merged_records",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "双重自检 + 增益对照，回写 self_check/gates/gain_evidence",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json",
+    "output_ref": "self_check",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": "3 库完成适配查询与合并，pubmed 限流失败已登记缺口",
+   "manual_takeover": []
+  },
+  "verdict": "merged",
+  "verdict_basis": "全部可得库按适配检索式完成查询；去重划分与引擎复算一致；3 处字段冲突全部登记；覆盖矩阵与实际数据一致",
+  "gain_evidence": {
+   "probe_version": "1.0",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "demo-merge-001",
+   "input": {
+    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-5c918ff0\\_test\\res.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-5c918ff0\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "ablate_options": "normalize（关归一）/fuzzy（关模糊匹配）/conflict（关冲突检测）/all",
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "FAIL",
+     "problems": 2,
+     "unbacked_numbers": 0,
+     "metrics": {
+      "machine_adjudicated_ratio": 1.0,
+      "machine_adjudicated_ratio_pct": 100.0,
+      "numeric_fields_total": 10,
+      "numeric_fields_machine_adjudicated": 10,
+      "numeric_fields_not_adjudicated": 0,
+      "engine_agreement_ratio": 1.0,
+      "partition_total": 5,
+      "partition_agree": 5,
+      "partition_false_alarm": 0,
+      "objective_dedup_errors": 0,
+      "dup_missed": 0,
+      "objective_conflicts_unregistered": 0,
+      "conflict_missed": 0,
+      "trace_broken_hits": 0,
+      "failed_dbs_without_reason": 0,
+      "manual_review_items": 0,
+      "steps_count": 71,
+      "steps_detail": {
+       "checks_executed": 66,
+       "checks_disabled": 0,
+       "flow_steps_done": 5
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0007
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "FAIL",
+     "problems": 9,
+     "unbacked_numbers": 0,
+     "metrics": {
+      "machine_adjudicated_ratio": 0.0,
+      "machine_adjudicated_ratio_pct": 0.0,
+      "numeric_fields_total": 10,
+      "numeric_fields_machine_adjudicated": 0,
+      "numeric_fields_not_adjudicated": 10,
+      "engine_agreement_ratio": 0.6,
+      "partition_total": 5,
+      "partition_agree": 3,
+      "partition_false_alarm": 2,
+      "objective_dedup_errors": 0,
+      "dup_missed": 0,
+      "objective_conflicts_unregistered": 0,
+      "conflict_missed": 0,
+      "trace_broken_hits": 0,
+      "failed_dbs_without_reason": 0,
+      "manual_review_items": 12,
+      "steps_count": 62,
+      "steps_detail": {
+       "checks_executed": 57,
+       "checks_disabled": 8,
+       "flow_steps_done": 5
+      },
+      "clarification_rounds": 4
+     },
+     "wall_clock_seconds": 0.0005
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "machine_adjudicated_ratio": 1.0,
+    "engine_agreement_ratio": 0.4,
+    "dup_missed": 0,
+    "conflict_missed": 0,
+    "manual_review_items": -12,
+    "steps_count": 9,
+    "clarification_rounds": -4
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "machine_adjudicated_ratio",
+     "mechanism": "数值回证（计数/相似度 claim text 回证 + 年份 quote 回证）",
+     "formula": "被 applied=true 判定的数值位 / 全部数值位",
+     "higher_is_better": true,
+     "degrade_effect": "ablate=all 关闭回证后，数值位不再被机器逐位判定"
+    },
+    {
+     "metric": "engine_agreement_ratio",
+     "mechanism": "字段归一 + DOI/标题模糊去重引擎复算（划分逐组比对）",
+     "formula": "引擎划分与交付合并记录一致的组数 / 全部组数",
+     "higher_is_better": true,
+     "degrade_effect": "关闭归一/模糊匹配后引擎退化，正确的跨库合并被误判为不一致（partition_false_alarm 上升），每条不一致都需人工复核"
+    },
+    {
+     "metric": "dup_missed",
+     "mechanism": "partition_match：合并记录划分须与引擎复算逐组一致",
+     "formula": "客观跨库重复（漏并+误并）未被该模式捕获的条数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭划分复算后，静默拆分的跨库重复不再被判 FAIL，漏检上升"
+    },
+    {
+     "metric": "conflict_missed",
+     "mechanism": "conflicts.registered：引擎检出字段冲突须全部登记",
+     "formula": "客观未登记冲突未被该模式捕获的条数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭冲突检测后，字段冲突被静默吞掉，漏检上升"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "来源链校验 + 失败降级登记 + 数值回证 + 漏检捕获",
+     "formula": "未判定数值位 + 漏检 + 来源链断裂 + 失败库 + 回证失败",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "五步线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "客观真值由探针用正常模式引擎独立复算（漏并对/误并/未登记冲突），与被测模式无关；两条路径共用 dedup_core 同一实现。",
+    "退化模式同时关闭字段归一、标题模糊匹配与冲突检测；枚举、来源链、失败降级、运行状态等结构检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "machine_adjudicated_ratio 的分母只统计 dedup_metrics 计数 / dedup_decisions 相似度 / merged_records 年份中的数值位。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数；原始计数 manual_review_items 一并落盘，可换批量重算。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，契约校验跳过。",
+    "退化模式报告只可用于增益对照；把 --ablate 的结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标方向为 higher_is_better 时表示机制带来增益；指标方向为 lower_is_better 时读 delta 的相反符号；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-5c918ff0\\_test\\wk\\gain_probe_polluted.json",
+    "injected": [
+     "merged_records[0] 被静默拆成两条（跨库重复未合并）",
+     "删除一条字段冲突登记（R001.authors）：冲突被静默吞掉",
+     "raw_hits 某行 raw_ref 清空（来源链断裂）",
+     "dedup_metrics.duplicates_merged +5（与引擎复算不一致）",
+     "清空 claims（数值回证缺失）",
+     "库 pubmed 的 failed 查询清空 failure_reason（静默失败）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 11,
+     "dup_missed": 0,
+     "conflict_missed": 0,
+     "problem_sample": [
+      "databases[pubmed].queries[0].failure_reason 未通过: failed 须写明失败原因（失败降级：告知缺口而非静默）",
+      "raw_hits[0].trace 未通过: 每条原始命中须可追溯（db_id∈注册表 + query_id∈该库 queries + raw_ref）",
+      "合并记录 R001 的来源划分与引擎复算（ablate=none）不一致（来源=['H001']）",
+      "合并记录 R001-P 的来源划分与引擎复算（ablate=none）不一致（来源=['H002']）",
+      "engine.partition_match 未通过: 引擎划分须与合并记录一致",
+      "conflicts.registered 未通过: 引擎检出 5 处字段冲突须全部登记（缺 1）",
+      "dedup_metrics.duplicates_merged=8 与引擎复算 3 不一致",
+      "gain_evidence.present 未通过: 须有 gain_evidence（正常 vs 退化对照）"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "FAIL",
+     "problems": 11,
+     "dup_missed": 0,
+     "conflict_missed": 1,
+     "problem_sample": [
+      "databases[pubmed].queries[0].failure_reason 未通过: failed 须写明失败原因（失败降级：告知缺口而非静默）",
+      "raw_hits[0].trace 未通过: 每条原始命中须可追溯（db_id∈注册表 + query_id∈该库 queries + raw_ref）",
+      "合并记录 R002 的来源划分与引擎复算（ablate=all）不一致（来源=['H003', 'H004']）",
+      "engine.partition_match 未通过: 引擎划分须与合并记录一致",
+      "dedup_decisions[1].similarity_recompute 未通过: 声称相似度 1.0 vs 复算 0.2857（±0.05）",
+      "dedup_metrics.merged_records_total=5 与引擎复算 7 不一致",
+      "dedup_metrics.duplicates_merged=8 与引擎复算 1 不一致",
+      "dedup_metrics.single_source_records=2 与引擎复算 6 不一致"
+     ]
+    },
+    "missed_detection_delta": {
+     "problems": 0,
+     "dup_missed": 0,
+     "conflict_missed": 1
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.0136,
+   "result_bytes": 17620,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 66,
+   "checker_checks_executed_degraded": 57,
+   "checker_checks_disabled_degraded": 8,
+   "numeric_fields_total": 10,
+   "objective_dedup_errors": 0,
+   "objective_conflicts_unregistered": 0,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 12,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 4,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "k-01",
+   "text": "联合检索共登记原始命中 8 条，跨库去重后合并为 5 条记录，其中重复并入 3 条、单库来源 3 条；2 对经 DOI 精确匹配、1 对经标题模糊匹配（相似度记 1，Jaccard=1.0000 ≥ 事前阈值 0.82）",
+   "kind": "inferred",
+   "source_id": "demo-merge-001",
+   "location": "dedup_metrics",
+   "evidence": [
+    {
+     "paragraph_id": "responses",
+     "quote": "3 个库返回 8 条记录"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-02",
+   "text": "R001 跨库合并自 crossref 与 europepmc：两库 DOI 归一后一致（10.1000/abc.2021.001），年份 2021",
+   "kind": "inferred",
+   "source_id": "crossref",
+   "location": "merged_records[0]",
+   "evidence": [
+    {
+     "paragraph_id": "responses/crossref-q1",
+     "quote": "\"DOI\":\"https://doi.org/10.1000/ABC.2021.001\", \"issued\": 2021"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-03",
+   "text": "R002 无共享 DOI，靠标题模糊匹配判重：分词 Jaccard=1.0000 ≥ 0.82，作者词元交集 zhang/li，年份 2022",
+   "kind": "inferred",
+   "source_id": "publisher",
+   "location": "merged_records[1]",
+   "evidence": [
+    {
+     "paragraph_id": "responses/publisher-q2",
+     "quote": "title=Deep Learning for 蛋白质 结构预测, year=2022"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-04",
+   "text": "R003 年份冲突：europepmc 记 2019、publisher 记 2020，按库优先级保留 2019 并登记冲突",
+   "kind": "reported",
+   "source_id": "europepmc",
+   "location": "conflicts[2]",
+   "evidence": [
+    {
+     "paragraph_id": "responses",
+     "quote": "europepmc pubYear=2019；publisher year=2020"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-05",
+   "text": "R004 年份 2020（仅 crossref 收录）；R005 年份 2018（仅 publisher 收录），两条为单库来源记录",
+   "kind": "reported",
+   "source_id": "crossref",
+   "location": "merged_records[3]",
+   "evidence": [
+    {
+     "paragraph_id": "responses/crossref-q1",
+     "quote": "issued 2020 for 10.3000/jkl.2020.003；publisher 返回 year=2018"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [
+   "pubmed 库限流失败，该库覆盖缺口未知"
+  ],
+  "unverifiable": [],
+  "conflicts": [
+   "R001 作者写法不一致（全名 vs 缩写）",
+   "R002 期刊缩写 vs 全称",
+   "R003 年份 2019 vs 2020"
+  ],
+  "human_review": [],
+  "summary": "合成案例演示：3 库联合检索、跨库去重（DOI 精确 + CJK 标题模糊）、3 处字段冲突登记、1 库失败降级。非正式案例答案。"
+ },
+ "changelog": [
+  {
+   "step": "step3",
+   "change": "dedup_core --apply 机械执行管线，5 业务键由引擎写入"
+  },
+  {
+   "step": "step4",
+   "change": "verify_check/schema_guard/gain_probe 全链路自测 PASS"
+  },
+  {
+   "step": "dedup_core--apply",
+   "change": "ablate=none 机械执行归一/去重/合并/冲突/覆盖，写 5 个业务键"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "case_id",
+   "template_value": "case_id 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "top_fields",
+   "template_value": "status/result/claims/uncertainties 全键",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "status_enum",
+   "template_value": "status ∈ answered/partial/insufficient_evidence/input_error",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "dedup_policy.present",
+   "template_value": "须有跨库去重策略声明 dedup_policy",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "dedup_policy.threshold",
+   "template_value": "title_similarity_threshold 须为 0-1 数值",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "dedup_policy.basis",
+   "template_value": "策略须写明依据 basis（事前声明，禁止事后调参）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "dedup_policy.declared_at",
+   "template_value": "策略须写明声明时点 declared_at",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases.present",
+   "template_value": "须有库注册表 databases[]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[crossref].queries",
+   "template_value": "每库须登记查询列表 queries[]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[crossref].queries[0].adapted",
+   "template_value": "检索式须按该库语法适配（adapted_query 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[crossref].queries[0].not_verbatim",
+   "template_value": "禁止把同一条查询机械复制到所有库（adapted≠original）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[crossref].queries[0].status_enum",
+   "template_value": "查询状态 ∈ queried/failed/limited/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[crossref].queries[1].adapted",
+   "template_value": "检索式须按该库语法适配（adapted_query 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[crossref].queries[1].not_verbatim",
+   "template_value": "禁止把同一条查询机械复制到所有库（adapted≠original）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[crossref].queries[1].status_enum",
+   "template_value": "查询状态 ∈ queried/failed/limited/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[europepmc].queries",
+   "template_value": "每库须登记查询列表 queries[]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[europepmc].queries[0].adapted",
+   "template_value": "检索式须按该库语法适配（adapted_query 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[europepmc].queries[0].not_verbatim",
+   "template_value": "禁止把同一条查询机械复制到所有库（adapted≠original）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[europepmc].queries[0].status_enum",
+   "template_value": "查询状态 ∈ queried/failed/limited/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[europepmc].queries[1].adapted",
+   "template_value": "检索式须按该库语法适配（adapted_query 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[europepmc].queries[1].not_verbatim",
+   "template_value": "禁止把同一条查询机械复制到所有库（adapted≠original）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[europepmc].queries[1].status_enum",
+   "template_value": "查询状态 ∈ queried/failed/limited/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[publisher].queries",
+   "template_value": "每库须登记查询列表 queries[]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[publisher].queries[0].adapted",
+   "template_value": "检索式须按该库语法适配（adapted_query 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[publisher].queries[0].not_verbatim",
+   "template_value": "禁止把同一条查询机械复制到所有库（adapted≠original）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[publisher].queries[0].status_enum",
+   "template_value": "查询状态 ∈ queried/failed/limited/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[publisher].queries[1].adapted",
+   "template_value": "检索式须按该库语法适配（adapted_query 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[publisher].queries[1].not_verbatim",
+   "template_value": "禁止把同一条查询机械复制到所有库（adapted≠original）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[publisher].queries[1].status_enum",
+   "template_value": "查询状态 ∈ queried/failed/limited/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[pubmed].queries",
+   "template_value": "每库须登记查询列表 queries[]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[pubmed].queries[0].adapted",
+   "template_value": "检索式须按该库语法适配（adapted_query 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[pubmed].queries[0].not_verbatim",
+   "template_value": "禁止把同一条查询机械复制到所有库（adapted≠original）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[pubmed].queries[0].status_enum",
+   "template_value": "查询状态 ∈ queried/failed/limited/skipped",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[pubmed].queries[0].failure_stage",
+   "template_value": "failed 须标 failure_stage",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[pubmed].queries[0].failure_stage_enum",
+   "template_value": "failure_stage ∈ connect/auth/rate_limit/syntax/parse",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "databases[pubmed].queries[0].failure_reason",
+   "template_value": "failed 须写明失败原因（失败降级：告知缺口而非静默）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "raw_hits.present",
+   "template_value": "须有原始响应登记 raw_hits[]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records.present",
+   "template_value": "须有合并记录 merged_records[]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records[0].sources",
+   "template_value": "每条合并记录须有非空 sources",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records[1].sources",
+   "template_value": "每条合并记录须有非空 sources",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records[2].sources",
+   "template_value": "每条合并记录须有非空 sources",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records[3].sources",
+   "template_value": "每条合并记录须有非空 sources",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records[4].sources",
+   "template_value": "每条合并记录须有非空 sources",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "engine.partition_match",
+   "template_value": "引擎划分须与合并记录一致",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "dedup_decisions[1].similarity_recompute",
+   "template_value": "声称相似度 1.0 vs 复算 1.0000（±0.05）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "conflicts.registered",
+   "template_value": "引擎检出 5 处字段冲突须全部登记（缺 0）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage_matrix.present",
+   "template_value": "须有覆盖矩阵 coverage_matrix",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage_matrix.consistent",
+   "template_value": "覆盖矩阵须与引擎复算一致（差异 0 处）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "dedup_metrics.counts_backed",
+   "template_value": "合并计数须在 claim text 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "dedup_decisions[1].similarity_backed",
+   "template_value": "相似度须在 claim text 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records[0].year_backed",
+   "template_value": "年份须在来源响应 quote 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records[1].year_backed",
+   "template_value": "年份须在来源响应 quote 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records[2].year_backed",
+   "template_value": "年份须在来源响应 quote 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records[3].year_backed",
+   "template_value": "年份须在来源响应 quote 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "merged_records[4].year_backed",
+   "template_value": "年份须在来源响应 quote 回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "verdict_enum",
+   "template_value": "∈ merged/partially_merged/not_merged/cannot_verify",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "run_status.present",
+   "template_value": "须有运行状态 run_status{state,reason}",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "run_status.state",
+   "template_value": "state ∈ success/partial/unable_to_determine/refused",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "run_status.reason",
+   "template_value": "须写明状态原因",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "steps.present",
+   "template_value": "须有可重跑步骤 steps[]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "steps.has_command",
+   "template_value": "至少一条步骤给出可执行命令",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "environment.python_version",
+   "template_value": "environment 须有 python_version",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gain_evidence.present",
+   "template_value": "须有 gain_evidence（正常 vs 退化对照）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gain_evidence.runs",
+   "template_value": "runs 须含 normal 与 degraded 两遍实跑",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gain_evidence.delta",
+   "template_value": "须有 delta_normal_minus_degraded",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gain_evidence.mechanism_map",
+   "template_value": "须有机制→指标映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gain_evidence.boundaries",
+   "template_value": "须写明边界",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gain_evidence.failure_conditions",
+   "template_value": "须写明失效条件",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "efficiency.present",
+   "template_value": "须有 efficiency 效率计数",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "efficiency.reproduce",
+   "template_value": "efficiency 须写明复现方式",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "efficiency.counters",
+   "template_value": "efficiency 须含自动采集计数",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims_coverage",
+   "template_value": "有可复算数字则 claims 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "numbers_backed",
+   "template_value": "全部可复算数字有逐字回证",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "unbacked_numbers": [],
+ "gates": [
+  {
+   "gate": "result_readable",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "validator_verdict": "PASS"
+}

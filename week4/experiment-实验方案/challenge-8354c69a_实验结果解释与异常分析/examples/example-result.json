@@ -1,0 +1,968 @@
+{
+ "case_id": "demo-exp-explain-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "ds-temp-02 未附控制器时间戳日志（已登记 pending_review 与 uncertainties）"
+  ],
+  "environment": {
+   "python_version": "3.11",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "本地自测环境"
+  },
+  "analysis_scope": {
+   "question": "解释两组实验读数：趋势、异常点、可能原因、复核步骤与后续实验建议，并给出与假设的对齐判定",
+   "hypothesis_refs": [
+    "H1",
+    "H2"
+   ],
+   "series_refs": [
+    "datasets[0].values",
+    "datasets[1].values"
+   ],
+   "unit_policy": "单位不换算：MPa 与摄氏度原样引用，阈值均取 judge_rules.detection_thresholds",
+   "checklist_version": "exp-explain-checklist-v1"
+  },
+  "checklist": {
+   "version": "exp-explain-checklist-v1",
+   "domains": [
+    "trend",
+    "anomaly",
+    "cause",
+    "recheck",
+    "followup"
+   ],
+   "items": [
+    {
+     "checklist_id": "TR-01",
+     "domain": "trend",
+     "prompt": "趋势方向/拐点/平台期/幅度是否与原始读数一致并说明区间、对照与方法",
+     "evidence_required": true
+    },
+    {
+     "checklist_id": "AN-01",
+     "domain": "anomaly",
+     "prompt": "异常点是否定位到具体对象并给出判定阈值与偏离幅度",
+     "evidence_required": true
+    },
+    {
+     "checklist_id": "CA-01",
+     "domain": "cause",
+     "prompt": "每个异常是否给出按证据强度排序的原因候选，支持/排除证据齐备并区分相关与因果",
+     "evidence_required": true
+    },
+    {
+     "checklist_id": "RC-01",
+     "domain": "recheck",
+     "prompt": "复核步骤是否第二个人可执行（文件/字段/方法/预期结果四要素）",
+     "evidence_required": true
+    },
+    {
+     "checklist_id": "FU-01",
+     "domain": "followup",
+     "prompt": "后续实验建议是否针对原因候选与证据缺口给出具体改动",
+     "evidence_required": true
+    }
+   ]
+  },
+  "judge_rules": {
+   "version": "judge-rules-v1",
+   "declared_at": "2026-11-19T12:00:00Z",
+   "alignment_verdicts": [
+    "supported",
+    "partially_supported",
+    "not_supported",
+    "unassessable"
+   ],
+   "alignment_rule": "trend 方向与 hypothesis 方向一致且无未决异常 ⇒ supported；方向一致但存在 unassessable/未解释异常 ⇒ partially_supported；方向相反或幅度矛盾 ⇒ not_supported；数据不足 ⇒ unassessable",
+   "detection_thresholds": {
+    "outlier_z": 3.0,
+    "jump_rel": 0.5,
+    "plateau_min_points": 3,
+    "plateau_tol_rel": 0.05
+   },
+   "anomaly_types": [
+    "outlier",
+    "jump",
+    "plateau"
+   ],
+   "cause_categories": [
+    "instrument",
+    "operation",
+    "sample",
+    "environment",
+    "unknown"
+   ],
+   "cause_rank_map": {
+    "strong": "支持+排除证据均≥1 且引用具体数据行",
+    "moderate": "仅支持证据≥1",
+    "weak": "仅机理猜测无数据证据"
+   },
+   "grade_map": {
+    "supported": "high",
+    "concerns": "medium",
+    "inadequate": "low",
+    "unreported": "uncertain",
+    "unassessable": "uncertain",
+    "not_applicable": null
+   },
+   "category_map": {
+    "supported": "none",
+    "concerns": "interpretation_risk",
+    "inadequate": "method_error",
+    "unreported": "reporting_gap",
+    "unassessable": "none",
+    "not_applicable": "none"
+   },
+   "penalty_map": {
+    "supported": 0,
+    "concerns": 1,
+    "inadequate": 3,
+    "unreported": 1,
+    "unassessable": 0,
+    "not_applicable": 0
+   },
+   "grade_bands": {
+    "low": [
+     0,
+     1
+    ],
+    "some_concerns": [
+     2,
+     4
+    ],
+    "high": [
+     5,
+     9999
+    ]
+   },
+   "speculation_verbs": [
+    "可能是",
+    "推测",
+    "疑为",
+    "或因",
+    "猜测",
+    "likely",
+    "possibly",
+    "suspect"
+   ],
+   "pairing_rule": "每个 anomaly 必须绑定 ≥1 条 cause（cause.anomaly_id=anomaly.anomaly_id）；每条 cause 必须回指已存在的 anomaly",
+   "evidence_rule": "每条解释结论（trend/anomalies/causes/rechecks/followups/alignment）必须附 evidence_quote 逐字摘自来源并给 evidence_location",
+   "executable_rule": "recheck 可执行 ⇔ action+target_file+(target_field 或 method)+expected_outcome 四要素齐备；空话判不可执行",
+   "vague_recheck_words": [
+    "检查数据质量",
+    "检查一下",
+    "看一眼",
+    "check data quality"
+   ],
+   "abstain_rule": "任一 unassessable 且 penalty 处于 low 档 → overall=uncertain；abstain≥2 → uncertain",
+   "direction_rule": "负面条目存在 against_conclusion → against_conclusion；否则存在 favors_conclusion → favors_conclusion；否则 unclear"
+  },
+  "analyses": [
+   {
+    "analysis_id": "ds-bend-01",
+    "dataset_id": "ds-bend-01",
+    "title": "弯曲强度批次稳定性实验（12 个读数）",
+    "design_type": "experimental",
+    "source_ref": "datasets[0]",
+    "hypothesis_ref": "H1",
+    "trend": {
+     "direction": "flat",
+     "inflection_points": [],
+     "plateau": "尾部自第 7 点起连续 6 点相对变化均在声明容差内，属常规批内波动平台",
+     "magnitude": "剔除离群读数后其余读数均值为 50.8，极差 4.6，相对斜率约百分之二，低于声明 flat 阈值",
+     "method": "最小二乘斜率 + 声明口径 |rel|<0.05 记 flat，阈值取 judge_rules.detection_thresholds",
+     "evidence_quote": "批次读数围绕 51 波动，未见系统性漂移。",
+     "evidence_location": "ds-bend-01#description"
+    },
+    "anomalies": [
+     {
+      "anomaly_id": "AN-01",
+      "dimension": "时间点",
+      "object_ref": "values[5]",
+      "anomaly_type": "outlier",
+      "severity": "z=3.16，超声明 outlier_z=3.0",
+      "threshold_used": "outlier_z=3.0",
+      "deviation_from_control": "与其余 11 个读数均值 50.8 相比偏高约 77.4%，单侧偏高",
+      "evidence_quote": "第 6 个读数 90.1 MPa 明显偏离其余读数，判定为离群点。",
+      "evidence_location": "ds-bend-01#description"
+     },
+     {
+      "anomaly_id": "AN-02",
+      "dimension": "时间点",
+      "object_ref": "values[5]",
+      "anomaly_type": "jump",
+      "severity": "相对前一读数跳升约 70.6%，超声明 jump_rel=0.5",
+      "threshold_used": "jump_rel=0.5",
+      "deviation_from_control": "相邻点波动通常在声明容差内，本点破坏相邻连续性",
+      "evidence_quote": "第 6 个读数 90.1 MPa 明显偏离其余读数，判定为离群点。",
+      "evidence_location": "ds-bend-01#description"
+     }
+    ],
+    "causes": [
+     {
+      "cause_id": "C-01",
+      "anomaly_id": "AN-01",
+      "category": "instrument",
+      "hypothesis": "装夹变更改变受力状态，导致该读数系统性偏高（同期相关，复测前不断因果）",
+      "supporting_evidence": [
+       "当日夹具更换过一次。",
+       "离群点唯一且恰为单侧偏高，与装夹刚度变化方向相符"
+      ],
+      "excluding_evidence": [
+       "其余读数波动在批内正常量级，未见全局漂移，排除仪器整体失准"
+      ],
+      "rank": 1,
+      "correlation_note": "夹具更换与离群点同期发生，属同期相关；复测复现后才能升级为因果结论",
+      "evidence_quote": "当日夹具更换过一次。",
+      "evidence_location": "ds-bend-01#description"
+     },
+     {
+      "cause_id": "C-02",
+      "anomaly_id": "AN-02",
+      "category": "instrument",
+      "hypothesis": "跳变与离群同为装夹变更的两种表现（同一对象两种口径）",
+      "supporting_evidence": [
+       "当日夹具更换过一次。",
+       "跳变与离群位于同一读数"
+      ],
+      "excluding_evidence": [
+       "相邻点波动均在批内正常量级，排除数据录入错位"
+      ],
+      "rank": 1,
+      "correlation_note": "与 C-01 同源，属相关证据，不复断因果",
+      "evidence_quote": "该读数对应万能试验机 UTM-03，当日夹具更换过一次。",
+      "evidence_location": "ds-bend-01#description"
+     }
+    ],
+    "rechecks": [
+     {
+      "recheck_id": "RC-01",
+      "anomaly_id": "AN-01",
+      "action": "复装夹后重测同批备样 3 件并复算 z 分数",
+      "target_file": "case.json",
+      "target_field": "datasets[0].values",
+      "method": "重测值并入序列后按 outlier_z=3.0 复算",
+      "expected_outcome": "离群消失则锁定装夹原因；仍离群则转查传感器通道",
+      "executable": true,
+      "evidence_quote": "复装夹后重测同批备样可判定装夹影响。",
+      "evidence_location": "ds-bend-01#description"
+     }
+    ],
+    "followups": [
+     {
+      "followup_id": "FU-01",
+      "based_on_cause_ids": [
+       "C-01"
+      ],
+      "change": "固定夹具状态后每点加密至 3 次重复，再判批次稳定性",
+      "rationale": "针对 C-01 的证据缺口：复现性未证，重复数不足",
+      "evidence_quote": "复装夹后重测同批备样可判定装夹影响。",
+      "evidence_location": "ds-bend-01#description"
+     }
+    ],
+    "alignment": {
+     "verdict": "supported",
+     "basis": "趋势方向 flat 与 H1 无漂移一致，唯一异常已有原因候选与可执行复核动作，无未决异常",
+     "hypothesis_ref": "H1",
+     "evidence_quote": "批次读数围绕 51 波动，未见系统性漂移。",
+     "evidence_location": "ds-bend-01#description"
+    },
+    "appraisals": [
+     {
+      "checklist_id": "TR-01",
+      "domain": "trend",
+      "judgment": "supported",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "批次读数围绕 51 波动，未见系统性漂移。",
+      "evidence_location": "ds-bend-01#description",
+      "rationale": "方向与幅度均经复算口径确认",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "AN-01",
+      "domain": "anomaly",
+      "judgment": "supported",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "第 6 个读数 90.1 MPa 明显偏离其余读数，判定为离群点。",
+      "evidence_location": "ds-bend-01#description",
+      "rationale": "异常定位到具体读数并给出阈值与偏离幅度",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "CA-01",
+      "domain": "cause",
+      "judgment": "supported",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "该读数对应万能试验机 UTM-03，当日夹具更换过一次。",
+      "evidence_location": "ds-bend-01#description",
+      "rationale": "原因候选含支持与排除证据且标明相关非因果",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "RC-01",
+      "domain": "recheck",
+      "judgment": "supported",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "复装夹后重测同批备样可判定装夹影响。",
+      "evidence_location": "ds-bend-01#description",
+      "rationale": "四要素齐备，第二个人可执行",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "FU-01",
+      "domain": "followup",
+      "judgment": "supported",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "复装夹后重测同批备样可判定装夹影响。",
+      "evidence_location": "ds-bend-01#description",
+      "rationale": "改动直接针对原因候选的证据缺口",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     }
+    ],
+    "judged": true
+   },
+   {
+    "analysis_id": "ds-temp-02",
+    "dataset_id": "ds-temp-02",
+    "title": "保温过程温度通道记录（16 个采样点）",
+    "design_type": "observational",
+    "source_ref": "datasets[1]",
+    "hypothesis_ref": "H2",
+    "trend": {
+     "direction": "increasing",
+     "inflection_points": [
+      "values[7]（基线段转保温段）"
+     ],
+     "plateau": "自 values[7] 起连续 9 点构成平台期，相对变化均在声明容差内",
+     "magnitude": "基线段均值约 10.4，保温段均值约 16.1，跳变集中于单一采样点",
+     "method": "最小二乘斜率 + 声明口径；跳变/平台按 detection_thresholds 检出",
+     "evidence_quote": "程序在第 8 个采样点由升温段切换为保温段，设定值自 10 摄氏度升至 16 摄氏度。",
+     "evidence_location": "ds-temp-02#description"
+    },
+    "anomalies": [
+     {
+      "anomaly_id": "AN-03",
+      "dimension": "时间点",
+      "object_ref": "values[7]",
+      "anomaly_type": "jump",
+      "severity": "相对前一读数跳升约 50.5%，超声明 jump_rel=0.5",
+      "threshold_used": "jump_rel=0.5",
+      "deviation_from_control": "相邻点波动参照为百分之二以内，本点为其数十倍",
+      "evidence_quote": "程序在第 8 个采样点由升温段切换为保温段，设定值自 10 摄氏度升至 16 摄氏度。",
+      "evidence_location": "ds-temp-02#description"
+     },
+     {
+      "anomaly_id": "AN-04",
+      "dimension": "时间点",
+      "object_ref": "values[7,15]",
+      "anomaly_type": "plateau",
+      "severity": "连续 9 点相对变化不超声明容差，构成平台期",
+      "threshold_used": "plateau_min_points=3, plateau_tol_rel=0.05",
+      "deviation_from_control": "平台均值约 16.1，与设定值 16 相符",
+      "evidence_quote": "保温段读数在热平衡后稳定，未见饱和削顶。",
+      "evidence_location": "ds-temp-02#description"
+     }
+    ],
+    "causes": [
+     {
+      "cause_id": "C-03",
+      "anomaly_id": "AN-03",
+      "category": "operation",
+      "hypothesis": "程序段切换导致的设定值变更，跳变为预期操作切换",
+      "supporting_evidence": [
+       "程序在第 8 个采样点由升温段切换为保温段，设定值自 10 摄氏度升至 16 摄氏度。"
+      ],
+      "excluding_evidence": [
+       "相邻点波动均在百分之二以内，排除环境慢漂移。"
+      ],
+      "rank": 1,
+      "correlation_note": "切换时刻与跳变点重合属同期相关；需日志时间戳比对后方可定级",
+      "evidence_quote": "程序在第 8 个采样点由升温段切换为保温段，设定值自 10 摄氏度升至 16 摄氏度。",
+      "evidence_location": "ds-temp-02#description"
+     },
+     {
+      "cause_id": "C-04",
+      "anomaly_id": "AN-03",
+      "category": "instrument",
+      "hypothesis": "传感器通道阶跃失准（备选，待日志排除）",
+      "supporting_evidence": [
+       "本次输入未附控制器时间戳日志，需另行调取。"
+      ],
+      "excluding_evidence": [
+       "保温段读数在热平衡后稳定，未见饱和削顶。"
+      ],
+      "rank": 2,
+      "correlation_note": "无时间戳证据，仅为备选，不得写入结论",
+      "evidence_quote": "本次输入未附控制器时间戳日志，需另行调取。",
+      "evidence_location": "ds-temp-02#description"
+     },
+     {
+      "cause_id": "C-05",
+      "anomaly_id": "AN-04",
+      "category": "sample",
+      "hypothesis": "平台期反映真实热平衡，而非传感器饱和",
+      "supporting_evidence": [
+       "保温段读数在热平衡后稳定，未见饱和削顶。",
+       "平台均值与设定值相符"
+      ],
+      "excluding_evidence": [
+       "未见削顶，排除量程饱和"
+      ],
+      "rank": 1,
+      "correlation_note": "平台与设定值相符为一致性证据，非因果证明",
+      "evidence_quote": "保温段读数在热平衡后稳定，未见饱和削顶。",
+      "evidence_location": "ds-temp-02#description"
+     }
+    ],
+    "rechecks": [
+     {
+      "recheck_id": "RC-02",
+      "anomaly_id": "AN-03",
+      "action": "调取控制器日志比对段切换时间戳与跳变采样点",
+      "target_file": "控制器时间戳日志（待调取）",
+      "target_field": "段切换时间戳",
+      "method": "时间戳与 values 序列采样间隔对齐后比对",
+      "expected_outcome": "时间戳吻合则 C-03 定级为强证据，否则升级 C-04 排查",
+      "executable": true,
+      "evidence_quote": "本次输入未附控制器时间戳日志，需另行调取。",
+      "evidence_location": "ds-temp-02#description"
+     }
+    ],
+    "followups": [
+     {
+      "followup_id": "FU-02",
+      "based_on_cause_ids": [
+       "C-03",
+       "C-04"
+      ],
+      "change": "下一轮在切换点前后各加密 3 个采样点并同步记录控制器时间戳",
+      "rationale": "针对 C-03/C-04 证据缺口：切换点瞬时动态与时间对齐证据均缺",
+      "evidence_quote": "程序在第 8 个采样点由升温段切换为保温段，设定值自 10 摄氏度升至 16 摄氏度。",
+      "evidence_location": "ds-temp-02#description"
+     }
+    ],
+    "alignment": {
+     "verdict": "unassessable",
+     "basis": "升温集中于程序切换点，方向与 H2 一致，但控制器日志不可得，跳变归因不可判，按口径降为 unassessable",
+     "hypothesis_ref": "H2",
+     "evidence_quote": "本次输入未附控制器时间戳日志，需另行调取。",
+     "evidence_location": "ds-temp-02#description"
+    },
+    "appraisals": [
+     {
+      "checklist_id": "TR-01",
+      "domain": "trend",
+      "judgment": "supported",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "程序在第 8 个采样点由升温段切换为保温段，设定值自 10 摄氏度升至 16 摄氏度。",
+      "evidence_location": "ds-temp-02#description",
+      "rationale": "方向/拐点/平台均与复算一致",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "AN-01",
+      "domain": "anomaly",
+      "judgment": "supported",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "相邻点波动均在百分之二以内，排除环境慢漂移。",
+      "evidence_location": "ds-temp-02#description",
+      "rationale": "跳变与平台均定位到采样点区间并给出阈值",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "CA-01",
+      "domain": "cause",
+      "judgment": "unassessable",
+      "grade": "uncertain",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "",
+      "evidence_location": "ds-temp-02#description",
+      "rationale": "控制器日志不可得，原因候选无法定级",
+      "judged": true,
+      "abstain_reason": "控制器时间戳日志不在本次输入中，支持/排除证据无法闭环",
+      "na_reason": null
+     },
+     {
+      "checklist_id": "RC-01",
+      "domain": "recheck",
+      "judgment": "supported",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "本次输入未附控制器时间戳日志，需另行调取。",
+      "evidence_location": "ds-temp-02#description",
+      "rationale": "复核动作四要素齐备且可直接执行",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "FU-01",
+      "domain": "followup",
+      "judgment": "supported",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "保温段读数在热平衡后稳定，未见饱和削顶。",
+      "evidence_location": "ds-temp-02#description",
+      "rationale": "建议针对原因候选与时间对齐证据缺口",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     }
+    ],
+    "judged": true
+   }
+  ],
+  "coverage": {
+   "datasets_total": 2,
+   "domains_required": 5,
+   "items_total": 10,
+   "judged_items": 10,
+   "abstained": 1,
+   "method_errors": 0,
+   "reporting_gaps": 0,
+   "interpretation_risks": 0,
+   "not_applicable": 0,
+   "ratio": 1.0
+  },
+  "conflicts": [],
+  "pending_review": [
+   {
+    "analysis_id": "ds-temp-02",
+    "checklist_id": "CA-01",
+    "reason": "控制器时间戳日志不可得，原因候选无法定级",
+    "needed_action": "调取控制器日志后人工复核 C-03/C-04 强度排序"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明 judge_rules（declared_at 落 /app/work/judge_rules.json）",
+    "command": "",
+    "output_ref": "judge_rules",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "五段逐条解释与对齐判定",
+    "command": "",
+    "output_ref": "result.analyses",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "趋势与异常机械复算",
+    "command": "python3 /skills/weekly-skill/scripts/trend_anomaly_check.py --result /app/output/result.json --case /input/case.json",
+    "output_ref": "result.trend_anomaly_check",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "配对/回证/可执行性机械汇总",
+    "command": "python3 /skills/weekly-skill/scripts/explain_rollup.py --result /app/output/result.json --rules /app/work/judge_rules.json",
+    "output_ref": "result.explain_summary",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "自检与交付",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --rules /app/work/judge_rules.json --out /app/work/verify_check.json --emit-into",
+    "output_ref": "validator_verdict",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "audited",
+  "verdict_basis": "两组分析五分面逐条判定完成，机械复算与配对/回证/可执行性校验全部一致",
+  "trend_anomaly_check": {
+   "computed_by": "scripts/trend_anomaly_check.py",
+   "thresholds_used": {
+    "outlier_z": 3.0,
+    "jump_rel": 0.5,
+    "plateau_min_points": 3.0,
+    "plateau_tol_rel": 0.05
+   },
+   "direction_rule": "rel=slope*(n-1)/|mean|; |rel|<0.05⇒flat",
+   "per_dataset": [
+    {
+     "analysis_id": "ds-bend-01",
+     "status": "ok",
+     "recomputed": {
+      "n": 12,
+      "mean": 54.074999999999996,
+      "sd": 11.41236371022872,
+      "slope": -0.017132867132867328,
+      "direction": "flat",
+      "outlier_indices": [
+       5
+      ],
+      "jump_indices": [
+       5
+      ],
+      "plateau_ranges": [
+       [
+        1,
+        3
+       ],
+       [
+        6,
+        11
+       ]
+      ]
+     },
+     "claimed": {
+      "trend_direction": "flat",
+      "anomaly_count": 2
+     },
+     "diffs": [],
+     "match": true,
+     "missing_skipped": 0
+    },
+    {
+     "analysis_id": "ds-temp-02",
+     "status": "ok",
+     "recomputed": {
+      "n": 16,
+      "mean": 13.6125,
+      "sd": 2.9163618888379865,
+      "slope": 0.5335294117647059,
+      "direction": "increasing",
+      "outlier_indices": [],
+      "jump_indices": [
+       7
+      ],
+      "plateau_ranges": [
+       [
+        0,
+        6
+       ],
+       [
+        7,
+        15
+       ]
+      ]
+     },
+     "claimed": {
+      "trend_direction": "increasing",
+      "anomaly_count": 2
+     },
+     "diffs": [],
+     "match": true,
+     "missing_skipped": 0
+    }
+   ],
+   "all_match": true
+  },
+  "explain_summary": {
+   "computed_by": "scripts/explain_rollup.py",
+   "per_analysis": [
+    {
+     "analysis_id": "ds-bend-01",
+     "orphan_causes": [],
+     "unpaired_anomalies": [],
+     "pairing_complete": true,
+     "unbound_explanations": [],
+     "unbound_count": 0,
+     "executable_rechecks": 1,
+     "non_executable_rechecks": [],
+     "alignment_consistent": true,
+     "alignment_problems": [],
+     "alignment_verdict": "supported",
+     "speculation_only": [],
+     "penalty_total": 0,
+     "overall": "low",
+     "direction": "unclear"
+    },
+    {
+     "analysis_id": "ds-temp-02",
+     "orphan_causes": [],
+     "unpaired_anomalies": [],
+     "pairing_complete": true,
+     "unbound_explanations": [],
+     "unbound_count": 0,
+     "executable_rechecks": 1,
+     "non_executable_rechecks": [],
+     "alignment_consistent": true,
+     "alignment_problems": [],
+     "alignment_verdict": "unassessable",
+     "speculation_only": [],
+     "penalty_total": 0,
+     "overall": "uncertain",
+     "direction": "unclear"
+    }
+   ],
+   "totals": {
+    "pairing_complete": 2,
+    "unbound_total": 0,
+    "executable_rechecks": 2,
+    "alignment_inconsistent": 0,
+    "speculation_only_total": 0
+   },
+   "rules_version": "judge-rules-v1"
+  },
+  "gain_evidence": {
+   "available": true,
+   "runs": [
+    {
+     "mode": "normal",
+     "enabled_groups": [
+      "alignment",
+      "pairing",
+      "evidence",
+      "recheck"
+     ],
+     "problems_found": 0,
+     "by_group": {},
+     "seconds": 0.0003
+    },
+    {
+     "mode": "degraded(--ablate all)",
+     "enabled_groups": [],
+     "problems_found": 0,
+     "by_group": {},
+     "seconds": 0.0
+    },
+    {
+     "mode": "normal@polluted-copy",
+     "enabled_groups": [
+      "alignment",
+      "pairing",
+      "evidence",
+      "recheck"
+     ],
+     "problems_found": 9,
+     "by_group": {
+      "alignment": 1,
+      "pairing": 2,
+      "evidence": 3,
+      "recheck": 2,
+      "enum": 1
+     },
+     "seconds": 0.0002
+    },
+    {
+     "mode": "degraded@polluted-copy",
+     "enabled_groups": [],
+     "problems_found": 1,
+     "by_group": {
+      "enum": 1
+     },
+     "seconds": 0.0
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "total": 0,
+    "alignment": 0,
+    "pairing": 0,
+    "evidence": 0,
+    "recheck": 0
+   },
+   "delta_polluted_copy": {
+    "total": 8,
+    "alignment": 1,
+    "pairing": 2,
+    "evidence": 3,
+    "recheck": 2
+   },
+   "pollution_injection": {
+    "available": true,
+    "injected": [
+     "anomaly_without_cause",
+     "explanation_without_evidence",
+     "alignment_overupgrade",
+     "recheck_vague_wording",
+     "anomaly_without_object_ref",
+     "fabricated_quote",
+     "illegal_cause_category",
+     "clear_pending_review",
+     "fabricated_number_in_claim"
+    ],
+    "caught_by_normal_mode": {
+     "anomaly_without_cause": true,
+     "explanation_without_evidence": true,
+     "alignment_overupgrade": true,
+     "recheck_vague_wording": true,
+     "anomaly_without_object_ref": true,
+     "fabricated_quote": true,
+     "illegal_cause_category": true,
+     "clear_pending_review": true,
+     "fabricated_number_in_claim": true
+    },
+    "caught_count": 9,
+    "copy_path": "C:/Users/hzm/AppData/Local/Temp/wkfin\\polluted_result.json",
+    "note": "污染只发生在内存副本，原 result.json 未被改动"
+   },
+   "mechanism_to_metric_map": [
+    {
+     "mechanism": "对齐口径一致校验（supported 不得与负面/弃权条目并存）",
+     "metric": "delta.alignment"
+    },
+    {
+     "mechanism": "异常-原因配对校验（无 cause/孤儿 cause/缺对象绑定即报）",
+     "metric": "delta.pairing"
+    },
+    {
+     "mechanism": "解释回证校验（引文逐字+数字回证）",
+     "metric": "delta.evidence"
+    },
+    {
+     "mechanism": "复核可执行性校验（四要素+空话词表）",
+     "metric": "delta.recheck"
+    }
+   ],
+   "boundaries": [
+    "本对照是本校验层正常 vs 退化两模式，不等于平台基础 Agent 对照；平台白板对照由平台生成"
+   ],
+   "failure_conditions": [
+    "case.json 缺失或不可解析时增益对照退化",
+    "result.analyses 为空时两组问题数均为 0"
+   ]
+  },
+  "efficiency": {
+   "wall_clock_seconds_total": 0.0049,
+   "checker_runs": 4,
+   "checks_per_run": "enum+alignment+pairing+evidence+recheck 五组，按 analyses 逐组展开",
+   "result_bytes": 31870,
+   "model_requests": null,
+   "reproduce": "python3 scripts/gain_probe.py --result examples/example-result.json --case examples/example-case.json --work-dir C:/Users/hzm/AppData/Local/Temp/wkfin --ablate all --emit-into --inject-pollution"
+  }
+ },
+ "validator_verdict": "PASS",
+ "self_check": [
+  {
+   "item": "verify_check 八组校验",
+   "template_value": "verdict=PASS",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "unbacked_numbers": [],
+ "unbacked_evidence": [],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "skill_marker",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "批次内均值 54.08 MPa，趋势方向 flat；90.1 MPa 为唯一离群读数，原因候选按证据强度排序以 instrument 类装夹变更居首。",
+   "kind": "inferred",
+   "source_id": "ds-bend-01",
+   "location": "analyses[0]",
+   "evidence": [
+    {
+     "paragraph_id": "ds-bend-01#description",
+     "quote": "批次读数围绕 51 波动，未见系统性漂移。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "保温段读数 16.0 至 16.3 维持平台期；相对跳变超过声明阈值，控制器日志不可得，原因候选暂不可定级。",
+   "kind": "inferred",
+   "source_id": "ds-temp-02",
+   "location": "analyses[1]",
+   "evidence": [
+    {
+     "paragraph_id": "ds-temp-02#description",
+     "quote": "保温段读数在热平衡后稳定，未见饱和削顶。"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [
+   "ds-temp-02 控制器时间戳日志缺失，原因候选强度未定级"
+  ],
+  "unverifiable": [],
+  "conflicts": [],
+  "human_review": [
+   "C-03/C-04 强度排序待控制器日志调取后人工复核"
+  ],
+  "summary": "两组五段解释完成；唯一弃权为 ds-temp-02 原因定级（数据缺口，非方法缺口）"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step2",
+   "change": "五段解释与对齐判定回填"
+  },
+  {
+   "step": "step3",
+   "change": "trend_anomaly_check 回填复算结果"
+  },
+  {
+   "step": "step4",
+   "change": "explain_rollup 回填配对/回证/可执行性汇总"
+  },
+  {
+   "step": "step5",
+   "change": "gain_probe 回填 gain_evidence 与 efficiency"
+  },
+  {
+   "step": "step6",
+   "change": "verify_check 回填自检结论"
+  }
+ ]
+}

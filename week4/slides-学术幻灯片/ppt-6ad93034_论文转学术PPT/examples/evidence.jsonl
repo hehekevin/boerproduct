@@ -1,0 +1,4 @@
+{"slide_no": 1, "claim": "研究对象 LAN", "type": "section", "locator": "material.json title", "quote": null}
+{"slide_no": 2, "claim": "收敛加速幅度", "type": "quote", "locator": "material.json abstract", "quote": "收敛速度提升 37.5%，同时精度损失控制在 0.8% 以内"}
+{"slide_no": 2, "claim": "参数量与训练耗时", "type": "quote", "locator": "material.json method.params", "quote": "模型参数量为 1.2M，单卡训练耗时 4.6h"}
+{"slide_no": 3, "claim": "稠密图退化", "type": "quote", "locator": "material.json limitations", "quote": "加速比在稠密图上退化到 1.1x，且未在超过 100 万节点规模上验证"}

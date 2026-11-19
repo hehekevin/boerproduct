@@ -1,0 +1,25 @@
+{
+  "_note": "合成示意案例（非正式答案、非真实论文）：仅用于本地自测整条链路。题目、作者、数据、基金与参考文献均为虚构，如有雷同纯属巧合。",
+  "case_id": "demo-compliance-001",
+  "task_type": "academic_compliance_audit",
+  "manuscript": {
+    "title": "在线学习平台使用强度与学业成绩的关系：一项横断研究（虚构示例稿）",
+    "sections": [
+      {"section_id": "S1", "name": "摘要", "text": "本研究考察在线学习平台使用强度与学业成绩的关系，基于某高校 48 名本科生的问卷与成绩数据进行横断分析。（基金资助：国家自然科学基金 No. 6217612）"},
+      {"section_id": "S2", "name": "引言", "text": "已有研究表明学习分析工具能提升成绩 [1]，且平台使用越多效果越好 [2]。[3] 的元分析指出游戏化练习能显著提高短期测验分数。"},
+      {"section_id": "S3", "name": "方法", "text": "本研究在某高校招募本科生 48 名，采用在线问卷收集平台使用时长，并获取当学期 GPA。本研究经A大学伦理委员会审查批准（批件号 IRB-2024-0187），所有参与者均签署知情同意书。受限于横断设计，本文不推断因果。"},
+      {"section_id": "S4", "name": "结果", "text": "相关分析显示使用时长与 GPA 正相关（r=0.32, p=0.04）。图1（复用自文献[2]）展示了分组比较结果。图2 展示了不同年级组的差异分布。"},
+      {"section_id": "S5", "name": "讨论", "text": "上述结果表明平台使用强度与成绩存在稳定关联，建议学校关注学生的平台使用方式。本文核心结果曾在 2025 年第十届智能教育研讨会上宣读。"},
+      {"section_id": "S6", "name": "声明、致谢与参考文献", "text": "基金资助：本研究受国家自然科学基金项目（No. 62176123）资助。致谢：感谢参与本研究的各位师生。参考文献：[1] Zhang, L., & Li, W. (2021). Learning analytics and academic performance. Journal of Educational Technology, 12(3), 45-58. [2] Wang, H. (2020). Usage intensity and grades: An inverted-U relationship. Computers & Education, 8(2), 11-22. [3] Chen. 游戏化学习环境的元分析. [4] Liu, J. (2022). 自我调节学习的因果效应研究综述. Learning and Instruction, 44, 1-15."}
+    ],
+    "references": [
+      {"ref_id": "[1]", "text": "Zhang, L., & Li, W. (2021). Learning analytics and academic performance. Journal of Educational Technology, 12(3), 45-58."},
+      {"ref_id": "[2]", "text": "Wang, H. (2020). Usage intensity and grades: An inverted-U relationship. Computers & Education, 8(2), 11-22."},
+      {"ref_id": "[3]", "text": "Chen. 游戏化学习环境的元分析."},
+      {"ref_id": "[4]", "text": "Liu, J. (2022). 自我调节学习的因果效应研究综述. Learning and Instruction, 44, 1-15."}
+    ]
+  },
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

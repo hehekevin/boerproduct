@@ -1,0 +1,22 @@
+{
+  "_note": "合成示意案例（非正式答案、非真实文献）：仅用于本地自测整条链路。所有标题/摘要/DOI 均为虚构。",
+  "case_id": "demo-xling-001",
+  "task_type": "cross_language_literature_retrieval",
+  "research_question": {
+    "question": "细胞焦亡（pyroptosis）在肠道炎症/炎症性肠病中的作用",
+    "scope": "原始研究（含全文或含结果句的摘要）；同一研究的多语种视图须归并计数",
+    "target_languages": ["zh", "en", "pt", "ja"],
+    "time_range": "2015-2025"
+  },
+  "candidates": [
+    {"record_id": "V01", "title": "Piroptose e progressão da doença inflamatória intestinal: coorte prospectiva", "year": 2023, "doi": "10.1000/demo.001", "body_language": "pt", "record_kind": "original_fulltext", "abstract": "Este estudo de coorte prospectiva acompanhou 120 pacientes com doença inflamatória intestinal. A piroptose foi avaliada por marcadores séricos de gasdermina D. Pacientes com níveis elevados apresentaram progressão significativamente mais rápida da doença."},
+    {"record_id": "V02", "title": "Pyroptosis and progression of inflammatory bowel disease: a prospective cohort", "year": 2023, "doi": "10.1000/demo.001", "body_language": "en", "record_kind": "publisher_full_translation", "translation_of": "10.1000/demo.001", "abstract": "This prospective cohort study followed 120 patients with inflammatory bowel disease. Pyroptosis was assessed by serum gasdermin D markers. Patients with elevated levels showed significantly faster disease progression."},
+    {"record_id": "V03", "title": "ピロプトーシスと炎症性腸疾患の関連", "year": 2023, "body_language": "ja", "record_kind": "abstract_only", "abstract": "本抄録は日本語データベースの索引抄録である。ピロプトーシス（pyroptosis）関連の腸炎症例が要約されている。全文は未収録で、原著の所在と版本は未確認。"},
+    {"record_id": "V04", "title": "Gasdermin D pores drive intestinal epithelial cell death in colitis models", "year": 2021, "doi": "10.1000/demo.002", "body_language": "en", "record_kind": "original_fulltext", "abstract": "We show that gasdermin D pores mediate intestinal epithelial cell death in two murine colitis models. Inhibition of pyroptotic pore formation (GSDMD inhibition) reduced epithelial injury scores."},
+    {"record_id": "V05", "title": "Gasdermin D pores drive intestinal epithelial cell death in colitis models", "year": 2021, "doi": "10.1000/demo.002", "body_language": "en", "record_kind": "exact_duplicate", "abstract": "We show that gasdermin D pores mediate intestinal epithelial cell death in two murine colitis models. Inhibition of pyroptotic pore formation (GSDMD inhibition) reduced epithelial injury scores.", "note": "同 DOI 同题同摘要的精确重复副本（夹具）"},
+    {"record_id": "V06", "title": "细胞焦亡在肠道炎症中的作用及机制研究", "year": 2022, "doi": "10.1000/demo.003", "body_language": "zh", "record_kind": "original_fulltext", "abstract": "本研究探讨细胞焦亡在肠道炎症中的作用及机制。结果提示细胞焦亡相关通路激活与炎症性肠病活动度相关，为跨语言检索提供了中文原始研究证据。"}
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

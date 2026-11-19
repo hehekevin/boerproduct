@@ -1,0 +1,1094 @@
+{
+ "_note": "示意输出（synthetic，非正式答案）：对应 examples/example-case.json 的合成案例，用于演示接口与完整使用流程，不冒充正式案例结果。",
+ "case_id": "demo-xling-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.13.x",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "本地自测环境"
+  },
+  "research_question": {
+   "question": "细胞焦亡（pyroptosis）在肠道炎症/炎症性肠病中的作用",
+   "scope": "原始研究（含全文或含结果句的摘要）；同一研究的多语种视图须归并计数",
+   "target_languages": [
+    "zh",
+    "en",
+    "pt",
+    "ja"
+   ],
+   "time_range": "2015-2025"
+  },
+  "criteria": {
+   "inclusion": [
+    {
+     "criterion_id": "IN-01",
+     "text": "研究涉及细胞焦亡（pyroptosis）机制或相关通路在肠道炎症/炎症性肠病中的作用"
+    },
+    {
+     "criterion_id": "IN-02",
+     "text": "记录提供原始研究证据（全文或含结果句的摘要）"
+    }
+   ],
+   "exclusion": [
+    {
+     "criterion_id": "EX-01",
+     "text": "仅方法学评论/综述，无原始数据"
+    },
+    {
+     "criterion_id": "EX-02",
+     "text": "与同一研究其他语种视图重复（出版方译本/精确重复），合并保留原文版正本，不得重复计数"
+    }
+   ]
+  },
+  "rubric": {
+   "weights": {
+    "relevance": 0.5,
+    "crosslang": 0.3,
+    "recency": 0.2
+   },
+   "tie_break": [
+    "fused_score 降序",
+    "recency 降序",
+    "item_id 升序"
+   ],
+   "normalization": "relevance: direct=1.0/indirect=0.5/irrelevant=0.0；crosslang: work_cluster 语言版本视数/2 封顶 0-1（原文+任一译本即满值，无簇 0.5/单视图 0.0 按 cluster 有无）；recency: (year-2015)/10 截断到 0-1",
+   "declared_at": "step1（任何排序之前）"
+  },
+  "term_map": [
+   {
+    "entry_id": "T01",
+    "source_term": "细胞焦亡",
+    "source_lang": "zh",
+    "target_term": "pyroptosis",
+    "target_lang": "en",
+    "variant_type": "synonym",
+    "evidence_quote": "本研究探讨细胞焦亡在肠道炎症中的作用及机制",
+    "evidence_location": "candidates[5].abstract",
+    "confidence": "high"
+   },
+   {
+    "entry_id": "T02",
+    "source_term": "pyroptosis",
+    "source_lang": "en",
+    "target_term": "ピロプトーシス",
+    "target_lang": "ja",
+    "variant_type": "transliteration",
+    "evidence_quote": "ピロプトーシス（pyroptosis）関連の腸炎症例が要約されている",
+    "evidence_location": "candidates[2].abstract",
+    "confidence": "medium"
+   },
+   {
+    "entry_id": "T03",
+    "source_term": "pyroptosis",
+    "source_lang": "en",
+    "target_term": "piroptose",
+    "target_lang": "pt",
+    "variant_type": "localized",
+    "evidence_quote": "A piroptose foi avaliada por marcadores séricos de gasdermina D",
+    "evidence_location": "candidates[0].abstract",
+    "confidence": "high"
+   },
+   {
+    "entry_id": "T04",
+    "source_term": "GSDMD",
+    "source_lang": "en",
+    "target_term": "gasdermin D",
+    "target_lang": "en",
+    "variant_type": "abbreviation",
+    "evidence_quote": "Inhibition of pyroptotic pore formation (GSDMD inhibition) reduced epithelial injury scores",
+    "evidence_location": "candidates[3].abstract",
+    "confidence": "high"
+   },
+   {
+    "entry_id": "T05",
+    "source_term": "inflammatory bowel disease",
+    "source_lang": "en",
+    "target_term": "炎症性肠病",
+    "target_lang": "zh",
+    "variant_type": "synonym",
+    "evidence_quote": "细胞焦亡相关通路激活与炎症性肠病活动度相关",
+    "evidence_location": "candidates[5].abstract",
+    "confidence": "high"
+   }
+  ],
+  "queries": [
+   {
+    "query_id": "Q-en-01",
+    "language": "en",
+    "query_string": "\"GSDMD\" OR \"gasdermin D\" OR \"inflammatory bowel disease\" OR \"pyroptosis\"",
+    "built_from": [
+     "T01",
+     "T02",
+     "T03",
+     "T04",
+     "T05"
+    ],
+    "term_count": 4,
+    "built_by": "scripts/build_queries.py（term_map 机械派生）",
+    "status": "built"
+   },
+   {
+    "query_id": "Q-ja-01",
+    "language": "ja",
+    "query_string": "\"ピロプトーシス\"",
+    "built_from": [
+     "T02"
+    ],
+    "term_count": 1,
+    "built_by": "scripts/build_queries.py（term_map 机械派生）",
+    "status": "built"
+   },
+   {
+    "query_id": "Q-pt-01",
+    "language": "pt",
+    "query_string": "\"piroptose\"",
+    "built_from": [
+     "T03"
+    ],
+    "term_count": 1,
+    "built_by": "scripts/build_queries.py（term_map 机械派生）",
+    "status": "built"
+   },
+   {
+    "query_id": "Q-zh-01",
+    "language": "zh",
+    "query_string": "\"炎症性肠病\" OR \"细胞焦亡\"",
+    "built_from": [
+     "T01",
+     "T05"
+    ],
+    "term_count": 2,
+    "built_by": "scripts/build_queries.py（term_map 机械派生）",
+    "status": "built"
+   }
+  ],
+  "items": [
+   {
+    "item_id": "V01",
+    "source_ref": "candidates[0]",
+    "title": "Piroptose e progressão da doença inflamatória intestinal: coorte prospectiva",
+    "title_lang": "pt",
+    "body_language": "pt",
+    "language_evidence": "摘要为葡语（含ão/ç等葡语特征字符），lang_detect 判 pt",
+    "version": "original",
+    "version_evidence": "candidates[0].record_kind=original_fulltext，无 translation_of 字段",
+    "relevance": "direct",
+    "label": "keep",
+    "criteria_hit": [
+     "IN-01",
+     "IN-02"
+    ],
+    "excluded_by": [],
+    "evidence_quote": "Pacientes com níveis elevados apresentaram progressão significativamente mais rápida da doença",
+    "evidence_location": "candidates[0].abstract",
+    "confidence": "high",
+    "rationale": "葡语原文队列研究：术语 piroptose 与 T03 对齐命中 IN-01，摘要含结果句命中 IN-02；所在簇 W1 含原文+出版方英译两个语种视图，crosslang=1.0。",
+    "factors": {
+     "relevance": 1.0,
+     "crosslang": 1.0,
+     "recency": 0.8
+    },
+    "fused_score": 0.96,
+    "rank": 1,
+    "work_cluster_id": "W1",
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "V02",
+    "source_ref": "candidates[1]",
+    "title": "Pyroptosis and progression of inflammatory bowel disease: a prospective cohort",
+    "title_lang": "en",
+    "body_language": "en",
+    "language_evidence": "摘要为英语，lang_detect 判 latin（en）",
+    "version": "translation",
+    "version_evidence": "candidates[1].record_kind=publisher_full_translation 且 translation_of=10.1000/demo.001",
+    "relevance": "direct",
+    "label": "exclude",
+    "criteria_hit": [],
+    "excluded_by": [
+     "EX-02"
+    ],
+    "evidence_quote": "This prospective cohort study followed 120 patients with inflammatory bowel disease",
+    "evidence_location": "candidates[1].abstract",
+    "confidence": "high",
+    "rationale": "同一研究（DOI 10.1000/demo.001）的出版方全文英译，按 EX-02 并入簇 W1 保留原文版正本 V01，不重复计数；术语 pyroptosis 与 T01/T03 对齐。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "work_cluster_id": "W1",
+    "duplicate_of": "V01",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "V03",
+    "source_ref": "candidates[2]",
+    "title": "ピロプトーシスと炎症性腸疾患の関連",
+    "title_lang": "ja",
+    "body_language": "ja",
+    "language_evidence": "标题与摘要含片假名（ピロプトーシス），lang_detect 判 ja",
+    "version": "abstract_only",
+    "version_evidence": "candidates[2].record_kind=abstract_only，摘要自述全文未収録",
+    "relevance": "indirect",
+    "label": "pending",
+    "criteria_hit": [],
+    "excluded_by": [],
+    "evidence_quote": "全文は未収録で、原著の所在と版本は未確認",
+    "evidence_location": "candidates[2].abstract",
+    "confidence": "low",
+    "rationale": "仅日文索引抄录，无法确认是否与 V06 同一研究、也无法核验ピロプトーシス的语义对齐（歧义 A02 needs_review），标 pending 并登记待复核。",
+    "factors": {
+     "relevance": 0.5,
+     "crosslang": 0.0,
+     "recency": 0.8
+    },
+    "fused_score": 0.41,
+    "rank": 4,
+    "work_cluster_id": null,
+    "duplicate_of": null,
+    "missing_metadata": [
+     "doi",
+     "fulltext"
+    ],
+    "pending_reason": "全文未收录：无法确认与 V06 的同一性，片假名音译语义待回译复核（歧义 A02）",
+    "judged": true
+   },
+   {
+    "item_id": "V04",
+    "source_ref": "candidates[3]",
+    "title": "Gasdermin D pores drive intestinal epithelial cell death in colitis models",
+    "title_lang": "en",
+    "body_language": "en",
+    "language_evidence": "摘要为英语，lang_detect 判 latin（en）",
+    "version": "original",
+    "version_evidence": "candidates[3].record_kind=original_fulltext",
+    "relevance": "direct",
+    "label": "keep",
+    "criteria_hit": [
+     "IN-01",
+     "IN-02"
+    ],
+    "excluded_by": [],
+    "evidence_quote": "We show that gasdermin D pores mediate intestinal epithelial cell death in two murine colitis models",
+    "evidence_location": "candidates[3].abstract",
+    "confidence": "high",
+    "rationale": "英语原始研究：gasdermin D 与 T04（GSDMD 缩写映射）对齐命中 IN-01，含结果句命中 IN-02；所在簇 W2 含原文+精确重复两个视图，crosslang=1.0。",
+    "factors": {
+     "relevance": 1.0,
+     "crosslang": 1.0,
+     "recency": 0.6
+    },
+    "fused_score": 0.92,
+    "rank": 2,
+    "work_cluster_id": "W2",
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "V05",
+    "source_ref": "candidates[4]",
+    "title": "Gasdermin D pores drive intestinal epithelial cell death in colitis models",
+    "title_lang": "en",
+    "body_language": "en",
+    "language_evidence": "摘要为英语，lang_detect 判 latin（en）",
+    "version": "original",
+    "version_evidence": "candidates[4].record_kind=exact_duplicate（同 DOI 同题同摘要）",
+    "relevance": "direct",
+    "label": "exclude",
+    "criteria_hit": [],
+    "excluded_by": [
+     "EX-02"
+    ],
+    "evidence_quote": "Inhibition of pyroptotic pore formation (GSDMD inhibition) reduced epithelial injury scores",
+    "evidence_location": "candidates[4].abstract",
+    "confidence": "high",
+    "rationale": "V04 的精确重复副本（同 DOI 10.1000/demo.002、同题、同摘要），按 EX-02 并入簇 W2 保留正本 V04，不得重复计数。",
+    "factors": null,
+    "fused_score": null,
+    "rank": null,
+    "work_cluster_id": "W2",
+    "duplicate_of": "V04",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "V06",
+    "source_ref": "candidates[5]",
+    "title": "细胞焦亡在肠道炎症中的作用及机制研究",
+    "title_lang": "zh",
+    "body_language": "zh",
+    "language_evidence": "标题与摘要为简体中文（汉字字形，无假名），lang_detect 判 zh",
+    "version": "original",
+    "version_evidence": "candidates[5].record_kind=original_fulltext",
+    "relevance": "direct",
+    "label": "keep",
+    "criteria_hit": [
+     "IN-01",
+     "IN-02"
+    ],
+    "excluded_by": [],
+    "evidence_quote": "结果提示细胞焦亡相关通路激活与炎症性肠病活动度相关",
+    "evidence_location": "candidates[5].abstract",
+    "confidence": "high",
+    "rationale": "中文原始研究：术语细胞焦亡与 T01、炎症性肠病与 T05 对齐命中 IN-01/IN-02；暂无其他语种视图（单视图 crosslang=0.5），若后续确认 V03 为其索引抄录则升簇。",
+    "factors": {
+     "relevance": 1.0,
+     "crosslang": 0.5,
+     "recency": 0.7
+    },
+    "fused_score": 0.79,
+    "rank": 3,
+    "work_cluster_id": "W3",
+    "duplicate_of": null,
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   }
+  ],
+  "clusters": [
+   {
+    "cluster_id": "W1",
+    "member_ids": [
+     "V01",
+     "V02"
+    ],
+    "canonical_id": "V01",
+    "basis": "doi",
+    "merge_evidence": "同 DOI 10.1000/demo.001，V02 为出版方全文英译（record_kind=publisher_full_translation，translation_of 指向同一 DOI）",
+    "resolution": "merged"
+   },
+   {
+    "cluster_id": "W2",
+    "member_ids": [
+     "V04",
+     "V05"
+    ],
+    "canonical_id": "V04",
+    "basis": "exact_duplicate",
+    "merge_evidence": "V05 与 V04 同 DOI、同题、同摘要，为精确重复副本",
+    "resolution": "merged"
+   }
+  ],
+  "ambiguities": [
+   {
+    "ambiguity_id": "A01",
+    "surface_form": "pyroptose",
+    "langs": [
+     "pt",
+     "en"
+    ],
+    "readings": [
+     "葡语中 piroptose 即 pyroptosis（细胞焦亡）的本地译名",
+     "英语中 pyroptose 为非标准词形，可能是词形变体"
+    ],
+    "resolved_as": "pyroptosis（细胞焦亡）",
+    "resolution": "resolved",
+    "related_entries": [
+     "T03"
+    ],
+    "note": "由 candidates[0] 葡语语境确认，风险已消解"
+   },
+   {
+    "ambiguity_id": "A02",
+    "surface_form": "ピロプトーシス",
+    "langs": [
+     "ja"
+    ],
+    "readings": [
+     "pyroptosis 的片假名音译（细胞焦亡）",
+     "其他机制术语误译的可能"
+    ],
+    "resolved_as": null,
+    "resolution": "needs_review",
+    "related_entries": [
+     "T02"
+    ],
+    "note": "仅凭索引抄录无法回译复核，须人工抽检"
+   }
+  ],
+  "coverage": {
+   "total_candidates": 6,
+   "judged_items": 6,
+   "keep": 3,
+   "pending": 1,
+   "exclude": 2,
+   "versions_merged": 2,
+   "ratio": 1.0
+  },
+  "coverage_matrix": [
+   {
+    "language": "en",
+    "queries_issued": 1,
+    "records_found": 3,
+    "kept": 1,
+    "pending": 0,
+    "excluded": 2,
+    "gap_note": null
+   },
+   {
+    "language": "ja",
+    "queries_issued": 1,
+    "records_found": 1,
+    "kept": 0,
+    "pending": 1,
+    "excluded": 0,
+    "gap_note": "仅索引抄录，全文未收录"
+   },
+   {
+    "language": "pt",
+    "queries_issued": 1,
+    "records_found": 1,
+    "kept": 1,
+    "pending": 0,
+    "excluded": 0,
+    "gap_note": null
+   },
+   {
+    "language": "zh",
+    "queries_issued": 1,
+    "records_found": 1,
+    "kept": 1,
+    "pending": 0,
+    "excluded": 0,
+    "gap_note": null
+   }
+  ],
+  "pending_review": [
+   {
+    "item_id": "V03",
+    "reason": "全文未收录：无法确认与 V06 的同一性，片假名音译语义待回译复核（歧义 A02）",
+    "needed_action": "按标题回检原著 DOI/作者比对同一性；回译核验ピロプトーシス语义后定 keep/exclude"
+   },
+   {
+    "item_id": "A02",
+    "reason": "片假名音译存在其他读法可能，词面对应语义存疑（误译风险）",
+    "needed_action": "人工抽检原文用词并回译复核后更新 ambiguities.resolution"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与候选记录清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "result.items",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明目标语种、有据术语表与打分口径（排序前）",
+    "command": null,
+    "output_ref": "result.research_question / result.term_map / result.rubric",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "逐语种检索式机械构建",
+    "command": "python3 /skills/weekly-skill/scripts/build_queries.py --result /app/output/result.json",
+    "output_ref": "result.queries",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "逐条判定 6 条记录的语种/版本/相关性与归并",
+    "command": null,
+    "output_ref": "result.items / result.clusters / result.ambiguities",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "机械复算分数并排序",
+    "command": "python3 /skills/weekly-skill/scripts/score_rank.py --result /app/output/result.json --k 3",
+    "output_ref": "result.ranking",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "覆盖矩阵、待复核登记与证据链",
+    "command": null,
+    "output_ref": "result.coverage_matrix / result.pending_review / claims",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence / result.efficiency",
+    "status": "done"
+   },
+   {
+    "step": "step7",
+    "action": "业务校验与结构守卫",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json",
+    "output_ref": "validator_verdict",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "retrieved",
+  "verdict_basis": "6/6 条记录全部逐条判定语种/版本/相关性（3 keep / 1 pending / 2 exclude），2 组多语种视图已归并，4 个目标语种在覆盖矩阵各有一行且计数一致。",
+  "gain_evidence": {
+   "probe_version": "1.0",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "demo-xling-001",
+   "input": {
+    "result_path": "C:\\Users\\hzm\\AppData\\Local\\Temp\\w4b\\work.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-802a7115\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "termmap_violations_objective": 0,
+      "termmap_missed": 0,
+      "cluster_violations_objective": 0,
+      "cluster_missed": 0,
+      "coverage_violations_objective": 0,
+      "coverage_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "pending_violations_objective": 0,
+      "pending_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "missing_factors": 0,
+       "unjudged": 0,
+       "termmap_missed": 0,
+       "cluster_missed": 0,
+       "coverage_missed": 0,
+       "evidence_missed": 0,
+       "pending_missed": 0
+      },
+      "steps_count": 32,
+      "steps_detail": {
+       "checks_executed": 24,
+       "checks_disabled": 0,
+       "flow_steps_total": 8,
+       "flow_steps_done": 8
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0017
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "termmap_violations_objective": 0,
+      "termmap_missed": 0,
+      "cluster_violations_objective": 0,
+      "cluster_missed": 0,
+      "coverage_violations_objective": 0,
+      "coverage_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_missed": 0,
+      "pending_violations_objective": 0,
+      "pending_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "missing_factors": 0,
+       "unjudged": 0,
+       "termmap_missed": 0,
+       "cluster_missed": 0,
+       "coverage_missed": 0,
+       "evidence_missed": 0,
+       "pending_missed": 0
+      },
+      "steps_count": 20,
+      "steps_detail": {
+       "checks_executed": 12,
+       "checks_disabled": 5,
+       "flow_steps_total": 8,
+       "flow_steps_done": 8
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0005
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "termmap_missed": 0,
+    "cluster_missed": 0,
+    "coverage_missed": 0,
+    "evidence_missed": 0,
+    "pending_missed": 0,
+    "manual_review_items": 0,
+    "steps_count": 12,
+    "clarification_rounds": 0
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "termmap_missed",
+     "mechanism": "术语映射有据检查（源词/目标词/语种/变体枚举/evidence_quote 逐字证据；检索式 built_from 引用可追溯）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后映射无据、检索式引用悬空不再判 FAIL，术语对齐退化为自述"
+    },
+    {
+     "metric": "cluster_missed",
+     "mechanism": "跨语言版本归并检查（duplicate_of ⇒ clusters 登记且正本一致；同题同版精确重复机械检测；簇成员指回正本）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后同一论文多语种版本可重复计数，指标虚高不被检出"
+    },
+    {
+     "metric": "coverage_missed",
+     "mechanism": "语言覆盖矩阵一致检查（行集合=目标语种∪已判定语种；queries_issued/records_found/kept/pending/excluded 与 items、queries 机械对账）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后矩阵数字可任意篡改、目标语种可被静默漏掉"
+    },
+    {
+     "metric": "evidence_missed",
+     "mechanism": "claims 证据链回证（keep/pending 须有 source_id 对应 claim；fused_score 数字须出现在 claim text/quote，标识符内嵌数字不作回证、区间端点保留）",
+     "formula": "无回证的 keep/pending 条目数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后证据链缺失不再判 FAIL，理由完备性退化为自述"
+    },
+    {
+     "metric": "pending_missed",
+     "mechanism": "待复核登记检查（pending ⇒ pending_review 含 reason+needed_action；needs_review 歧义与 escalated 簇成员必须进待复核）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后歧义与待定条目可静默漏登记，人工复核入口丢失"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "漏检 + 缺因子（仅 keep/pending 计）+ 未判定条目合计",
+     "formula": "missing_factors(keep/pending) + unjudged + 五类漏检",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "八步线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "退化模式关闭五组检查（termmap/cluster/coverage/evidence/pending），枚举、语种登记、排序复算、coverage 汇总等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "五类违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，契约字段校验跳过。",
+    "rubric 未事前声明时排序复算真值不可得，相关违规记 0 但属『无法判定』而非『无违规』。",
+    "把 --ablate 的退化结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\w4b\\wk\\gain_probe_polluted.json",
+    "injected": [
+     "T01 术语映射清空 evidence_quote（映射无据）",
+     "V02 清空 duplicate_of（多语种版本未归并，重复计数）",
+     "V01 改为 keep 但清空 criteria_hit/evidence_quote 并篡改 fused_score",
+     "coverage_matrix[0] 语种 en records_found 篡改 +1",
+     "歧义 A02 needs_review 改为 resolved（歧义登记丢失）",
+     "清空 pending_review（待复核登记丢失）",
+     "清空 claims（证据链缺失）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 12,
+     "termmap_missed": 0,
+     "cluster_missed": 0,
+     "coverage_missed": 0,
+     "evidence_missed": 0,
+     "pending_missed": 0,
+     "problem_sample": [
+      "T01 术语映射无逐字证据（evidence_quote 空）——映射必须有据",
+      "V02 在簇 W1 中非正本但未设 duplicate_of 指回正本",
+      "coverage_matrix 语种 en 计数不一致: records_found=4(期望 3)",
+      "V01 标 keep 但未命中任何纳入标准（criteria_hit 空）",
+      "V01 标 keep 但无摘要证据（evidence_quote 空）",
+      "V01 的 evidence_quote 在 claims 证据链中无逐字回证",
+      "V03 的 evidence_quote 在 claims 证据链中无逐字回证",
+      "V04 的 evidence_quote 在 claims 证据链中无逐字回证"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "FAIL",
+     "problems": 1,
+     "termmap_missed": 1,
+     "cluster_missed": 1,
+     "coverage_missed": 1,
+     "evidence_missed": 10,
+     "pending_missed": 1,
+     "problem_sample": [
+      "V01 fused_score 复算不符（期望 0.96，实际 9.9999）"
+     ]
+    },
+    "missed_detection_delta": {
+     "termmap_missed": 1,
+     "cluster_missed": 1,
+     "coverage_missed": 1,
+     "evidence_missed": 10,
+     "pending_missed": 1,
+     "problems": -11
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.0131,
+   "result_bytes": 26531,
+   "input_files_scanned": 2,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 24,
+   "checker_checks_executed_degraded": 12,
+   "checker_checks_disabled_degraded": 5,
+   "items_total": 6,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 0,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 0,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  },
+  "ranking": {
+   "ordered_ids": [
+    "V01",
+    "V04",
+    "V06",
+    "V03"
+   ],
+   "ties": [],
+   "top_k": [
+    "V01",
+    "V04",
+    "V06"
+   ],
+   "k_value": 3,
+   "rubric_weights": {
+    "relevance": 0.5,
+    "crosslang": 0.3,
+    "recency": 0.2
+   },
+   "tie_break": [
+    "fused_score 降序",
+    "recency 降序",
+    "item_id 升序"
+   ]
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "V01 为葡语原文（摘要含葡语特征字符，lang_detect 判 pt）；术语 piroptose 与 T03 对齐；fused_score=0.96（0.5*1.0 + 0.3*1.0 + 0.2*0.8），keep 依据 IN-01/IN-02。",
+   "kind": "reported",
+   "source_id": "V01",
+   "location": "items[0]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[0].abstract",
+     "quote": "Pacientes com níveis elevados apresentaram progressão significativamente mais rápida da doença"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "V04 为英语原文，gasdermin D 与 GSDMD 缩写映射（T04）对齐；fused_score=0.92（0.5*1.0 + 0.3*1.0 + 0.2*0.6），keep 依据 IN-01/IN-02。",
+   "kind": "reported",
+   "source_id": "V04",
+   "location": "items[3]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[3].abstract",
+     "quote": "We show that gasdermin D pores mediate intestinal epithelial cell death in two murine colitis models"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "V06 为中文原文，细胞焦亡/炎症性肠病与 T01/T05 对齐；fused_score=0.79（0.5*1.0 + 0.3*0.5 + 0.2*0.7），keep 依据 IN-01/IN-02。",
+   "kind": "reported",
+   "source_id": "V06",
+   "location": "items[5]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[5].abstract",
+     "quote": "结果提示细胞焦亡相关通路激活与炎症性肠病活动度相关"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "V03 为日文索引抄录（abstract_only），全文未収録、版本未確認；fused_score=0.41（0.5*0.5 + 0.3*0.0 + 0.2*0.8），标 pending 待回译复核（歧义 A02）。",
+   "kind": "inferred",
+   "source_id": "V03",
+   "location": "items[2]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[2].abstract",
+     "quote": "全文は未収録で、原著の所在と版本は未確認"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "V02 为同一研究（DOI 10.1000/demo.001）的出版方全文英译，与 V01 归并入簇 W1 保留原文版正本，不重复计数。",
+   "kind": "reported",
+   "source_id": "V02",
+   "location": "items[1]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[1].abstract",
+     "quote": "This prospective cohort study followed 120 patients with inflammatory bowel disease"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-06",
+   "text": "V05 与 V04 同 DOI 同题同摘要，为精确重复副本，归并入簇 W2 保留正本 V04。",
+   "kind": "reported",
+   "source_id": "V05",
+   "location": "items[4]",
+   "evidence": [
+    {
+     "paragraph_id": "candidates[4].abstract",
+     "quote": "Inhibition of pyroptotic pore formation (GSDMD inhibition) reduced epithelial injury scores"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "V03 原著所在与版本未确认（索引抄录无 DOI）"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "V03 需回检原著比对同一性；A02 片假名音译需回译复核"
+  ],
+  "summary": "示例数据为合成案例；1 条待定（V03）与 1 项歧义（A02）已登记待复核，2 组多语种版本已归并。"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step2",
+   "change": "build_queries 从 5 条术语映射派生 4 个语种检索式"
+  },
+  {
+   "step": "step3",
+   "change": "6 条记录逐条判定完成，2 簇归并"
+  },
+  {
+   "step": "step4",
+   "change": "score_rank 机械复算分数与排序"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "items[0].language_registered",
+   "template_value": "语种标注须已登记（目标语种/覆盖矩阵/unknown）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[1].language_registered",
+   "template_value": "语种标注须已登记（目标语种/覆盖矩阵/unknown）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].language_registered",
+   "template_value": "语种标注须已登记（目标语种/覆盖矩阵/unknown）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[3].language_registered",
+   "template_value": "语种标注须已登记（目标语种/覆盖矩阵/unknown）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[4].language_registered",
+   "template_value": "语种标注须已登记（目标语种/覆盖矩阵/unknown）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[5].language_registered",
+   "template_value": "语种标注须已登记（目标语种/覆盖矩阵/unknown）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "term_map[0].fields",
+   "template_value": "术语映射字段齐 + variant_type 枚举合法",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "term_map[1].fields",
+   "template_value": "术语映射字段齐 + variant_type 枚举合法",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "term_map[2].fields",
+   "template_value": "术语映射字段齐 + variant_type 枚举合法",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "term_map[3].fields",
+   "template_value": "术语映射字段齐 + variant_type 枚举合法",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "term_map[4].fields",
+   "template_value": "术语映射字段齐 + variant_type 枚举合法",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[1].cluster_recorded",
+   "template_value": "duplicate_of ⇒ clusters 登记 merged/escalated 且正本一致",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[4].cluster_recorded",
+   "template_value": "duplicate_of ⇒ clusters 登记 merged/escalated 且正本一致",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage_matrix[0].en",
+   "template_value": "矩阵行与检索式数/条目计数机械一致",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage_matrix[1].ja",
+   "template_value": "矩阵行与检索式数/条目计数机械一致",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage_matrix[2].pt",
+   "template_value": "矩阵行与检索式数/条目计数机械一致",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "coverage_matrix[3].zh",
+   "template_value": "矩阵行与检索式数/条目计数机械一致",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].pending_registered",
+   "template_value": "pending ⇒ 登记入 pending_review",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "rubric.weights_sum",
+   "template_value": "三项权重合计=1.0",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[0].fused_recompute",
+   "template_value": "rubric 权重机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].fused_recompute",
+   "template_value": "rubric 权重机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[3].fused_recompute",
+   "template_value": "rubric 权重机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[5].fused_recompute",
+   "template_value": "rubric 权重机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "ranking.order_recompute",
+   "template_value": "期望顺序逐位对照",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "rubric_ledger",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "ranking_recompute",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "score_rank_output",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS"
+}

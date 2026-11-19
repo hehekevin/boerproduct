@@ -1,0 +1,60 @@
+{
+  "case_id": "demo-kbqa-001",
+  "_note": "合成示例案例（非正式案例）：知识库条目、问题与内容均为虚构，仅用于本地自测整条链路，不冒充正式答案。",
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  },
+  "kb_entries": [
+    {
+      "entry_id": "E01",
+      "title": "样品前处理 SOP v2",
+      "kind": "doc",
+      "version": "v2.1",
+      "path": "kb/sop_sample_prep_v2.md",
+      "content": "样品前处理流程：1) 称取样品 0.5 g；2) 加入 10 mL 缓冲液；3) 涡旋 60 秒；4) 离心 5 分钟，转速 8000 rpm。本版本自 2024-03 起替代 v1。"
+    },
+    {
+      "entry_id": "E02",
+      "title": "样品前处理 SOP v1（存档）",
+      "kind": "doc",
+      "version": "v1.0",
+      "path": "kb/archive/sop_sample_prep_v1.md",
+      "content": "旧版流程：称取样品 1.0 g，加入 5 mL 缓冲液，离心 3 分钟，转速 4000 rpm。已被 v2 取代。"
+    },
+    {
+      "entry_id": "E03",
+      "title": "仪器校准 FAQ",
+      "kind": "faq",
+      "path": "kb/faq_calibration.md",
+      "content": "问：离心机转速上限是多少？答：本实验室台式离心机上限为 12000 rpm。问：校准周期是多久？答：每 6 个月校准一次。"
+    },
+    {
+      "entry_id": "E04",
+      "title": "组会笔记 2024-05",
+      "kind": "note",
+      "path": "kb/notes/2024-05.md",
+      "content": "组会讨论记录：缓冲液 pH 对回收率影响明显，pH 7.4 时回收率最高，约 92%。"
+    },
+    {
+      "entry_id": "E05",
+      "title": "伦理审批流程说明",
+      "kind": "doc",
+      "path": "kb/ethics.md",
+      "content": "涉及人类样本的实验须先通过伦理委员会审批，审批周期约 4 周。"
+    }
+  ],
+  "questions": [
+    {
+      "question_id": "Q1",
+      "question": "当前样品前处理 SOP 的称样量与离心参数是什么？与旧版相比改了什么？"
+    },
+    {
+      "question_id": "Q2",
+      "question": "离心机转速上限和校准周期是多少？"
+    },
+    {
+      "question_id": "Q3",
+      "question": "动物实验伦理审批的平均通过率是多少？"
+    }
+  ]
+}

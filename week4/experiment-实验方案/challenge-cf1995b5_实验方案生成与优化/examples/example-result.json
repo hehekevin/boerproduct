@@ -1,0 +1,424 @@
+{
+ "case_id": "demo-expplan-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.12.x",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "示例文件，非实机运行记录"
+  },
+  "research_question": {
+   "question": "比较 100 与 300 μmol·m⁻²·s⁻¹ 两种光照强度对拟南芥 Col-0 幼苗下胚轴伸长的影响",
+   "scope": "受控生长室、1/2 MS 培养基、14 天窗口",
+   "constraints": "预算 3000 元；培养架 2 层；每组幼苗 ≥30 株"
+  },
+  "rubric": {
+   "weights": {
+    "completeness": 0.4,
+    "feasibility": 0.3,
+    "risk_coverage": 0.2,
+    "cost_efficiency": 0.1
+   },
+   "tie_break": [
+    "fused_score 降序",
+    "feasibility 降序",
+    "version_id 升序"
+   ],
+   "normalization": "四因子按方案要素覆盖度/可排期性/风险预案覆盖/预算占用 0-1 线性打分（本技能口径，声明后不改）",
+   "declared_at": "step1"
+  },
+  "hypotheses": [
+   {
+    "hypothesis_id": "H-01",
+    "text": "与 100 μmol·m⁻²·s⁻¹ 相比，300 μmol·m⁻²·s⁻¹ 光照使 Col-0 幼苗 7 日龄下胚轴平均长度显著缩短",
+    "testable": true
+   }
+  ],
+  "variables": {
+   "independent": [
+    {
+     "var_id": "IV-01",
+     "role": "independent",
+     "name": "光照强度",
+     "operational_definition": "LED 生长室光传感器读数，设置档位 100 与 300 μmol·m⁻²·s⁻¹ 两水平",
+     "measurement": "光量子传感器校准读数，每日记录 3 点均值",
+     "unit": "μmol·m⁻²·s⁻¹",
+     "range": "50-400",
+     "level_count": 2
+    }
+   ],
+   "dependent": [
+    {
+     "var_id": "DV-01",
+     "role": "dependent",
+     "name": "下胚轴长度",
+     "operational_definition": "7 日龄幼苗根茎结合点到子叶着生点的投影长度",
+     "measurement": "体视镜拍照后 ImageJ 标定测量，每株 1 次读数取均值",
+     "unit": "mm",
+     "range": "0-30",
+     "level_count": null
+    }
+   ],
+   "control": [
+    {
+     "var_id": "CV-01",
+     "role": "control",
+     "name": "昼/夜温度",
+     "operational_definition": "生长室温控设定 22/18 ℃，各处理组一致",
+     "measurement": "温湿度记录仪连续记录",
+     "unit": "℃",
+     "range": "22±0.5（昼）",
+     "level_count": null
+    },
+    {
+     "var_id": "CV-02",
+     "role": "control",
+     "name": "相对湿度",
+     "operational_definition": "生长室湿度设定 65%，各处理组一致",
+     "measurement": "温湿度记录仪连续记录",
+     "unit": "%",
+     "range": "65±3",
+     "level_count": null
+    }
+   ]
+  },
+  "controls": [
+   {
+    "control_id": "CTL-01",
+    "type": "blank",
+    "group_id": "G-03",
+    "excludes_confound": "排除两次测量间培养基批次、播种深度等环境/操作因素的本底波动",
+    "basis": "预实验记录（示意）：批次间本底差异 <0.2 mm"
+   },
+   {
+    "control_id": "CTL-02",
+    "type": "negative",
+    "group_id": "G-04",
+    "excludes_confound": "排除非光信号通路（如黑暗下本底伸长）引起的长度变化，验证效应确由光强驱动",
+    "basis": "文献常识：持续黑暗显著促进下胚轴伸长（示例引用，示意）"
+   }
+  ],
+  "groups": [
+   {
+    "group_id": "G-01",
+    "name": "处理组-低光",
+    "treatment": "100 μmol·m⁻²·s⁻¹",
+    "n": 36,
+    "randomization": "种子随机分区播种，位置每 2 天轮换"
+   },
+   {
+    "group_id": "G-02",
+    "name": "处理组-高光",
+    "treatment": "300 μmol·m⁻²·s⁻¹",
+    "n": 36,
+    "randomization": "种子随机分区播种，位置每 2 天轮换"
+   },
+   {
+    "group_id": "G-03",
+    "name": "空白对照",
+    "treatment": "200 μmol·m⁻²·s⁻¹（中间档）",
+    "n": 36,
+    "randomization": "同上"
+   },
+   {
+    "group_id": "G-04",
+    "name": "阴性对照（黑暗）",
+    "treatment": "0（持续黑暗）",
+    "n": 12,
+    "randomization": "同上"
+   }
+  ],
+  "power_basis": {
+   "n_registry": [
+    {
+     "group_id": "G-01",
+     "n": 36,
+     "method": "双侧 Welch t 检验功效分析：effect_size=0.65, alpha=0.05, power=0.8 → n=30/组，加 20% 损耗冗余取 36",
+     "source": "预实验效应量估计（示意）"
+    },
+    {
+     "group_id": "G-02",
+     "n": 36,
+     "method": "同 G-01 同一功效分析口径",
+     "source": "预实验效应量估计（示意）"
+    },
+    {
+     "group_id": "G-03",
+     "n": 36,
+     "method": "与处理组等量以保持比较精度",
+     "source": "功效分析同口径推算（示意）"
+    },
+    {
+     "group_id": "G-04",
+     "n": 12,
+     "method": "阴性对照仅作方向性判读，不进入主检验",
+     "source": "本技能设定并写明（示意）"
+    }
+   ]
+  },
+  "protocol": [
+   {
+    "step_id": "S1",
+    "action": "种子表面灭菌与播种：70% 乙醇浸泡 5 min，无菌水冲洗 3 次后点播于 1/2 MS 平板",
+    "equipment": "超净工作台（示例型号 X-虚拟）",
+    "reagents": "70% 乙醇、无菌水、1/2 MS",
+    "params": [
+     {
+      "name": "乙醇体积分数",
+      "value": 70,
+      "unit": "%",
+      "range": "69-71",
+      "basis": "vendor"
+     },
+     {
+      "name": "浸泡时间",
+      "value": 5,
+      "unit": "min",
+      "range": "4-6",
+      "basis": "manual"
+     }
+    ],
+    "duration_min": 45,
+    "cost_yuan": 120
+   },
+   {
+    "step_id": "S2",
+    "action": "光照处理：四组分别置于 100/300/200/0 μmol·m⁻²·s⁻¹ 档位培养 7 天，16 h 光周期",
+    "equipment": "LED 生长室（示例型号 Y-虚拟）",
+    "params": [
+     {
+      "name": "目标光强",
+      "value": 300,
+      "unit": "μmol·m⁻²·s⁻¹",
+      "range": "295-305",
+      "basis": "literature"
+     },
+     {
+      "name": "低光档位",
+      "value": 100,
+      "unit": "μmol·m⁻²·s⁻¹",
+      "range": "98-102",
+      "basis": "literature"
+     },
+     {
+      "name": "光周期",
+      "value": 16,
+      "unit": "h",
+      "range": "16±0.5",
+      "basis": "manual"
+     },
+     {
+      "name": "昼温",
+      "value": 22,
+      "unit": "℃",
+      "range": "22±0.5",
+      "basis": "manual"
+     },
+     {
+      "name": "相对湿度",
+      "value": 65,
+      "unit": "%",
+      "range": "65±3",
+      "basis": "manual"
+     }
+    ],
+    "duration_min": 10080,
+    "cost_yuan": 1800
+   },
+   {
+    "step_id": "S3",
+    "action": "第 7 天整板拍照并用 ImageJ 标定测量下胚轴长度，双人独立录入",
+    "equipment": "体视镜（示例型号 Z-虚拟）+ ImageJ",
+    "params": [
+     {
+      "name": "标定精度",
+      "value": 0.01,
+      "unit": "mm",
+      "range": "≤0.01",
+      "basis": "pilot"
+     }
+    ],
+    "duration_min": 240,
+    "cost_yuan": 300
+   }
+  ],
+  "measurements": [
+   {
+    "metric_id": "M-01",
+    "dv_ref": "DV-01",
+    "instrument": "体视镜+ImageJ",
+    "unit": "mm",
+    "precision": "0.01 mm",
+    "timing": "第 7 天"
+   }
+  ],
+  "analysis_plan": [
+   {
+    "analysis_id": "A-01",
+    "hypothesis_id": "H-01",
+    "dv_ref": "DV-01",
+    "test": "双侧 Welch t 检验（G-01 vs G-02），效应量 Cohen's d 与 95% CI",
+    "alpha": 0.05,
+    "tool": "任意统计软件/手算均可用，公式随方案落盘"
+   }
+  ],
+  "risks": [
+   {
+    "risk_id": "R-01",
+    "failure_mode": "平板污染",
+    "judge_criterion": "肉眼可见菌斑或浑浊",
+    "stop_loss": "污染率 >10% 即终止该批次",
+    "fallback": "重新灭菌播种（备用 3 批种子）"
+   },
+   {
+    "risk_id": "R-02",
+    "failure_mode": "生长室光强漂移",
+    "judge_criterion": "传感器读数偏离设定 ±5%",
+    "stop_loss": "连续 2 天漂移超限即暂停实验并校准",
+    "fallback": "改用备用培养架层位"
+   }
+  ],
+  "confirmations": [
+   {
+    "item": "生长室 14 天档期已向平台管理员申请（示例流程）",
+    "kind": "equipment",
+    "status": "pending"
+   },
+   {
+    "item": "拟南芥 Col-0 属一般模式生物，无需伦理审批；转基因操作不在本方案范围",
+    "kind": "ethics",
+    "status": "confirmed"
+   },
+   {
+    "item": "光强档位与效应量预估建议交由有预实验数据的专家复核",
+    "kind": "expert",
+    "status": "pending"
+   }
+  ],
+  "plan_versions": [
+   {
+    "version_id": "V1",
+    "summary": "完整四组设计（本文件正文所示）",
+    "factors": {
+     "completeness": 0.9,
+     "feasibility": 0.8,
+     "risk_coverage": 0.7,
+     "cost_efficiency": 0.6
+    },
+    "changes": "初版",
+    "fused_score": 0.8,
+    "rank": 1
+   },
+   {
+    "version_id": "V2",
+    "summary": "砍掉阴性对照 G-04 以省预算",
+    "factors": {
+     "completeness": 0.8,
+     "feasibility": 0.9,
+     "risk_coverage": 0.6,
+     "cost_efficiency": 0.7
+    },
+    "changes": "移除 G-04，损失方向性判读能力",
+    "fused_score": 0.78,
+    "rank": 2
+   },
+   {
+    "version_id": "V3",
+    "summary": "增加光强 3 梯度与破坏性取样",
+    "factors": {
+     "completeness": 0.7,
+     "feasibility": 0.7,
+     "risk_coverage": 0.9,
+     "cost_efficiency": 0.5
+    },
+    "changes": "扩梯度但超预算与 14 天窗口",
+    "fused_score": 0.72,
+    "rank": 3
+   }
+  ],
+  "plan_ranking": {
+   "ordered_ids": [
+    "V1",
+    "V2",
+    "V3"
+   ],
+   "ties": [],
+   "top_k": [
+    "V1"
+   ],
+   "k_value": 1
+  },
+  "completeness": {
+   "hypotheses_total": 1,
+   "variables_defined": 4,
+   "controls_count": 2,
+   "groups_total": 4,
+   "protocol_steps": 3,
+   "analysis_entries": 1,
+   "aligned_hypotheses": 1,
+   "ratio": 1.0
+  },
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --out /app/output/result.json --work-dir /app/work",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "方案排序",
+    "command": "python3 /skills/weekly-skill/scripts/score_plan.py --result /app/output/result.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "designed",
+  "verdict_basis": "假设/变量表/对照/功效依据/分析对齐/风险全部要素齐备且通过机械校验",
+  "gain_evidence": {
+   "available": false,
+   "reason": "示例示意文件，不含真实探针运行结果；正式运行由 gain_probe.py 回写"
+  },
+  "efficiency": {
+   "available": false,
+   "reason": "示例示意文件，不含真实效率计数"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "H-01 可检验：高光组 300 μmol·m⁻²·s⁻¹ 对比低光组 100 μmol·m⁻²·s⁻¹；方案参数含 70% 乙醇灭菌 5 min、光周期 16 h、昼温 22 ℃、湿度 65%，标定精度 0.01 mm；推荐方案 V1（fused_score 0.8，次选 V2 0.78、V3 0.72）",
+   "kind": "reported",
+   "source_id": "H-01",
+   "location": "result.protocol / result.plan_versions",
+   "evidence": [
+    {
+     "paragraph_id": "protocol[S2].params",
+     "quote": "300 μmol·m⁻²·s⁻¹（literature）"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [],
+  "conflicts": [],
+  "human_review": [
+   "光强档位与效应量预估需专家复核（见 confirmations）"
+  ],
+  "summary": "示例方案：数值均为虚构示意，参数依据标注 manual/pilot/literature/vendor 四类"
+ },
+ "changelog": [
+  {
+   "step": "example",
+   "change": "合成示意输出，非正式案例答案"
+  }
+ ],
+ "validator_verdict": null
+}

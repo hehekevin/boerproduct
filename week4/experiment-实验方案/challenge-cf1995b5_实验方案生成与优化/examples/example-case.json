@@ -1,0 +1,14 @@
+{
+  "case_id": "demo-expplan-001",
+  "research_question": "在受控生长室内，比较 100 与 300 μmol·m⁻²·s⁻¹ 两种光照强度对拟南芥（Col-0）幼苗下胚轴伸长的影响，产出可在 14 天内排期执行的实验方案【本文件为合成示例，仅用于演示 Skill 输入格式，非正式案例】",
+  "constraints": "生长室可用窗口 14 天；预算上限 3000 元；培养架 2 层；每组幼苗可用 ≥30 株",
+  "materials": [
+    {"item": "拟南芥 Col-0 种子", "spec": "批号 S-2026-合成（虚构）"},
+    {"item": "1/2 MS 培养基", "spec": "粉剂，vendor-示例"},
+    {"item": "LED 光源生长室", "spec": "光强调节范围 50-400 μmol·m⁻²·s⁻¹（示意）"}
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  },
+  "_note": "本案例为合成 fixture：材料、批号、数据均为虚构，仅演示接口与流程，不冒充正式案例。"
+}

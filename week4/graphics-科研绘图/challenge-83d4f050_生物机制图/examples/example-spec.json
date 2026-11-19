@@ -1,0 +1,32 @@
+{
+  "_note": "示意 spec（非正式案例、非正式答案）：仅用于演示 pathway_svg.py / validate_pathway.py / gain_evidence.py 的接口。正式执行时 spec 由 Agent 从 /input 材料逐条抽取生成，evidence 为材料原文 verbatim 引文。",
+  "title": "EGF-EGFR-RAS-ERK pathway (example only)",
+  "source": "examples/example-source.txt",
+  "compartments": ["extracellular", "membrane", "cytoplasm", "nucleus"],
+  "nodes": [
+    {"id": "EGF", "label": "EGF", "type": "ligand", "compartment": "extracellular", "source": "example-source.txt L1", "evidence": "EGF binding to the extracellular domain of EGFR"},
+    {"id": "EGFR", "label": "EGFR", "type": "receptor", "compartment": "membrane", "source": "example-source.txt L1", "evidence": "receptor dimerization and autophosphorylation"},
+    {"id": "GRB2", "label": "GRB2", "type": "protein", "compartment": "cytoplasm", "source": "example-source.txt L1", "evidence": "Activated EGFR recruits GRB2"},
+    {"id": "SOS1", "label": "SOS1", "type": "protein", "compartment": "cytoplasm", "source": "example-source.txt L1", "evidence": "GRB2 activates SOS1"},
+    {"id": "RAS", "label": "RAS", "type": "protein", "compartment": "membrane", "source": "example-source.txt L1", "evidence": "RAS activation through GDP-GTP exchange"},
+    {"id": "RAF", "label": "RAF", "type": "protein", "compartment": "cytoplasm", "source": "example-source.txt L1", "evidence": "RAS activates RAF"},
+    {"id": "MEK", "label": "MEK", "type": "protein", "compartment": "cytoplasm", "source": "example-source.txt L1", "evidence": "the RAF-MEK-ERK kinase cascade"},
+    {"id": "ERK", "label": "ERK", "type": "protein", "compartment": "cytoplasm", "source": "example-source.txt L1", "evidence": "Phosphorylated ERK translocates into the nucleus"},
+    {"id": "ELK1", "label": "ELK1", "type": "protein", "compartment": "nucleus", "source": "example-source.txt L1", "evidence": "phosphorylates the transcription factor ELK1"},
+    {"id": "FOS", "label": "FOS", "type": "gene", "compartment": "nucleus", "source": "example-source.txt L1", "evidence": "ELK1 activates transcription of the FOS gene"},
+    {"id": "SPRY2", "label": "SPRY2", "type": "protein", "compartment": "cytoplasm", "source": "example-source.txt L1", "evidence": "SPRY2 inhibits SOS1"}
+  ],
+  "edges": [
+    {"id": "e01", "src": "EGF", "dst": "EGFR", "type": "binding", "evidence": "EGF binding to the extracellular domain of EGFR"},
+    {"id": "e02", "src": "EGFR", "dst": "GRB2", "type": "recruitment", "evidence": "Activated EGFR recruits GRB2"},
+    {"id": "e03", "src": "GRB2", "dst": "SOS1", "type": "activation", "evidence": "GRB2 activates SOS1"},
+    {"id": "e04", "src": "SOS1", "dst": "RAS", "type": "activation", "evidence": "promotes RAS activation through GDP-GTP exchange"},
+    {"id": "e05", "src": "RAS", "dst": "RAF", "type": "activation", "evidence": "RAS activates RAF"},
+    {"id": "e06", "src": "RAF", "dst": "MEK", "type": "activation", "evidence": "the RAF-MEK-ERK kinase cascade"},
+    {"id": "e07", "src": "MEK", "dst": "ERK", "type": "activation", "evidence": "the RAF-MEK-ERK kinase cascade"},
+    {"id": "e08", "src": "ERK", "dst": "ELK1", "type": "phosphorylation", "evidence": "it phosphorylates the transcription factor ELK1"},
+    {"id": "e09", "src": "ELK1", "dst": "FOS", "type": "activation", "evidence": "ELK1 activates transcription of the FOS gene"},
+    {"id": "e10", "src": "SPRY2", "dst": "SOS1", "type": "inhibition", "evidence": "SPRY2 inhibits SOS1"},
+    {"id": "e11", "src": "ERK", "dst": "RAF", "type": "inhibition", "evidence": "ERK also inhibits RAF"}
+  ]
+}

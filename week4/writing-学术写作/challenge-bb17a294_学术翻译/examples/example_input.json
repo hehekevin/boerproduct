@@ -1,0 +1,18 @@
+{
+  "case_id": "example-translate-001",
+  "output_contract": {
+    "fields": ["bilingual_pairs", "glossary", "fidelity_table", "deliverable", "status"]
+  },
+  "task": "将以下英文段落译为中文，交付句段级双语对照与锁定术语表",
+  "language_pair": {"source": "en", "target": "zh"},
+  "domain": "生物医学",
+  "material": [
+    {
+      "id": "M01",
+      "type": "paper_excerpt",
+      "text": "The tumor microenvironment (TME) plays a critical role in cancer progression. In 2021, a cohort of 12,345 patients was analyzed, and the 5-year survival rate was 67.8% [1]. Risk factors were associated with poor prognosis (HR = 1.62, 95% CI 1.31-2.01), though the study suggests a possible mechanism rather than a definitive cause."
+    }
+  ],
+  "existing_glossary": null,
+  "notes": "示意输入，非正式案例；实际案例由评测平台提供 /input/case.json + task.md + 原文材料"
+}

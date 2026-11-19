@@ -1,0 +1,33 @@
+{
+  "case_id": "demo-bench-v3-001",
+  "_warning": "示意合成数据（非正式案例、非正式答案），仅用于说明接口，不冒充正式案例结果",
+  "output_contract": {
+    "case_id": null,
+    "status": null,
+    "result": null,
+    "claims": null,
+    "uncertainties": null
+  },
+  "benchmark_workorder": [
+    {"item_id": "b-1", "task": "来源段落中报告的容量保持率是多少？", "input_ref": "p02",
+     "conditioning": ["1C", "200 cycles"], "reference_answer": "84.3%",
+     "scoring_rule": "2=数值与条件完整且可回溯 p02；1=仅数值缺条件；0=错误或编造",
+     "difficulty": "easy",
+     "source_text": "After 200 cycles at 1C, the discharge capacity retention was 84.3%."},
+    {"item_id": "b-2", "task": "对照组的保持率是多少？", "input_ref": "p02",
+     "conditioning": ["undoped baseline"], "reference_answer": "78.1%",
+     "scoring_rule": "2=数值正确且标注对照条件；1=数值正确未标条件；0=错误",
+     "difficulty": "easy",
+     "source_text": "compared with 78.1% for the undoped baseline."},
+    {"item_id": "b-3", "task": "机理解释的结论强度如何？", "input_ref": "p03",
+     "conditioning": ["suggests"], "reference_answer": null,
+     "scoring_rule": "2=识别为推断性表述并引用 suggests；1=给出解释但未分级；0=当作确定事实",
+     "difficulty": "medium",
+     "source_text": "The improvement suggests that Zr doping stabilizes the lattice."},
+    {"item_id": "b-4", "task": "4.5 V 下的循环数据是否存在？", "input_ref": "p01-p03",
+     "conditioning": ["4.5 V"], "reference_answer": null,
+     "scoring_rule": "2=正确指出未报告且给出依据范围 p01-p03；0=编造数据",
+     "difficulty": "medium",
+     "source_text": "cycled them at 2.8-4.3 V"}
+  ]
+}

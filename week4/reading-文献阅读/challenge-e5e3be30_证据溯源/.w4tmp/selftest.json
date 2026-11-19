@@ -1,0 +1,345 @@
+{
+ "ok": true,
+ "all_passed": true,
+ "tests": {
+  "T1_positive": {
+   "claim_check_ok": true,
+   "claim_check_exit": 0,
+   "schema_guard_pass": true,
+   "schema_guard_exit": 0,
+   "passed": true,
+   "stdout": "[claim_check] PASS（判定分布：{'supported': 2, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0}；闸门：{'coverage_audit': 'enforced', 'quote_verification': 'enforced', 'modifier_preservation': 'enforced', 'gain_evidence_audit': 'enforced', 'verdict_summary_audit': 'enforced'}）\n[claim_check] exit=0（校验结论见报告 ok/problems 字段，不中断交付）\n"
+  },
+  "T2_gain_ab": {
+   "exit_codes": {
+    "compare": 0,
+    "rule": 0
+   },
+   "data": {
+    "rule_arms": {
+     "full": {
+      "gates_on": true,
+      "metrics": {
+       "claims_total": 3,
+       "claims_judged": 3,
+       "claims_uncovered_registered": 0,
+       "claims_missing": 0,
+       "missing_claim_ids": [],
+       "verdict_coverage_rate": 1.0,
+       "subclaims_total": 6,
+       "subclaims_per_claim": 2.0,
+       "evidence_total": 6,
+       "evidence_backverified": 6,
+       "evidence_backverify_failed": 0,
+       "evidence_backverify_rate": 1.0,
+       "uncovered_miss_count": 0,
+       "false_supported_count": 0,
+       "manual_review_items": 0,
+       "manual_review_explicit": 0,
+       "manual_review_backverify_failed": 0,
+       "steps": 5,
+       "rounds": 2,
+       "steps_source": "protocol",
+       "rounds_source": "protocol"
+      }
+     },
+     "ablated": {
+      "gates_on": false,
+      "metrics": {
+       "claims_total": 3,
+       "claims_judged": 2,
+       "claims_uncovered_registered": 0,
+       "claims_missing": 1,
+       "missing_claim_ids": [
+        "cl-2"
+       ],
+       "verdict_coverage_rate": 0.6667,
+       "subclaims_total": 2,
+       "subclaims_per_claim": 0.667,
+       "evidence_total": 2,
+       "evidence_backverified": 0,
+       "evidence_backverify_failed": 2,
+       "evidence_backverify_rate": 0.0,
+       "uncovered_miss_count": 1,
+       "false_supported_count": 2,
+       "manual_review_items": 5,
+       "manual_review_explicit": 0,
+       "manual_review_backverify_failed": 2,
+       "steps": 2,
+       "rounds": 0,
+       "steps_source": "protocol",
+       "rounds_source": "protocol"
+      }
+     }
+    },
+    "rule_delta": {
+     "claims_total": 0,
+     "claims_judged": 1,
+     "claims_uncovered_registered": 0,
+     "claims_missing": -1,
+     "missing_claim_ids": null,
+     "verdict_coverage_rate": 0.3333,
+     "subclaims_total": 4,
+     "subclaims_per_claim": 1.333,
+     "evidence_total": 4,
+     "evidence_backverified": 6,
+     "evidence_backverify_failed": -2,
+     "evidence_backverify_rate": 1.0,
+     "uncovered_miss_count": -1,
+     "false_supported_count": -2,
+     "manual_review_items": -5,
+     "manual_review_explicit": 0,
+     "manual_review_backverify_failed": -2,
+     "steps": 3,
+     "rounds": 2,
+     "steps_source": null,
+     "rounds_source": null
+    },
+    "gate_arms_on_clean": {
+     "full": {
+      "gates_on": true,
+      "metrics": {
+       "claims_total": 3,
+       "claims_judged": 3,
+       "claims_uncovered_registered": 0,
+       "claims_missing": 0,
+       "missing_claim_ids": [],
+       "verdict_coverage_rate": 1.0,
+       "subclaims_total": 5,
+       "subclaims_per_claim": 1.667,
+       "evidence_total": 5,
+       "evidence_backverified": 5,
+       "evidence_backverify_failed": 0,
+       "evidence_backverify_rate": 1.0,
+       "uncovered_miss_count": 0,
+       "false_supported_count": 0,
+       "manual_review_items": 0,
+       "manual_review_explicit": 0,
+       "manual_review_backverify_failed": 0,
+       "steps": 5,
+       "rounds": 2,
+       "steps_source": "protocol",
+       "rounds_source": "protocol",
+       "downgraded_subclaims": 0,
+       "quote_violations_detected": 0
+      }
+     },
+     "ablated": {
+      "gates_on": false,
+      "metrics": {
+       "claims_total": 3,
+       "claims_judged": 3,
+       "claims_uncovered_registered": 0,
+       "claims_missing": 0,
+       "missing_claim_ids": [],
+       "verdict_coverage_rate": 1.0,
+       "subclaims_total": 5,
+       "subclaims_per_claim": 1.667,
+       "evidence_total": 5,
+       "evidence_backverified": 5,
+       "evidence_backverify_failed": 0,
+       "evidence_backverify_rate": 1.0,
+       "uncovered_miss_count": 0,
+       "false_supported_count": 0,
+       "manual_review_items": 0,
+       "manual_review_explicit": 0,
+       "manual_review_backverify_failed": 0,
+       "steps": 5,
+       "rounds": 2,
+       "steps_source": "protocol",
+       "rounds_source": "protocol",
+       "downgraded_subclaims": 0,
+       "quote_violations_detected": 0
+      }
+     }
+    },
+    "gate_delta_on_clean": {
+     "claims_total": 0,
+     "claims_judged": 0,
+     "claims_uncovered_registered": 0,
+     "claims_missing": 0,
+     "missing_claim_ids": null,
+     "verdict_coverage_rate": 0.0,
+     "subclaims_total": 0,
+     "subclaims_per_claim": 0.0,
+     "evidence_total": 0,
+     "evidence_backverified": 0,
+     "evidence_backverify_failed": 0,
+     "evidence_backverify_rate": 0.0,
+     "uncovered_miss_count": 0,
+     "false_supported_count": 0,
+     "manual_review_items": 0,
+     "manual_review_explicit": 0,
+     "manual_review_backverify_failed": 0,
+     "steps": 0,
+     "rounds": 0,
+     "steps_source": null,
+     "rounds_source": null,
+     "downgraded_subclaims": 0,
+     "quote_violations_detected": 0
+    },
+    "gate_arms_on_contaminated": {
+     "full": {
+      "gates_on": true,
+      "metrics": {
+       "claims_total": 3,
+       "claims_judged": 2,
+       "claims_uncovered_registered": 1,
+       "claims_missing": 0,
+       "missing_claim_ids": [],
+       "verdict_coverage_rate": 1.0,
+       "subclaims_total": 4,
+       "subclaims_per_claim": 1.333,
+       "evidence_total": 3,
+       "evidence_backverified": 3,
+       "evidence_backverify_failed": 0,
+       "evidence_backverify_rate": 1.0,
+       "uncovered_miss_count": 0,
+       "false_supported_count": 0,
+       "manual_review_items": 1,
+       "manual_review_explicit": 1,
+       "manual_review_backverify_failed": 0,
+       "steps": 5,
+       "rounds": 2,
+       "steps_source": "protocol",
+       "rounds_source": "protocol",
+       "downgraded_subclaims": 1,
+       "quote_violations_detected": 1
+      }
+     },
+     "ablated": {
+      "gates_on": false,
+      "metrics": {
+       "claims_total": 3,
+       "claims_judged": 2,
+       "claims_uncovered_registered": 0,
+       "claims_missing": 1,
+       "missing_claim_ids": [
+        "cl-2"
+       ],
+       "verdict_coverage_rate": 0.6667,
+       "subclaims_total": 4,
+       "subclaims_per_claim": 1.333,
+       "evidence_total": 4,
+       "evidence_backverified": 3,
+       "evidence_backverify_failed": 1,
+       "evidence_backverify_rate": 0.75,
+       "uncovered_miss_count": 1,
+       "false_supported_count": 0,
+       "manual_review_items": 2,
+       "manual_review_explicit": 0,
+       "manual_review_backverify_failed": 1,
+       "steps": 5,
+       "rounds": 2,
+       "steps_source": "protocol",
+       "rounds_source": "protocol",
+       "downgraded_subclaims": 0,
+       "quote_violations_detected": 0
+      }
+     }
+    },
+    "gate_delta_on_contaminated": {
+     "claims_total": 0,
+     "claims_judged": 0,
+     "claims_uncovered_registered": 1,
+     "claims_missing": -1,
+     "missing_claim_ids": null,
+     "verdict_coverage_rate": 0.3333,
+     "subclaims_total": 0,
+     "subclaims_per_claim": 0.0,
+     "evidence_total": -1,
+     "evidence_backverified": 0,
+     "evidence_backverify_failed": -1,
+     "evidence_backverify_rate": 0.25,
+     "uncovered_miss_count": -1,
+     "false_supported_count": 0,
+     "manual_review_items": -1,
+     "manual_review_explicit": 1,
+     "manual_review_backverify_failed": -1,
+     "steps": 0,
+     "rounds": 0,
+     "steps_source": null,
+     "rounds_source": null,
+     "downgraded_subclaims": 1,
+     "quote_violations_detected": 1
+    }
+   },
+   "passed": true
+  },
+  "T3_contamination": {
+   "exit_codes": {
+    "claim_check": 0,
+    "schema_guard": 0
+   },
+   "problems_caught": 5,
+   "caught_kinds": {
+    "quote 改写": true,
+    "漏核验且未登记 uncovered": true,
+    "verdict_summary 与实际不符": true,
+    "type 非法": true,
+    "modifiers 缺字段": true
+   },
+   "all_kinds_caught": true,
+   "problems": [
+    "漏核验且未登记 uncovered 的 claim_id: cl-2",
+    "[cl-1] subclaims[0] type 非法: 'correlation'",
+    "[cl-1] subclaims[0] quote 改写/不在 p02（空白归一化匹配失败）",
+    "[cl-1] subclaims[1] modifiers 缺字段: significance",
+    "verdict_summary 与实际不符: {'supported': 99, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0} vs {'supported': 2, 'partially_supported': 0, 'contradicted': 0, 'insufficient_evidence': 0}"
+   ],
+   "passed": true,
+   "stdout": "[claim_check] FAIL（5 处）\n  - 漏核验且未登记 uncovered 的 claim_id: cl-2\n  - [cl-1] subclaims[0] type 非法: 'correlation'\n  - [cl-1] subclaims[0] quote 改写/不在 p02（空白归一化匹配失败）\n  - [cl-1] subclaims[1] modifiers 缺字段: significance\n  - verdict_summary 与实际不符: {'supported': 99, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0} vs {'supported': 2, 'partially_supported': 0, 'contradicted': 0, 'insufficient_evidence': 0}\n[claim_check] gates: {'coverage_audit': 'enforced', 'quote_verification': 'enforced', 'modifier_preservation': 'enforced', 'gain_evidence_audit': 'enforced', 'verdict_summary_audit': 'enforced'}\n[claim_check] exit=0（校验结论见报告 ok/problems 字段，不中断交付）\n"
+  },
+  "T4_ablation": {
+   "exit_code": 0,
+   "gates_full": {
+    "coverage_audit": "enforced",
+    "quote_verification": "enforced",
+    "modifier_preservation": "enforced",
+    "gain_evidence_audit": "skipped_not_provided",
+    "verdict_summary_audit": "enforced"
+   },
+   "gates_ablated": {
+    "coverage_audit": "ablated_off",
+    "quote_verification": "ablated_off",
+    "modifier_preservation": "enforced",
+    "gain_evidence_audit": "skipped_not_provided",
+    "verdict_summary_audit": "enforced"
+   },
+   "problems_full": 5,
+   "problems_ablated": 3,
+   "warnings_ablated": 2,
+   "problems_caught_only_by_gates": 2,
+   "headline": {
+    "verdict_coverage_rate": {
+     "full": 1.0,
+     "ablated": 0.6667,
+     "delta": 0.3333
+    },
+    "evidence_backverify_rate": {
+     "full": 1.0,
+     "ablated": 0.0,
+     "delta": 1.0
+    },
+    "uncovered_miss_count": {
+     "full": 0,
+     "ablated": 1,
+     "delta": -1
+    },
+    "manual_review_items": {
+     "full": 0,
+     "ablated": 5,
+     "delta": -5
+    },
+    "steps": {
+     "full": 5,
+     "ablated": 2,
+     "delta": 3
+    }
+   },
+   "switch_effective": true,
+   "passed": true,
+   "stdout": "\n \"ok\": true,\n \"status\": \"completed\",\n \"mode\": \"ablate\",\n \"switch\": \"--ablate / CLAIM_AUDIT_ABLATE=1\",\n \"input_fingerprint\": {\n  \"result\": \"4c44859001d116a5\",\n  \"case\": \"ddfe89858f2c791e\",\n  \"claims\": \"cbbcbe076919072b\"\n },\n \"gate_layer\": {\n  \"full_run\": {\n   \"cmd\": \"C:\\\\Users\\\\hzm\\\\.workbuddy\\\\binaries\\\\python\\\\versions\\\\3.13.12\\\\python3.exe D:\\\\hzm\\\\workbuddy\\\\2026-11-11-12-12-42\\\\bohrium-week3-final\\\\challenge-e5e3be30\\\\submission\\\\scripts\\\\claim_check.py --result C:\\\\Users\\\\hzm\\\\.cache\\\\claim_audit_selftest\\\\contaminated-result.json --case D:\\\\hzm\\\\workbuddy\\\\2026-11-11-12-12-42\\\\bohrium-week3-final\\\\challenge-e5e3be30\\\\submission\\\\examples\\\\example-input.json --claims D:\\\\hzm\\\\workbuddy\\\\2026-11-11-12-12-42\\\\bohrium-week3-final\\\\challenge-e5e3be30\\\\submission\\\\examples\\\\example-claims.json --out C:\\\\Users\\\\hzm\\\\.cache\\\\claim_audit_selftest\\\\claim_check_ablate_full.json\",\n   \"ablate\": false,\n   \"exit_code\": 0,\n   \"stdout_tail\": \"[claim_check] FAIL（5 处）\\n  - 漏核验且未登记 uncovered 的 claim_id: cl-2\\n  - [cl-1] subclaims[0] type 非法: 'correlation'\\n  - [cl-1] subclaims[0] quote 改写/不在 p02（空白归一化匹配失败）\\n  - [cl-1] subclaims[1] modifiers 缺字段: significance\\n  - verdict_summary 与实际不符: {'supported': 99, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0} vs {'supported': 2, 'partially_supported': 0, 'contradicted': 0, 'insufficient_evidence': 0}\\n[claim_check] gates: {'coverage_audit': 'enforced', 'quote_verification': 'enforced', 'modifier_preservation': 'enforced', 'gain_evidence_audit': 'skipped_not_provided', 'verdict_summary_audit': 'enforced'}\\n[claim_check] gate_note gate gain_evidence_audit = skipped_not_provided：该闸未运行，下游不得宣称已核对\\n[claim_check] exit=0（校验结论见报告 ok/problems 字段，不中断交付）\\n\",\n   \"ok\": false,\n   \"problems_count\": 5,\n   \"warnings_count\": 0,\n   \"gates\": {\n    \"coverage_audit\": \"enforced\",\n    \"quote_verification\": \"enforced\",\n    \"modifier_preservation\": \"enforced\",\n    \"gain_evidence_audit\": \"skipped_not_provided\",\n    \"verdict_summary_audit\": \"enforced\"\n   },\n   \"ablation\": {\n    \"active\": false,\n    \"switch\": \"--ablate 或环境变量 CLAIM_AUDIT_ABLATE=1\",\n    \"disabled_gates\": []\n   },\n   \"problems\": [\n    \"漏核验且未登记 uncovered 的 claim_id: cl-2\",\n    \"[cl-1] subclaims[0] type 非法: 'correlation'\",\n    \"[cl-1] subclaims[0] quote 改写/不在 p02（空白归一化匹配失败）\",\n    \"[cl-1] subclaims[1] modifiers 缺字段: significance\",\n    \"verdict_summary 与实际不符: {'supported': 99, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0} vs {'supported': 2, 'partially_supported': 0, 'contradicted': 0, 'insufficient_evidence': 0}\"\n   ]\n  },\n  \"ablated_run\": {\n   \"cmd\": \"C:\\\\Users\\\\hzm\\\\.workbuddy\\\\binaries\\\\python\\\\versions\\\\3.13.12\\\\python3.exe D:\\\\hzm\\\\workbuddy\\\\2026-11-11-12-12-42\\\\bohrium-week3-final\\\\challenge-e5e3be30\\\\submission\\\\scripts\\\\claim_check.py --result C:\\\\Users\\\\hzm\\\\.cache\\\\claim_audit_selftest\\\\contaminated-result.json --case D:\\\\hzm\\\\workbuddy\\\\2026-11-11-12-12-42\\\\bohrium-week3-final\\\\challenge-e5e3be30\\\\submission\\\\examples\\\\example-input.json --claims D:\\\\hzm\\\\workbuddy\\\\2026-11-11-12-12-42\\\\bohrium-week3-final\\\\challenge-e5e3be30\\\\submission\\\\examples\\\\example-claims.json --out C:\\\\Users\\\\hzm\\\\.cache\\\\claim_audit_selftest\\\\claim_check_ablate_ablated.json --ablate\",\n   \"ablate\": true,\n   \"exit_code\": 0,\n   \"stdout_tail\": \"[claim_check] WARNING WARNING[ablate] 漏核验且未登记 uncovered 的 claim_id: cl-2\\n[claim_check] WARNING WARNING[ablate] [cl-1] subclaims[0] quote 改写/不在 p02（空白归一化匹配失败）\\n[claim_check] FAIL（3 处）\\n  - [cl-1] subclaims[0] type 非法: 'correlation'\\n  - [cl-1] subclaims[1] modifiers 缺字段: significance\\n  - verdict_summary 与实际不符: {'supported': 99, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0} vs {'supported': 2, 'partially_supported': 0, 'contradicted': 0, 'insufficient_evidence': 0}\\n[claim_check] gates: {'coverage_audit': 'ablated_off', 'quote_verification': 'ablated_off', 'modifier_preservation': 'enforced', 'gain_evidence_audit': 'skipped_not_provided', 'verdict_summary_audit': \n"
+  }
+ }
+}

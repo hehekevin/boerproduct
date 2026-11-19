@@ -1,0 +1,182 @@
+{
+ "ok": true,
+ "status": "completed",
+ "mode": "ablate",
+ "switch": "--ablate / CLAIM_AUDIT_ABLATE=1",
+ "input_fingerprint": {
+  "result": "4c44859001d116a5",
+  "case": "ddfe89858f2c791e",
+  "claims": "cbbcbe076919072b"
+ },
+ "gate_layer": {
+  "full_run": {
+   "cmd": "C:\\Users\\hzm\\.workbuddy\\binaries\\python\\versions\\3.13.12\\python3.exe D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week3-final\\challenge-e5e3be30\\submission\\scripts\\claim_check.py --result .w4tmp/bad.json --case examples/example-input.json --claims examples/example-claims.json --out D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week3-final\\challenge-e5e3be30\\submission\\.w4tmp\\claim_check_ablate_full.json",
+   "ablate": false,
+   "exit_code": 0,
+   "stdout_tail": "[claim_check] FAIL（5 处）\n  - 漏核验且未登记 uncovered 的 claim_id: cl-2\n  - [cl-1] subclaims[0] type 非法: 'correlation'\n  - [cl-1] subclaims[0] quote 改写/不在 p02（空白归一化匹配失败）\n  - [cl-1] subclaims[1] modifiers 缺字段: significance\n  - verdict_summary 与实际不符: {'supported': 99, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0} vs {'supported': 2, 'partially_supported': 0, 'contradicted': 0, 'insufficient_evidence': 0}\n[claim_check] gates: {'coverage_audit': 'enforced', 'quote_verification': 'enforced', 'modifier_preservation': 'enforced', 'gain_evidence_audit': 'skipped_not_provided', 'verdict_summary_audit': 'enforced'}\n[claim_check] gate_note gate gain_evidence_audit = skipped_not_provided：该闸未运行，下游不得宣称已核对\n[claim_check] exit=0（校验结论见报告 ok/problems 字段，不中断交付）\n",
+   "ok": false,
+   "problems_count": 5,
+   "warnings_count": 0,
+   "gates": {
+    "coverage_audit": "enforced",
+    "quote_verification": "enforced",
+    "modifier_preservation": "enforced",
+    "gain_evidence_audit": "skipped_not_provided",
+    "verdict_summary_audit": "enforced"
+   },
+   "ablation": {
+    "active": false,
+    "switch": "--ablate 或环境变量 CLAIM_AUDIT_ABLATE=1",
+    "disabled_gates": []
+   },
+   "problems": [
+    "漏核验且未登记 uncovered 的 claim_id: cl-2",
+    "[cl-1] subclaims[0] type 非法: 'correlation'",
+    "[cl-1] subclaims[0] quote 改写/不在 p02（空白归一化匹配失败）",
+    "[cl-1] subclaims[1] modifiers 缺字段: significance",
+    "verdict_summary 与实际不符: {'supported': 99, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0} vs {'supported': 2, 'partially_supported': 0, 'contradicted': 0, 'insufficient_evidence': 0}"
+   ]
+  },
+  "ablated_run": {
+   "cmd": "C:\\Users\\hzm\\.workbuddy\\binaries\\python\\versions\\3.13.12\\python3.exe D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week3-final\\challenge-e5e3be30\\submission\\scripts\\claim_check.py --result .w4tmp/bad.json --case examples/example-input.json --claims examples/example-claims.json --out D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week3-final\\challenge-e5e3be30\\submission\\.w4tmp\\claim_check_ablate_ablated.json --ablate",
+   "ablate": true,
+   "exit_code": 0,
+   "stdout_tail": "[claim_check] WARNING WARNING[ablate] 漏核验且未登记 uncovered 的 claim_id: cl-2\n[claim_check] WARNING WARNING[ablate] [cl-1] subclaims[0] quote 改写/不在 p02（空白归一化匹配失败）\n[claim_check] FAIL（3 处）\n  - [cl-1] subclaims[0] type 非法: 'correlation'\n  - [cl-1] subclaims[1] modifiers 缺字段: significance\n  - verdict_summary 与实际不符: {'supported': 99, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0} vs {'supported': 2, 'partially_supported': 0, 'contradicted': 0, 'insufficient_evidence': 0}\n[claim_check] gates: {'coverage_audit': 'ablated_off', 'quote_verification': 'ablated_off', 'modifier_preservation': 'enforced', 'gain_evidence_audit': 'skipped_not_provided', 'verdict_summary_audit': 'enforced'}\n[claim_check] gate_note gate coverage_audit = ablated_off：该闸未运行，下游不得宣称已核对\n[claim_check] gate_note gate quote_verification = ablated_off：该闸未运行，下游不得宣称已核对\n[claim_check] gate_note gate gain_evidence_audit = skipped_not_provided：该闸未运行，下游不得宣称已核对\n[claim_check] exit=0（校验结论见报告 ok/problems 字段，不中断交付）\n",
+   "ok": false,
+   "problems_count": 3,
+   "warnings_count": 2,
+   "gates": {
+    "coverage_audit": "ablated_off",
+    "quote_verification": "ablated_off",
+    "modifier_preservation": "enforced",
+    "gain_evidence_audit": "skipped_not_provided",
+    "verdict_summary_audit": "enforced"
+   },
+   "ablation": {
+    "active": true,
+    "switch": "--ablate 或环境变量 CLAIM_AUDIT_ABLATE=1",
+    "disabled_gates": [
+     "coverage_audit",
+     "quote_verification"
+    ]
+   },
+   "problems": [
+    "[cl-1] subclaims[0] type 非法: 'correlation'",
+    "[cl-1] subclaims[1] modifiers 缺字段: significance",
+    "verdict_summary 与实际不符: {'supported': 99, 'partially_supported': 1, 'contradicted': 0, 'insufficient_evidence': 0} vs {'supported': 2, 'partially_supported': 0, 'contradicted': 0, 'insufficient_evidence': 0}"
+   ]
+  },
+  "problems_caught_only_by_gates": 2,
+  "same_input": true,
+  "note": "同一份 result/case/claims 被交付给用户的校验器真实跑两遍；差值=开启闸门额外拦下的内容级问题数（消融臂记为 WARNING 不判 FAIL）。"
+ },
+ "pipeline_layer": {
+  "arms": {
+   "full": {
+    "gates_on": true,
+    "metrics": {
+     "claims_total": 3,
+     "claims_judged": 3,
+     "claims_uncovered_registered": 0,
+     "claims_missing": 0,
+     "missing_claim_ids": [],
+     "verdict_coverage_rate": 1.0,
+     "subclaims_total": 6,
+     "subclaims_per_claim": 2.0,
+     "evidence_total": 6,
+     "evidence_backverified": 6,
+     "evidence_backverify_failed": 0,
+     "evidence_backverify_rate": 1.0,
+     "uncovered_miss_count": 0,
+     "false_supported_count": 0,
+     "manual_review_items": 0,
+     "manual_review_explicit": 0,
+     "manual_review_backverify_failed": 0,
+     "steps": 5,
+     "rounds": 2,
+     "steps_source": "protocol",
+     "rounds_source": "protocol"
+    }
+   },
+   "ablated": {
+    "gates_on": false,
+    "metrics": {
+     "claims_total": 3,
+     "claims_judged": 2,
+     "claims_uncovered_registered": 0,
+     "claims_missing": 1,
+     "missing_claim_ids": [
+      "cl-2"
+     ],
+     "verdict_coverage_rate": 0.6667,
+     "subclaims_total": 2,
+     "subclaims_per_claim": 0.667,
+     "evidence_total": 2,
+     "evidence_backverified": 0,
+     "evidence_backverify_failed": 2,
+     "evidence_backverify_rate": 0.0,
+     "uncovered_miss_count": 1,
+     "false_supported_count": 2,
+     "manual_review_items": 5,
+     "manual_review_explicit": 0,
+     "manual_review_backverify_failed": 2,
+     "steps": 2,
+     "rounds": 0,
+     "steps_source": "protocol",
+     "rounds_source": "protocol"
+    }
+   }
+  },
+  "delta_full_minus_ablated": {
+   "claims_total": 0,
+   "claims_judged": 1,
+   "claims_uncovered_registered": 0,
+   "claims_missing": -1,
+   "missing_claim_ids": null,
+   "verdict_coverage_rate": 0.3333,
+   "subclaims_total": 4,
+   "subclaims_per_claim": 1.333,
+   "evidence_total": 4,
+   "evidence_backverified": 6,
+   "evidence_backverify_failed": -2,
+   "evidence_backverify_rate": 1.0,
+   "uncovered_miss_count": -1,
+   "false_supported_count": -2,
+   "manual_review_items": -5,
+   "manual_review_explicit": 0,
+   "manual_review_backverify_failed": -2,
+   "steps": 3,
+   "rounds": 2,
+   "steps_source": null,
+   "rounds_source": null
+  }
+ },
+ "headline": {
+  "verdict_coverage_rate": {
+   "full": 1.0,
+   "ablated": 0.6667,
+   "delta": 0.3333
+  },
+  "evidence_backverify_rate": {
+   "full": 1.0,
+   "ablated": 0.0,
+   "delta": 1.0
+  },
+  "uncovered_miss_count": {
+   "full": 0,
+   "ablated": 1,
+   "delta": -1
+  },
+  "manual_review_items": {
+   "full": 0,
+   "ablated": 5,
+   "delta": -5
+  },
+  "steps": {
+   "full": 5,
+   "ablated": 2,
+   "delta": 3
+  }
+ },
+ "elapsed_ms": 634
+}

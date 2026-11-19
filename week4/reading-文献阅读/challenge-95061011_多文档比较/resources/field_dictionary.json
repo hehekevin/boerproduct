@@ -1,0 +1,25 @@
+{
+  "_comment": "字段字典模板（可复用）。按七组字段预定义，实际运行时根据工单 fields[] 补全。",
+  "field_groups": {
+    "对象": ["research_object", "target_pollutant", "material_system"],
+    "数据": ["data_source", "dataset", "sample_size", "data_split"],
+    "方法": ["method", "baseline_model", "model_config"],
+    "条件": ["experiment_condition", "temperature", "ph", "contact_time", "budget_context"],
+    "指标": ["evaluation_metric", "metric_value", "metric_unit", "metric_definition"],
+    "结论": ["main_finding", "conclusion_direction", "effect_size"],
+    "局限": ["limitation", "unreported_condition", "threat_to_validity"]
+  },
+  "field_template": {
+    "field_id": "",
+    "definition": "",
+    "group": "对象|数据|方法|条件|指标|结论|局限",
+    "unit_expectation": "",
+    "value_rule": "取值规则：如何从原文识别该字段",
+    "aliases": {}
+  },
+  "comparability_dimensions": ["task", "metric", "units", "material", "pollutant", "budget"],
+  "cell_status_enum": ["reported", "not_reported", "not_comparable"],
+  "pairwise_verdict_enum": ["same", "partial", "different", "not_judged"],
+  "attribution_dimension_enum": ["sample", "method", "metric", "condition", "object", "scope", "unattributable"],
+  "_usage": "运行时按工单 fields[] 逐条填充 field_template；aliases 登记各论文对同一概念的不同叫法；pairwise 与 attribution 枚举供第 4 步两两比较矩阵与冲突登记使用。"
+}

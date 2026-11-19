@@ -1,0 +1,900 @@
+{
+ "_comment": "示意输出（SYNTHETIC EXAMPLE，非正式答案，仅说明接口与覆盖密度预期）。gain_evidence 与 efficiency 由 scripts/gain_probe.py 与 scripts/efficiency_probe.py 在本示例上真实执行生成，数值可复算。",
+ "case_id": "EXAMPLE-CASE-001",
+ "status": "answered",
+ "status_reason": "两篇合成文档的 5 个字段全部抽取到值并完成两两比较与冲突归因，工单字段全覆盖，无缺口。",
+ "sources": [
+  {
+   "source_document_id": "DOC-A",
+   "title": "MOF 吸附甲基蓝研究（合成示例）",
+   "read_status": "read_ok",
+   "evidence_scheme": "paragraph_id=pNN",
+   "note": "示意数据"
+  },
+  {
+   "source_document_id": "DOC-B",
+   "title": "颗粒活性炭吸附甲基蓝研究（合成示例）",
+   "read_status": "read_ok",
+   "evidence_scheme": "paragraph_id=pNN",
+   "note": "示意数据"
+  }
+ ],
+ "result": {
+  "field_dictionary": [
+   {
+    "field_id": "research_object",
+    "definition": "研究对象/体系",
+    "group": "对象",
+    "unit_expectation": "文本",
+    "aliases": {
+     "体系": "research_object",
+     "system": "research_object"
+    }
+   },
+   {
+    "field_id": "material_system",
+    "definition": "所用材料",
+    "group": "对象",
+    "unit_expectation": "文本",
+    "aliases": {
+     "吸附剂": "material_system"
+    }
+   },
+   {
+    "field_id": "max_adsorption_capacity",
+    "definition": "最大吸附量",
+    "group": "指标",
+    "unit_expectation": "mg/g",
+    "aliases": {
+     "qmax": "max_adsorption_capacity"
+    }
+   },
+   {
+    "field_id": "evaluation_metric",
+    "definition": "评价指标及口径",
+    "group": "指标",
+    "unit_expectation": "文本",
+    "aliases": {}
+   },
+   {
+    "field_id": "main_finding",
+    "definition": "主要结论",
+    "group": "结论",
+    "unit_expectation": "文本",
+    "aliases": {}
+   }
+  ],
+  "matrix": [
+   {
+    "field_id": "research_object",
+    "source_document_id": "DOC-A",
+    "value": "甲基蓝染料废水",
+    "units": "",
+    "context": "实验室配水",
+    "cell_status": "reported",
+    "evidence": {
+     "source_document_id": "DOC-A",
+     "paragraph_id": "p02",
+     "quote": "本文研究 MOF 对甲基蓝染料废水的吸附处理"
+    },
+    "incomparable_reason": null
+   },
+   {
+    "field_id": "research_object",
+    "source_document_id": "DOC-B",
+    "value": "甲基蓝染料废水",
+    "units": "",
+    "context": "实验室配水",
+    "cell_status": "reported",
+    "evidence": {
+     "source_document_id": "DOC-B",
+     "paragraph_id": "p01",
+     "quote": "考察颗粒活性炭对甲基蓝染料的吸附性能"
+    },
+    "incomparable_reason": null
+   },
+   {
+    "field_id": "material_system",
+    "source_document_id": "DOC-A",
+    "value": "Fe3O4@MIL-100(Fe)",
+    "units": "",
+    "context": "自制 MOF",
+    "cell_status": "reported",
+    "evidence": {
+     "source_document_id": "DOC-A",
+     "paragraph_id": "p03",
+     "quote": "采用自合成 Fe3O4@MIL-100(Fe) 作为吸附剂"
+    },
+    "incomparable_reason": null
+   },
+   {
+    "field_id": "material_system",
+    "source_document_id": "DOC-B",
+    "value": "商用颗粒活性炭 GAC-40",
+    "units": "",
+    "context": "市购材料",
+    "cell_status": "reported",
+    "evidence": {
+     "source_document_id": "DOC-B",
+     "paragraph_id": "p02",
+     "quote": "吸附剂为市售颗粒活性炭 GAC-40"
+    },
+    "incomparable_reason": null
+   },
+   {
+    "field_id": "max_adsorption_capacity",
+    "source_document_id": "DOC-A",
+    "value": 312.5,
+    "units": "mg/g",
+    "context": "Langmuir 拟合 qmax，298 K",
+    "cell_status": "reported",
+    "evidence": {
+     "source_document_id": "DOC-A",
+     "paragraph_id": "p07",
+     "quote": "Langmuir 模型拟合得最大吸附量为 312.5 mg/g"
+    },
+    "incomparable_reason": null
+   },
+   {
+    "field_id": "max_adsorption_capacity",
+    "source_document_id": "DOC-B",
+    "value": 86.4,
+    "units": "mg/g",
+    "context": "Langmuir 拟合 qmax，298 K",
+    "cell_status": "reported",
+    "evidence": {
+     "source_document_id": "DOC-B",
+     "paragraph_id": "p06",
+     "quote": "qmax 计算值为 86.4 mg/g"
+    },
+    "incomparable_reason": null
+   },
+   {
+    "field_id": "evaluation_metric",
+    "source_document_id": "DOC-A",
+    "value": "Langmuir qmax",
+    "units": "",
+    "context": "等温线拟合",
+    "cell_status": "reported",
+    "evidence": {
+     "source_document_id": "DOC-A",
+     "paragraph_id": "p07",
+     "quote": "由 Langmuir 等温线得到 qmax"
+    },
+    "incomparable_reason": null
+   },
+   {
+    "field_id": "evaluation_metric",
+    "source_document_id": "DOC-B",
+    "value": "Langmuir qmax",
+    "units": "",
+    "context": "等温线拟合",
+    "cell_status": "reported",
+    "evidence": {
+     "source_document_id": "DOC-B",
+     "paragraph_id": "p06",
+     "quote": "等温线数据用 Langmuir 方程拟合"
+    },
+    "incomparable_reason": null
+   },
+   {
+    "field_id": "main_finding",
+    "source_document_id": "DOC-A",
+    "value": "MOF 吸附量远高于常规碳材料",
+    "units": "",
+    "context": "作者对比文献值",
+    "cell_status": "reported",
+    "evidence": {
+     "source_document_id": "DOC-A",
+     "paragraph_id": "p12",
+     "quote": "其吸附容量显著高于常规多孔碳材料"
+    },
+    "incomparable_reason": null
+   },
+   {
+    "field_id": "main_finding",
+    "source_document_id": "DOC-B",
+    "value": "GAC 吸附量随粒径减小而升高",
+    "units": "",
+    "context": "粒径实验",
+    "cell_status": "reported",
+    "evidence": {
+     "source_document_id": "DOC-B",
+     "paragraph_id": "p10",
+     "quote": " smaller particle size exhibited higher uptake capacity "
+    },
+    "incomparable_reason": null
+   }
+  ],
+  "pairwise": [
+   {
+    "pair": [
+     "DOC-A",
+     "DOC-B"
+    ],
+    "dimension": "task",
+    "verdict": "same",
+    "note": "均为甲基蓝吸附去除研究",
+    "evidence": [
+     {
+      "source_document_id": "DOC-A",
+      "paragraph_id": "p02",
+      "quote": "本文研究 MOF 对甲基蓝染料废水的吸附处理"
+     },
+     {
+      "source_document_id": "DOC-B",
+      "paragraph_id": "p01",
+      "quote": "考察颗粒活性炭对甲基蓝染料的吸附性能"
+     }
+    ]
+   },
+   {
+    "pair": [
+     "DOC-A",
+     "DOC-B"
+    ],
+    "dimension": "metric",
+    "verdict": "same",
+    "note": "同为 Langmuir qmax 口径",
+    "evidence": [
+     {
+      "source_document_id": "DOC-A",
+      "paragraph_id": "p07",
+      "quote": "由 Langmuir 等温线得到 qmax"
+     },
+     {
+      "source_document_id": "DOC-B",
+      "paragraph_id": "p06",
+      "quote": "等温线数据用 Langmuir 方程拟合"
+     }
+    ]
+   },
+   {
+    "pair": [
+     "DOC-A",
+     "DOC-B"
+    ],
+    "dimension": "units",
+    "verdict": "same",
+    "note": "均为 mg/g",
+    "evidence": [
+     {
+      "source_document_id": "DOC-A",
+      "paragraph_id": "p07",
+      "quote": "最大吸附量为 312.5 mg/g"
+     },
+     {
+      "source_document_id": "DOC-B",
+      "paragraph_id": "p06",
+      "quote": "qmax 计算值为 86.4 mg/g"
+     }
+    ]
+   },
+   {
+    "pair": [
+     "DOC-A",
+     "DOC-B"
+    ],
+    "dimension": "material",
+    "verdict": "different",
+    "note": "MOF vs 颗粒活性炭，材料体系不同",
+    "evidence": [
+     {
+      "source_document_id": "DOC-A",
+      "paragraph_id": "p03",
+      "quote": "采用自合成 Fe3O4@MIL-100(Fe) 作为吸附剂"
+     },
+     {
+      "source_document_id": "DOC-B",
+      "paragraph_id": "p02",
+      "quote": "吸附剂为市售颗粒活性炭 GAC-40"
+     }
+    ]
+   },
+   {
+    "pair": [
+     "DOC-A",
+     "DOC-B"
+    ],
+    "dimension": "pollutant",
+    "verdict": "same",
+    "note": "同一污染物甲基蓝",
+    "evidence": [
+     {
+      "source_document_id": "DOC-A",
+      "paragraph_id": "p02",
+      "quote": "对甲基蓝染料废水的吸附处理"
+     },
+     {
+      "source_document_id": "DOC-B",
+      "paragraph_id": "p01",
+      "quote": "对甲基蓝染料的吸附性能"
+     }
+    ]
+   },
+   {
+    "pair": [
+     "DOC-A",
+     "DOC-B"
+    ],
+    "dimension": "budget",
+    "verdict": "not_judged",
+    "note": "两篇均未报告成本/预算信息",
+    "evidence": []
+   }
+  ],
+  "comparability": {
+   "task": "一致（同一污染物吸附去除）",
+   "metric": "一致（Langmuir qmax）",
+   "units": "一致（mg/g）",
+   "material": "不一致（MOF vs GAC）",
+   "pollutant": "一致（甲基蓝）",
+   "budget": "均未报告",
+   "comparable_subset": [
+    "DOC-A+DOC-B（qmax 数值口径一致，可在材料差异前提下做对照陈述）"
+   ],
+   "pooled": false
+  },
+  "synthesis": {
+   "consistent": [
+    "两篇均以 Langmuir qmax 报告吸附量且单位一致"
+   ],
+   "partial": [],
+   "conflicts": [
+    {
+     "what": "吸附量绝对值差异大（312.5 vs 86.4 mg/g）",
+     "docs": [
+      "DOC-A@p07",
+      "DOC-B@p06"
+     ],
+     "attribution": "材料体系不同导致容量差异，非口径冲突",
+     "attribution_dimension": "object",
+     "quotes": [
+      {
+       "source_document_id": "DOC-A",
+       "paragraph_id": "p07",
+       "quote": "Langmuir 模型拟合得最大吸附量为 312.5 mg/g"
+      },
+      {
+       "source_document_id": "DOC-B",
+       "paragraph_id": "p06",
+       "quote": "qmax 计算值为 86.4 mg/g"
+      }
+     ]
+    }
+   ]
+  },
+  "coverage": {
+   "cells": 10,
+   "reported": 10,
+   "not_reported": 0,
+   "not_comparable": 0,
+   "pairwise_records": 6,
+   "conflicts": 1,
+   "claims": 2
+  },
+  "verification": [
+   {
+    "item": "coverage_cells",
+    "template_value": 10,
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "coverage_pairwise_records",
+    "template_value": 6,
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "coverage_conflicts",
+    "template_value": 1,
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "pairwise_dual_evidence",
+    "template_value": 5,
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "conflicts_dual_docs",
+    "template_value": 1,
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "unbacked_numbers",
+    "template_value": 0,
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "cross_doc_claims_dual_quotes",
+    "template_value": 2,
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "coverage_claims",
+    "template_value": 2,
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "gain_evidence_runs",
+    "template_value": 3,
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "efficiency_matrix_cells",
+    "template_value": 10,
+    "applied": true,
+    "match": true
+   }
+  ],
+  "gates": [
+   {
+    "gate": "workorder_read",
+    "state": "enforced",
+    "gate_note": ""
+   },
+   {
+    "gate": "corpus_documents_read",
+    "state": "enforced",
+    "gate_note": ""
+   },
+   {
+    "gate": "check_result_run",
+    "state": "enforced",
+    "gate_note": ""
+   },
+   {
+    "gate": "coverage_consistency",
+    "state": "enforced",
+    "gate_note": ""
+   },
+   {
+    "gate": "compare_matrix_run",
+    "state": "enforced",
+    "gate_note": ""
+   },
+   {
+    "gate": "gain_probe_run",
+    "state": "enforced",
+    "gate_note": ""
+   },
+   {
+    "gate": "efficiency_probe_run",
+    "state": "enforced",
+    "gate_note": ""
+   }
+  ],
+  "gain_evidence": {
+   "probe_version": "r5",
+   "input_fingerprint": {
+    "matrix_sha256": "09aa1694972447ee2b4a680cb618ee5346a76ad632a3969aab2274b3ee00535d",
+    "field_dictionary_sha256": "6b35fdedd999ba27debe7b8f7c1cfb3b79239f0ca655e17d18329d411a4e8e04",
+    "delivered_pairwise_sha256": "30c94e0b0a3aa5c101a2d2820d25615ee96627ffc7e4c52423cc1add0f30ea8e",
+    "delivered_conflicts_sha256": "1814dca26720540c59492e330e2f66893b755ba54722d6ad1a2fe8d08ef40ac9",
+    "workorder_sha256": "a2dde9bfb5417be460698aad3d14561f4fb9dd1bb5b4d7cb73c88f2575e76750",
+    "source_document_ids": [
+     "DOC-A",
+     "DOC-B"
+    ],
+    "comparison_dimensions": [
+     "task",
+     "metric",
+     "units",
+     "material",
+     "pollutant",
+     "budget"
+    ],
+    "expected_cross_document_slots": 6,
+    "same_input_across_runs": true,
+    "unique_variable": "仅切换被消融机制（两两比对 / 冲突归因）；matrix 与已交付 pairwise 字节级不变"
+   },
+   "runs": [
+    {
+     "mode": "full",
+     "label": "完整模式（字段字典+逐格绑定+两两比对+冲突归因）",
+     "closed_mechanisms": [],
+     "artifact_source": "已交付产物（Agent 真实运行输出）",
+     "metrics": {
+      "total_cross_document_slots": 6,
+      "pairwise_records": 6,
+      "judged_slots": 5,
+      "not_judged_slots": 1,
+      "unresolved_cross_document_slots": 1,
+      "dimension_coverage": 5,
+      "dimension_coverage_detail": [
+       "material",
+       "metric",
+       "pollutant",
+       "task",
+       "units"
+      ],
+      "dimension_coverage_rate": 0.8333,
+      "slot_coverage_rate": 0.8333,
+      "agreement_rate": 0.8,
+      "agreement_rate_definition": "已判定槽位中 verdict∈{same,partial} 的占比（口径一致或部分一致）",
+      "verdict_decided_rate": 0.8333,
+      "verdict_distribution": {
+       "same": 4,
+       "partial": 0,
+       "different": 1
+      },
+      "pairwise_dual_evidence_rate": 1.0,
+      "conflicts_found": 1,
+      "attributable_conflicts": 1,
+      "unattributable_conflicts": 0,
+      "attribution_rate": 1.0,
+      "manual_review_items": 1,
+      "manual_review_items_definition": "未判定跨文档槽位 + 不可归因冲突 + 显式 human_review 条目",
+      "steps": 6,
+      "stages_executed": [
+       "field_dictionary_alignment",
+       "per_cell_extraction",
+       "pairwise_comparison",
+       "conflict_attribution",
+       "verification_and_wrapup"
+      ],
+      "followup_rounds": 3,
+      "followup_rounds_definition": "需回访源文档数 + 待追问缺口种类数（三遍同公式）",
+      "followup_rounds_source": "projected_from_gaps"
+     }
+    },
+    {
+     "mode": "ablate_no_pairwise",
+     "label": "退化模式A：关闭两两跨文档比对",
+     "closed_mechanisms": [
+      "pairwise_comparison",
+      "conflict_attribution"
+     ],
+     "artifact_source": "同一份已交付 matrix 的确定性投影（关闭两两比对）",
+     "metrics": {
+      "total_cross_document_slots": 6,
+      "pairwise_records": 0,
+      "judged_slots": 0,
+      "not_judged_slots": 0,
+      "unresolved_cross_document_slots": 6,
+      "dimension_coverage": 0,
+      "dimension_coverage_detail": [],
+      "dimension_coverage_rate": 0.0,
+      "slot_coverage_rate": 0.0,
+      "agreement_rate": 0.0,
+      "agreement_rate_definition": "已判定槽位中 verdict∈{same,partial} 的占比（口径一致或部分一致）",
+      "verdict_decided_rate": 0.0,
+      "verdict_distribution": {
+       "same": 0,
+       "partial": 0,
+       "different": 0
+      },
+      "pairwise_dual_evidence_rate": 0.0,
+      "conflicts_found": 0,
+      "attributable_conflicts": 0,
+      "unattributable_conflicts": 0,
+      "attribution_rate": 0.0,
+      "manual_review_items": 6,
+      "manual_review_items_definition": "未判定跨文档槽位 + 不可归因冲突 + 显式 human_review 条目",
+      "steps": 9,
+      "stages_executed": [
+       "field_dictionary_alignment",
+       "per_cell_extraction",
+       "verification_and_wrapup"
+      ],
+      "followup_rounds": 8,
+      "followup_rounds_definition": "需回访源文档数 + 待追问缺口种类数（三遍同公式）",
+      "followup_rounds_source": "projected_from_gaps"
+     }
+    },
+    {
+     "mode": "ablate_no_attribution",
+     "label": "退化模式B：关闭冲突归因",
+     "closed_mechanisms": [
+      "conflict_attribution"
+     ],
+     "artifact_source": "同一份已交付 conflicts 的确定性投影（关闭归因）",
+     "metrics": {
+      "total_cross_document_slots": 6,
+      "pairwise_records": 6,
+      "judged_slots": 5,
+      "not_judged_slots": 1,
+      "unresolved_cross_document_slots": 1,
+      "dimension_coverage": 5,
+      "dimension_coverage_detail": [
+       "material",
+       "metric",
+       "pollutant",
+       "task",
+       "units"
+      ],
+      "dimension_coverage_rate": 0.8333,
+      "slot_coverage_rate": 0.8333,
+      "agreement_rate": 0.8,
+      "agreement_rate_definition": "已判定槽位中 verdict∈{same,partial} 的占比（口径一致或部分一致）",
+      "verdict_decided_rate": 0.8333,
+      "verdict_distribution": {
+       "same": 4,
+       "partial": 0,
+       "different": 1
+      },
+      "pairwise_dual_evidence_rate": 1.0,
+      "conflicts_found": 1,
+      "attributable_conflicts": 0,
+      "unattributable_conflicts": 1,
+      "attribution_rate": 0.0,
+      "manual_review_items": 2,
+      "manual_review_items_definition": "未判定跨文档槽位 + 不可归因冲突 + 显式 human_review 条目",
+      "steps": 6,
+      "stages_executed": [
+       "field_dictionary_alignment",
+       "per_cell_extraction",
+       "pairwise_comparison",
+       "verification_and_wrapup"
+      ],
+      "followup_rounds": 4,
+      "followup_rounds_definition": "需回访源文档数 + 待追问缺口种类数（三遍同公式）",
+      "followup_rounds_source": "projected_from_gaps"
+     }
+    }
+   ],
+   "deltas": {
+    "ablate_no_pairwise": {
+     "dimension_coverage": 5,
+     "agreement_rate": 0.8,
+     "conflicts_found": 1,
+     "manual_review_items": -5,
+     "steps": -3,
+     "followup_rounds": -5
+    },
+    "ablate_no_attribution": {
+     "dimension_coverage": 0,
+     "agreement_rate": 0.0,
+     "conflicts_found": 0,
+     "manual_review_items": -1,
+     "steps": 0,
+     "followup_rounds": -1
+    }
+   },
+   "mechanism_map": [
+    {
+     "mechanism": "pairwise_comparison",
+     "metric": "dimension_coverage",
+     "metric_polarity": "benefit_higher_better",
+     "mapping_rule": "关闭两两比对 → 可判定跨文档维度归零",
+     "full_value": 5,
+     "ablate_value": 0,
+     "delta": 5,
+     "direction": "full_better"
+    },
+    {
+     "mechanism": "pairwise_comparison",
+     "metric": "agreement_rate",
+     "metric_polarity": "benefit_higher_better",
+     "mapping_rule": "关闭两两比对 → 无已判定槽位，一致判定率记 0",
+     "full_value": 0.8,
+     "ablate_value": 0.0,
+     "delta": 0.8,
+     "direction": "full_better"
+    },
+    {
+     "mechanism": "conflict_attribution",
+     "metric": "conflicts_found",
+     "metric_polarity": "benefit_higher_better",
+     "mapping_rule": "跨文档冲突依赖两两比对 → 冲突发现数归零",
+     "full_value": 1,
+     "ablate_value": 0,
+     "delta": 1,
+     "direction": "full_better"
+    },
+    {
+     "mechanism": "evidence_binding",
+     "metric": "manual_review_items",
+     "metric_polarity": "cost_lower_better",
+     "mapping_rule": "无双文档引文绑定 → 跨文档槽位全部落回人工核对",
+     "full_value": 1,
+     "ablate_value": 6,
+     "delta": -5,
+     "direction": "full_better"
+    },
+    {
+     "mechanism": "process_flow",
+     "metric": "steps",
+     "metric_polarity": "cost_lower_better",
+     "mapping_rule": "少两阶段 → 步骤数下降",
+     "full_value": 6,
+     "ablate_value": 9,
+     "delta": -3,
+     "direction": "full_better"
+    },
+    {
+     "mechanism": "evidence_binding",
+     "metric": "followup_rounds",
+     "metric_polarity": "cost_lower_better",
+     "mapping_rule": "无自动判定 → 需回访源文档数与缺口种类上升",
+     "full_value": 3,
+     "ablate_value": 8,
+     "delta": -5,
+     "direction": "full_better"
+    },
+    {
+     "mechanism": "conflict_attribution",
+     "metric": "conflicts_found",
+     "metric_polarity": "benefit_higher_better",
+     "mapping_rule": "归因关闭不影响冲突发现数",
+     "full_value": 1,
+     "ablate_value": 1,
+     "delta": 0,
+     "direction": "no_difference"
+    },
+    {
+     "mechanism": "conflict_attribution",
+     "metric": "attribution_rate",
+     "metric_polarity": "neutral",
+     "mapping_rule": "归因关闭 → 可归因冲突占比归零",
+     "full_value": 1.0,
+     "ablate_value": 0.0,
+     "delta": 1.0,
+     "direction": "neutral_metric"
+    },
+    {
+     "mechanism": "evidence_binding",
+     "metric": "manual_review_items",
+     "metric_polarity": "cost_lower_better",
+     "mapping_rule": "不可归因冲突需人工归因 → 人工核对条目上升",
+     "full_value": 1,
+     "ablate_value": 2,
+     "delta": -1,
+     "direction": "full_better"
+    },
+    {
+     "mechanism": "process_flow",
+     "metric": "steps",
+     "metric_polarity": "cost_lower_better",
+     "mapping_rule": "少一阶段 → 步骤数下降",
+     "full_value": 6,
+     "ablate_value": 6,
+     "delta": 0,
+     "direction": "no_difference"
+    },
+    {
+     "mechanism": "evidence_binding",
+     "metric": "followup_rounds",
+     "metric_polarity": "cost_lower_better",
+     "mapping_rule": "冲突需人工归因 → 需回访缺口种类上升",
+     "full_value": 3,
+     "ablate_value": 4,
+     "delta": -1,
+     "direction": "full_better"
+    }
+   ],
+   "delivered_vs_rule_crosscheck": {
+    "applicable": true,
+    "delivered_pairwise_records": 6,
+    "matched_rule_slots": 3,
+    "diverged_rule_slots": 3,
+    "rule_slot_not_covered": 0,
+    "agreement_rate_with_rule_full_run": 0.5,
+    "note": "一致率低不必然是错误：Agent 判定含语义推理，规则对照器只做归一化后逐字段比对。"
+   },
+   "boundary": [
+    "三遍共用同一份已交付产物与工单（fingerprint 的 matrix_sha256 相同），唯一变量是被消融的机制，不存在第二次推理的随机性。",
+    "对照衡量的是本 Skill 内部机制贡献（字段字典对齐 / 逐格证据绑定 / 两两比对 / 冲突归因）；「不加载 Skill 的基础 Agent」对照由平台执行，本包不冒充该对照。",
+    "指标为可机械复算的结构性计数（槽位 / 条目 / 阶段），不含主观评分。",
+    "followup_rounds 为按同一公式从缺口结构复算的投影值；Agent 自报实测值另记于 result.efficiency.followup_rounds，两者口径不同、不可混用。",
+    "文档数 < 2、工单缺失或 matrix 为空时，比对类指标不可测，已在 problems 中如实登记。"
+   ],
+   "failure_conditions": [
+    "matrix 缺 evidence 或逐字 quote → 逐格绑定机制无法复算，evidence_binding 类 delta 不可信。",
+    "pairwise 未覆盖全部（文档对×维度）槽位 → dimension_coverage 分母为估计值，对照只反映已产出的槽位。",
+    "conflicts 未落 attribution_dimension → 归因关闭/开启两组 attribution_rate 同时归零，该指标不可用于宣称增益。",
+    "followup_rounds 仅有投影值（source=projected_from_gaps）→ 效率对照只能作趋势说明，不能作为实测效率结论。",
+    "delivered_vs_rule 一致率偏低 → 说明 Agent 判定与规则对照器口径分歧，此时以 Agent 交付产物为准，规则对照器仅作退化基线。"
+   ],
+   "verdict": "gain_demonstrated",
+   "verdict_note": "所有被消融机制的效益型指标下降、成本型指标上升，方向一致，增益成立。",
+   "direction_selfcheck": {
+    "rows_checked": 11,
+    "rows_against_expectation": 0,
+    "against_expectation_detail": []
+   },
+   "problems": [],
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --workorder /input/comparison-workorder.json --embed",
+   "note": "三遍记录由脚本实际执行产生；problems 非空表示部分指标不可测，不代表产出缺失。"
+  },
+  "efficiency": {
+   "collection_method": "复算口径：matrix_cells/pairwise_*/comparison_rounds/conflict_*/manual_review_items/pipeline_steps/manual_completion_steps/steps/followup_rounds 由已交付 result.json 的数组长度、组合数与缺口结构机械得出（与 gain_probe.full 同公式）；model_requests/tool_calls/rework_rounds 为 Agent 运行期自报，原样保留于 agent_reported，与复算值分区存放、不混用。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/efficiency_probe.py --result /app/output/result.json --workorder /input/comparison-workorder.json --embed",
+   "counts": {
+    "matrix_cells": 10,
+    "pairwise_records": 6,
+    "pairwise_judged": 5,
+    "pairwise_not_judged": 1,
+    "document_count": 2,
+    "dimension_count": 6,
+    "document_pairs": 1,
+    "comparison_rounds": 6,
+    "conflict_records": 1,
+    "attributable_conflicts": 1,
+    "manual_review_items": 1,
+    "human_review_items": 0,
+    "pipeline_steps": 5,
+    "manual_completion_steps": 1,
+    "steps": 6,
+    "followup_rounds": 3,
+    "verification_items": 10,
+    "gates_total": 7,
+    "fields_in_dictionary": 5
+   },
+   "agent_reported": {},
+   "notes": [
+    "comparison_rounds = 文档对数 × 比较维度数（每槽位一次两两比对），未计入 Agent 语义推理的内部往返。",
+    "followup_rounds = 需回访源文档数 + 待追问缺口种类数，与 gain_evidence.runs[mode=full].metrics.followup_rounds 同公式，两处数值必须一致。",
+    "steps = pipeline_steps（自动执行阶段）+ manual_completion_steps（未覆盖维度数 + 不可归因冲突数，人工接手才能补齐的阶段）。",
+    "平台另行记录真实模型请求数与耗时；本字段为 Skill 自测口径，不替代平台遥测。"
+   ],
+   "problems": [],
+   "ok": true
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "CL-001",
+   "text": "DOC-A 与 DOC-B 的 qmax 口径可比（同用 Langmuir、同为 mg/g）",
+   "kind": "reported",
+   "source_id": "cross-doc",
+   "location": "DOC-A p07 / DOC-B p06",
+   "evidence": [
+    {
+     "source_document_id": "DOC-A",
+     "paragraph_id": "p07",
+     "quote": "由 Langmuir 等温线得到 qmax"
+    },
+    {
+     "source_document_id": "DOC-B",
+     "paragraph_id": "p06",
+     "quote": "等温线数据用 Langmuir 方程拟合"
+    }
+   ]
+  },
+  {
+   "claim_id": "CL-002",
+   "text": "两文吸附量差异归因于材料体系不同（MOF vs GAC），非指标口径冲突",
+   "kind": "inferred",
+   "source_id": "cross-doc",
+   "location": "DOC-A p03/p07 / DOC-B p02/p06",
+   "evidence": [
+    {
+     "source_document_id": "DOC-A",
+     "paragraph_id": "p03",
+     "quote": "采用自合成 Fe3O4@MIL-100(Fe) 作为吸附剂"
+    },
+    {
+     "source_document_id": "DOC-B",
+     "paragraph_id": "p02",
+     "quote": "吸附剂为市售颗粒活性炭 GAC-40"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [
+   "DOC-A 与 DOC-B 均未报告成本/预算信息（budget 维度 not_judged）"
+  ],
+  "unverifiable": [],
+  "unbacked": [],
+  "conflicts": [
+   "吸附量差异已归因到材料体系（object）"
+  ],
+  "human_review": [],
+  "summary": "示例数据为合成内容，仅演示接口；实际运行以真实语料为准。"
+ },
+ "changelog": [
+  "v1 示例初版",
+  "r4 新增 verification/gates 嵌入块与 uncertainties.unbacked 键",
+  "r5 新增 status_reason/sources 契约键；gain_evidence 与 efficiency 由脚本真实执行生成"
+ ]
+}

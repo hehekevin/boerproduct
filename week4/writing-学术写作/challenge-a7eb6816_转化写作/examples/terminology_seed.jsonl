@@ -1,0 +1,28 @@
+{"canonical": "置信区间", "aliases": ["confidence interval"], "abbr": "CI", "domain": "统计"}
+{"canonical": "重症监护室", "aliases": ["intensive care unit", "ICU"], "abbr": "ICU", "domain": "医学"}
+{"canonical": "随机对照试验", "aliases": ["randomized controlled trial"], "abbr": "RCT", "domain": "研究设计"}
+{"canonical": "估算肾小球滤过率", "aliases": ["eGFR"], "abbr": "eGFR", "domain": "医学"}
+{"canonical": "综合干预包", "aliases": ["bundle", "bundle 方案"], "abbr": "", "domain": "研究设计"}
+{"canonical": "术后无尿", "aliases": ["IRIS"], "abbr": "IRIS", "domain": "医学"}
+{"canonical": "结局", "aliases": ["终点", "主要终点", "次要终点"], "abbr": "", "domain": "研究设计"}
+{"canonical": "置信水平", "aliases": ["confidence level"], "abbr": "", "domain": "统计"}
+{"canonical": "标准差", "aliases": ["standard deviation"], "abbr": "SD", "domain": "统计"}
+{"canonical": "标准误", "aliases": ["standard error"], "abbr": "SE", "domain": "统计"}
+{"canonical": "受试者工作特征曲线下面积", "aliases": ["AUC"], "abbr": "AUC", "domain": "统计"}
+{"canonical": "优势比", "aliases": ["odds ratio"], "abbr": "OR", "domain": "统计"}
+{"canonical": "风险比", "aliases": ["relative risk", "risk ratio"], "abbr": "RR", "domain": "统计"}
+{"canonical": "风险比", "aliases": ["hazard ratio"], "abbr": "HR", "domain": "统计"}
+{"canonical": "身体质量指数", "aliases": ["body mass index"], "abbr": "BMI", "domain": "医学"}
+{"canonical": "世界卫生组织", "aliases": ["World Health Organization"], "abbr": "WHO", "domain": "公共卫生"}
+{"canonical": "二氧化碳分压", "aliases": ["PaCO2"], "abbr": "PaCO2", "domain": "医学"}
+{"canonical": "脱氧核糖核酸", "aliases": ["DNA"], "abbr": "DNA", "domain": "生物"}
+{"canonical": "信使核糖核酸", "aliases": ["mRNA"], "abbr": "mRNA", "domain": "生物"}
+{"canonical": "聚合酶链式反应", "aliases": ["polymerase chain reaction"], "abbr": "PCR", "domain": "生物"}
+{"canonical": "光学相干断层扫描", "aliases": ["OCT"], "abbr": "OCT", "domain": "医学"}
+{"canonical": "磁共振成像", "aliases": ["MRI"], "abbr": "MRI", "domain": "医学"}
+{"canonical": "计算机断层扫描", "aliases": ["CT"], "abbr": "CT", "domain": "医学"}
+{"canonical": "获益与风险比", "aliases": ["benefit-risk ratio"], "abbr": "", "domain": "研究设计"}
+{"canonical": "中期分析", "aliases": ["interim analysis"], "abbr": "", "domain": "研究设计"}
+{"canonical": "先导研究", "aliases": ["pilot study"], "abbr": "", "domain": "研究设计"}
+{"canonical": "主要终点", "aliases": ["primary endpoint", "主要结局"], "abbr": "", "domain": "研究设计"}
+{"canonical": "次要终点", "aliases": ["secondary endpoint", "次要结局"], "abbr": "", "domain": "研究设计"}

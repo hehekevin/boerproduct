@@ -1,0 +1,956 @@
+{
+ "case_id": "demo-chart-001",
+ "status": "answered",
+ "result": {
+  "objects": [
+   {
+    "object_id": "demo-fig1",
+    "kind": "image",
+    "file": "artifacts/demo-fig1.png",
+    "image_class": "plot",
+    "status": "parsed",
+    "axes": [
+     {
+      "name": "x",
+      "scale": "linear",
+      "start": 0,
+      "step": 10,
+      "end": 100,
+      "units": "min",
+      "unit_not_labeled": false
+     },
+     {
+      "name": "y",
+      "scale": "linear",
+      "start": 0,
+      "step": 5,
+      "end": 60,
+      "units": "MPa",
+      "unit_not_labeled": false
+     },
+     {
+      "name": "y2",
+      "scale": "linear",
+      "start": 0,
+      "step": 5,
+      "end": 60,
+      "units": "%",
+      "unit_not_labeled": false
+     }
+    ],
+    "elements": {
+     "series": [
+      "S1",
+      "S2"
+     ],
+     "colors": {
+      "S1": "蓝色方块",
+      "S2": "红色圆点"
+     },
+     "error_bars": true,
+     "significance": [
+      "*"
+     ],
+     "scale_bar": null,
+     "subplots": [],
+     "legend": [
+      {
+       "label": "S1",
+       "color": "蓝色方块"
+      },
+      {
+       "label": "S2",
+       "color": "红色圆点"
+      }
+     ]
+    },
+    "readings": [
+     {
+      "label": "S1@x=10",
+      "x": 10,
+      "y": 48.2,
+      "units": "MPa",
+      "approx": true,
+      "reading_error": "±0.5格",
+      "how": "vision",
+      "source_locator": "Fig.1 plot area, S1@x=10",
+      "axis": "y"
+     },
+     {
+      "label": "S1@x=30",
+      "x": 30,
+      "y": 52.0,
+      "units": "MPa",
+      "approx": true,
+      "reading_error": "±0.5格",
+      "how": "vision",
+      "source_locator": "Fig.1 plot area, S1@x=30",
+      "axis": "y"
+     },
+     {
+      "label": "S1@x=50",
+      "x": 50,
+      "y": 55.7,
+      "units": "MPa",
+      "approx": true,
+      "reading_error": "±0.5格",
+      "how": "vision",
+      "source_locator": "Fig.1 plot area, S1@x=50",
+      "axis": "y"
+     },
+     {
+      "label": "S2@x=20",
+      "x": 20,
+      "y": 4.4,
+      "units": "%",
+      "approx": true,
+      "reading_error": "±0.5格",
+      "how": "vision",
+      "source_locator": "Fig.1 plot area, S2@x=20",
+      "axis": "y2"
+     },
+     {
+      "label": "S2@x=40",
+      "x": 40,
+      "y": 50.1,
+      "units": "%",
+      "approx": true,
+      "reading_error": "±1格",
+      "how": "vision",
+      "source_locator": "Fig.1 plot area, S2@x=40",
+      "axis": "y2"
+     },
+     {
+      "label": "S2@x=60",
+      "x": 60,
+      "y": 58.0,
+      "units": "%",
+      "approx": true,
+      "reading_error": "±1格",
+      "how": "vision",
+      "source_locator": "Fig.1 plot area, S2@x=60",
+      "axis": "y2"
+     }
+    ],
+    "table": null,
+    "gaps": [],
+    "qualitative": null,
+    "source_locator": "Fig.1"
+   },
+   {
+    "object_id": "DEMO-P001",
+    "kind": "table",
+    "file": "material.json",
+    "image_class": null,
+    "status": "parsed",
+    "axes": [],
+    "elements": {},
+    "readings": [],
+    "table": {
+     "columns": [
+      "Specimen",
+      "Ultimate strength (MPa)",
+      "Elongation (%)"
+     ],
+     "rows": [
+      [
+       "A-1",
+       "48.2 ± 1.3",
+       "3.1"
+      ],
+      [
+       "B-2",
+       "55.7 ± 2.0",
+       "4.4"
+      ]
+     ],
+     "structure_notes": "无合并单元格"
+    },
+    "gaps": [],
+    "qualitative": null,
+    "source_locator": "material.json#DEMO-P001"
+   }
+  ],
+  "object_inventory": {
+   "images": 1,
+   "tables": 1,
+   "parsed": 2,
+   "not_applicable": 0,
+   "unreadable": 0
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "k-01",
+   "text": "B-2 试样抗拉强度 55.7±2.0 MPa 高于 A-1 的 48.2±1.3 MPa（表中直接可读）",
+   "kind": "reported",
+   "source_id": "DEMO-P001",
+   "location": "Table 1 row 3",
+   "evidence": [
+    {
+     "paragraph_id": "DEMO-P001",
+     "quote": "55.7 ± 2.0"
+    }
+   ]
+  },
+  {
+   "claim_id": "k-02",
+   "text": "S1 系列随温度上升呈增大趋势（合理推断，读数为近似值）",
+   "kind": "inferred",
+   "source_id": "demo-fig1",
+   "location": "Fig.1",
+   "evidence": [
+    {
+     "paragraph_id": "DEMO-P001",
+     "quote": "S1 系列在 x=10 处 y=48.2 MPa"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "图中读数为近似值（approx 标记），首/中/尾无逐字回证点已列入 human_review"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "近似读数 S1@x=30(中) 无逐字回证，建议人工复核",
+   "近似读数 S2@x=40(中) 无逐字回证，建议人工复核",
+   "近似读数 S2@x=60(尾) 无逐字回证，建议人工复核"
+  ],
+  "summary": "示例含 1 图 1 表；表格数值逐字，图读数近似并带误差与回证状态。"
+ },
+ "changelog": [
+  {
+   "step": "stage0",
+   "change": "工单 2 对象",
+   "model_requests": 1,
+   "seconds": 0.4,
+   "tool_calls": 2
+  },
+  {
+   "step": "stage3",
+   "change": "chart_check 校验并嵌入 verification",
+   "model_requests": 1,
+   "seconds": 0.6,
+   "tool_calls": 3
+  }
+ ],
+ "status_reason": "示例：1 图 1 表全部处理完成，无未处理对象",
+ "verification": {
+  "gates": {
+   "numeric_backevidence": "enforced",
+   "legend_category_count": "enforced",
+   "color_mapping": "enforced",
+   "axis_range": "enforced",
+   "legend_series_map": "enforced",
+   "unit_consistency": "enforced",
+   "reading_locator": "enforced",
+   "table_fidelity": "enforced"
+  },
+  "checks": [
+   {
+    "item": "demo-fig1.image_class",
+    "template_value": "photo|schematic|plot|unknown",
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "demo-fig1.legend_category_count",
+    "template_value": 2,
+    "applied": true,
+    "match": true,
+    "note": "声明系列 ['S1', 'S2'] vs 读数系列 ['S1', 'S2']"
+   },
+   {
+    "item": "demo-fig1.color_mapping",
+    "template_value": "每条系列有颜色条目",
+    "applied": true,
+    "match": true,
+    "note": "缺颜色: []"
+   },
+   {
+    "item": "demo-fig1.axis_range",
+    "template_value": "读数在声明轴范围内",
+    "applied": true,
+    "match": true,
+    "note": "全部在轴范围内"
+   },
+   {
+    "item": "demo-fig1.legend_series_map",
+    "template_value": "图例逐字且与 series 双向对应",
+    "applied": true,
+    "match": true,
+    "note": "series未见于图例:[]；图例未列入series:[]"
+   },
+   {
+    "item": "demo-fig1.unit_consistency",
+    "template_value": "读数单位与数值轴单位一致",
+    "applied": true,
+    "match": true,
+    "note": "单位量级一致"
+   },
+   {
+    "item": "demo-fig1.reading_locator",
+    "template_value": "每条读数带 how 与 source_locator",
+    "applied": true,
+    "match": true,
+    "note": "读数均可回指原图位置"
+   },
+   {
+    "item": "demo-fig1.S1[首/S1@x=10#0].backed",
+    "template_value": "数字在证据/表格中逐字可回证",
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "demo-fig1.S1[中/S1@x=30#1].backed",
+    "template_value": "数字在证据/表格中逐字可回证",
+    "applied": true,
+    "match": null,
+    "note": "approximate 读数无逐字回证，降级 warn；下游不得宣称已核对"
+   },
+   {
+    "item": "demo-fig1.S1[尾/S1@x=50#2].backed",
+    "template_value": "数字在证据/表格中逐字可回证",
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "demo-fig1.S2[首/S2@x=20#0].backed",
+    "template_value": "数字在证据/表格中逐字可回证",
+    "applied": true,
+    "match": true
+   },
+   {
+    "item": "demo-fig1.S2[中/S2@x=40#1].backed",
+    "template_value": "数字在证据/表格中逐字可回证",
+    "applied": true,
+    "match": null,
+    "note": "approximate 读数无逐字回证，降级 warn；下游不得宣称已核对"
+   },
+   {
+    "item": "demo-fig1.S2[尾/S2@x=60#2].backed",
+    "template_value": "数字在证据/表格中逐字可回证",
+    "applied": true,
+    "match": null,
+    "note": "approximate 读数无逐字回证，降级 warn；下游不得宣称已核对"
+   },
+   {
+    "item": "DEMO-P001.table_fidelity",
+    "template_value": 3,
+    "applied": true,
+    "match": true,
+    "note": "材料原表 3 行（含表头），转录 3 行（表头+数据行）"
+   }
+  ],
+  "unbacked_readings": [
+   {
+    "object": "demo-fig1",
+    "series": "S1",
+    "position": "中",
+    "label": "S1@x=30",
+    "values": [
+     30,
+     52.0
+    ]
+   },
+   {
+    "object": "demo-fig1",
+    "series": "S2",
+    "position": "中",
+    "label": "S2@x=40",
+    "values": [
+     40,
+     50.1
+    ]
+   },
+   {
+    "object": "demo-fig1",
+    "series": "S2",
+    "position": "尾",
+    "label": "S2@x=60",
+    "values": [
+     60,
+     58.0
+    ]
+   }
+  ],
+  "all_pass": true,
+  "verdict": "pass",
+  "problems": [],
+  "ablation": {
+   "mode": "none",
+   "disabled_gates": []
+  }
+ },
+ "gain_evidence": {
+  "verdict": "pass",
+  "method": "同输入双跑对照：同一交付物/工单/材料目录，仅机制开关不同；像素级对照另在同一张合成 PNG 上跑 full/degraded 两条读图管线，由独立裁判评分",
+  "arms": {
+   "full": {
+    "ablate": "none",
+    "exit_code": 0,
+    "verdict": "pass",
+    "problems_count": 0,
+    "problems": [],
+    "checks_total": 14,
+    "checks_applied": 14,
+    "gates": {
+     "numeric_backevidence": "enforced",
+     "legend_category_count": "enforced",
+     "color_mapping": "enforced",
+     "axis_range": "enforced",
+     "legend_series_map": "enforced",
+     "unit_consistency": "enforced",
+     "reading_locator": "enforced",
+     "table_fidelity": "enforced"
+    },
+    "unbacked_readings": 3
+   },
+   "degraded": {
+    "ablate": "all",
+    "exit_code": 0,
+    "verdict": "pass",
+    "problems_count": 0,
+    "problems": [],
+    "checks_total": 9,
+    "checks_applied": 5,
+    "gates": {
+     "numeric_backevidence": "skipped_not_provided",
+     "legend_category_count": "enforced",
+     "color_mapping": "enforced",
+     "axis_range": "enforced",
+     "legend_series_map": "skipped_not_provided",
+     "unit_consistency": "skipped_not_provided",
+     "reading_locator": "skipped_not_provided",
+     "table_fidelity": "enforced"
+    },
+    "unbacked_readings": 0
+   }
+  },
+  "delta_full_minus_degraded": {
+   "defects_caught_by_guardrails": 0,
+   "checks_applied_delta": 9,
+   "unbacked_readings_delta": 3
+  },
+  "metrics": {
+   "metric_names_cn": {
+    "reading_extraction_accuracy": "读数提取准确率",
+    "numeric_backevidence_rate": "数值回证率",
+    "legend_series_consistency": "图例-系列一致率",
+    "manual_review_items": "需人工核对条目数",
+    "steps": "步骤数"
+   },
+   "arm_full": {
+    "reading_extraction_accuracy": 1.0,
+    "numeric_backevidence_rate": 0.6667,
+    "legend_series_consistency": 1.0,
+    "manual_review_items": 2,
+    "steps": 9
+   },
+   "arm_degraded": {
+    "reading_extraction_accuracy": 0.1667,
+    "numeric_backevidence_rate": 0.0,
+    "legend_series_consistency": 0.0,
+    "manual_review_items": 6,
+    "steps": 7
+   },
+   "delta_full_minus_degraded": {
+    "reading_extraction_accuracy": 0.8333,
+    "numeric_backevidence_rate": 0.6667,
+    "legend_series_consistency": 1.0,
+    "manual_review_items": -4,
+    "steps": 2
+   },
+   "direction": {
+    "reading_extraction_accuracy": "higher_is_better",
+    "numeric_backevidence_rate": "higher_is_better",
+    "legend_series_consistency": "higher_is_better",
+    "manual_review_items": "lower_is_better",
+    "steps": "lower_is_better"
+   },
+   "source": "pixel_level_ablation（同一张合成 PNG 上两条读图管线 + 独立裁判）"
+  },
+  "metrics_full": {
+   "reading_extraction_accuracy": 1.0,
+   "numeric_backevidence_rate": 0.6667,
+   "legend_series_consistency": 1.0,
+   "manual_review_items": 2,
+   "steps": 9
+  },
+  "metrics_degraded": {
+   "reading_extraction_accuracy": 0.1667,
+   "numeric_backevidence_rate": 0.0,
+   "legend_series_consistency": 0.0,
+   "manual_review_items": 6,
+   "steps": 7
+  },
+  "pollution_ablation": {
+   "verdict": "pass",
+   "mode": "pollution_ablation",
+   "reference_source": "self_injected_defects",
+   "injected_defects": [
+    {
+     "gate": "legend_category_count",
+     "defect": "[demo-fig1] 声明系列多出一条 DUMMY",
+     "caught_by_full": true,
+     "caught_by_degraded": true
+    },
+    {
+     "gate": "axis_range",
+     "defect": "[demo-fig1] readings[0].y=999999 越轴",
+     "caught_by_full": true,
+     "caught_by_degraded": true
+    },
+    {
+     "gate": "approx_marker",
+     "defect": "[demo-fig1] 读数缺 approx 标记",
+     "caught_by_full": true,
+     "caught_by_degraded": true
+    },
+    {
+     "gate": "reading_locator",
+     "defect": "[demo-fig1] 读数 source_locator 置空",
+     "caught_by_full": true,
+     "caught_by_degraded": false
+    },
+    {
+     "gate": "numeric_backevidence",
+     "defect": "[demo-fig1] 非 approx 读数 y=888888 无回证",
+     "caught_by_full": true,
+     "caught_by_degraded": false
+    },
+    {
+     "gate": "color_mapping",
+     "defect": "[demo-fig1] colors 缺 S1 条目",
+     "caught_by_full": true,
+     "caught_by_degraded": true
+    },
+    {
+     "gate": "object_inventory",
+     "defect": "object_inventory.parsed=999 与实际不符",
+     "caught_by_full": true,
+     "caught_by_degraded": true
+    },
+    {
+     "gate": "changelog",
+     "defect": "changelog 字段被删除（缺契约字段）",
+     "caught_by_full": true,
+     "caught_by_degraded": true
+    }
+   ],
+   "defects_total": 8,
+   "caught_by_full_arm": 8,
+   "caught_by_degraded_arm": 6,
+   "missed_by_full_arm": 0,
+   "missed_by_degraded_arm": 2,
+   "delta_caught_full_minus_degraded": 2,
+   "arms": {
+    "none": {
+     "ablate": "none",
+     "exit_code": 0,
+     "verdict": "fail",
+     "problems_count": 9,
+     "problems": [
+      "缺少通用契约字段: changelog",
+      "demo-fig1.legend_category_count: 期望 3，实际不符",
+      "demo-fig1.color_mapping: 期望 '每条系列有颜色条目'，实际不符",
+      "demo-fig1.axis_range: 期望 '读数在声明轴范围内'，实际不符",
+      "demo-fig1.legend_series_map: 期望 '图例逐字且与 series 双向对应'，实际不符",
+      "demo-fig1.reading_locator: 期望 '每条读数带 how 与 source_locator'，实际不符",
+      "demo-fig1.S1[首/S1@x=10#0].backed: 期望 '数字在证据/表格中逐字可回证'，实际不符",
+      "[demo-fig1] readings[0] 缺 approx:true 标记",
+      "object_inventory.parsed(999) 与实际(2)不符"
+     ],
+     "checks": [
+      {
+       "item": "demo-fig1.image_class",
+       "template_value": "photo|schematic|plot|unknown",
+       "applied": true,
+       "match": true
+      },
+      {
+       "item": "demo-fig1.legend_category_count",
+       "template_value": 3,
+       "applied": true,
+       "match": false,
+       "note": "声明系列 ['S1', 'S2', 'DUMMY'] vs 读数系列 ['S1', 'S2']"
+      },
+      {
+       "item": "demo-fig1.color_mapping",
+       "template_value": "每条系列有颜色条目",
+       "applied": true,
+       "match": false,
+       "note": "缺颜色: ['S1', 'DUMMY']"
+      },
+      {
+       "item": "demo-fig1.axis_range",
+       "template_value": "读数在声明轴范围内",
+       "applied": true,
+       "match": false,
+       "note": "y 越轴: 'S1@x=10'"
+      },
+      {
+       "item": "demo-fig1.legend_series_map",
+       "template_value": "图例逐字且与 series 双向对应",
+       "applied": true,
+       "match": false,
+       "note": "series未见于图例:['DUMMY']；图例未列入series:[]"
+      },
+      {
+       "item": "demo-fig1.unit_consistency",
+       "template_value": "读数单位与数值轴单位一致",
+       "applied": true,
+       "match": true,
+       "note": "单位量级一致"
+      },
+      {
+       "item": "demo-fig1.reading_locator",
+       "template_value": "每条读数带 how 与 source_locator",
+       "applied": true,
+       "match": false,
+       "note": "readings[0] 缺 source_locator"
+      },
+      {
+       "item": "demo-fig1.S1[首/S1@x=10#0].backed",
+       "template_value": "数字在证据/表格中逐字可回证",
+       "applied": true,
+       "match": false,
+       "note": "非 approx 读数缺回证=编造风险"
+      },
+      {
+       "item": "demo-fig1.S1[中/S1@x=30#1].backed",
+       "template_value": "数字在证据/表格中逐字可回证",
+       "applied": true,
+       "match": null,
+       "note": "approximate 读数无逐字回证，降级 warn；下游不得宣称已核对"
+      },
+      {
+       "item": "demo-fig1.S1[尾/S1@x=50#2].backed",
+       "template_value": "数字在证据/表格中逐字可回证",
+       "applied": true,
+       "match": true
+      },
+      {
+       "item": "demo-fig1.S2[首/S2@x=20#0].backed",
+       "template_value": "数字在证据/表格中逐字可回证",
+       "applied": true,
+       "match": true
+      },
+      {
+       "item": "demo-fig1.S2[中/S2@x=40#1].backed",
+       "template_value": "数字在证据/表格中逐字可回证",
+       "applied": true,
+       "match": null,
+       "note": "approximate 读数无逐字回证，降级 warn；下游不得宣称已核对"
+      },
+      {
+       "item": "demo-fig1.S2[尾/S2@x=60#2].backed",
+       "template_value": "数字在证据/表格中逐字可回证",
+       "applied": true,
+       "match": null,
+       "note": "approximate 读数无逐字回证，降级 warn；下游不得宣称已核对"
+      },
+      {
+       "item": "DEMO-P001.table_fidelity",
+       "template_value": 3,
+       "applied": true,
+       "match": true,
+       "note": "材料原表 3 行（含表头），转录 3 行（表头+数据行）"
+      }
+     ],
+     "checks_total": 14,
+     "checks_applied": 14,
+     "gates": {
+      "numeric_backevidence": "enforced",
+      "legend_category_count": "enforced",
+      "color_mapping": "enforced",
+      "axis_range": "enforced",
+      "legend_series_map": "enforced",
+      "unit_consistency": "enforced",
+      "reading_locator": "enforced",
+      "table_fidelity": "enforced"
+     }
+    },
+    "all": {
+     "ablate": "all",
+     "exit_code": 0,
+     "verdict": "fail",
+     "problems_count": 6,
+     "problems": [
+      "缺少通用契约字段: changelog",
+      "demo-fig1.legend_category_count: 期望 3，实际不符",
+      "demo-fig1.color_mapping: 期望 '每条系列有颜色条目'，实际不符",
+      "demo-fig1.axis_range: 期望 '读数在声明轴范围内'，实际不符",
+      "[demo-fig1] readings[0] 缺 approx:true 标记",
+      "object_inventory.parsed(999) 与实际(2)不符"
+     ],
+     "checks": [
+      {
+       "item": "demo-fig1.image_class",
+       "template_value": "photo|schematic|plot|unknown",
+       "applied": true,
+       "match": true
+      },
+      {
+       "item": "demo-fig1.legend_category_count",
+       "template_value": 3,
+       "applied": true,
+       "match": false,
+       "note": "声明系列 ['S1', 'S2', 'DUMMY'] vs 读数系列 ['S1', 'S2']"
+      },
+      {
+       "item": "demo-fig1.color_mapping",
+       "template_value": "每条系列有颜色条目",
+       "applied": true,
+       "match": false,
+       "note": "缺颜色: ['S1', 'DUMMY']"
+      },
+      {
+       "item": "demo-fig1.axis_range",
+       "template_value": "读数在声明轴范围内",
+       "applied": true,
+       "match": false,
+       "note": "y 越轴: 'S1@x=10'"
+      },
+      {
+       "item": "demo-fig1.legend_series_map",
+       "template_value": null,
+       "applied": false,
+       "match": null,
+       "note": "ablation:disabled（退化臂关闭结构闸门）"
+      },
+      {
+       "item": "demo-fig1.unit_consistency",
+       "template_value": null,
+       "applied": false,
+       "match": null,
+       "note": "ablation:disabled（退化臂关闭结构闸门）"
+      },
+      {
+       "item": "demo-fig1.reading_locator",
+       "template_value": null,
+       "applied": false,
+       "match": null,
+       "note": "ablation:disabled（退化臂关闭结构闸门）"
+      },
+      {
+       "item": "demo-fig1.numeric_backevidence",
+       "template_value": null,
+       "applied": false,
+       "match": null,
+       "note": "ablation:disabled（退化臂关闭数值回证；下游不得宣称已核对）"
+      },
+      {
+       "item": "DEMO-P001.table_fidelity",
+       "template_value": 3,
+       "applied": true,
+       "match": true,
+       "note": "材料原表 3 行（含表头），转录 3 行（表头+数据行）"
+      }
+     ],
+     "checks_total": 9,
+     "checks_applied": 5,
+     "gates": {
+      "numeric_backevidence": "skipped_not_provided",
+      "legend_category_count": "enforced",
+      "color_mapping": "enforced",
+      "axis_range": "enforced",
+      "legend_series_map": "skipped_not_provided",
+      "unit_consistency": "skipped_not_provided",
+      "reading_locator": "skipped_not_provided",
+      "table_fidelity": "enforced"
+     }
+    }
+   },
+   "note": "缺陷由本脚本在**副本**上注入（每条对应 chart_check 的一条闸门），原 result.json 不被改动；数字反映校验层机制增益，不等于平台「基础 Agent vs 参赛 Skill」的白板对照。"
+  },
+  "pixel_level_ablation": {
+   "verdict": "pass",
+   "mode": "selftest",
+   "reference_source": "fixture_gt",
+   "fixture": "fixture-chart.png",
+   "figure_ref": "Fig. FIXTURE-1",
+   "tolerance_data_units": 1.2,
+   "arms": {
+    "full": {
+     "readings": 6,
+     "reading_extraction_accuracy": 1.0,
+     "numeric_backevidence_rate": 0.6667,
+     "legend_series_consistency": 1.0,
+     "manual_review_items": 2,
+     "steps": 9,
+     "diagnostics": {
+      "mode": "full",
+      "calibration": {
+       "x_source": "tick_marks(11)",
+       "y_source": "tick_marks(7)"
+      }
+     },
+     "readings_sample": [
+      {
+       "series": "S1",
+       "position": "首",
+       "x": 0,
+       "y": 12.43,
+       "units": "MPa",
+       "source_locator": "Fig. FIXTURE-1 px=(120,393) color_series=S1",
+       "how": "pixel_calibrated_sampling"
+      },
+      {
+       "series": "S1",
+       "position": "中",
+       "x": 50.0,
+       "y": 44.86,
+       "units": "MPa",
+       "source_locator": "Fig. FIXTURE-1 px=(370,166) color_series=S1",
+       "how": "pixel_calibrated_sampling"
+      },
+      {
+       "series": "S1",
+       "position": "尾",
+       "x": 100,
+       "y": 60.0,
+       "units": "MPa",
+       "source_locator": "Fig. FIXTURE-1 px=(620,60) color_series=S1",
+       "how": "pixel_calibrated_sampling"
+      }
+     ]
+    },
+    "degraded": {
+     "readings": 6,
+     "reading_extraction_accuracy": 0.1667,
+     "numeric_backevidence_rate": 0.0,
+     "legend_series_consistency": 0.0,
+     "manual_review_items": 6,
+     "steps": 7,
+     "diagnostics": {
+      "mode": "degraded",
+      "calibration": {
+       "x_source": "full_image_assumption",
+       "y_source": "full_image_assumption"
+      }
+     },
+     "readings_sample": [
+      {
+       "series": "hue_0",
+       "position": "首",
+       "x": 0,
+       "y": 16.28,
+       "units": null,
+       "source_locator": "pixel(approx,no-legend-match)",
+       "how": "blind_sampling"
+      },
+      {
+       "series": "hue_0",
+       "position": "中",
+       "x": 50.0,
+       "y": 43.96,
+       "units": null,
+       "source_locator": "pixel(approx,no-legend-match)",
+       "how": "blind_sampling"
+      },
+      {
+       "series": "hue_0",
+       "position": "尾",
+       "x": 100,
+       "y": 52.05,
+       "units": null,
+       "source_locator": "pixel(approx,no-legend-match)",
+       "how": "blind_sampling"
+      }
+     ]
+    }
+   },
+   "delta_full_minus_degraded": {
+    "reading_extraction_accuracy": 0.8333,
+    "numeric_backevidence_rate": 0.6667,
+    "legend_series_consistency": 1.0,
+    "manual_review_items": 4,
+    "steps": -2
+   },
+   "note": "真值取自合成自检夹具（fixture-chart.json），仅用于验证机制可复现；不代表正式案例成绩，平台对照由组织方提供。"
+  },
+  "mechanism_metric_map": [
+   {
+    "mechanism": "像素→数据坐标标定（探测轴线与刻度，建立像素↔数据线性映射）",
+    "metric": "reading_extraction_accuracy（读数提取准确率）",
+    "why": "不标定则只能按整图边界猜坐标，读数系统性偏移；标定后 y 落到真值曲线容差内",
+    "degraded_arm": "整图边界线性假设（full_image_assumption）"
+   },
+   {
+    "mechanism": "图例↔系列语义匹配（颜色团 → 图例标签）",
+    "metric": "legend_series_consistency（图例-系列一致率）",
+    "why": "不匹配则只能给「色相 0/色相 15」这类无语义标签，下游无法把数值对应回论文叙述",
+    "degraded_arm": "只按色相团命名系列（hue_N），不做图例语义匹配"
+   },
+   {
+    "mechanism": "读数回证（数值必须落到材料已写出的表值上）",
+    "metric": "numeric_backevidence_rate（数值回证率）",
+    "why": "回证率低说明多数读数是「看着像」而非「材料里写着」，不可复核",
+    "degraded_arm": "不做回证"
+   },
+   {
+    "mechanism": "闸门化交付（校验三元组 + 缺陷检出）",
+    "metric": "defects_caught_by_guardrails（闸门在真实交付物上多抓的缺陷条数）",
+    "why": "同一交付物，关闸门后少抓的缺陷就是「无校验时会被放过」的问题量",
+    "degraded_arm": "chart_check.py --ablate all"
+   },
+   {
+    "mechanism": "不确定项显式登记（unbacked → human_review）",
+    "metric": "manual_review_items（需人工核对条目数）",
+    "why": "需人工核对条目越少，说明越多的读数已被机械校验替人核过",
+    "degraded_arm": "退化臂不产生回证缺口清单"
+   }
+  ],
+  "boundaries": [
+   "像素级对照只在**合成自检夹具**上成立（真值已知才能算准确率）；正式案例无真值表，只能给出「闸门在真实交付物上的缺陷检出差」，不得把夹具数字当作正式案例成绩。",
+   "退化臂是**机制消融**（关掉标定/图例匹配/回证），不是「基础 Agent」的实测结果——平台的基础 Agent 对照由组织方提供与评分，本记录不替代它。",
+   "准确率容差 tol = 轴主刻度步长 / minor_per_major * 0.6，即约 0.6 个次刻度；超过该容差的读数一律计入需人工核对，不做「四舍五入后算对」。",
+   "裁判用第三份独立代码（与两条管线无共享实现），避免用被测代码给自己打分。"
+  ],
+  "failure_conditions": [
+   "轴无刻度 / 刻度被裁剪 / 双轴不同量程 → 标定退化为 axis_extent_fallback，此时准确率下降属预期，闸门会在 result.json.uncertainties 记不可核对项，不得声称已标定。",
+   "图例缺失或为黑白图 → 图例↔系列匹配不可执行，legend_series_consistency 不再有意义，应改由材料表逐字转录承担对应关系。",
+   "曲线重叠 / 过曝 / 低分辨率 → 颜色团聚类会把多条曲线合并，系列数少于真实系列数，读数需全部标 approx 并降级人工复核。",
+   "材料未写出对应表值 → 回证率必然低，这是材料的诚实缺口而非解析失败，此时以 uncertainties.unreported 记录，不硬凑数值。",
+   "PNG 非 8bit / 带隔行 / 调色板格式 → 纯标准库解码器不支持，标定步骤直接跳过，整条像素管线不可用（脚本已捕获并记录，不得静默产出错误读数）。"
+  ],
+  "honesty_note": "以上数字由本次运行真实产生。像素级数字来自合成自检夹具，仅证明机制可复现；正式案例的基线对照由平台提供与评分，本记录不替代它。",
+  "reproduce": {
+   "delivery_ablation": "chart_check.py --result <copy.json> --workorder <wo.json> --input-root <input> --ablate none|all --out <rep.json>",
+   "pixel_ablation": "gain_probe.py --selftest --out <gain.json> --workdir <dir>",
+   "embed": "metrics_embed.py --result <result.json> --workorder <wo.json> --input-root <input> --skills-dir <skills_dir> --out <metrics.json>"
+  }
+ },
+ "efficiency": {
+  "stages_executed": 2,
+  "stage_sequence": [
+   "stage0",
+   "stage3"
+  ],
+  "model_requests": 2,
+  "seconds_total": 1.0,
+  "tool_calls": 5,
+  "objects_in_scope": {
+   "images": 1,
+   "tables": 1
+  },
+  "objects_delivered": 2,
+  "readings_emitted": 6,
+  "tables_transcribed": 1,
+  "table_rows_transcribed": 2,
+  "checks_executed": 14,
+  "checks_applied": 14,
+  "gates_enforced": 8,
+  "manual_review_items": 3,
+  "defects_injected": 8,
+  "defects_caught_full_arm": 8,
+  "defects_caught_degraded_arm": 6,
+  "defects_missed_degraded_arm": 2,
+  "how_collected": "changelog 每阶段的 model_requests/seconds/tool_calls 求和 + result.json 对象与读数计数 + chart_check 实际执行的 checks/gates 数 + 污染对照的缺陷检出/漏检计数",
+  "reproduce": "python3 metrics_embed.py --result <result.json> --workorder <workorder.json> --input-root <input> --skills-dir <skills_dir> --out <metrics.json>",
+  "note": "计数口径：不含平台自身的调度与重试；stage 序列可在 result.json.changelog 复核。model_requests/seconds/tool_calls 由 Agent 侧写入 changelog，脚本只做求和，缺失时为 null（不臆造）。"
+ }
+}

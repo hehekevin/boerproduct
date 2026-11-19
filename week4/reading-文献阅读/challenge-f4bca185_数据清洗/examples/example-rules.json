@@ -1,0 +1,113 @@
+{
+ "version": "clean2table-r5",
+ "note": "示例规则（用于 selftest/最小示例演示，非正式案例答案）。改列名/单位即可复用到自己的表。",
+ "conflict_policy": {
+  "merge_value_tolerance": 1e-06,
+  "action": "register_only"
+ },
+ "rules": [
+  {
+   "rule_id": "FM01",
+   "kind": "field_mapping",
+   "priority": 10,
+   "condition": {
+    "column": "cap_ug_g"
+   },
+   "action": {
+    "target_field": "value"
+   },
+   "rationale": "示例：容量列→规范字段 value",
+   "on_fail": "列不存在则跳过"
+  },
+  {
+   "rule_id": "UC01",
+   "kind": "unit_convert",
+   "priority": 20,
+   "condition": {
+    "field": "value",
+    "from_unit": "ug/g"
+   },
+   "action": {
+    "to_unit": "mg/g",
+    "precision": 6
+   },
+   "rationale": "1 ug/g = 0.001 mg/g（SI 数量级前缀）",
+   "on_fail": "基准不同→原值保留并登记脏值"
+  },
+  {
+   "rule_id": "UC02",
+   "kind": "unit_convert",
+   "priority": 21,
+   "condition": {
+    "field": "value",
+    "from_unit": "mg/L"
+   },
+   "action": {
+    "to_unit": "g/L",
+    "precision": 6
+   },
+   "rationale": "1 mg/L = 0.001 g/L",
+   "on_fail": "同上"
+  },
+  {
+   "rule_id": "MM01",
+   "kind": "missing_mark",
+   "priority": 40,
+   "condition": {
+    "fields": [
+     "value",
+     "condition"
+    ]
+   },
+   "action": {
+    "keep": "empty",
+    "missing_tokens": [
+     "ND",
+     "N/A",
+     "-",
+     "—",
+     "null",
+     "未报告",
+     "unknown"
+    ]
+   },
+   "rationale": "缺失保持空缺不编造",
+   "on_fail": "无"
+  },
+  {
+   "rule_id": "AF01",
+   "kind": "anomaly_flag",
+   "priority": 50,
+   "condition": {
+    "field": "value",
+    "min": 0
+   },
+   "action": {
+    "on_violation": "flag_keep_value"
+   },
+   "rationale": "越界只标记不改值",
+   "on_fail": "无"
+  },
+  {
+   "rule_id": "DD01",
+   "kind": "dedup",
+   "priority": 60,
+   "condition": {
+    "key_fields": [
+     "source",
+     "value"
+    ],
+    "context_fields": [
+     "condition"
+    ]
+   },
+   "action": {
+    "on_exact_key": "merge_keep_first",
+    "on_partial_key": "no_merge_register",
+    "link_field": ""
+   },
+   "rationale": "判定键含条件指纹：条件不同=重复实验，绝不合并",
+   "on_fail": "键缺失→跳过并登记"
+  }
+ ]
+}

@@ -1,0 +1,71 @@
+{
+  "_说明": "result.json 模板。output_contract 要求的字段必须全部包含；本模板字段为默认集，contract 有额外字段时并入顶层。",
+  "case_id": "从 case.json 读取，缺失时填 unknown 并在 limitations 说明",
+  "status": "success | partial | failed | undetermined",
+  "status_reason": "status 非 success 时必填：异常编号（E1~E10）、原因、可人工接管的位置",
+  "papers": [
+    {
+      "source_id": "P1",
+      "doi": "来自 corpus-manifest，仅第一篇可写根 DOI",
+      "title": "来自原文，不得套用到第二篇",
+      "authors": ["来自原文或 manifest"],
+      "license": "来自 manifest",
+      "paragraph_count": 0,
+      "note": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity_id": "P1-E01",
+      "mention": "原文表面形式",
+      "normalized_name": "规范化名称",
+      "type": "method",
+      "aliases": [],
+      "attribution": "self_reported",
+      "evidence": [{"paragraph_id": "p3", "quote": "短引"}],
+      "note": ""
+    }
+  ],
+  "triples": [
+    {
+      "triple_id": "P1-T001",
+      "subject": {"entity_id": "P1-E01", "name": "", "type": ""},
+      "predicate": "uses",
+      "object": {"entity_id": "P1-E02", "name": "", "type": ""},
+      "direction": "subject_to_object",
+      "condition": "",
+      "stance": "affirmed",
+      "confidence": "high",
+      "evidence": {"source_id": "P1", "paragraph_id": "p12", "quote": "短引"},
+      "attribution": "self_reported",
+      "note": ""
+    }
+  ],
+  "merges": [],
+  "conflicts": [],
+  "queries": [
+    {
+      "query_id": "Q1",
+      "question": "一跳邻域：核心实体的全部直接关系",
+      "executed": true,
+      "result": [{"triple_id": "", "summary": ""}],
+      "evidence": [{"source_id": "", "paragraph_id": "", "quote": ""}],
+      "undetermined": "无法确定的关系或空串"
+    }
+  ],
+  "unreported": ["材料未报告的事项，如：材料不含 PDF 页码"],
+  "limitations": ["限制说明，如部分完成范围、定位方式"],
+  "uncertainty": {
+    "low_confidence_triples": ["triple_id 列表"],
+    "unclear_attribution_entities": ["entity_id 列表"]
+  },
+  "outputs": {
+    "nodes_csv": "nodes.csv",
+    "edges_csv": "edges.csv",
+    "triples_json": "triples.json",
+    "merges_json": "merges.json"
+  },
+  "change_record": [
+    {"time": "ISO8601 或运行内序号", "action": "S1 输入盘点完成", "detail": ""}
+  ]
+}

@@ -1,0 +1,106 @@
+{
+ "verdict": "pass",
+ "mode": "selftest",
+ "reference_source": "fixture_gt",
+ "fixture": "fixture-chart.png",
+ "figure_ref": "Fig. FIXTURE-1",
+ "tolerance_data_units": 1.2,
+ "arms": {
+  "full": {
+   "readings": 6,
+   "reading_extraction_accuracy": 1.0,
+   "numeric_backevidence_rate": 0.6667,
+   "legend_series_consistency": 1.0,
+   "manual_review_items": 2,
+   "steps": 9,
+   "diagnostics": {
+    "mode": "full",
+    "calibration": {
+     "x_source": "tick_marks(11)",
+     "y_source": "tick_marks(7)"
+    }
+   },
+   "readings_sample": [
+    {
+     "series": "S1",
+     "position": "首",
+     "x": 0,
+     "y": 12.43,
+     "units": "MPa",
+     "source_locator": "Fig. FIXTURE-1 px=(120,393) color_series=S1",
+     "how": "pixel_calibrated_sampling"
+    },
+    {
+     "series": "S1",
+     "position": "中",
+     "x": 50.0,
+     "y": 44.86,
+     "units": "MPa",
+     "source_locator": "Fig. FIXTURE-1 px=(370,166) color_series=S1",
+     "how": "pixel_calibrated_sampling"
+    },
+    {
+     "series": "S1",
+     "position": "尾",
+     "x": 100,
+     "y": 60.0,
+     "units": "MPa",
+     "source_locator": "Fig. FIXTURE-1 px=(620,60) color_series=S1",
+     "how": "pixel_calibrated_sampling"
+    }
+   ]
+  },
+  "degraded": {
+   "readings": 6,
+   "reading_extraction_accuracy": 0.1667,
+   "numeric_backevidence_rate": 0.0,
+   "legend_series_consistency": 0.0,
+   "manual_review_items": 6,
+   "steps": 7,
+   "diagnostics": {
+    "mode": "degraded",
+    "calibration": {
+     "x_source": "full_image_assumption",
+     "y_source": "full_image_assumption"
+    }
+   },
+   "readings_sample": [
+    {
+     "series": "hue_0",
+     "position": "首",
+     "x": 0,
+     "y": 16.28,
+     "units": null,
+     "source_locator": "pixel(approx,no-legend-match)",
+     "how": "blind_sampling"
+    },
+    {
+     "series": "hue_0",
+     "position": "中",
+     "x": 50.0,
+     "y": 43.96,
+     "units": null,
+     "source_locator": "pixel(approx,no-legend-match)",
+     "how": "blind_sampling"
+    },
+    {
+     "series": "hue_0",
+     "position": "尾",
+     "x": 100,
+     "y": 52.05,
+     "units": null,
+     "source_locator": "pixel(approx,no-legend-match)",
+     "how": "blind_sampling"
+    }
+   ]
+  }
+ },
+ "delta_full_minus_degraded": {
+  "reading_extraction_accuracy": 0.8333,
+  "numeric_backevidence_rate": 0.6667,
+  "legend_series_consistency": 1.0,
+  "manual_review_items": 4,
+  "steps": -2
+ },
+ "note": "真值取自合成自检夹具（fixture-chart.json），仅用于验证机制可复现；不代表正式案例成绩，平台对照由组织方提供。"
+}

@@ -1,0 +1,5 @@
+﻿term_en,term_zh,variant,category,first_location,status,note
+attention mechanism,注意力机制,注意机制,method,p1c2p2,locked,全文统一用注意力机制
+transformer,Transformer,,model,p1c2p2,locked,模型名保留英文不译
+gradient descent,梯度下降,梯度下降法,method,p2c1p1,locked,不用梯度下降法这一变体
+overfitting,过拟合,,phenomenon,p3c2p3,locked,

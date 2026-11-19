@@ -1,0 +1,22 @@
+{
+  "case_id": "LOCAL-BENCH-NOT-A-TEST-CASE",
+  "task_instruction": "Local synthetic benchmark fixture for mechanism-ablation self-test only. Not an official case and not an official answer.",
+  "output_contract": {
+    "case_id": "原样保留",
+    "status": "answered|partial|insufficient_evidence|input_error",
+    "result": "题目主结果，结构化字段按题目任务卡",
+    "claims": "每条关键结论附 kind、evidence、source_id、location",
+    "uncertainties": "未报告、无法判断、冲突和人工复核项"
+  },
+  "source": {"title": "Synthetic multi-source battery paper", "doi": null},
+  "paragraphs": [
+    {"paragraph_id": "abs01", "type": "abstract", "text": "We report a layered oxide cathode that retained 83.1% of its initial discharge capacity after 200 cycles, outperforming the undoped baseline of 71.4%."},
+    {"paragraph_id": "exp01", "type": "results", "text": "Layered oxide cathodes were cycled at 1C in the voltage window of 2.8-4.3 V for 200 cycles at 25 C."},
+    {"paragraph_id": "tab01", "type": "table", "text": "Table 1 | Sample | Capacity retention (%) | Rate | Doped 83.1 | Undoped 71.4 | Note that the doped electrode shows 83.1 percent retention after 200 cycles."},
+    {"paragraph_id": "res02", "type": "results", "text": "After 200 cycles the doped sample retained 83.1% of its discharge capacity, whereas the undoped baseline retained 71.4% under identical conditions."},
+    {"paragraph_id": "fig01", "type": "figure_caption", "text": "Figure 2. Charge-discharge profiles of the doped cathode at 1C after 200 cycles; the discharge capacity retention reached 83.1%."},
+    {"paragraph_id": "sup01", "type": "supplementary", "text": "Supplementary Table S2. Coulombic efficiency of the doped electrode was 99.2% after 200 cycles at 1C and 25 C."},
+    {"paragraph_id": "dis01", "type": "results", "text": "XPS results suggest that surface oxygen loss may contribute to the capacity fade, and the effect was more pronounced at 2C."},
+    {"paragraph_id": "res03", "type": "results", "text": "The specific discharge capacity of the doped cathode was 178 mAh/g at 0.1C, compared with 165 mAh/g for the undoped reference."}
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "_usage": "result.json 输出模板。下划线开头的字段为说明，正式输出时删除。output_contract 要求的字段若与本模板冲突，以 case.json 的 output_contract 为准并全部包含。",
+  "case_id": "FILL_FROM_CASE_JSON",
+  "status": "compiled",
+  "_status_values": "compiled=编译通过且预检全绿; partial=编译通过但有已标注未决项; compile_failed=满3轮修复仍失败(附log摘要与根因); degraded_static_check=编译器不可用,仅静态检查并标注未验证",
+  "task_summary": "一句话概述本案例完成的写作或修复任务",
+  "outputs": {
+    "main_tex": "/app/output/main.tex",
+    "supporting_files": ["/app/output/refs.bib"],
+    "build_artifacts": ["/app/output/main.pdf", "/app/output/main.log"],
+    "preview": "/app/output/main.pdf"
+  },
+  "build_info": {
+    "compiler": "latexmk -pdf",
+    "latexmk_available": true,
+    "tex_distribution": "TeX Live 2023",
+    "passes": 1,
+    "notes": "复现所需的环境记录; 无 latexmk 时写手动轮次序列"
+  },
+  "sources": [
+    {
+      "claim": "结果表指标A为0.91",
+      "source": "材料第3节实验表格第2行",
+      "action": "原样保留"
+    }
+  ],
+  "_sources_note": "数字、术语、引用、图表与关键论断逐条映射来源位置与动作(原样保留/改写/格式转换); 不新增材料外事实",
+  "changes": [
+    {
+      "location": "正文第2段",
+      "before": "Markdown 粗体 **方法**",
+      "after": "\\textbf{方法}",
+      "reason": "Markdown 转 LaTeX 格式映射"
+    }
+  ],
+  "uncertainties": [
+    "材料未提供图1源文件, 已用 \\fbox 占位并保留 figure 环境"
+  ],
+  "_uncertainties_note": "材料缺口、冲突、需人工确认项逐条列出; 材料缺失、无法判断、运行失败分别说明, 不合并",
+  "diagnostics": {
+    "repair_rounds_used": 1,
+    "errors_found": [
+      {
+        "error": "Undefined control sequence",
+        "line": 42,
+        "category": "命令与宏包类",
+        "root_cause": "\\eqref 未加载 amsmath",
+        "fix": "导言区新增 \\usepackage{amsmath}",
+        "resolved": true
+      }
+    ],
+    "remaining_warnings": ["Overfull \\hbox (12pt) 在参考文献页"]
+  }
+}

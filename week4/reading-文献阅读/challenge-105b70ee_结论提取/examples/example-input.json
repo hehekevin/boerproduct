@@ -1,0 +1,17 @@
+{
+  "case_id": "EXAMPLE-NOT-A-TEST-CASE",
+  "task_instruction": "Synthetic interface example only; actual task inputs are supplied at evaluation.",
+  "output_contract": {
+    "case_id": "原样保留",
+    "status": "answered|partial|insufficient_evidence|input_error",
+    "result": "题目主结果，结构化字段按题目任务卡",
+    "claims": "每条关键结论附 kind、evidence、source_id、location",
+    "uncertainties": "未报告、无法判断、冲突和人工复核项"
+  },
+  "source": {"title": "Synthetic example", "doi": null},
+  "paragraphs": [
+    {"paragraph_id": "p01", "text": "Layered oxide cathodes were cycled at 1C in the voltage window of 2.8-4.3 V for 200 cycles."},
+    {"paragraph_id": "p02", "text": "After 200 cycles, the discharge capacity retention was 84.3% for the doped sample and 71.5% for the undoped baseline."},
+    {"paragraph_id": "p03", "text": "XPS results suggest that surface oxygen loss may contribute to the capacity fade."}
+  ]
+}

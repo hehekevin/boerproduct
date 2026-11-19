@@ -1,0 +1,6 @@
+﻿unit_id,kind,location,src_text
+P001,title,p1c1p1,Deep Learning for Scientific Image Analysis
+P002,abstract,p1c1p2,We propose a novel framework that improves accuracy by 12.5 percent on three benchmark datasets.
+F01,figure_caption,p3c1p1,Figure 1: Overall architecture of the proposed model.
+E01,equation,p4c1p2,L = sum_i (y_i - f(x_i))^2 + lambda * ||w||^2
+R001,reference,p10c1p1,[1] A. Author, B. Author. Title of the paper. Journal, 2023.

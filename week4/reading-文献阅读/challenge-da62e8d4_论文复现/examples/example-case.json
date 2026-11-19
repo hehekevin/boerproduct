@@ -1,0 +1,18 @@
+{
+  "case_id": "demo-repro-001",
+  "_comment": "合成案例：论文声明 RMSE<=0.05 的多项式拟合；包内两份候选方法（candidate-A 二次、candidate-B 一阶）。仅示意接口，非正式案例。",
+  "_usage_note": "配合 gain_probe.py --emit-into 会把 gain_evidence/efficiency 写回本目录的 example-result.json（运行时产物）；如需保持干净请对副本运行或事后清理。",
+  "output_contract": {
+    "case_id": "案例标识",
+    "status": "运行状态",
+    "result": "主结果",
+    "claims": "证据链",
+    "uncertainties": "不确定性",
+    "changelog": "变更记录"
+  },
+  "paper": {"metric": "RMSE", "declared_value": 0.031, "tolerance": "±10%", "params": {"degree": "论文说明见 §2"}},
+  "candidates": [
+    {"candidate_id": "candidate-A", "file": "method_a.py"},
+    {"candidate_id": "candidate-B", "file": "method_b.py"}
+  ]
+}

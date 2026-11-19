@@ -1,0 +1,8 @@
+{
+  "case_id": "demo-claim-001",
+  "paragraphs": [
+    {"paragraph_id": "p01", "text": "Samples were tested at room temperature with a load of 5 kN (n=10 per group)."},
+    {"paragraph_id": "p02", "text": "The treated group showed a 12.4% higher fatigue life than the control (p < 0.05)."},
+    {"paragraph_id": "p03", "text": "This improvement may be attributed to surface hardening, though further study is needed."}
+  ]
+}

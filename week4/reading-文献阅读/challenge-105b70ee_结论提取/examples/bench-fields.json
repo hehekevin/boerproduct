@@ -1,0 +1,10 @@
+[
+  {"field_id": "capacity_retention_doped", "definition": "doped sample capacity retention after 200 cycles", "unit_expectation": "%"},
+  {"field_id": "capacity_retention_undoped", "definition": "undoped baseline capacity retention after 200 cycles", "unit_expectation": "%"},
+  {"field_id": "cycling_current_rate", "definition": "cycling rate used in the test", "unit_expectation": "C"},
+  {"field_id": "voltage_window", "definition": "voltage window used for cycling", "unit_expectation": "V"},
+  {"field_id": "coulombic_efficiency", "definition": "coulombic efficiency after 200 cycles", "unit_expectation": "%"},
+  {"field_id": "specific_discharge_capacity", "definition": "specific discharge capacity at 0.1C", "unit_expectation": "mAh/g"},
+  {"field_id": "degradation_mechanism_conclusion", "definition": "author conclusion on capacity fade mechanism", "unit_expectation": null},
+  {"field_id": "calendar_life_years", "definition": "calendar life in years", "unit_expectation": "year"}
+]

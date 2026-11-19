@@ -1,0 +1,7 @@
+===== SOURCE M01: materials.txt =====
+[材料] 样本量 n=212，分为对照组与处理组。
+[材料] 处理组 24h 指标为 18.7±1.3 mg/L，对照组为 12.3±1.1 mg/L。
+[材料] 48h 处理组 22.0±1.1 mg/L，对照组 15.2±0.9 mg/L。
+[材料] 组间差异 p<0.05，效应量 Cohen's d=0.82。
+[材料] 参考文献 [1] Smith J. et al. J Control Release, 2024. DOI:10.0000/abc.123
+[材料] 参考文献 [2] Lee K. et al. Biomaterials, 2023. DOI:10.0000/def.456

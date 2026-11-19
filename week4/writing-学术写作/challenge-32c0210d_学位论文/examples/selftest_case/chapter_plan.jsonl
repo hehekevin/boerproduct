@@ -1,0 +1,5 @@
+{"ch": "1", "title": "引言", "role": "回答研究问题Q1", "word_budget": 3000, "evidence": ["M01"], "outputs": "结论1.1"}
+{"ch": "2", "title": "方法", "role": "回答研究问题Q2", "word_budget": 4000, "evidence": ["M01"], "outputs": "结论2.1"}
+{"ch": "3", "title": "结果", "role": "回答研究问题Q2", "word_budget": 4000, "evidence": ["M01"], "outputs": "结论3.1"}
+{"ch": "4", "title": "讨论", "role": "回答研究问题Q3", "word_budget": 3000, "evidence": ["M01"], "outputs": "结论4.1"}
+{"ch": "5", "title": "结论", "role": "回答研究问题Q3", "word_budget": 2000, "evidence": ["M01"], "outputs": "结论5.1"}

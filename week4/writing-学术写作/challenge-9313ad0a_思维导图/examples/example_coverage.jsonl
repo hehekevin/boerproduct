@@ -1,0 +1,6 @@
+{"sid": "M01", "locator": "M01:line5", "point": "血脑屏障限制药物递送", "kind": "core_concept"}
+{"sid": "M01", "locator": "M01:line9", "point": "转铁蛋白修饰脂质体", "kind": "method"}
+{"sid": "M01", "locator": "M01:line13", "point": "穿透率为对照组的3.2倍", "kind": "evidence"}
+{"sid": "M01", "locator": "M01:line17", "point": "小鼠模型与人体差异限制转化", "kind": "risk"}
+{"sid": "M01", "locator": "M01:line17", "point": "建议先开展大动物验证", "kind": "conclusion"}
+{"sid": "M01", "locator": "M01:line21", "point": "大动物验证成本高", "kind": "risk"}

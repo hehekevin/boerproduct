@@ -1,0 +1,20 @@
+{
+  "_comment": "result.json 骨架模板。使用时：把 result 内的键替换为 /input/case.json 中 output_contract 的实际键名（一一对应，一个不漏），各值先置 null，逐块回填；解析不出填 unknown 并登记 uncertainty。",
+  "case_id": "REPLACE_WITH_CASE_ID",
+  "status": "partial",
+  "result": {
+    "REPLACE_WITH_OUTPUT_CONTRACT_KEY_1": null,
+    "REPLACE_WITH_OUTPUT_CONTRACT_KEY_2": null,
+    "REPLACE_WITH_OUTPUT_CONTRACT_KEY_3": null
+  },
+  "evidence": {
+    "pages": [],
+    "coverage": {}
+  },
+  "uncertainty": [
+    { "field": "REPLACE_IF_ANY", "page": 0, "reason": "describe why unreadable" }
+  ],
+  "changes": [
+    { "step": "skeleton", "note": "骨架已建，字段名抄自 output_contract" }
+  ]
+}

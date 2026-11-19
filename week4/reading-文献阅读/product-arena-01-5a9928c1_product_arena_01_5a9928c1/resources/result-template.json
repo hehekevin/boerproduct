@@ -1,0 +1,49 @@
+{
+  "case_id": "REPLACE_WITH_ACTUAL_CASE_ID",
+  "task_type": "paper_translation",
+  "status": "success",
+  "status_reason": "",
+  "source_info": {
+    "file": "",
+    "pages": 0,
+    "language": "en",
+    "text_source": "pdf_text_layer",
+    "translation_scope": "full text"
+  },
+  "outputs": {
+    "bilingual_file": "/app/output/bilingual.md",
+    "glossary_file": "/app/output/glossary.csv",
+    "verification_file": "/app/output/verification.md"
+  },
+  "stats": {
+    "total_units": 0,
+    "translated_units": 0,
+    "flagged_units": 0,
+    "glossary_locked_terms": 0,
+    "glossary_pending_terms": 0,
+    "verification_rounds": 1
+  },
+  "verification": {
+    "alignment_passed": true,
+    "terminology_consistency_passed": true,
+    "number_unit_check_passed": true,
+    "placeholder_leftover_count": 0,
+    "issues": []
+  },
+  "uncertainty": [
+    {
+      "unit_id": "",
+      "location": "",
+      "type": "unclear_translation",
+      "description": ""
+    }
+  ],
+  "change_log": [
+    {
+      "step": "",
+      "action": "",
+      "detail": ""
+    }
+  ],
+  "notes": ""
+}

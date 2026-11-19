@@ -1,0 +1,7 @@
+[
+  {"field_id": "capacity_retention_doped", "definition": "掺杂样品 200 次循环后容量保持率", "unit_expectation": "%"},
+  {"field_id": "capacity_retention_undoped", "definition": "未掺杂对照样品 200 次循环后容量保持率", "unit_expectation": "%"},
+  {"field_id": "cycling_current_rate", "definition": "循环测试所用倍率", "unit_expectation": "C"},
+  {"field_id": "voltage_window", "definition": "循环测试电压窗口", "unit_expectation": "V"},
+  {"field_id": "degradation_mechanism_conclusion", "definition": "作者对容量衰减机理的明确结论", "unit_expectation": null}
+]

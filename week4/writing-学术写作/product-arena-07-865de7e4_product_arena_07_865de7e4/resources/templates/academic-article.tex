@@ -1,0 +1,99 @@
+% academic-article.tex：标准学术文档骨架模板
+% 编译命令：latexmk -pdf main.tex（无 bib 时编译两遍即可）
+% 用途：任务未指定模板时的默认骨架。指定模板时以模板为准。
+\documentclass[11pt,a4paper]{article}
+
+% 宏包按安全顺序排列：先文字编码，再数学，再图表，最后工具
+\usepackage[utf8]{inputenc}      % pdflatex 必需；xelatex 下删除本行
+\usepackage[T1]{fontenc}         % pdflatex 必需；xelatex 下删除本行
+\usepackage{amsmath,amssymb}     % 数学
+\usepackage{graphicx}            % 插图
+\usepackage{booktabs}            % 三线表
+\usepackage{multirow}            % 合并单元格
+\usepackage{tabularx}            % 自适应列宽，防溢出
+\usepackage{hyperref}            % 最后加载超链接
+
+\title{论文标题}
+\author{作者姓名}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+摘要段落。只写材料中出现的事实，不新增材料外内容。
+\end{abstract}
+
+\section{引言}\label{sec:intro}
+正文。引用规范写法：见文献~\cite{key2024}。交叉引用规范写法：见第~\ref{sec:method}节。
+
+\section{方法}\label{sec:method}
+\subsection{模型定义}
+\begin{equation}\label{eq:model}
+  f(x) = \sum_{i=1}^{n} w_i \, \phi(x_i)
+\end{equation}
+公式~\eqref{eq:model} 定义了模型。多行公式用 align：
+\begin{align}
+  a &= b + c \label{eq:first}\\
+  d &= e - f \label{eq:second}
+\end{align}
+变量用斜体（默认），单位与算子用正体：$v = 5\,\mathrm{m/s}$。
+
+\subsection{定理环境示例}
+\newtheorem{theorem}{定理}
+\begin{theorem}\label{thm:main}
+定理陈述。
+\end{theorem}
+\begin{proof}
+证明内容。
+\end{proof}
+
+\section{实验}\label{sec:exp}
+图规范写法（必须有 caption 与 label，正文用 \ref 引用）：
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{fig1}
+  \caption{图标题。}\label{fig:demo}
+\end{figure}
+
+表规范写法（booktabs 三线表，禁止竖线）：
+\begin{table}[htbp]
+  \centering
+  \caption{表标题。}\label{tab:demo}
+  \begin{tabular}{lcc}
+    \toprule
+    方法 & 指标A & 指标B \\
+    \midrule
+    基线 & 0.85 & 0.72 \\
+    本文 & 0.91 & 0.79 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+宽表用 tabularx 防溢出：
+\begin{table}[htbp]
+  \centering
+  \begin{tabularx}{\linewidth}{lX}
+    \toprule
+    项目 & 说明（自动换行列） \\
+    \midrule
+    条目 & 较长的说明文字放在 X 列。 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{结论}\label{sec:conclusion}
+结论段落。
+
+% 参考文献二选一：
+% 方式一（内嵌 bibliography，无 bib 文件时使用）：
+\begin{thebibliography}{9}
+\bibitem{key2024} 作者. 标题. 期刊, 2024.
+\end{thebibliography}
+
+% 方式二（bib 文件，注释方式一并改为 \bibliography{refs}）：
+% \bibliographystyle{plain}
+% \bibliography{refs}
+
+\end{document}

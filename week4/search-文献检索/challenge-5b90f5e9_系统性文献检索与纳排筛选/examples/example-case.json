@@ -1,0 +1,83 @@
+{
+  "case_id": "demo-searchscreen-001",
+  "note": "合成示例（非正式答案）：标题、摘要、DOI 均为虚构，仅用于演示 Skill 的完整调用链路与示意输出。正式结果只能来自平台 3 个固定案例的实际运行。",
+  "task": "给定研究问题、纳排标准草案与 7 条题录（含 1 组重复导出与 1 组标注者分歧夹具），完成检索协议声明、去重、逐条纳排判定、分歧仲裁与漏斗计数审计。",
+  "research_question": {
+    "question": "咖啡因摄入对健康成年人工作记忆表现的急性影响如何？",
+    "pico": {
+      "population": "健康成年人（≥18 岁）",
+      "intervention": "单次咖啡因摄入（任何剂量）",
+      "comparison": "安慰剂或不摄入",
+      "outcome": "工作记忆表现的量化指标",
+      "study_design": "实证研究（RCT、对照实验、前瞻性队列）"
+    },
+    "scope": "仅限题录快照内的 7 条记录，不做实时数据库检索",
+    "time_range": "2010-01-01 至 2025-12-31"
+  },
+  "criteria_draft": {
+    "note": "标准草案（由 Agent 在任何判定之前声明版本号与 declared_at 后使用）",
+    "inclusion": [
+      {"criterion_id": "IN-01", "text": "实证研究设计（随机对照试验、对照实验或前瞻性队列）"},
+      {"criterion_id": "IN-02", "text": "研究对象为健康成年人（≥18 岁）"},
+      {"criterion_id": "IN-03", "text": "报告咖啡因摄入与工作记忆表现的量化结局"}
+    ],
+    "exclusion": [
+      {"criterion_id": "EX-01", "text": "叙述性综述、评论、社论等非实证出版物（理由码 RC-EX-DESIGN）"},
+      {"criterion_id": "EX-02", "text": "研究对象为动物或未成年人（理由码 RC-EX-POPULATION）"}
+    ]
+  },
+  "records": [
+    {
+      "record_id": "R01", "source_ref": "records[0]",
+      "title": "Chewing gum caffeine enhances working memory speed in healthy young adults: a double-blind crossover trial",
+      "abstract": "In this double-blind crossover study, 48 healthy adults aged 20-30 chewed caffeine gum (100 mg) or placebo. Working memory reaction times were significantly faster after caffeine (p = .008), quantified as mean latency on a 2-back task.",
+      "doi": "10.1000/demo.2024.001", "year": 2024, "venue_type": "published", "source_db": "demo-pubmed"
+    },
+    {
+      "record_id": "R02", "source_ref": "records[1]",
+      "title": "Habitual caffeine intake and working memory in a prospective cohort of university adults",
+      "abstract": "We followed 412 university adults (aged 18-25) for 12 months. Habitual caffeine intake was positively associated with working memory span (beta = 0.21, p = .003), quantified via complex span tasks.",
+      "doi": "10.1000/demo.2023.047", "year": 2023, "venue_type": "published", "source_db": "demo-embase"
+    },
+    {
+      "record_id": "R03", "source_ref": "records[2]",
+      "title": "Acute caffeine ingestion improves working memory in adults: a randomized controlled trial (preprint version)",
+      "abstract": "Preprint. In this double-blind randomized controlled trial, 60 healthy adults received 200 mg caffeine or placebo. The caffeine group showed significantly improved n-back working memory accuracy (p < .01).",
+      "doi": "10.1000/demo.2024.011", "year": 2023, "venue_type": "preprint", "source_db": "demo-preprint-server"
+    },
+    {
+      "record_id": "R04", "source_ref": "records[3]",
+      "title": "Acute caffeine ingestion improves working memory performance in healthy adults: a randomized controlled trial",
+      "abstract": "In this double-blind randomized controlled trial, 60 healthy adults aged 18-35 received 200 mg caffeine or placebo. The caffeine group showed significantly improved n-back working memory accuracy (p < .01), quantified as d' scores. This is the peer-reviewed published version.",
+      "doi": "10.1000/demo.2024.011", "year": 2024, "venue_type": "published", "source_db": "demo-pubmed"
+    },
+    {
+      "record_id": "R05", "source_ref": "records[4]",
+      "title": "Caffeine effects on working memory in older and younger adults: a controlled experiment",
+      "abstract": "We tested 30 younger adults (aged 18-30) and 20 older adults (aged 65-80) on an n-back task after caffeine vs placebo. Working memory accuracy improved in younger adults (p = .02) but not in older adults (p = .44).",
+      "doi": "10.1000/demo.2022.088", "year": 2022, "venue_type": "published", "source_db": "demo-psycinfo"
+    },
+    {
+      "record_id": "R06", "source_ref": "records[5]",
+      "title": "Caffeine, adenosine receptors and short-term memory: a brief report",
+      "abstract": "",
+      "doi": null, "year": null, "venue_type": "unknown", "source_db": "demo-web-of-science"
+    },
+    {
+      "record_id": "R07", "source_ref": "records[6]",
+      "title": "Caffeine and cognition: a narrative review of the evidence",
+      "abstract": "This narrative review summarizes 15 years of research on caffeine and cognition, including working memory, attention and executive function. It does not report new empirical data.",
+      "doi": "10.1000/demo.2021.009", "year": 2021, "venue_type": "published", "source_db": "demo-pubmed"
+    }
+  ],
+  "annotator_fixtures": {
+    "note": "输入夹具（明确标注为输入夹具，不是期望答案）：模拟两位标注者的独立意见，供分歧仲裁演示。",
+    "opinions": [
+      {"record_id": "R05", "annotator_a": "included", "annotator_a_note": "认为含 18-30 岁亚组即满足 IN-02",
+       "annotator_b": "excluded", "annotator_b_note": "认为混合人群含 65-80 岁老年人，整体不满足 IN-02"}
+    ]
+  },
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

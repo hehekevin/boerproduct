@@ -1,0 +1,31 @@
+{
+  "note": "理由码字典（sysrev-search-screen）。exclusion.code_* 给出与纳排标准排除条目的默认对应关系，判定时 reason_code 必须取自本字典；criteria_ref 同时引用命中的排除标准 criterion_id。pending 为待复核理由码。本字典可由使用者按自己的综述扩展，扩展后须在 criteria_ledger 中声明版本。",
+  "version": "v1.0",
+  "exclusion": {
+    "codes": ["RC-EX-SCOPE", "RC-EX-DESIGN", "RC-EX-POPULATION", "RC-EX-INTERVENTION", "RC-EX-OUTCOME", "RC-EX-LANGUAGE", "RC-EX-TIME", "RC-EX-PUBTYPE", "RC-EX-DUPLICATE"],
+    "label": "排除理由码",
+    "descriptions": {
+      "RC-EX-SCOPE": "主题/研究问题不符：研究问题与本综述 PICO 无关",
+      "RC-EX-DESIGN": "研究设计不符：非纳入设计（如叙述性综述、评论、社论、观点文章）",
+      "RC-EX-POPULATION": "研究对象不符：人群/物种/年龄段/疾病类型不在范围",
+      "RC-EX-INTERVENTION": "干预/暴露/比较不符：干预或对照与本综述问题不符",
+      "RC-EX-OUTCOME": "结局指标不符：未报告本综述关注的结局",
+      "RC-EX-LANGUAGE": "语种不符：非限定语种且无可用译文",
+      "RC-EX-TIME": "发表时间超出检索协议限定的时间范围",
+      "RC-EX-PUBTYPE": "出版物类型不符：会议摘要、信件、预印本未正式发表等",
+      "RC-EX-DUPLICATE": "重复记录：与另一条记录为同一研究（去重合并，须同时登记 duplicate_of 与 conflicts）"
+    }
+  },
+  "pending": {
+    "codes": ["RC-PD-NO-ABSTRACT", "RC-PD-BORDERLINE", "RC-PD-METADATA", "RC-PD-DISAGREEMENT", "RC-PD-FULLTEXT"],
+    "label": "待复核理由码",
+    "descriptions": {
+      "RC-PD-NO-ABSTRACT": "无摘要：仅凭标题无法依据纳排标准判定，须回原文或全文确认",
+      "RC-PD-BORDERLINE": "边界情形：研究对象部分重叠、亚组疑似符合等，须人工最终确认",
+      "RC-PD-METADATA": "元数据缺失：年份/DOI/来源缺失或乱码，影响可判定性",
+      "RC-PD-DISAGREEMENT": "双人分歧：两位标注者判断不一致且未完成仲裁",
+      "RC-PD-FULLTEXT": "需全文确认：题录层面疑似符合，是否纳入须全文阶段复核"
+    }
+  },
+  "inclusion_note": "included 不设理由码（reason_code=null），但必须 criteria_ref 引用 ≥1 条存在的纳入标准 id 并给出逐字证据。"
+}

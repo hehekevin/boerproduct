@@ -1,0 +1,41 @@
+{
+  "_note": "合成示意案例（非正式答案、非真实选题/文献）：仅用于本地自测整条链路。所有选题、已知工作标题与摘要均为虚构。",
+  "case_id": "demo-topicaudit-001",
+  "task_type": "topic_novelty_assessment",
+  "research_context": {
+    "direction": "AI 辅助科研选题评估工具的方法选题",
+    "scope": "面向 AI for Science 场景的选题评估方法研究设想",
+    "constraints": "只对照下方 known_works 清单；数据/算力按单卡实验室条件假设"
+  },
+  "criteria": {
+    "inclusion": [
+      {"criterion_id": "IN-01", "text": "创新陈述可拆条（method/data/scene/theory 四类之一）并与已知工作逐条对照"},
+      {"criterion_id": "IN-02", "text": "可行性核查覆盖 data/method/resource/time 四要素，每要素给 status 与 basis"}
+    ],
+    "exclusion": [
+      {"criterion_id": "EX-01", "text": "核心创新陈述被已知工作覆盖（overlap=covered）→ 分级 not_novel 并登记 duplicate_of"},
+      {"criterion_id": "EX-02", "text": "对照证据不足（known_works 覆盖不到或互相冲突）→ 分级 uncertain 并登记人工复核"}
+    ]
+  },
+  "proposals": [
+    {"proposal_id": "T01", "title": "EchoGuard：基于引文图回声结构的立项期可复现性预警"},
+    {"proposal_id": "T02", "title": "CalibRank-X：小样本文献排序的对比校准增强"},
+    {"proposal_id": "T03", "title": "LLM 委员会自动生成基金申请选题"},
+    {"proposal_id": "T04", "title": "跨语言科学问答的选题迁移评估"}
+  ],
+  "known_works": [
+    {"work_id": "W01", "title": "SciClaim-Bench: verifying novelty claims of AI-generated research ideas", "year": 2025, "venue_type": "published",
+     "abstract": "We introduce SciClaim-Bench, a benchmark for verifying novelty claims of AI-generated research ideas against structured literature profiles. The benchmark covers claim extraction, closest-work retrieval and overlap labeling, but targets post-hoc claim audit rather than project-selection early warning."},
+    {"work_id": "W02", "title": "CalibRank: lightweight contrastive calibration for small-sample literature ranking", "year": 2024, "venue_type": "published",
+     "abstract": "CalibRank applies lightweight contrastive calibration to literature ranking under small-sample conditions, improving top-k stability with a declared weight rubric. Ablations show the calibration layer contributes most of the gain."},
+    {"work_id": "W03", "title": "Citation graph echo patterns for reproducibility prediction", "year": 2023, "venue_type": "published",
+     "abstract": "We predict reproducibility outcomes from citation graph echo structures after publication. Our method operates post-hoc on completed projects and does not provide any early-warning mechanism during project selection."},
+    {"work_id": "W04", "title": "A survey of LLM-assisted research topic selection", "year": 2025, "venue_type": "published",
+     "abstract": "This survey categorizes LLM-assisted topic selection pipelines into retrieval-augmented drafting and reviewer-style scoring. Committee-based multi-agent proposal generation is left to future work."},
+    {"work_id": "W05", "title": "Feasibility estimation frameworks for empirical AI research", "year": 2022, "venue_type": "published",
+     "abstract": "We provide a framework for estimating data, compute and personnel feasibility before experiments. Cross-lingual transfer scenarios are discussed only as an outlook and are not evaluated."}
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

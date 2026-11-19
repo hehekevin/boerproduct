@@ -1,0 +1,32 @@
+{
+  "_note": "合成示意案例（非正式答案、非真实文献）：仅用于本地自测整条链路。所有标题/摘要/作者均为虚构。",
+  "case_id": "demo-litreview-001",
+  "task_type": "literature_review_generation",
+  "research_question": {
+    "question": "益生菌补充对成人肠易激综合征（IBS）症状的疗效与菌株特异性",
+    "scope": "人体对照试验与系统综述；结局含 IBS 全局症状/腹胀/腹痛评分",
+    "time_range": "2010-2025"
+  },
+  "criteria": {
+    "inclusion": [
+      {"criterion_id": "IN-01", "text": "人体对照试验或系统综述，结局包含 IBS 症状测量"},
+      {"criterion_id": "IN-02", "text": "干预为口服益生菌制剂（单菌株或多菌株）"}
+    ],
+    "exclusion": [
+      {"criterion_id": "EX-01", "text": "非人体研究（动物/体外/模型）"},
+      {"criterion_id": "EX-02", "text": "综述会议摘要与正式发表版本重复，合并保留正式版本"},
+      {"criterion_id": "EX-03", "text": "结局不含 IBS 症状测量（如仅代谢指标）"}
+    ]
+  },
+  "papers": [
+    {"paper_id": "R01", "title": "Bifidobacterium infantis 35624 improves global IBS symptoms: a randomized controlled trial", "year": 2011, "venue_type": "published", "abstract": "Background: IBS symptoms fluctuate without structural cause. Methods: 77 patients were randomized to Bifidobacterium infantis 35624 or placebo for 8 weeks; global IBS symptom scores were assessed weekly. Results: Patients receiving Bifidobacterium infantis 35624 showed a clinically meaningful reduction in global symptom scores compared with placebo (p=0.02). Adverse events were similar between groups. Conclusion: This strain improves global IBS symptoms in this trial."},
+    {"paper_id": "R02", "title": "A multi-strain probiotic formulation reduces bloating in IBS patients", "year": 2017, "venue_type": "published", "abstract": "We conducted a double-blind trial in 120 IBS patients assigned to a multi-strain probiotic or placebo for 12 weeks. Bloating scores decreased significantly in the probiotic group versus placebo (p=0.01), while abdominal pain differences were not significant. The formulation contained lactobacilli and bifidobacteria. Tolerability was good with no serious adverse events."},
+    {"paper_id": "R03", "title": "Probiotics are not superior to placebo for overall IBS symptom relief: a controlled trial", "year": 2015, "venue_type": "published", "abstract": "In this randomized controlled trial of 100 IBS patients, a probiotic mixture was compared with placebo for 10 weeks. Overall symptom relief did not differ between groups at week 10 (p=0.31). Subgroup analyses suggested possible benefit for constipation-predominant patients only. We conclude that probiotics were not superior to placebo for overall IBS symptom relief in this sample."},
+    {"paper_id": "R04", "title": "Strain-specific mechanisms of probiotics in visceral hypersensitivity: a systematic review", "year": 2020, "venue_type": "published", "abstract": "This systematic review synthesizes human and mechanistic evidence on strain-specific probiotic effects in visceral hypersensitivity. Included trials suggest that effects are strain- and dose-dependent, and that pooling heterogeneous strains may mask strain-specific signals. The review highlights gaps in standardized outcome measures."},
+    {"paper_id": "R05", "title": "Gut microbiota modulation reduces visceral pain in a rodent model", "year": 2019, "venue_type": "published", "abstract": "In a mouse model, probiotic administration altered gut microbiota composition and reduced visceromotor responses to colorectal distension, indicating reduced visceral pain sensitivity in rodents."},
+    {"paper_id": "R06", "title": "Bifidobacterium infantis 35624 improves global IBS symptoms (conference abstract)", "year": 2010, "venue_type": "preprint", "abstract": "Conference abstract reporting the same trial as R01: 77 patients randomized to Bifidobacterium infantis 35624 or placebo for 8 weeks with reduced global symptom scores."}
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

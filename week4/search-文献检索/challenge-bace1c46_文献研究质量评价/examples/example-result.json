@@ -1,0 +1,1114 @@
+{
+ "case_id": "demo-quality-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.x",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "示意示例，环境信息为合成示例值，正式运行时照实回填"
+  },
+  "review_scope": {
+   "question": "示意：评价给定文献的方法学质量与偏倚风险（合成示例）",
+   "paper_types": [
+    "rct",
+    "cohort"
+   ],
+   "checklist_version": "methodology-checklist-v1"
+  },
+  "checklist": {
+   "version": "methodology-checklist-v1",
+   "domains": [
+    "design",
+    "sample",
+    "control",
+    "blinding",
+    "statistics",
+    "other"
+   ],
+   "items": [
+    {
+     "checklist_id": "DS-01",
+     "domain": "design",
+     "prompt": "研究设计类型是否支持所述结论（随机化/分组来源明确）",
+     "evidence_required": true
+    },
+    {
+     "checklist_id": "SP-01",
+     "domain": "sample",
+     "prompt": "样本量与抽样方式是否合理（有无计算依据、代表性）",
+     "evidence_required": true
+    },
+    {
+     "checklist_id": "CO-01",
+     "domain": "control",
+     "prompt": "对照设置是否恰当（对照来源、可比性）",
+     "evidence_required": true
+    },
+    {
+     "checklist_id": "BL-01",
+     "domain": "blinding",
+     "prompt": "盲法是否实施与报告（对象、方式）",
+     "evidence_required": true
+    },
+    {
+     "checklist_id": "ST-01",
+     "domain": "statistics",
+     "prompt": "统计方法是否恰当（模型、效应量、CI、多重性）",
+     "evidence_required": true
+    },
+    {
+     "checklist_id": "OT-01",
+     "domain": "other",
+     "prompt": "伦理审批、利益冲突、资助来源是否报告",
+     "evidence_required": true
+    }
+   ]
+  },
+  "grading_rules": {
+   "version": "grading-rules-v1",
+   "declared_at": "step1（任何复算之前声明，之后禁止调整）",
+   "grade_map": {
+    "adequate": "high",
+    "concerns": "medium",
+    "inadequate": "low",
+    "unreported": "uncertain",
+    "unassessable": "uncertain",
+    "not_applicable": null
+   },
+   "category_map": {
+    "adequate": "none",
+    "concerns": "design_flaw",
+    "inadequate": "design_flaw",
+    "unreported": "reporting_gap",
+    "unassessable": "none",
+    "not_applicable": "none"
+   },
+   "penalty_map": {
+    "adequate": 0,
+    "concerns": 1,
+    "inadequate": 3,
+    "unreported": 1,
+    "unassessable": 0,
+    "not_applicable": 0
+   },
+   "thresholds": {
+    "low": [
+     0,
+     1
+    ],
+    "some_concerns": [
+     2,
+     4
+    ],
+    "high": [
+     5,
+     9999
+    ]
+   },
+   "abstain_rule": "任一 unassessable 且 penalty 处于 low 档 → overall=uncertain；abstain≥2 → uncertain",
+   "direction_rule": "负面条目存在 against_conclusion → against_conclusion；否则存在 favors_conclusion → favors_conclusion；否则 unclear"
+  },
+  "papers": [
+   {
+    "paper_id": "Q01",
+    "doc_id": "doc-q01",
+    "source_ref": "papers[0]",
+    "title": "虚构：睡眠限制对健康成人工作记忆的影响（随机试验）",
+    "paper_type": "rct",
+    "judged": true,
+    "appraisals": [
+     {
+      "checklist_id": "DS-01",
+      "domain": "design",
+      "judgment": "concerns",
+      "grade": "medium",
+      "category": "design_flaw",
+      "bias_direction": "against_conclusion",
+      "evidence_quote": "受试者被随机分配至睡眠限制组或对照组，分配方式为抛硬币",
+      "evidence_location": "doc-q01#methods",
+      "rationale": "抛硬币非充分随机化，分配隐藏存疑，对结论构成不利方向的偏倚风险",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "SP-01",
+      "domain": "sample",
+      "judgment": "adequate",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "共招募120名受试者，按1:1随机分配",
+      "evidence_location": "doc-q01#methods",
+      "rationale": "样本量明确、分组比例清晰，无可见缺陷",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "CO-01",
+      "domain": "control",
+      "judgment": "adequate",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "对照组接受正常睡眠",
+      "evidence_location": "doc-q01#methods",
+      "rationale": "设有平行对照组，对照干预描述明确",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "BL-01",
+      "domain": "blinding",
+      "judgment": "unreported",
+      "grade": "uncertain",
+      "category": "reporting_gap",
+      "bias_direction": "unclear",
+      "evidence_quote": "干预为期五晚",
+      "evidence_location": "doc-q01#methods（该段描述分配与干预，未出现任何盲法表述）",
+      "rationale": "原文未报告对受试者/研究者/评估者的盲法安排；这是报告缺失，不据此判定设计存在缺陷",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "ST-01",
+      "domain": "statistics",
+      "judgment": "inadequate",
+      "grade": "low",
+      "category": "design_flaw",
+      "bias_direction": "favors_conclusion",
+      "evidence_quote": "两组差异采用t检验，未报告置信区间与效应量",
+      "evidence_location": "doc-q01#methods",
+      "rationale": "只报p值不报效应量与CI，夸大组间差异，偏倚朝有利于结论方向扭曲",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "OT-01",
+      "domain": "other",
+      "judgment": "adequate",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "研究获伦理委员会批准，作者声明无利益冲突",
+      "evidence_location": "doc-q01#results",
+      "rationale": "伦理与利益冲突声明齐备",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     }
+    ]
+   },
+   {
+    "paper_id": "Q02",
+    "doc_id": "doc-q02",
+    "source_ref": "papers[1]",
+    "title": "虚构：社区老年人步行习惯与抑郁评分的队列研究",
+    "paper_type": "cohort",
+    "judged": true,
+    "appraisals": [
+     {
+      "checklist_id": "DS-01",
+      "domain": "design",
+      "judgment": "adequate",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "基于社区队列的前瞻性设计",
+      "evidence_location": "doc-q02#methods",
+      "rationale": "前瞻性队列设计支持关联性结论",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "SP-01",
+      "domain": "sample",
+      "judgment": "concerns",
+      "grade": "medium",
+      "category": "design_flaw",
+      "bias_direction": "unclear",
+      "evidence_quote": "样本量为63人，且未报告样本量计算依据",
+      "evidence_location": "doc-q02#methods",
+      "rationale": "小样本且无计算依据，精度受限；偏倚方向无法判定，标 unclear",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "CO-01",
+      "domain": "control",
+      "judgment": "adequate",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "与常规生活人群比较",
+      "evidence_location": "doc-q02#methods",
+      "rationale": "设有外部对照人群，可比性一般但对照存在",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "BL-01",
+      "domain": "blinding",
+      "judgment": "not_applicable",
+      "grade": null,
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": null,
+      "evidence_location": "doc-q02（观察性队列，无干预分配，盲法不适用）",
+      "rationale": "队列研究不设干预分配，盲法维度不适用，不参与罚分",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": "观察性队列研究，无干预分配，盲法维度不适用"
+     },
+     {
+      "checklist_id": "ST-01",
+      "domain": "statistics",
+      "judgment": "adequate",
+      "grade": "high",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": "采用多元线性回归调整年龄与性别，报告了β系数与95%CI",
+      "evidence_location": "doc-q02#methods",
+      "rationale": "多因素调整并报告效应量与CI，统计口径完整",
+      "judged": true,
+      "abstain_reason": null,
+      "na_reason": null
+     },
+     {
+      "checklist_id": "OT-01",
+      "domain": "other",
+      "judgment": "unassessable",
+      "grade": "uncertain",
+      "category": "none",
+      "bias_direction": "none",
+      "evidence_quote": null,
+      "evidence_location": "doc-q02（全文未提供伦理/资助段落）",
+      "rationale": "证据不足，按弃权规则 abstain，不臆断也不计罚分",
+      "judged": true,
+      "abstain_reason": "全文未提供伦理审批与资助信息段落，证据不足，弃权",
+      "na_reason": null
+     }
+    ]
+   }
+  ],
+  "coverage": {
+   "papers_total": 2,
+   "domains_required": 6,
+   "items_total": 12,
+   "judged_items": 12,
+   "abstained": 1,
+   "design_flaws": 3,
+   "reporting_gaps": 1,
+   "not_applicable": 1,
+   "ratio": 1.0
+  },
+  "conflicts": [],
+  "pending_review": [
+   {
+    "paper_id": "Q02",
+    "checklist_id": "OT-01",
+    "reason": "伦理/资助信息缺失，无法评价（弃权）",
+    "needed_action": "人工向作者/注册库核对伦理批号与资助声明后回填该条"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与文献清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "声明量表与分级口径",
+    "command": "（Agent 编辑 result.checklist 与 result.grading_rules，declared_at 落台账）",
+    "output_ref": "/app/work/grading_rules.json",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "逐条评价（12 条 appraisal 全部判定）",
+    "command": "（Agent 按量表逐条填 papers[].appraisals[]）",
+    "output_ref": "result.papers",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "机械汇总复算",
+    "command": "python3 /skills/weekly-skill/scripts/grade_rollup.py --result /app/output/result.json",
+    "output_ref": "result.risk_summary",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "/app/work/gain_evidence.json",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "双重自检",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json",
+    "output_ref": "/app/work/verify_check.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "appraised",
+  "verdict_basis": "2 篇 × 6 维度共 12 条全部逐条判定并给出证据定位；1 条因证据不足按规则弃权并登记待复核",
+  "risk_summary": {
+   "computed_by": "scripts/grade_rollup.py",
+   "rules_version": "grading-rules-v1",
+   "declared_at": null,
+   "marker_hit": true,
+   "per_paper": [
+    {
+     "paper_id": "Q01",
+     "penalty_total": 5,
+     "risk_of_bias": "high",
+     "band_raw": "high",
+     "direction": "against_conclusion",
+     "abstained": 0,
+     "design_flaws": 2,
+     "reporting_gaps": 1,
+     "grade_counts": {
+      "high": 3,
+      "medium": 1,
+      "low": 1,
+      "uncertain": 1,
+      "none_grade": 0
+     }
+    },
+    {
+     "paper_id": "Q02",
+     "penalty_total": 1,
+     "risk_of_bias": "uncertain",
+     "band_raw": "low",
+     "direction": "unclear",
+     "abstained": 1,
+     "design_flaws": 1,
+     "reporting_gaps": 0,
+     "grade_counts": {
+      "high": 3,
+      "medium": 1,
+      "low": 0,
+      "uncertain": 1,
+      "none_grade": 1
+     }
+    }
+   ],
+   "totals": {
+    "papers": 2,
+    "design_flaws": 3,
+    "reporting_gaps": 1
+   }
+  },
+  "gain_evidence": {
+   "probe_version": "1.0",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "demo-quality-001",
+   "input": {
+    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-bace1c46\\submission\\examples\\example-result.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-bace1c46\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "coverage_missed": 0,
+      "grading_missed": 0,
+      "evidence_missed": 0,
+      "defect_missed": 0,
+      "pending_missed": 0,
+      "violations_objective": {
+       "coverage": 0,
+       "grading": 0,
+       "evidence": 0,
+       "defect": 0,
+       "pending": 0
+      },
+      "violations_caught": {
+       "coverage": 0,
+       "grading": 0,
+       "evidence": 0,
+       "defect": 0,
+       "pending": 0
+      },
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "unjudged_items": 0,
+       "empty_papers": 0,
+       "missed_total": 0
+      },
+      "steps_count": 59,
+      "steps_detail": {
+       "checks_executed": 53,
+       "checks_disabled": 0,
+       "flow_steps_total": 6,
+       "flow_steps_done": 6
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0007
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "coverage_missed": 0,
+      "grading_missed": 0,
+      "evidence_missed": 0,
+      "defect_missed": 0,
+      "pending_missed": 0,
+      "violations_objective": {
+       "coverage": 0,
+       "grading": 0,
+       "evidence": 0,
+       "defect": 0,
+       "pending": 0
+      },
+      "violations_caught": {
+       "coverage": 0,
+       "grading": 0,
+       "evidence": 0,
+       "defect": 0,
+       "pending": 0
+      },
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "unjudged_items": 0,
+       "empty_papers": 0,
+       "missed_total": 0
+      },
+      "steps_count": 18,
+      "steps_detail": {
+       "checks_executed": 12,
+       "checks_disabled": 5,
+       "flow_steps_total": 6,
+       "flow_steps_done": 6
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0005
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "coverage_missed": 0,
+    "grading_missed": 0,
+    "evidence_missed": 0,
+    "defect_missed": 0,
+    "pending_missed": 0,
+    "manual_review_items": 0,
+    "steps_count": 41,
+    "clarification_rounds": 0
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "coverage_missed",
+     "mechanism": "清单 domain 覆盖检查（每篇 appraisals 必须覆盖量表声明的全部维度）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后整维度漏评不再判 FAIL，评价表看似完整实则缺维度"
+    },
+    {
+     "metric": "grading_missed",
+     "mechanism": "分级口径一致（grade==grade_map[judgment]） + penalty/risk/direction 机械复算对照 risk_summary",
+     "formula": "客观违规数 − 被捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后分级口径可漂移、汇总可被篡改，等级失去可解释性"
+    },
+    {
+     "metric": "evidence_missed",
+     "mechanism": "证据回证双闸（claims 链逐字回证 + case.json 来源文本存在性）",
+     "formula": "客观违规数 − 被捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后转述/编造引文不再判 FAIL，评价退化为复述摘要"
+    },
+    {
+     "metric": "defect_missed",
+     "mechanism": "缺陷与报告不全区分（category==category_map[judgment]，inadequate⇒design_flaw、unreported⇒reporting_gap）",
+     "formula": "客观违规数 − 被捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后两类混淆不再可检出，改进建议失去指向"
+    },
+    {
+     "metric": "pending_missed",
+     "mechanism": "弃权登记检查（unassessable⇒pending_review 含 reason+needed_action）",
+     "formula": "客观违规数 − 被捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后证据不足可被静默补判，弃权入口丢失"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "漏检 + 未判定条目 + 空评篇目合计",
+     "formula": "五类漏检 + unjudged + empty_papers",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "七步线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "退化模式关闭五组检查（coverage/grading/evidence/defect/pending），枚举、结构守卫、coverage 汇总等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "五类违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，来源文本存在性检查跳过。",
+    "grading_rules 未事前声明时汇总真值不可得，grading_missed 属『无法判定』而非『无违规』。",
+    "把 --ablate 的退化结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\qf\\gain_probe_polluted.json",
+    "injected": [
+     "Q01/BL-01 unreported 改归 design_flaw（缺陷混淆）",
+     "Q01/ST-01 inadequate 改 grade=high（分级漂移）",
+     "Q01/SP-01 adequate 换为编造引文（证据失据）",
+     "Q01 删除一条 appraisal（清单漏覆盖）",
+     "risk_summary[Q01] 篡改为 penalty=0/risk=low（汇总失据）",
+     "清空 pending_review（弃权登记丢失）",
+     "清空 claims（证据链缺失）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 21,
+     "missed": {
+      "coverage": 0,
+      "grading": 0,
+      "evidence": 0,
+      "defect": 0,
+      "pending": 0
+     },
+     "problem_sample": [
+      "[coverage] Q01 缺少 domain: other（量表要求 design,sample,control,blinding,statistics,other）",
+      "[grading] Q01/ST-01 grade='high' 与 grade_map[inadequate]='low' 不符（分级口径漂移）",
+      "[evidence] Q01/DS-01 的 evidence_quote 在 claims 证据链中无逐字回证",
+      "[evidence] Q01/SP-01 的 evidence_quote 在 claims 证据链中无逐字回证",
+      "[evidence] Q01/SP-01 的 evidence_quote 在 case.json 来源文本中不存在（不得转述或编造）",
+      "[evidence] Q01/CO-01 的 evidence_quote 在 claims 证据链中无逐字回证",
+      "[evidence] Q01/BL-01 的 evidence_quote 在 claims 证据链中无逐字回证",
+      "[evidence] Q01/ST-01 的 evidence_quote 在 claims 证据链中无逐字回证"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "FAIL",
+     "problems": 1,
+     "missed": {
+      "coverage": 1,
+      "grading": 2,
+      "evidence": 8,
+      "defect": 1,
+      "pending": 1
+     },
+     "problem_sample": [
+      "[structure] coverage 汇总与实际不符: ['items_total']"
+     ]
+    },
+    "missed_detection_delta": {
+     "coverage": 1,
+     "grading": 2,
+     "evidence": 8,
+     "defect": 1,
+     "pending": 1
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.0095,
+   "result_bytes": 35783,
+   "input_files_scanned": 2,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 53,
+   "checker_checks_executed_degraded": 12,
+   "checker_checks_disabled_degraded": 5,
+   "papers_total": 2,
+   "appraisals_total": 12,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 0,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 0,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "Q01 penalty_total=5，risk_of_bias=high（direction=against_conclusion）：DS-01 抛硬币随机化（concerns/design_flaw，朝不利方向），ST-01 只报t检验未报CI与效应量（inadequate/design_flaw，朝有利方向），BL-01 盲法仅报告干预安排未见盲法表述（unreported/reporting_gap）；其余三条 adequate。判定依据 doc-q01 methods/results 原句。",
+   "kind": "inferred",
+   "source_id": "Q01",
+   "location": "papers[0]",
+   "evidence": [
+    {
+     "paragraph_id": "doc-q01#methods",
+     "quote": "受试者被随机分配至睡眠限制组或对照组，分配方式为抛硬币"
+    },
+    {
+     "paragraph_id": "doc-q01#methods",
+     "quote": "两组差异采用t检验，未报告置信区间与效应量"
+    },
+    {
+     "paragraph_id": "doc-q01#methods",
+     "quote": "干预为期五晚"
+    },
+    {
+     "paragraph_id": "doc-q01#methods",
+     "quote": "共招募120名受试者，按1:1随机分配"
+    },
+    {
+     "paragraph_id": "doc-q01#methods",
+     "quote": "对照组接受正常睡眠"
+    },
+    {
+     "paragraph_id": "doc-q01#results",
+     "quote": "研究获伦理委员会批准，作者声明无利益冲突"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "Q02 penalty_total=1，risk_of_bias=uncertain（direction=unclear）：SP-01 样本量63人且未报计算依据（concerns/design_flaw，方向 unclear），其余可判维度 adequate；OT-01 伦理/资助证据不足按弃权规则置 uncertain，BL-01 对队列不适用。判定依据 doc-q02 methods 原句。",
+   "kind": "inferred",
+   "source_id": "Q02",
+   "location": "papers[1]",
+   "evidence": [
+    {
+     "paragraph_id": "doc-q02#methods",
+     "quote": "基于社区队列的前瞻性设计"
+    },
+    {
+     "paragraph_id": "doc-q02#methods",
+     "quote": "样本量为63人，且未报告样本量计算依据"
+    },
+    {
+     "paragraph_id": "doc-q02#methods",
+     "quote": "与常规生活人群比较"
+    },
+    {
+     "paragraph_id": "doc-q02#methods",
+     "quote": "采用多元线性回归调整年龄与性别，报告了β系数与95%CI"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [
+   "Q01/BL-01 盲法安排原文未报告（归为报告不全，不计设计缺陷）"
+  ],
+  "unverifiable": [
+   "Q02/OT-01 伦理与资助信息全文缺失，弃权"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "Q02/OT-01 待人工核对伦理批号与资助声明"
+  ],
+  "summary": "示意示例：全部条目已判定；1 条弃权已登记；缺陷与报告不全逐条区分"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step2",
+   "change": "12 条 appraisal 逐条判定完成"
+  },
+  {
+   "step": "step3",
+   "change": "grade_rollup 机械复算 risk_summary"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "papers[0].appraisals[0].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[1].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[2].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[3].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[4].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[5].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].domain_coverage",
+   "template_value": "量表 domain 全覆盖",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[0].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[1].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[2].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[3].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[4].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[5].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[0].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[1].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[2].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[3].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[4].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[5].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[0].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[1].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[2].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[3].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[4].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].appraisals[5].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[0].rollup_recompute",
+   "template_value": "penalty/risk/direction 机械复算一致",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[0].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[1].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[2].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[3].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[4].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[5].item_complete",
+   "template_value": "judged 且有理由（或弃权/不适用说明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].domain_coverage",
+   "template_value": "量表 domain 全覆盖",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[0].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[1].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[2].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[3].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[4].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[5].grade_consistency",
+   "template_value": "grade == grade_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[0].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[1].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[2].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[3].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[4].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[5].evidence_backed",
+   "template_value": "quote 非空且逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[0].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[1].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[2].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[3].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[4].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[5].category_consistency",
+   "template_value": "category == category_map[judgment]",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].appraisals[5].pending_registered",
+   "template_value": "unassessable ⇒ 登记 pending_review",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "papers[1].rollup_recompute",
+   "template_value": "penalty/risk/direction 机械复算一致",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "rules_ledger",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "grade_rollup",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "rollup_output",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "unbacked_numbers": [],
+ "unbacked_evidence": [],
+ "validator_verdict": "PASS"
+}

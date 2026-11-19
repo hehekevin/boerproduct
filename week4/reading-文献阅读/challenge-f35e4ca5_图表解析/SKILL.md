@@ -5,6 +5,13 @@ description: 科研图表解析技能：按 case.json 的 organizer_supplied_sco
 
 # chart2data — 科研图表解析（工单驱动 · 分类处理 · 读数带误差 · 回证嵌入）
 
+
+## 主路径收敛令（P0，覆盖其他流程指令）
+
+1. **交付优先序**：骨架落盘 → 主字段/主内容补全 → result.json 完整可解析（此步完成即达到可交付状态）→ 校验器 → 增益层。
+2. **增益层降级为可选**：gain_probe 的消融双跑与污染反例自测只在剩余预算（请求+时间）≥40% 时执行；预算不足直接跳过，在 result.json 的 gain_evidence 写 {"available": false, "reason": "budget_exhausted"}，**禁止**为增益证据挤占交付预算。
+3. **预算告急即定稿**：任一时刻请求次数或时间过半仍未完成校验，立即以当前 result.json 定稿交付，缺失键如实登记，禁止继续展开任何支线。
+4. 主线禁止执行污染反例自测（那是离线取证工具，非交付必需）。
 ## 0. 强制执行协议（每次运行逐条遵守，优先级高于后续步骤）
 
 1. **抄契约**：先读 `/input/case.json`，把 `output_contract` 全部键名 + `case_id` 原样抄下（schema_guard 逐字段核对）。

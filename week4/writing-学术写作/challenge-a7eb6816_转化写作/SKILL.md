@@ -11,6 +11,13 @@ description: 科研成果转化写作技能：按目标读者画像做受众适�
 2. **取舍与溯源**：triage.jsonl（三档取舍清单）+ evidence_map.jsonl（关键结论/数据/限定条件 → 源文逐字证据）
 3. **版本与边界**：术语对照表 + 待确认项 + changelog
 
+
+## 主路径收敛令（P0，覆盖其他流程指令）
+
+1. **交付优先序**：骨架落盘 → 主字段/主内容补全 → result.json 完整可解析（此步完成即达到可交付状态）→ 校验器 → 增益层。
+2. **增益层降级为可选**：gain_probe 的消融双跑与污染反例自测只在剩余预算（请求+时间）≥40% 时执行；预算不足直接跳过，在 result.json 的 gain_evidence 写 {"available": false, "reason": "budget_exhausted"}，**禁止**为增益证据挤占交付预算。
+3. **预算告急即定稿**：任一时刻请求次数或时间过半仍未完成校验，立即以当前 result.json 定稿交付，缺失键如实登记，禁止继续展开任何支线。
+4. 主线禁止执行污染反例自测（那是离线取证工具，非交付必需）。
 ## 0. 强制执行协议（7 条，先于一切）
 1. **抄契约**：读 `/input/case.json`，把 `output_contract` 全部字段名逐字抄下（含 `case_id`）——result.json 字段与契约一一对应，一个不缺。
 2. **立即落骨架**：开跑第一步就用 build_result.py 写 `/app/output/result.json` 骨架（status=partial，契约字段全为 null），此后每阶段结束回填。

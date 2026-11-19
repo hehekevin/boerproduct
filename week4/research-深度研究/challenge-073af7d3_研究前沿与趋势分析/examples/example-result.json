@@ -1,0 +1,1434 @@
+{
+ "case_id": "example-073af7d3",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "R03/R15 缺引用数字（records 未提供）",
+   "案例未提供全文，仅摘要层证据"
+  ],
+  "environment": {
+   "python_version": "3.12",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "本地实测（示意环境，正式运行照实回填）"
+  },
+  "research_question": {
+   "topic": "神经形态计算的器件与架构主题演化（2016-2026）",
+   "scope": "案例给定的 19 条记录；年份口径=published_date；趋势口径=发文量（引用数仅辅助）",
+   "sources": [
+    "records（19 条虚构文献）"
+   ],
+   "inclusion_criteria": [
+    "IN-01 摘要/标题命中任一已声明簇关键词（按簇声明顺序首个命中）",
+    "IN-02 年份落在观测窗口 start_year<=year<=end_year"
+   ],
+   "exclusion_criteria": [
+    "EX-01 不含任何簇关键词且与主题无关（relevance=irrelevant）",
+    "EX-02 引用数不参与趋势判定，只作代表作辅助参考"
+   ]
+  },
+  "clustering_policy": {
+   "method": "keyword_rule",
+   "title_normalization": "casefold + 非字母数字折叠为空格（\\w 含 CJK，不用 isalpha）",
+   "match_order": "按簇声明顺序首个命中即归属",
+   "clusters": [
+    {
+     "topic_id": "T1",
+     "label": "忆阻器件与阻变存储",
+     "keywords": [
+      "memristor",
+      "阻变"
+     ],
+     "representative_seed": [
+      "R01",
+      "R05"
+     ]
+    },
+    {
+     "topic_id": "T2",
+     "label": "脉冲神经网络训练",
+     "keywords": [
+      "spiking",
+      "脉冲神经网络"
+     ],
+     "representative_seed": [
+      "R08",
+      "R12"
+     ]
+    },
+    {
+     "topic_id": "T3",
+     "label": "存内计算架构",
+     "keywords": [
+      "in-memory",
+      "存内计算"
+     ],
+     "representative_seed": [
+      "R14",
+      "R17"
+     ]
+    }
+   ],
+   "declared_at": "step1（任何主题判定与分级之前）"
+  },
+  "trend_policy": {
+   "year_field": "year（缺则取 published_date 前 4 位）",
+   "window": {
+    "start_year": 2016,
+    "end_year": 2026
+   },
+   "split_rule": "mid=(S+E)//2；early=[S..mid]，late=[mid+1..E]；growth_rate=(late_avg-early_avg)/early_avg，early_avg=0 且 late_avg>0 记 1.0，两者皆 0 记 0.0",
+   "thresholds": {
+    "emerging_min_growth": 0.5,
+    "declining_max_growth": -0.34
+   },
+   "citation_note": "引用数仅作辅助排序线索，趋势判定以发文量为主口径",
+   "declared_at": "step1（任何年度计数与分级之前）"
+  },
+  "extrapolation": {
+   "allowed": false,
+   "rule": "仅报告 2016-2026 观测窗口内趋势，不做趋势外推；如需外推须登记人工确认与边界条件",
+   "registered_at": "step3"
+  },
+  "items": [
+   {
+    "item_id": "R01",
+    "source_ref": "records[0]",
+    "title": "Memristor crossbar arrays for neuromorphic devices",
+    "published_date": "2016-03-14",
+    "year": 2016,
+    "venue_type": "published",
+    "citation_count": 210,
+    "abstract": "This early work demonstrated dense memristor crossbar arrays and characterized their switching variability across 1000 cycles.",
+    "topic_id": "T1",
+    "matched_keyword": "memristor",
+    "relevance": "core",
+    "evidence_quote": "characterized their switching variability across 1000 cycles",
+    "evidence_location": "records[0].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T1 关键词 'memristor' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R02",
+    "source_ref": "records[1]",
+    "title": "Oxygen vacancy engineering in memristor stacks",
+    "published_date": "2017-06-05",
+    "year": 2017,
+    "venue_type": "published",
+    "citation_count": 155,
+    "abstract": "We engineered oxygen vacancy profiles to stabilize resistive switching in memristor stacks.",
+    "topic_id": "T1",
+    "matched_keyword": "memristor",
+    "relevance": "core",
+    "evidence_quote": "engineered oxygen vacancy profiles to stabilize resistive switching",
+    "evidence_location": "records[1].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T1 关键词 'memristor' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R03",
+    "source_ref": "records[2]",
+    "title": "阻变器件良率与氧空位通道分布的关系",
+    "published_date": "2018-04-20",
+    "year": 2018,
+    "venue_type": "published",
+    "citation_count": null,
+    "abstract": "系统统计了氧空位通道分布对阻变器件良率的影响，并提出通道密度控制工艺。",
+    "topic_id": "T1",
+    "matched_keyword": "阻变",
+    "relevance": "core",
+    "evidence_quote": "氧空位通道分布对阻变器件良率的影响",
+    "evidence_location": "records[2].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T1 关键词 '阻变' 直接命中，纳入主题计数",
+    "missing_metadata": [
+     "citation_count"
+    ],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R04",
+    "source_ref": "records[3]",
+    "title": "Memristor endurance under pulsed operation",
+    "published_date": "2020-02-11",
+    "year": 2020,
+    "venue_type": "published",
+    "citation_count": 120,
+    "abstract": "Pulsed operation degrades memristor endurance; we quantify failure modes under 10^9 pulses.",
+    "topic_id": "T1",
+    "matched_keyword": "memristor",
+    "relevance": "core",
+    "evidence_quote": "quantify failure modes under 10^9 pulses",
+    "evidence_location": "records[3].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T1 关键词 'memristor' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R05",
+    "source_ref": "records[4]",
+    "title": "Memristor variability in scaled crossbar arrays",
+    "published_date": "2024-05-30",
+    "year": 2024,
+    "venue_type": "published",
+    "citation_count": 76,
+    "abstract": "In scaled crossbar arrays, memristor variability dominates system-level accuracy loss; we provide a device-to-array variability model.",
+    "topic_id": "T1",
+    "matched_keyword": "memristor",
+    "relevance": "core",
+    "evidence_quote": "memristor variability dominates system-level accuracy loss",
+    "evidence_location": "records[4].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T1 关键词 'memristor' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R06",
+    "source_ref": "records[5]",
+    "title": "Endurance modeling of memristor devices beyond 10^10 cycles",
+    "published_date": "2026-01-15",
+    "year": 2026,
+    "venue_type": "published",
+    "citation_count": 12,
+    "abstract": "We model memristor endurance beyond 10^10 cycles with a vacancy diffusion framework.",
+    "topic_id": "T1",
+    "matched_keyword": "memristor",
+    "relevance": "core",
+    "evidence_quote": "model memristor endurance beyond 10^10 cycles",
+    "evidence_location": "records[5].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T1 关键词 'memristor' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R07",
+    "source_ref": "records[6]",
+    "title": "Surrogate gradient learning in spiking neural networks",
+    "published_date": "2018-09-10",
+    "year": 2018,
+    "venue_type": "published",
+    "citation_count": 480,
+    "abstract": "This work enabled gradient-based training of spiking neural networks with surrogate gradients, replacing non-differentiable spikes with smooth surrogates.",
+    "topic_id": "T2",
+    "matched_keyword": "spiking",
+    "relevance": "core",
+    "evidence_quote": "enabled gradient-based training of spiking neural networks",
+    "evidence_location": "records[6].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T2 关键词 'spiking' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R08",
+    "source_ref": "records[7]",
+    "title": "Temporal coding with spiking neurons",
+    "published_date": "2019-11-03",
+    "year": 2019,
+    "venue_type": "published",
+    "citation_count": 390,
+    "abstract": "We showed temporal coding with spiking neurons improves latency-accuracy trade-offs on small benchmarks.",
+    "topic_id": "T2",
+    "matched_keyword": "spiking",
+    "relevance": "core",
+    "evidence_quote": "temporal coding with spiking neurons improves latency-accuracy trade-offs",
+    "evidence_location": "records[7].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T2 关键词 'spiking' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R09",
+    "source_ref": "records[8]",
+    "title": "Spiking networks for event-based vision",
+    "published_date": "2022-03-28",
+    "year": 2022,
+    "venue_type": "published",
+    "citation_count": 260,
+    "abstract": "Event-based cameras paired with spiking networks cut energy use in edge vision pipelines.",
+    "topic_id": "T2",
+    "matched_keyword": "spiking",
+    "relevance": "core",
+    "evidence_quote": "paired with spiking networks cut energy use in edge vision pipelines",
+    "evidence_location": "records[8].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T2 关键词 'spiking' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R10",
+    "source_ref": "records[9]",
+    "title": "基于脉冲神经网络的时序语音识别",
+    "published_date": "2023-08-17",
+    "year": 2023,
+    "venue_type": "published",
+    "citation_count": 180,
+    "abstract": "将脉冲神经网络用于时序语音识别，在低功耗端侧场景验证了可行性。",
+    "topic_id": "T2",
+    "matched_keyword": "脉冲神经网络",
+    "relevance": "core",
+    "evidence_quote": "将脉冲神经网络用于时序语音识别",
+    "evidence_location": "records[9].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T2 关键词 '脉冲神经网络' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R11",
+    "source_ref": "records[10]",
+    "title": "Spiking transformers with spike-aware attention",
+    "published_date": "2024-10-22",
+    "year": 2024,
+    "venue_type": "published",
+    "citation_count": 220,
+    "abstract": "We reformulate attention as spike-aware computation, extending spiking models to transformer-scale tasks.",
+    "topic_id": "T2",
+    "matched_keyword": "spiking",
+    "relevance": "core",
+    "evidence_quote": "extending spiking models to transformer-scale tasks",
+    "evidence_location": "records[10].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T2 关键词 'spiking' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R12",
+    "source_ref": "records[11]",
+    "title": "Local learning rules for deep spiking models",
+    "published_date": "2025-04-09",
+    "year": 2025,
+    "venue_type": "published",
+    "citation_count": 140,
+    "abstract": "Deep spiking models trained with local learning rules remove full backpropagation while matching gradient baselines on vision tasks.",
+    "topic_id": "T2",
+    "matched_keyword": "spiking",
+    "relevance": "core",
+    "evidence_quote": "local learning rules remove full backpropagation",
+    "evidence_location": "records[11].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T2 关键词 'spiking' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R13",
+    "source_ref": "records[12]",
+    "title": "Spiking foundation models for edge vision",
+    "published_date": "2026-02-27",
+    "year": 2026,
+    "venue_type": "preprint",
+    "citation_count": 30,
+    "abstract": "We scale spiking foundation models to billion-parameter regimes and report energy-accuracy frontiers.",
+    "topic_id": "T2",
+    "matched_keyword": "spiking",
+    "relevance": "core",
+    "evidence_quote": "scale spiking foundation models to billion-parameter regimes",
+    "evidence_location": "records[12].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T2 关键词 'spiking' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R14",
+    "source_ref": "records[13]",
+    "title": "In-memory compute primitives for convolutional accelerators",
+    "published_date": "2017-02-16",
+    "year": 2017,
+    "venue_type": "published",
+    "citation_count": 505,
+    "abstract": "We proposed in-memory compute primitives that keep convolution weights on-chip, avoiding off-chip weight traffic.",
+    "topic_id": "T3",
+    "matched_keyword": "in-memory",
+    "relevance": "core",
+    "evidence_quote": "keep convolution weights on-chip, avoiding off-chip weight traffic",
+    "evidence_location": "records[13].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T3 关键词 'in-memory' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R15",
+    "source_ref": "records[14]",
+    "title": "存内计算阵列的精度-能耗联合设计",
+    "published_date": "2019-05-21",
+    "year": 2019,
+    "venue_type": "published",
+    "citation_count": null,
+    "abstract": "提出存内计算阵列的精度-能耗联合设计方法，在低精度任务上实现能效提升。",
+    "topic_id": "T3",
+    "matched_keyword": "存内计算",
+    "relevance": "core",
+    "evidence_quote": "存内计算阵列的精度-能耗联合设计方法",
+    "evidence_location": "records[14].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T3 关键词 '存内计算' 直接命中，纳入主题计数",
+    "missing_metadata": [
+     "citation_count"
+    ],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R16",
+    "source_ref": "records[15]",
+    "title": "In-memory compute for sparse linear algebra",
+    "published_date": "2021-07-08",
+    "year": 2021,
+    "venue_type": "published",
+    "citation_count": 230,
+    "abstract": "We map sparse linear algebra kernels onto in-memory compute arrays with bit-serial precision.",
+    "topic_id": "T3",
+    "matched_keyword": "in-memory",
+    "relevance": "core",
+    "evidence_quote": "map sparse linear algebra kernels onto in-memory compute arrays",
+    "evidence_location": "records[15].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T3 关键词 'in-memory' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R17",
+    "source_ref": "records[16]",
+    "title": "Analog in-memory acceleration for transformer inference",
+    "published_date": "2023-12-05",
+    "year": 2023,
+    "venue_type": "published",
+    "citation_count": 165,
+    "abstract": "Analog in-memory acceleration of transformer inference reaches two orders of magnitude energy savings at iso-accuracy.",
+    "topic_id": "T3",
+    "matched_keyword": "in-memory",
+    "relevance": "core",
+    "evidence_quote": "reaches two orders of magnitude energy savings at iso-accuracy",
+    "evidence_location": "records[16].abstract",
+    "confidence": "high",
+    "rationale": "摘要证据与主题 T3 关键词 'in-memory' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R18",
+    "source_ref": "records[17]",
+    "title": "存内计算用于推荐系统检索粗排",
+    "published_date": "2025-09-18",
+    "year": 2025,
+    "venue_type": "published",
+    "citation_count": 40,
+    "abstract": "在检索粗排场景评估存内计算的召回-能耗折中，并给出工程部署约束。",
+    "topic_id": "T3",
+    "matched_keyword": "存内计算",
+    "relevance": "related",
+    "evidence_quote": "评估存内计算的召回-能耗折中",
+    "evidence_location": "records[17].abstract",
+    "confidence": "medium",
+    "rationale": "摘要证据与主题 T3 关键词 '存内计算' 直接命中，纳入主题计数",
+    "missing_metadata": [],
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "item_id": "R19",
+    "source_ref": "records[18]",
+    "title": "Neuromorphic fabric interconnects: a survey",
+    "published_date": "2020-11-30",
+    "year": 2020,
+    "venue_type": "published",
+    "citation_count": 45,
+    "abstract": null,
+    "topic_id": null,
+    "matched_keyword": null,
+    "relevance": "irrelevant",
+    "evidence_quote": null,
+    "evidence_location": null,
+    "confidence": "high",
+    "rationale": "标题与摘要不含任何已声明簇关键词，且与三个主题均无关，不纳入任何主题",
+    "missing_metadata": [],
+    "pending_reason": "不含任何簇关键词：人工确认是否属检索范围外方向",
+    "judged": true
+   }
+  ],
+  "topics": [
+   {
+    "topic_id": "T1",
+    "label": "忆阻器件与阻变存储",
+    "keywords": [
+     "memristor",
+     "阻变"
+    ],
+    "item_ids": [
+     "R01",
+     "R02",
+     "R03",
+     "R04",
+     "R05",
+     "R06"
+    ],
+    "total_count": 6,
+    "yearly_counts": {
+     "2016": 1,
+     "2017": 1,
+     "2018": 1,
+     "2019": 0,
+     "2020": 1,
+     "2021": 0,
+     "2022": 0,
+     "2023": 0,
+     "2024": 1,
+     "2025": 0,
+     "2026": 1
+    },
+    "early_avg": 0.6667,
+    "late_avg": 0.4,
+    "growth_rate": -0.4,
+    "stage": "declining",
+    "stage_basis": "growth_rate=-0.4000；emerging>= 0.5 / declining<= -0.34（事前阈值）",
+    "representative_ids": [
+     "R01",
+     "R05"
+    ]
+   },
+   {
+    "topic_id": "T2",
+    "label": "脉冲神经网络训练",
+    "keywords": [
+     "spiking",
+     "脉冲神经网络"
+    ],
+    "item_ids": [
+     "R07",
+     "R08",
+     "R09",
+     "R10",
+     "R11",
+     "R12",
+     "R13"
+    ],
+    "total_count": 7,
+    "yearly_counts": {
+     "2016": 0,
+     "2017": 0,
+     "2018": 1,
+     "2019": 1,
+     "2020": 0,
+     "2021": 0,
+     "2022": 1,
+     "2023": 1,
+     "2024": 1,
+     "2025": 1,
+     "2026": 1
+    },
+    "early_avg": 0.3333,
+    "late_avg": 1.0,
+    "growth_rate": 2.0,
+    "stage": "emerging",
+    "stage_basis": "growth_rate=2.0000；emerging>= 0.5 / declining<= -0.34（事前阈值）",
+    "representative_ids": [
+     "R08",
+     "R12"
+    ]
+   },
+   {
+    "topic_id": "T3",
+    "label": "存内计算架构",
+    "keywords": [
+     "in-memory",
+     "存内计算"
+    ],
+    "item_ids": [
+     "R14",
+     "R15",
+     "R16",
+     "R17",
+     "R18"
+    ],
+    "total_count": 5,
+    "yearly_counts": {
+     "2016": 0,
+     "2017": 1,
+     "2018": 0,
+     "2019": 1,
+     "2020": 0,
+     "2021": 1,
+     "2022": 0,
+     "2023": 1,
+     "2024": 0,
+     "2025": 1,
+     "2026": 0
+    },
+    "early_avg": 0.5,
+    "late_avg": 0.4,
+    "growth_rate": -0.2,
+    "stage": "mature",
+    "stage_basis": "growth_rate=-0.2000；emerging>= 0.5 / declining<= -0.34（事前阈值）",
+    "representative_ids": [
+     "R14",
+     "R17"
+    ]
+   }
+  ],
+  "gaps": [
+   {
+    "gap_id": "G-01",
+    "kind": "repeated_unresolved",
+    "claim": "面向统一对比的低功耗脉冲网络基准长期缺位（R07/R09 均各自报告精度）",
+    "search_scope": "2016-2026 年案例记录内 spiking+benchmark 相关摘要全覆盖检索",
+    "exclusion_evidence": [
+     {
+      "source_ref": "records[6]",
+      "quote": "enabled gradient-based training of spiking neural networks"
+     },
+     {
+      "source_ref": "records[8]",
+      "quote": "paired with spiking networks cut energy use in edge vision pipelines"
+     }
+    ],
+    "status": "identified"
+   },
+   {
+    "gap_id": "G-02",
+    "kind": "scale_untested",
+    "claim": "存内计算在超大规模模型上的扩展性可能存在瓶颈",
+    "search_scope": null,
+    "exclusion_evidence": [],
+    "reason": "案例材料未覆盖超大规模部署场景，无排除证据支撑，暂不作为空白主张",
+    "status": "not_verified"
+   }
+  ],
+  "coverage": {
+   "total": 19,
+   "judged": 19,
+   "core": 17,
+   "related": 1,
+   "irrelevant": 1,
+   "unassigned": 1,
+   "topics_count": 3,
+   "ratio": 1.0
+  },
+  "source_registry": [
+   {
+    "source_id": "S1",
+    "name": "case-records",
+    "query": "records 全量（示意：虚构文献库）",
+    "retrieved_at": "step0",
+    "count_returned": 19,
+    "status": "ok"
+   }
+  ],
+  "pending_review": [
+   {
+    "item_id": "R19",
+    "reason": "不含任何簇关键词且与主题无关",
+    "needed_action": "人工确认是否属检索范围外方向（当前按 irrelevant 处理）"
+   }
+  ],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与记录清单",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "事前声明聚类口径/观测窗口/分级阈值/外推边界",
+    "command": "（Agent 填写 result.clustering_policy / result.trend_policy，同步 /app/work/trend_policy.json）",
+    "output_ref": "clustering_policy+trend_policy",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "逐条判定 19 条记录（归属/相关性/证据）",
+    "command": "（Agent 填写 items[].topic_id/relevance/evidence_quote/rationale）",
+    "output_ref": "items[]",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "机械趋势引擎（年度计数/增速/分级/外推边界/coverage）",
+    "command": "python3 /skills/weekly-skill/scripts/trend_engine.py --result /app/output/result.json",
+    "output_ref": "topics[]+coverage+extrapolation",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "主题-证据绑定 claims 与空白主张",
+    "command": "（Agent 填写 claims[]/gaps[]，数字与 quote 逐字回证）",
+    "output_ref": "claims[]+gaps[]",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "增益对照（消融双跑+污染反例）",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence+result.efficiency",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "结构守卫+业务校验",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --emit-into",
+    "output_ref": "self_check+gates+validator_verdict",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "analyzed",
+  "verdict_basis": "19 条记录全部逐条判定；3 个主题的年度计数/增速/分级均可机械复算；1 条未归属条目已登记待复核",
+  "gain_evidence": {
+   "probe_version": "1.0",
+   "probe_tool": "scripts/gain_probe.py",
+   "case_id": "example-073af7d3",
+   "input": {
+    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-073af7d3\\submission\\examples\\example-result.json",
+    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-073af7d3\\submission\\examples\\example-case.json",
+    "case_contract_state": "enforced",
+    "same_input_for_both_runs": true,
+    "run_order": [
+     "normal",
+     "degraded"
+    ],
+    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
+   },
+   "runs": [
+    {
+     "mode": "normal",
+     "ablate": "none",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "consistency_violations_objective": 0,
+      "consistency_caught": 0,
+      "consistency_missed": 0,
+      "trend_violations_objective": 0,
+      "trend_caught": 0,
+      "trend_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_caught": 0,
+      "evidence_missed": 0,
+      "registry_violations_objective": 0,
+      "registry_caught": 0,
+      "registry_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "unjudged": 0,
+       "consistency_missed": 0,
+       "trend_missed": 0,
+       "evidence_missed": 0,
+       "registry_missed": 0
+      },
+      "steps_count": 69,
+      "steps_detail": {
+       "checks_executed": 62,
+       "checks_disabled": 0,
+       "flow_steps_total": 7,
+       "flow_steps_done": 7
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0013
+    },
+    {
+     "mode": "degraded",
+     "ablate": "all",
+     "verdict": "PASS",
+     "problems": 0,
+     "metrics": {
+      "consistency_violations_objective": 0,
+      "consistency_caught": 0,
+      "consistency_missed": 0,
+      "trend_violations_objective": 0,
+      "trend_caught": 0,
+      "trend_missed": 0,
+      "evidence_violations_objective": 0,
+      "evidence_caught": 0,
+      "evidence_missed": 0,
+      "registry_violations_objective": 0,
+      "registry_caught": 0,
+      "registry_missed": 0,
+      "manual_review_items": 0,
+      "manual_review_breakdown": {
+       "unjudged": 0,
+       "consistency_missed": 0,
+       "trend_missed": 0,
+       "evidence_missed": 0,
+       "registry_missed": 0
+      },
+      "steps_count": 7,
+      "steps_detail": {
+       "checks_executed": 0,
+       "checks_disabled": 4,
+       "flow_steps_total": 7,
+       "flow_steps_done": 7
+      },
+      "clarification_rounds": 0
+     },
+     "wall_clock_seconds": 0.0005
+    }
+   ],
+   "delta_normal_minus_degraded": {
+    "consistency_missed": 0,
+    "trend_missed": 0,
+    "evidence_missed": 0,
+    "registry_missed": 0,
+    "manual_review_items": 0,
+    "steps_count": 62,
+    "clarification_rounds": 0
+   },
+   "mechanism_to_metric_map": [
+    {
+     "metric": "consistency_missed",
+     "mechanism": "主题归属一致性检查（topic_id 按事前关键词簇机械重算；matched_keyword 须在簇词表；irrelevant 不得归属；未归属须有理由）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后主题错挂、irrelevant 被聚类、未归属无理由不再被检出，主题占比与演化叙事失去可复算基础"
+    },
+    {
+     "metric": "trend_missed",
+     "mechanism": "趋势判定复算（年度发文量按 items+window 复算；growth_rate=(late_avg-early_avg)/early_avg；stage 按事前阈值机械复算）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后增速数字被篡改、新兴/成熟/衰退分级错标不再可检出，趋势结论退化为自述"
+    },
+    {
+     "metric": "evidence_missed",
+     "mechanism": "证据回证（每主题须有 claims 回证：代表作 quote 逐字出现、growth_rate 数字与 stage 出现在 claim text/quote；空白主张须有排除证据）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后证据链缺失不再判 FAIL，『没检索到』可被冒充为研究空白"
+    },
+    {
+     "metric": "registry_missed",
+     "mechanism": "登记完整性检查（未归属条目 ⇒ pending_review；source_registry 非空且条目有 source_ref；coverage 与实际一致；外推边界已登记）",
+     "formula": "客观违规数 − 被校验层捕获数",
+     "higher_is_better": false,
+     "degrade_effect": "关闭后歧义项可静默漏登记，来源清单与外推边界丢失，趋势不可复算"
+    },
+    {
+     "metric": "manual_review_items",
+     "mechanism": "漏检 + 未判定条目合计",
+     "formula": "unjudged + 四类漏检",
+     "higher_is_better": false,
+     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
+    },
+    {
+     "metric": "steps_count",
+     "mechanism": "七步线性流程 + 机械校验三元组自检",
+     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
+     "higher_is_better": null,
+     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
+    },
+    {
+     "metric": "clarification_rounds",
+     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
+     "formula": "ceil(manual_review_items / 3)",
+     "higher_is_better": false,
+     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
+    }
+   ],
+   "boundaries": [
+    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
+    "退化模式关闭四组检查（consistency/trend/evidence/registry），枚举、结构守卫、coverage 汇总一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
+    "四类违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
+    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
+    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。",
+    "主题归属按关键词规则机械复算：簇词表是本技能的先验设定，不是文献库官方分类；术语漂移（同一主题换词）依赖簇词表覆盖度，覆盖不足时按未归属处理并登记待复核。"
+   ],
+   "failure_conditions": [
+    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
+    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，契约字段校验跳过。",
+    "trend_policy 未事前声明时分级复算真值不可得，trend_missed 记 0 但属『无法判定』而非『无违规』。",
+    "把 --ablate 的退化结果当作交付自检结论即为误用。",
+    "污染反例自测只在副本上注入，原 result.json 不被修改。"
+   ],
+   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
+   "pollution_selftest": {
+    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\w8res4_wk\\gain_probe_polluted.json",
+    "injected": [
+     "topic T1 growth_rate -0.4 → 0.1（篡改增速数字）",
+     "topic T1 stage declining → mature（分级错标）",
+     "R01 清空 evidence_quote（证据丢失仍算已判定）",
+     "gap G-01 清空 exclusion_evidence（无排除证据仍标空白）",
+     "清空 claims（主题-证据绑定全部丢失）"
+    ],
+    "normal_mode": {
+     "verdict": "FAIL",
+     "problems": 26,
+     "consistency_missed": 1,
+     "trend_missed": 1,
+     "evidence_missed": 0,
+     "registry_missed": 0,
+     "problem_sample": [
+      "topic T1 代表作 'R01' 绑定失效（不在成员内/无逐字证据）",
+      "topic T1 growth_rate=0.1 与复算 -0.4 不符",
+      "topic T1 stage='mature' 与阈值复算 'declining' 不符（分级不一致）",
+      "R01 relevance='core' 但缺 evidence_quote/evidence_location",
+      "R01 已归属主题 T1 但该主题无 claims 回证",
+      "R02 已归属主题 T1 但该主题无 claims 回证",
+      "R03 已归属主题 T1 但该主题无 claims 回证",
+      "R04 已归属主题 T1 但该主题无 claims 回证"
+     ]
+    },
+    "degraded_mode": {
+     "verdict": "PASS",
+     "problems": 0,
+     "consistency_missed": 1,
+     "trend_missed": 2,
+     "evidence_missed": 5,
+     "registry_missed": 0,
+     "problem_sample": []
+    },
+    "missed_detection_delta": {
+     "consistency_missed": 0,
+     "trend_missed": 1,
+     "evidence_missed": 5,
+     "registry_missed": 0,
+     "problems": -26
+    },
+    "caught_by_normal_mode": true,
+    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
+   }
+  },
+  "efficiency": {
+   "collected_by": "scripts/gain_probe.py（自动采集）",
+   "wall_clock_seconds_total": 0.012,
+   "result_bytes": 37875,
+   "input_files_scanned": 2,
+   "checker_runs": 2,
+   "checker_checks_executed_normal": 62,
+   "checker_checks_executed_degraded": 0,
+   "checker_checks_disabled_degraded": 4,
+   "items_total": 19,
+   "topics_total": 3,
+   "manual_review_items_normal": 0,
+   "manual_review_items_degraded": 0,
+   "clarification_rounds_normal": 0,
+   "clarification_rounds_degraded": 0,
+   "model_requests": null,
+   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
+   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-T1",
+   "kind": "reported",
+   "source_id": "T1",
+   "location": "topics",
+   "text": "主题 T1「忆阻器件与阻变存储」2016-2026 年观测窗口内发文 6 篇：早期均值 0.67，近期均值 0.40，growth_rate=-0.4，stage=declining（事前阈值 declining_max_growth=-0.34，-0.4<=-0.34）；代表作 R01、R05。",
+   "evidence": [
+    {
+     "paragraph_id": "items.abstract",
+     "quote": "characterized their switching variability across 1000 cycles"
+    },
+    {
+     "paragraph_id": "items.abstract",
+     "quote": "memristor variability dominates system-level accuracy loss"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-T2",
+   "kind": "reported",
+   "source_id": "T2",
+   "location": "topics",
+   "text": "主题 T2「脉冲神经网络训练」2016-2026 年观测窗口内发文 7 篇：早期均值 0.33，近期均值 1.00，growth_rate=2.0，stage=emerging（事前阈值 emerging_min_growth=0.5，2.0>=0.5）；代表作 R08、R12。",
+   "evidence": [
+    {
+     "paragraph_id": "items.abstract",
+     "quote": "temporal coding with spiking neurons improves latency-accuracy trade-offs"
+    },
+    {
+     "paragraph_id": "items.abstract",
+     "quote": "local learning rules remove full backpropagation"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-T3",
+   "kind": "reported",
+   "source_id": "T3",
+   "location": "topics",
+   "text": "主题 T3「存内计算架构」2016-2026 年观测窗口内发文 5 篇：早期均值 0.50，近期均值 0.40，growth_rate=-0.2，stage=mature（-0.34<-0.2<0.5，落两阈值之间）；代表作 R14、R17。",
+   "evidence": [
+    {
+     "paragraph_id": "items.abstract",
+     "quote": "keep convolution weights on-chip, avoiding off-chip weight traffic"
+    },
+    {
+     "paragraph_id": "items.abstract",
+     "quote": "reaches two orders of magnitude energy savings at iso-accuracy"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [
+   "R03/R15 引用数缺失，代表作排序仅按年份口径展示"
+  ],
+  "unverifiable": [
+   "G-02 无排除证据，保持 not_verified"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "R19 不含任何簇关键词，待人工确认检索范围边界"
+  ],
+  "summary": "【示意输出，非正式答案】全部记录逐字证据可回链；增速与分级为机械复算值"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step1",
+   "change": "事前声明聚类/窗口/阈值/外推口径"
+  },
+  {
+   "step": "step2",
+   "change": "19 条记录逐条判定"
+  },
+  {
+   "step": "step3",
+   "change": "trend_engine 机械落定 topics/coverage/extrapolation"
+  },
+  {
+   "step": "step4",
+   "change": "claims/gaps 回证"
+  },
+  {
+   "step": "step5",
+   "change": "gain_probe 增益对照"
+  },
+  {
+   "step": "step6",
+   "change": "verify_check+schema_guard 校验"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "items[0].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[1].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[3].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[4].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[5].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[6].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[7].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[8].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[9].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[10].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[11].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[12].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[13].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[14].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[15].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[16].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[17].topic_assignment_recompute",
+   "template_value": "topic_id 按事前关键词簇机械重算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[18].unassigned_reasoned",
+   "template_value": "judged 且未归属 ⇒ 有 pending_reason",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topic[T1].representative_binding",
+   "template_value": "代表作 ∈ 主题成员且证据齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topic[T1].representative_binding",
+   "template_value": "代表作 ∈ 主题成员且证据齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topic[T2].representative_binding",
+   "template_value": "代表作 ∈ 主题成员且证据齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topic[T2].representative_binding",
+   "template_value": "代表作 ∈ 主题成员且证据齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topic[T3].representative_binding",
+   "template_value": "代表作 ∈ 主题成员且证据齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topic[T3].representative_binding",
+   "template_value": "代表作 ∈ 主题成员且证据齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "clustering_policy.declared",
+   "template_value": "聚类口径事前声明（declared_at + 簇非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "trend_policy.declared",
+   "template_value": "趋势口径事前声明（declared_at）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "trend_policy.window",
+   "template_value": "start_year<=end_year 且为整数",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[0].yearly_counts_recompute",
+   "template_value": "年度发文量按 items+window 机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[0].growth_recompute",
+   "template_value": "growth_rate=(late_avg-early_avg)/early_avg 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[0].stage_recompute",
+   "template_value": "stage 按事前阈值机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[1].yearly_counts_recompute",
+   "template_value": "年度发文量按 items+window 机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[1].growth_recompute",
+   "template_value": "growth_rate=(late_avg-early_avg)/early_avg 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[1].stage_recompute",
+   "template_value": "stage 按事前阈值机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[2].yearly_counts_recompute",
+   "template_value": "年度发文量按 items+window 机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[2].growth_recompute",
+   "template_value": "growth_rate=(late_avg-early_avg)/early_avg 复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[2].stage_recompute",
+   "template_value": "stage 按事前阈值机械复算",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[0].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[1].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[2].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[3].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[4].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[5].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[6].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[7].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[8].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[9].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[10].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[11].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[12].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[13].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[14].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[15].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[16].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[17].quote_location",
+   "template_value": "core/related ⇒ evidence_quote + location",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[0].rep_quote_in_claim",
+   "template_value": "代表作 evidence_quote 在 claim 中逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[1].rep_quote_in_claim",
+   "template_value": "代表作 evidence_quote 在 claim 中逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "topics[2].rep_quote_in_claim",
+   "template_value": "代表作 evidence_quote 在 claim 中逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gaps[0].exclusion_evidence",
+   "template_value": "空白主张 ⇒ 检索范围 + 排除证据逐条带 quote",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "gaps[1].not_verified_reason",
+   "template_value": "not_verified ⇒ reason 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "items[18].unassigned_registered",
+   "template_value": "judged 未归属 ⇒ 登记 pending_review",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "extrapolation.registered",
+   "template_value": "趋势外推边界已登记（allowed + rule 非空）",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "policy_ledger",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "trend_engine_output",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS"
+}

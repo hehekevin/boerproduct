@@ -1,0 +1,206 @@
+{
+ "case_id": "example-073af7d3",
+ "task": "【示意案例】围绕研究问题『神经形态计算的器件与架构在 2016-2026 年经历了怎样的主题演化，热点在哪、空白在哪』完成趋势分析。本案例为合成示例，标题/摘要/年份/引用数均为虚构，仅用于演示 Skill 的完整使用流程，不是正式测试案例。",
+ "records": [
+  {
+   "record_id": "R01",
+   "title": "Memristor crossbar arrays for neuromorphic devices",
+   "abstract": "This early work demonstrated dense memristor crossbar arrays and characterized their switching variability across 1000 cycles.",
+   "year": 2016,
+   "published_date": "2016-03-14",
+   "venue_type": "published",
+   "citation_count": 210,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R02",
+   "title": "Oxygen vacancy engineering in memristor stacks",
+   "abstract": "We engineered oxygen vacancy profiles to stabilize resistive switching in memristor stacks.",
+   "year": 2017,
+   "published_date": "2017-06-05",
+   "venue_type": "published",
+   "citation_count": 155,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R03",
+   "title": "阻变器件良率与氧空位通道分布的关系",
+   "abstract": "系统统计了氧空位通道分布对阻变器件良率的影响，并提出通道密度控制工艺。",
+   "year": 2018,
+   "published_date": "2018-04-20",
+   "venue_type": "published",
+   "citation_count": null,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R04",
+   "title": "Memristor endurance under pulsed operation",
+   "abstract": "Pulsed operation degrades memristor endurance; we quantify failure modes under 10^9 pulses.",
+   "year": 2020,
+   "published_date": "2020-02-11",
+   "venue_type": "published",
+   "citation_count": 120,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R05",
+   "title": "Memristor variability in scaled crossbar arrays",
+   "abstract": "In scaled crossbar arrays, memristor variability dominates system-level accuracy loss; we provide a device-to-array variability model.",
+   "year": 2024,
+   "published_date": "2024-05-30",
+   "venue_type": "published",
+   "citation_count": 76,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R06",
+   "title": "Endurance modeling of memristor devices beyond 10^10 cycles",
+   "abstract": "We model memristor endurance beyond 10^10 cycles with a vacancy diffusion framework.",
+   "year": 2026,
+   "published_date": "2026-01-15",
+   "venue_type": "published",
+   "citation_count": 12,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R07",
+   "title": "Surrogate gradient learning in spiking neural networks",
+   "abstract": "This work enabled gradient-based training of spiking neural networks with surrogate gradients, replacing non-differentiable spikes with smooth surrogates.",
+   "year": 2018,
+   "published_date": "2018-09-10",
+   "venue_type": "published",
+   "citation_count": 480,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R08",
+   "title": "Temporal coding with spiking neurons",
+   "abstract": "We showed temporal coding with spiking neurons improves latency-accuracy trade-offs on small benchmarks.",
+   "year": 2019,
+   "published_date": "2019-11-03",
+   "venue_type": "published",
+   "citation_count": 390,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R09",
+   "title": "Spiking networks for event-based vision",
+   "abstract": "Event-based cameras paired with spiking networks cut energy use in edge vision pipelines.",
+   "year": 2022,
+   "published_date": "2022-03-28",
+   "venue_type": "published",
+   "citation_count": 260,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R10",
+   "title": "基于脉冲神经网络的时序语音识别",
+   "abstract": "将脉冲神经网络用于时序语音识别，在低功耗端侧场景验证了可行性。",
+   "year": 2023,
+   "published_date": "2023-08-17",
+   "venue_type": "published",
+   "citation_count": 180,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R11",
+   "title": "Spiking transformers with spike-aware attention",
+   "abstract": "We reformulate attention as spike-aware computation, extending spiking models to transformer-scale tasks.",
+   "year": 2024,
+   "published_date": "2024-10-22",
+   "venue_type": "published",
+   "citation_count": 220,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R12",
+   "title": "Local learning rules for deep spiking models",
+   "abstract": "Deep spiking models trained with local learning rules remove full backpropagation while matching gradient baselines on vision tasks.",
+   "year": 2025,
+   "published_date": "2025-04-09",
+   "venue_type": "published",
+   "citation_count": 140,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R13",
+   "title": "Spiking foundation models for edge vision",
+   "abstract": "We scale spiking foundation models to billion-parameter regimes and report energy-accuracy frontiers.",
+   "year": 2026,
+   "published_date": "2026-02-27",
+   "venue_type": "preprint",
+   "citation_count": 30,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R14",
+   "title": "In-memory compute primitives for convolutional accelerators",
+   "abstract": "We proposed in-memory compute primitives that keep convolution weights on-chip, avoiding off-chip weight traffic.",
+   "year": 2017,
+   "published_date": "2017-02-16",
+   "venue_type": "published",
+   "citation_count": 505,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R15",
+   "title": "存内计算阵列的精度-能耗联合设计",
+   "abstract": "提出存内计算阵列的精度-能耗联合设计方法，在低精度任务上实现能效提升。",
+   "year": 2019,
+   "published_date": "2019-05-21",
+   "venue_type": "published",
+   "citation_count": null,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R16",
+   "title": "In-memory compute for sparse linear algebra",
+   "abstract": "We map sparse linear algebra kernels onto in-memory compute arrays with bit-serial precision.",
+   "year": 2021,
+   "published_date": "2021-07-08",
+   "venue_type": "published",
+   "citation_count": 230,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R17",
+   "title": "Analog in-memory acceleration for transformer inference",
+   "abstract": "Analog in-memory acceleration of transformer inference reaches two orders of magnitude energy savings at iso-accuracy.",
+   "year": 2023,
+   "published_date": "2023-12-05",
+   "venue_type": "published",
+   "citation_count": 165,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R18",
+   "title": "存内计算用于推荐系统检索粗排",
+   "abstract": "在检索粗排场景评估存内计算的召回-能耗折中，并给出工程部署约束。",
+   "year": 2025,
+   "published_date": "2025-09-18",
+   "venue_type": "published",
+   "citation_count": 40,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  },
+  {
+   "record_id": "R19",
+   "title": "Neuromorphic fabric interconnects: a survey",
+   "abstract": null,
+   "year": 2020,
+   "published_date": "2020-11-30",
+   "venue_type": "published",
+   "citation_count": 45,
+   "venue": "（虚构期刊/会议，仅作示意）"
+  }
+ ],
+ "output_contract": {
+  "fields": [
+   "case_id",
+   "status",
+   "result",
+   "claims",
+   "uncertainties",
+   "changelog"
+  ]
+ }
+}

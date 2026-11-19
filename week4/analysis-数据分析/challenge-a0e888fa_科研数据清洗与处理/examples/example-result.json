@@ -1,0 +1,1340 @@
+{
+ "case_id": "demo-clean-001",
+ "status": "answered",
+ "result": {
+  "engine": "sciclean-r1/1.0",
+  "cleaned_table": {
+   "columns": [
+    "row_id",
+    "sample_id",
+    "condition",
+    "concentration",
+    "ph"
+   ],
+   "rows": [
+    {
+     "row_id": "s01",
+     "sample_id": "W-101",
+     "condition": "2024–3",
+     "concentration": 0.25,
+     "ph": 7.0,
+     "__raw__": {
+      "row_id": {
+       "source_column": "row_id",
+       "value": "s01"
+      },
+      "sample_id": {
+       "source_column": "sample_id",
+       "value": "W-101"
+      },
+      "condition": {
+       "source_column": "condition",
+       "value": "2024-03 siteA",
+       "value_raw": "2024-03 siteA",
+       "unit_raw": "siteA",
+       "to_unit": "siteA",
+       "trace": {
+        "interval": true,
+        "ends": [
+         {
+          "factor_source": "identity",
+          "net_factor": 1.0,
+          "offset": 0,
+          "src_unit": "siteA",
+          "dst_unit": "siteA",
+          "value_in": 2024.0,
+          "value_out": 2024.0,
+          "precision": 6,
+          "value_final": 2024.0,
+          "recompute": "2024 已是 siteA，仅定型（量纲不变）"
+         },
+         {
+          "factor_source": "identity",
+          "net_factor": 1.0,
+          "offset": 0,
+          "src_unit": "siteA",
+          "dst_unit": "siteA",
+          "value_in": 3.0,
+          "value_out": 3.0,
+          "precision": 6,
+          "value_final": 3.0,
+          "recompute": "3 已是 siteA，仅定型（量纲不变）"
+         }
+        ],
+        "src_unit": "siteA",
+        "dst_unit": "siteA",
+        "value_in": [
+         2024.0,
+         3.0
+        ],
+        "value_out": "2024–3",
+        "precision": 6,
+        "value_final": "2024–3",
+        "recompute": "区间双端已是 siteA，仅定型为数值（量纲不变）"
+       },
+       "ledger": {
+        "change_id": "C0005",
+        "kind": "convert",
+        "original": "2024-03 siteA",
+        "new": "2024–3",
+        "rule_id": "AUTO-UC-TYPE"
+       }
+      },
+      "concentration": {
+       "source_column": "concentration",
+       "value": "250 ug/L",
+       "value_raw": "250 ug/L",
+       "unit_raw": "ug/L",
+       "to_unit": "mg/L",
+       "trace": {
+        "factor_source": "si_prefix",
+        "src_prefix": "u",
+        "src_prefix_factor": 1e-06,
+        "dst_prefix": "m",
+        "dst_prefix_factor": 0.001,
+        "src_base": "g",
+        "dst_base": "g",
+        "src_denom": "L",
+        "dst_denom": "L",
+        "net_factor": 0.001,
+        "offset": 0.0,
+        "src_unit": "ug/L",
+        "dst_unit": "mg/L",
+        "value_in": 250.0,
+        "value_out": 0.25,
+        "recompute": "250 x (1e-06/0.001) +0 = 0.25",
+        "precision": 4,
+        "value_final": 0.25
+       },
+       "ledger": {
+        "change_id": "C0001",
+        "kind": "convert",
+        "original": "250 ug/L",
+        "new": 0.25,
+        "rule_id": "UC01"
+       }
+      },
+      "ph": {
+       "source_column": "ph",
+       "value": "7.2",
+       "value_raw": "7.2",
+       "unit_raw": ".2",
+       "to_unit": ".2",
+       "trace": {
+        "factor_source": "identity",
+        "net_factor": 1.0,
+        "offset": 0,
+        "src_unit": ".2",
+        "dst_unit": ".2",
+        "value_in": 7.0,
+        "value_out": 7.0,
+        "precision": 6,
+        "value_final": 7.0,
+        "recompute": "单位已是 .2，仅定型为数值（量纲不变）"
+       },
+       "ledger": {
+        "change_id": "C0008",
+        "kind": "convert",
+        "original": "7.2",
+        "new": 7.0,
+        "rule_id": "AUTO-UC-TYPE"
+       }
+      }
+     },
+     "__units__": {
+      "concentration": "mg/L",
+      "condition": "siteA",
+      "ph": ".2"
+     },
+     "__merged_row_ids__": [
+      "s02"
+     ],
+     "__changes__": [
+      "C0001",
+      "C0005",
+      "C0008"
+     ]
+    },
+    {
+     "row_id": "s03",
+     "sample_id": "W-102",
+     "condition": "2024-03 siteB",
+     "concentration": "12 xyz",
+     "ph": "6.8",
+     "__raw__": {
+      "row_id": {
+       "source_column": "row_id",
+       "value": "s03"
+      },
+      "sample_id": {
+       "source_column": "sample_id",
+       "value": "W-102"
+      },
+      "condition": {
+       "source_column": "condition",
+       "value": "2024-03 siteB"
+      },
+      "concentration": {
+       "source_column": "concentration",
+       "value": "12 xyz"
+      },
+      "ph": {
+       "source_column": "ph",
+       "value": "6.8"
+      }
+     },
+     "__changes__": []
+    },
+    {
+     "row_id": "s04",
+     "sample_id": "W-103",
+     "condition": "2024-03 siteC",
+     "concentration": 80.0,
+     "ph": "15.3",
+     "__raw__": {
+      "row_id": {
+       "source_column": "row_id",
+       "value": "s04"
+      },
+      "sample_id": {
+       "source_column": "sample_id",
+       "value": "W-103"
+      },
+      "condition": {
+       "source_column": "condition",
+       "value": "2024-03 siteC"
+      },
+      "concentration": {
+       "source_column": "concentration",
+       "value": "80 mg/L",
+       "value_raw": "80 mg/L",
+       "unit_raw": "mg/L",
+       "to_unit": "mg/L",
+       "trace": {
+        "factor_source": "identity",
+        "net_factor": 1.0,
+        "offset": 0,
+        "src_unit": "mg/L",
+        "dst_unit": "mg/L",
+        "value_in": 80.0,
+        "value_out": 80.0,
+        "precision": 4,
+        "value_final": 80.0,
+        "recompute": "单位已是 mg/L，仅定型为数值（量纲不变）"
+       },
+       "ledger": {
+        "change_id": "C0003",
+        "kind": "convert",
+        "original": "80 mg/L",
+        "new": 80.0,
+        "rule_id": "AUTO-UC-TYPE"
+       }
+      },
+      "ph": {
+       "source_column": "ph",
+       "value": "15.3"
+      }
+     },
+     "__units__": {
+      "concentration": "mg/L"
+     },
+     "__changes__": [
+      "C0003"
+     ]
+    },
+    {
+     "row_id": "s05",
+     "sample_id": "W-104",
+     "condition": "2024–4",
+     "concentration": null,
+     "ph": "7.0",
+     "__raw__": {
+      "row_id": {
+       "source_column": "row_id",
+       "value": "s05"
+      },
+      "sample_id": {
+       "source_column": "sample_id",
+       "value": "W-104"
+      },
+      "condition": {
+       "source_column": "condition",
+       "value": "2024-04 siteA",
+       "value_raw": "2024-04 siteA",
+       "unit_raw": "siteA",
+       "to_unit": "siteA",
+       "trace": {
+        "interval": true,
+        "ends": [
+         {
+          "factor_source": "identity",
+          "net_factor": 1.0,
+          "offset": 0,
+          "src_unit": "siteA",
+          "dst_unit": "siteA",
+          "value_in": 2024.0,
+          "value_out": 2024.0,
+          "precision": 6,
+          "value_final": 2024.0,
+          "recompute": "2024 已是 siteA，仅定型（量纲不变）"
+         },
+         {
+          "factor_source": "identity",
+          "net_factor": 1.0,
+          "offset": 0,
+          "src_unit": "siteA",
+          "dst_unit": "siteA",
+          "value_in": 4.0,
+          "value_out": 4.0,
+          "precision": 6,
+          "value_final": 4.0,
+          "recompute": "4 已是 siteA，仅定型（量纲不变）"
+         }
+        ],
+        "src_unit": "siteA",
+        "dst_unit": "siteA",
+        "value_in": [
+         2024.0,
+         4.0
+        ],
+        "value_out": "2024–4",
+        "precision": 6,
+        "value_final": "2024–4",
+        "recompute": "区间双端已是 siteA，仅定型为数值（量纲不变）"
+       },
+       "ledger": {
+        "change_id": "C0007",
+        "kind": "convert",
+        "original": "2024-04 siteA",
+        "new": "2024–4",
+        "rule_id": "AUTO-UC-TYPE"
+       }
+      },
+      "concentration": {
+       "source_column": "concentration",
+       "value": " ",
+       "value_raw": " ",
+       "ledger": {
+        "change_id": "C0010",
+        "kind": "missing_mark",
+        "original": " ",
+        "new": null,
+        "rule_id": "MM01"
+       }
+      },
+      "ph": {
+       "source_column": "ph",
+       "value": "7.0"
+      }
+     },
+     "__units__": {
+      "condition": "siteA"
+     },
+     "__changes__": [
+      "C0007",
+      "C0010"
+     ]
+    },
+    {
+     "row_id": "s06",
+     "sample_id": "W-105",
+     "condition": "2024-04 siteB",
+     "concentration": "3.1–4.4",
+     "ph": "7.5",
+     "__raw__": {
+      "row_id": {
+       "source_column": "row_id",
+       "value": "s06"
+      },
+      "sample_id": {
+       "source_column": "sample_id",
+       "value": "W-105"
+      },
+      "condition": {
+       "source_column": "condition",
+       "value": "2024-04 siteB"
+      },
+      "concentration": {
+       "source_column": "concentration",
+       "value": "3.1-4.4 mg/L",
+       "value_raw": "3.1-4.4 mg/L",
+       "unit_raw": "mg/L",
+       "to_unit": "mg/L",
+       "trace": {
+        "interval": true,
+        "ends": [
+         {
+          "factor_source": "identity",
+          "net_factor": 1.0,
+          "offset": 0,
+          "src_unit": "mg/L",
+          "dst_unit": "mg/L",
+          "value_in": 3.1,
+          "value_out": 3.1,
+          "precision": 4,
+          "value_final": 3.1,
+          "recompute": "3.1 已是 mg/L，仅定型（量纲不变）"
+         },
+         {
+          "factor_source": "identity",
+          "net_factor": 1.0,
+          "offset": 0,
+          "src_unit": "mg/L",
+          "dst_unit": "mg/L",
+          "value_in": 4.4,
+          "value_out": 4.4,
+          "precision": 4,
+          "value_final": 4.4,
+          "recompute": "4.4 已是 mg/L，仅定型（量纲不变）"
+         }
+        ],
+        "src_unit": "mg/L",
+        "dst_unit": "mg/L",
+        "value_in": [
+         3.1,
+         4.4
+        ],
+        "value_out": "3.1–4.4",
+        "precision": 4,
+        "value_final": "3.1–4.4",
+        "recompute": "区间双端已是 mg/L，仅定型为数值（量纲不变）"
+       },
+       "ledger": {
+        "change_id": "C0004",
+        "kind": "convert",
+        "original": "3.1-4.4 mg/L",
+        "new": "3.1–4.4",
+        "rule_id": "AUTO-UC-TYPE"
+       }
+      },
+      "ph": {
+       "source_column": "ph",
+       "value": "7.5"
+      }
+     },
+     "__units__": {
+      "concentration": "mg/L"
+     },
+     "__changes__": [
+      "C0004"
+     ]
+    }
+   ]
+  },
+  "changelog": [
+   {
+    "row_id": "s01",
+    "field": "concentration",
+    "original": "250 ug/L",
+    "new": 0.25,
+    "rule_id": "UC01",
+    "kind": "convert",
+    "formula": "250 ug/L x 0.001 +0 = 0.25 mg/L",
+    "precision": 4,
+    "trace": {
+     "factor_source": "si_prefix",
+     "src_prefix": "u",
+     "src_prefix_factor": 1e-06,
+     "dst_prefix": "m",
+     "dst_prefix_factor": 0.001,
+     "src_base": "g",
+     "dst_base": "g",
+     "src_denom": "L",
+     "dst_denom": "L",
+     "net_factor": 0.001,
+     "offset": 0.0,
+     "src_unit": "ug/L",
+     "dst_unit": "mg/L",
+     "value_in": 250.0,
+     "value_out": 0.25,
+     "recompute": "250 x (1e-06/0.001) +0 = 0.25",
+     "precision": 4,
+     "value_final": 0.25
+    },
+    "change_id": "C0001"
+   },
+   {
+    "row_id": "s02",
+    "field": "concentration",
+    "original": "0.25 mg/L",
+    "new": 0.25,
+    "rule_id": "AUTO-UC-TYPE",
+    "kind": "convert",
+    "formula": "单位已是 mg/L，定型为数值（量纲不变）",
+    "precision": 4,
+    "trace": {
+     "factor_source": "identity",
+     "net_factor": 1.0,
+     "offset": 0,
+     "src_unit": "mg/L",
+     "dst_unit": "mg/L",
+     "value_in": 0.25,
+     "value_out": 0.25,
+     "precision": 4,
+     "value_final": 0.25,
+     "recompute": "单位已是 mg/L，仅定型为数值（量纲不变）"
+    },
+    "change_id": "C0002"
+   },
+   {
+    "row_id": "s04",
+    "field": "concentration",
+    "original": "80 mg/L",
+    "new": 80.0,
+    "rule_id": "AUTO-UC-TYPE",
+    "kind": "convert",
+    "formula": "单位已是 mg/L，定型为数值（量纲不变）",
+    "precision": 4,
+    "trace": {
+     "factor_source": "identity",
+     "net_factor": 1.0,
+     "offset": 0,
+     "src_unit": "mg/L",
+     "dst_unit": "mg/L",
+     "value_in": 80.0,
+     "value_out": 80.0,
+     "precision": 4,
+     "value_final": 80.0,
+     "recompute": "单位已是 mg/L，仅定型为数值（量纲不变）"
+    },
+    "change_id": "C0003"
+   },
+   {
+    "row_id": "s06",
+    "field": "concentration",
+    "original": "3.1-4.4 mg/L",
+    "new": "3.1–4.4",
+    "rule_id": "AUTO-UC-TYPE",
+    "kind": "convert",
+    "formula": "单位已是 mg/L，定型为数值（量纲不变）",
+    "precision": 4,
+    "trace": {
+     "interval": true,
+     "ends": [
+      {
+       "factor_source": "identity",
+       "net_factor": 1.0,
+       "offset": 0,
+       "src_unit": "mg/L",
+       "dst_unit": "mg/L",
+       "value_in": 3.1,
+       "value_out": 3.1,
+       "precision": 4,
+       "value_final": 3.1,
+       "recompute": "3.1 已是 mg/L，仅定型（量纲不变）"
+      },
+      {
+       "factor_source": "identity",
+       "net_factor": 1.0,
+       "offset": 0,
+       "src_unit": "mg/L",
+       "dst_unit": "mg/L",
+       "value_in": 4.4,
+       "value_out": 4.4,
+       "precision": 4,
+       "value_final": 4.4,
+       "recompute": "4.4 已是 mg/L，仅定型（量纲不变）"
+      }
+     ],
+     "src_unit": "mg/L",
+     "dst_unit": "mg/L",
+     "value_in": [
+      3.1,
+      4.4
+     ],
+     "value_out": "3.1–4.4",
+     "precision": 4,
+     "value_final": "3.1–4.4",
+     "recompute": "区间双端已是 mg/L，仅定型为数值（量纲不变）"
+    },
+    "change_id": "C0004"
+   },
+   {
+    "row_id": "s01",
+    "field": "condition",
+    "original": "2024-03 siteA",
+    "new": "2024–3",
+    "rule_id": "AUTO-UC-TYPE",
+    "kind": "convert",
+    "formula": "单位已是 siteA，定型为数值（量纲不变）",
+    "precision": 6,
+    "trace": {
+     "interval": true,
+     "ends": [
+      {
+       "factor_source": "identity",
+       "net_factor": 1.0,
+       "offset": 0,
+       "src_unit": "siteA",
+       "dst_unit": "siteA",
+       "value_in": 2024.0,
+       "value_out": 2024.0,
+       "precision": 6,
+       "value_final": 2024.0,
+       "recompute": "2024 已是 siteA，仅定型（量纲不变）"
+      },
+      {
+       "factor_source": "identity",
+       "net_factor": 1.0,
+       "offset": 0,
+       "src_unit": "siteA",
+       "dst_unit": "siteA",
+       "value_in": 3.0,
+       "value_out": 3.0,
+       "precision": 6,
+       "value_final": 3.0,
+       "recompute": "3 已是 siteA，仅定型（量纲不变）"
+      }
+     ],
+     "src_unit": "siteA",
+     "dst_unit": "siteA",
+     "value_in": [
+      2024.0,
+      3.0
+     ],
+     "value_out": "2024–3",
+     "precision": 6,
+     "value_final": "2024–3",
+     "recompute": "区间双端已是 siteA，仅定型为数值（量纲不变）"
+    },
+    "change_id": "C0005"
+   },
+   {
+    "row_id": "s02",
+    "field": "condition",
+    "original": "2024-03 siteA",
+    "new": "2024–3",
+    "rule_id": "AUTO-UC-TYPE",
+    "kind": "convert",
+    "formula": "单位已是 siteA，定型为数值（量纲不变）",
+    "precision": 6,
+    "trace": {
+     "interval": true,
+     "ends": [
+      {
+       "factor_source": "identity",
+       "net_factor": 1.0,
+       "offset": 0,
+       "src_unit": "siteA",
+       "dst_unit": "siteA",
+       "value_in": 2024.0,
+       "value_out": 2024.0,
+       "precision": 6,
+       "value_final": 2024.0,
+       "recompute": "2024 已是 siteA，仅定型（量纲不变）"
+      },
+      {
+       "factor_source": "identity",
+       "net_factor": 1.0,
+       "offset": 0,
+       "src_unit": "siteA",
+       "dst_unit": "siteA",
+       "value_in": 3.0,
+       "value_out": 3.0,
+       "precision": 6,
+       "value_final": 3.0,
+       "recompute": "3 已是 siteA，仅定型（量纲不变）"
+      }
+     ],
+     "src_unit": "siteA",
+     "dst_unit": "siteA",
+     "value_in": [
+      2024.0,
+      3.0
+     ],
+     "value_out": "2024–3",
+     "precision": 6,
+     "value_final": "2024–3",
+     "recompute": "区间双端已是 siteA，仅定型为数值（量纲不变）"
+    },
+    "change_id": "C0006"
+   },
+   {
+    "row_id": "s05",
+    "field": "condition",
+    "original": "2024-04 siteA",
+    "new": "2024–4",
+    "rule_id": "AUTO-UC-TYPE",
+    "kind": "convert",
+    "formula": "单位已是 siteA，定型为数值（量纲不变）",
+    "precision": 6,
+    "trace": {
+     "interval": true,
+     "ends": [
+      {
+       "factor_source": "identity",
+       "net_factor": 1.0,
+       "offset": 0,
+       "src_unit": "siteA",
+       "dst_unit": "siteA",
+       "value_in": 2024.0,
+       "value_out": 2024.0,
+       "precision": 6,
+       "value_final": 2024.0,
+       "recompute": "2024 已是 siteA，仅定型（量纲不变）"
+      },
+      {
+       "factor_source": "identity",
+       "net_factor": 1.0,
+       "offset": 0,
+       "src_unit": "siteA",
+       "dst_unit": "siteA",
+       "value_in": 4.0,
+       "value_out": 4.0,
+       "precision": 6,
+       "value_final": 4.0,
+       "recompute": "4 已是 siteA，仅定型（量纲不变）"
+      }
+     ],
+     "src_unit": "siteA",
+     "dst_unit": "siteA",
+     "value_in": [
+      2024.0,
+      4.0
+     ],
+     "value_out": "2024–4",
+     "precision": 6,
+     "value_final": "2024–4",
+     "recompute": "区间双端已是 siteA，仅定型为数值（量纲不变）"
+    },
+    "change_id": "C0007"
+   },
+   {
+    "row_id": "s01",
+    "field": "ph",
+    "original": "7.2",
+    "new": 7.0,
+    "rule_id": "AUTO-UC-TYPE",
+    "kind": "convert",
+    "formula": "单位已是 .2，定型为数值（量纲不变）",
+    "precision": 6,
+    "trace": {
+     "factor_source": "identity",
+     "net_factor": 1.0,
+     "offset": 0,
+     "src_unit": ".2",
+     "dst_unit": ".2",
+     "value_in": 7.0,
+     "value_out": 7.0,
+     "precision": 6,
+     "value_final": 7.0,
+     "recompute": "单位已是 .2，仅定型为数值（量纲不变）"
+    },
+    "change_id": "C0008"
+   },
+   {
+    "row_id": "s02",
+    "field": "ph",
+    "original": "7.2",
+    "new": 7.0,
+    "rule_id": "AUTO-UC-TYPE",
+    "kind": "convert",
+    "formula": "单位已是 .2，定型为数值（量纲不变）",
+    "precision": 6,
+    "trace": {
+     "factor_source": "identity",
+     "net_factor": 1.0,
+     "offset": 0,
+     "src_unit": ".2",
+     "dst_unit": ".2",
+     "value_in": 7.0,
+     "value_out": 7.0,
+     "precision": 6,
+     "value_final": 7.0,
+     "recompute": "单位已是 .2，仅定型为数值（量纲不变）"
+    },
+    "change_id": "C0009"
+   },
+   {
+    "row_id": "s05",
+    "field": "concentration",
+    "original": " ",
+    "new": null,
+    "rule_id": "MM01",
+    "kind": "missing_mark",
+    "formula": "缺失记号 ' ' -> 空缺（不编造）",
+    "precision": null,
+    "change_id": "C0010"
+   },
+   {
+    "row_id": "s02",
+    "field": "__row__",
+    "original": "s02",
+    "new": "s01",
+    "rule_id": "DD01",
+    "kind": "merge",
+    "formula": "判定键=('w-101', '2024–3')；值相容(容差 1e-06)，合并到 s01",
+    "precision": null,
+    "change_id": "C0011"
+   }
+  ],
+  "pending_review": [
+   {
+    "row_id": "s03",
+    "field": "concentration",
+    "value": "12 xyz",
+    "kind": "unknown_unit",
+    "issue": "单位 'xyz' 未被任何换算规则处理，原值保留",
+    "suggest": "补 UC 规则（from_unit=xyz）或人工确认单位语义",
+    "pending_id": "P0001"
+   },
+   {
+    "row_id": "s04",
+    "field": "concentration",
+    "value": "80.0",
+    "kind": "anomaly",
+    "issue": "高于 max=50",
+    "suggest": "人工核实（原值保留不改）",
+    "pending_id": "P0002"
+   },
+   {
+    "row_id": "s04",
+    "field": "ph",
+    "value": "15.3",
+    "kind": "anomaly",
+    "issue": "高于 max=14",
+    "suggest": "人工核实（原值保留不改）",
+    "pending_id": "P0003"
+   }
+  ],
+  "field_mapping": {
+   "map": [],
+   "notes": [],
+   "unmapped_fields": [
+    "row_id",
+    "sample_id",
+    "condition",
+    "concentration",
+    "ph"
+   ]
+  },
+  "rules_applied": [
+   {
+    "rule_id": "UC01",
+    "kind": "unit_convert",
+    "priority": 10,
+    "rationale": "工单 WO-1：concentration 统一 mg/L；SI 前缀 u→m 净因子 0.001"
+   },
+   {
+    "rule_id": "AF01",
+    "kind": "anomaly_flag",
+    "priority": 20,
+    "rationale": "字典 QC 范围 0-50 mg/L；越界只标记保留原值，异常可能是真实高值"
+   },
+   {
+    "rule_id": "AF02",
+    "kind": "anomaly_flag",
+    "priority": 20,
+    "rationale": "pH 物理上下限 0-14；15.3 属录入错误候选，但保留原值只标记"
+   },
+   {
+    "rule_id": "DD01",
+    "kind": "dedup",
+    "priority": 30,
+    "rationale": "工单 WO-3：样品编号+条件为真实主键；键全同且值相容才合并"
+   },
+   {
+    "rule_id": "MM01",
+    "kind": "missing_mark",
+    "priority": 40,
+    "rationale": "缺失保持空缺不填补（不做总体统计推断）；「未检测」与真值 0 区分登记"
+   }
+  ],
+  "dedup_report": {
+   "merged_groups": [
+    {
+     "kept_row_id": "s01",
+     "merged_row_ids": [
+      "s02"
+     ],
+     "key": [
+      "w-101",
+      "2024–3"
+     ],
+     "rule_id": "DD01"
+    }
+   ],
+   "suspected_pairs": []
+  },
+  "missing_report": {
+   "fields": {
+    "concentration": 1
+   },
+   "cells": [
+    {
+     "row_id": "s05",
+     "field": "concentration"
+    }
+   ]
+  },
+  "anomalies": [
+   {
+    "row_id": "s04",
+    "field": "concentration",
+    "value": "80.0",
+    "rule_id": "AF01",
+    "issue": "高于 max=50"
+   },
+   {
+    "row_id": "s04",
+    "field": "ph",
+    "value": "15.3",
+    "rule_id": "AF02",
+    "issue": "高于 max=14"
+   }
+  ],
+  "conflicts": [],
+  "summary": {
+   "rows_in": 6,
+   "rows_out": 5,
+   "changed_cells": 11,
+   "merged_groups": 1,
+   "missing_marked": 1,
+   "unknown_units": 1,
+   "dirty_values": 1,
+   "synonyms_normalized": 0,
+   "anomalies": 2,
+   "conflicts": 0,
+   "pending_items": 3
+  },
+  "artifacts": {
+   "cleaned_csv": "C:/Users/hzm/AppData/Local/Temp/sc-demo\\cleaned.csv",
+   "changelog_jsonl": "C:/Users/hzm/AppData/Local/Temp/sc-demo\\changelog.jsonl",
+   "pending_review_json": "C:/Users/hzm/AppData/Local/Temp/sc-demo\\pending_review.json"
+  },
+  "check_standard": [
+   "output_contract 键一个不缺",
+   "case_id 与输入一致",
+   "changelog 条数 == changed_cells",
+   "换算类变更必须带 formula 与 precision",
+   "换算类变更必须带 trace（net_factor 与换算前后值，可逐步复算）",
+   "每行 __changes__ 条数 == 该行 changelog 条数；被改格 __raw__[fld].ledger 内嵌台账",
+   "pending_review 非空 => uncertainties.human_review 非空",
+   "dirty_values 逐条登记且 == summary.unknown_units",
+   "rows_out == cleaned_table 行数 == cleaned.csv 数据行数",
+   "status 如实",
+   "行数守恒：rows_in == rows_out + 合并行数（防静默删行）",
+   "换算汇总守恒：sum(new) == sum(trace.value_final)（防篡改或复算失真）",
+   "换算/归一/缺失格内嵌行级 ledger（审计链逐条可回放）",
+   "machine_checks：全量校验三元组 {item,template_value,applied,match} 逐条嵌入 result.json",
+   "换算抽检机检：value_final == round(value_in x net_factor + offset, precision) 逐条复算并嵌入"
+  ],
+  "machine_checks": {
+   "engine": "sciclean-r1/1.0",
+   "round": "check",
+   "triple_format": "{item, template_value, applied, match}",
+   "checks": [
+    {
+     "item": "output_contract 字段齐全",
+     "template_value": [
+      "case_id",
+      "status",
+      "result",
+      "claims",
+      "uncertainties"
+     ],
+     "applied": [],
+     "match": true
+    },
+    {
+     "item": "case_id 与输入一致",
+     "template_value": "demo-clean-001",
+     "applied": "demo-clean-001",
+     "match": true
+    },
+    {
+     "item": "status 合法（如实四级）",
+     "template_value": [
+      "answered",
+      "partial",
+      "insufficient_evidence",
+      "input_error"
+     ],
+     "applied": "answered",
+     "match": true
+    },
+    {
+     "item": "changed_cells == changelog 条数",
+     "template_value": 11,
+     "applied": 11,
+     "match": true
+    },
+    {
+     "item": "rows_out == cleaned_table 行数",
+     "template_value": 5,
+     "applied": 5,
+     "match": true
+    },
+    {
+     "item": "dirty_values == unknown_units（脏值逐条登记）",
+     "template_value": 1,
+     "applied": 1,
+     "match": true
+    },
+    {
+     "item": "行数守恒 rows_in == rows_out + 合并行数",
+     "template_value": 6,
+     "applied": "5+1",
+     "match": true
+    },
+    {
+     "item": "换算汇总守恒 sum(new) == sum(trace.value_final)（5 条）",
+     "template_value": 94.5,
+     "applied": 94.5,
+     "match": true
+    },
+    {
+     "item": "每行 __changes__ 条数 == 该行 changelog 条数",
+     "template_value": 5,
+     "applied": 5,
+     "match": true
+    },
+    {
+     "item": "被改格 ledger 变更号在该行 __changes__ 内",
+     "template_value": "all",
+     "applied": "all",
+     "match": true
+    },
+    {
+     "item": "换算/归一/缺失格内嵌行级 ledger（审计链逐条可回放）",
+     "template_value": "all",
+     "applied": "all",
+     "match": true
+    },
+    {
+     "item": "换算变更带 formula/precision/trace（可复算）",
+     "template_value": 9,
+     "applied": 9,
+     "match": true
+    },
+    {
+     "item": "uncertainties 六键齐全",
+     "template_value": 6,
+     "applied": 6,
+     "match": true
+    },
+    {
+     "item": "pending 非空 => human_review 非空",
+     "template_value": "non-empty",
+     "applied": "non-empty",
+     "match": true
+    },
+    {
+     "item": "pending 脏值逐条登记 dirty_values",
+     "template_value": "all",
+     "applied": "all",
+     "match": true
+    },
+    {
+     "item": "claims 六键齐全且 kind 合法",
+     "template_value": 7,
+     "applied": 7,
+     "match": true
+    }
+   ],
+   "convert_spot_checks": [
+    {
+     "item": "changelog[C0001] 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(250.0 x 0.001 + 0.0, 4) == 0.25",
+     "applied": 0.25,
+     "match": true
+    },
+    {
+     "item": "changelog[C0002] 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(0.25 x 1.0 + 0, 4) == 0.25",
+     "applied": 0.25,
+     "match": true
+    },
+    {
+     "item": "changelog[C0003] 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(80.0 x 1.0 + 0, 4) == 80.0",
+     "applied": 80.0,
+     "match": true
+    },
+    {
+     "item": "changelog[C0004].end1 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(3.1 x 1.0 + 0, 4) == 3.1",
+     "applied": 3.1,
+     "match": true
+    },
+    {
+     "item": "changelog[C0004].end2 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(4.4 x 1.0 + 0, 4) == 4.4",
+     "applied": 4.4,
+     "match": true
+    },
+    {
+     "item": "changelog[C0004] 区间双端各自换算不取中点",
+     "template_value": "ends 两端均有 trace",
+     "applied": "3.1–4.4",
+     "match": true
+    },
+    {
+     "item": "changelog[C0006].end1 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(2024.0 x 1.0 + 0, 6) == 2024.0",
+     "applied": 2024.0,
+     "match": true
+    },
+    {
+     "item": "changelog[C0006].end2 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(3.0 x 1.0 + 0, 6) == 3.0",
+     "applied": 3.0,
+     "match": true
+    },
+    {
+     "item": "changelog[C0006] 区间双端各自换算不取中点",
+     "template_value": "ends 两端均有 trace",
+     "applied": "2024–3",
+     "match": true
+    },
+    {
+     "item": "changelog[C0007].end1 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(2024.0 x 1.0 + 0, 6) == 2024.0",
+     "applied": 2024.0,
+     "match": true
+    },
+    {
+     "item": "changelog[C0007].end2 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(4.0 x 1.0 + 0, 6) == 4.0",
+     "applied": 4.0,
+     "match": true
+    },
+    {
+     "item": "changelog[C0007] 区间双端各自换算不取中点",
+     "template_value": "ends 两端均有 trace",
+     "applied": "2024–4",
+     "match": true
+    },
+    {
+     "item": "changelog[C0008] 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(7.0 x 1.0 + 0, 6) == 7.0",
+     "applied": 7.0,
+     "match": true
+    },
+    {
+     "item": "changelog[C0009] 复算 round(value_in x net_factor + offset, precision)",
+     "template_value": "round(7.0 x 1.0 + 0, 6) == 7.0",
+     "applied": 7.0,
+     "match": true
+    }
+   ],
+   "gates": [
+    {
+     "gate": "case_read",
+     "state": "enforced",
+     "note": ""
+    },
+    {
+     "gate": "contract_fields",
+     "state": "enforced",
+     "note": ""
+    },
+    {
+     "gate": "rules_file",
+     "state": "skipped_not_provided",
+     "note": ""
+    },
+    {
+     "gate": "machine_verify",
+     "state": "enforced",
+     "note": "全量三元组校验 + 换算抽检机检"
+    },
+    {
+     "gate": "gate_note",
+     "state": "enforced",
+     "note": "闸门 rules_file 未 enforced，下游不得宣称已核对"
+    }
+   ],
+   "problems": [],
+   "all_pass": true,
+   "gate_note": "闸门未全部 enforced 时下游不得宣称已核对",
+   "gates_at_run": [
+    {
+     "gate": "case_read",
+     "state": "enforced",
+     "note": ""
+    },
+    {
+     "gate": "contract_fields",
+     "state": "enforced",
+     "note": ""
+    },
+    {
+     "gate": "rules_file",
+     "state": "enforced",
+     "note": ""
+    },
+    {
+     "gate": "machine_verify",
+     "state": "enforced",
+     "note": "全量三元组校验 + 换算抽检机检"
+    }
+   ]
+  },
+  "efficiency": {
+   "wall_seconds": 0.0037,
+   "rows_in": 6,
+   "rows_out": 5,
+   "rules_evaluated": 5,
+   "unit_rules_hit": 1,
+   "cells_changed": 11,
+   "pending_added": 3,
+   "dirty_added": 1,
+   "pivot": {
+    "pivoted": false
+   },
+   "rules_source": "rules_file",
+   "ablate": [],
+   "reproduce": [
+    "python3 scripts/clean_run.py profile --case <case.json> --out <profile.json>",
+    "python3 scripts/clean_run.py run --case <case.json> --rules <rules.json> --outdir <outdir>",
+    "python3 scripts/clean_run.py check --result <outdir>/result.json --case <case.json>"
+   ],
+   "note": "wall_seconds 为本次引擎单趟耗时；模型请求数由平台统计，引擎不臆造。"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "CL001",
+   "text": "行 s01 与 s02 判定为重复记录并合并（判定键=['w-101', '2024–3']，规则 DD01）",
+   "kind": "inferred",
+   "source_id": "s01",
+   "location": "rows:s01",
+   "evidence": [
+    {
+     "paragraph_id": "s01",
+     "quote": "condition='2024-03 siteA'"
+    },
+    {
+     "paragraph_id": "s02",
+     "quote": "concentration: 0.25 mg/L -> 0.25"
+    }
+   ]
+  },
+  {
+   "claim_id": "CL002",
+   "text": "规则 UC01 对字段 concentration 执行 convert 共 1 格（样例：250 ug/L -> 0.25，公式与 trace 见 changelog；trace 中间值可复算（250 x (1e-06/0.001) +0 = 0.25））",
+   "kind": "inferred",
+   "source_id": "UC01",
+   "location": "changelog:C0001",
+   "evidence": [
+    {
+     "paragraph_id": "s01",
+     "quote": "concentration: 250 ug/L -> 0.25"
+    }
+   ]
+  },
+  {
+   "claim_id": "CL003",
+   "text": "规则 AUTO-UC-TYPE 对字段 concentration 执行 convert 共 3 格（样例：0.25 mg/L -> 0.25，公式与 trace 见 changelog；trace 中间值可复算（单位已是 mg/L，仅定型为数值（量纲不变）））",
+   "kind": "inferred",
+   "source_id": "AUTO-UC-TYPE",
+   "location": "changelog:C0002",
+   "evidence": [
+    {
+     "paragraph_id": "s02",
+     "quote": "concentration: 0.25 mg/L -> 0.25"
+    },
+    {
+     "paragraph_id": "s04",
+     "quote": "concentration: 80 mg/L -> 80.0"
+    },
+    {
+     "paragraph_id": "s06",
+     "quote": "concentration: 3.1-4.4 mg/L -> 3.1–4.4"
+    }
+   ]
+  },
+  {
+   "claim_id": "CL004",
+   "text": "规则 AUTO-UC-TYPE 对字段 condition 执行 convert 共 3 格（样例：2024-03 siteA -> 2024–3，公式与 trace 见 changelog；trace 中间值可复算（区间双端已是 siteA，仅定型为数值（量纲不变）））",
+   "kind": "inferred",
+   "source_id": "AUTO-UC-TYPE",
+   "location": "changelog:C0005",
+   "evidence": [
+    {
+     "paragraph_id": "s01",
+     "quote": "condition: 2024-03 siteA -> 2024–3"
+    },
+    {
+     "paragraph_id": "s02",
+     "quote": "condition: 2024-03 siteA -> 2024–3"
+    },
+    {
+     "paragraph_id": "s05",
+     "quote": "condition: 2024-04 siteA -> 2024–4"
+    }
+   ]
+  },
+  {
+   "claim_id": "CL005",
+   "text": "规则 AUTO-UC-TYPE 对字段 ph 执行 convert 共 2 格（样例：7.2 -> 7.0，公式与 trace 见 changelog；trace 中间值可复算（单位已是 .2，仅定型为数值（量纲不变）））",
+   "kind": "inferred",
+   "source_id": "AUTO-UC-TYPE",
+   "location": "changelog:C0008",
+   "evidence": [
+    {
+     "paragraph_id": "s01",
+     "quote": "ph: 7.2 -> 7.0"
+    },
+    {
+     "paragraph_id": "s02",
+     "quote": "ph: 7.2 -> 7.0"
+    }
+   ]
+  },
+  {
+   "claim_id": "CL006",
+   "text": "规则 MM01 对字段 concentration 执行 missing_mark 共 1 格（样例：  -> None，公式与 trace 见 changelog）",
+   "kind": "inferred",
+   "source_id": "MM01",
+   "location": "changelog:C0010",
+   "evidence": [
+    {
+     "paragraph_id": "s05",
+     "quote": "concentration:   -> None"
+    }
+   ]
+  },
+  {
+   "claim_id": "CL007",
+   "text": "行 s03 字段 concentration 存在无法清洗的脏值 '12 xyz'，原值保留并登记待确认（单位 'xyz' 未被任何换算规则处理，原值保留）",
+   "kind": "reported",
+   "source_id": "s03",
+   "location": "uncertainties.dirty_values[P0001]",
+   "evidence": [
+    {
+     "paragraph_id": "s03",
+     "quote": "12 xyz"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [
+   {
+    "row_id": "s05",
+    "field": "concentration"
+   }
+  ],
+  "unverifiable": [
+   "无法清洗的脏值 1 处，已逐条登记 uncertainties.dirty_values（原值保留，不静默丢弃，同步 pending_review）"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "[P0001] 单位 'xyz' 未被任何换算规则处理，原值保留（s03）",
+   "[P0002] 高于 max=50（s04）",
+   "[P0003] 高于 max=14（s04）"
+  ],
+  "dirty_values": [
+   {
+    "row_id": "s03",
+    "field": "concentration",
+    "value": "12 xyz",
+    "reason": "单位 'xyz' 未被任何换算规则处理，原值保留",
+    "pending_id": "P0001"
+   }
+  ],
+  "summary": "清洗完成：rows_in=6 rows_out=5 changed=11 merged=1 pending=3 dirty=1；改动均含 row_id+rule_id+原值->新值并逐条内嵌行级台账；换算含公式、精度与 trace 中间值（可复算）；无法清洗的脏值逐条登记不静默丢弃；不同条件/来源不错并；科学冲突只登记不裁决；缺失保持空缺。"
+ }
+}

@@ -1,0 +1,49 @@
+{
+  "version": "sciclean-r1-template",
+  "_usage": "规则模板（清洗工单落地形态）：把题面给的数据字典与清洗工单逐条翻译成下面的规则实例，存为 /app/work/rules.json 后用 --rules 传入。不给 --rules 时引擎自动从列名别名与各列单位分布推导（FM/UC/SN/MM/AF/DD），但显式规则优先级更高、依据更可审计。priority 小者先执行。",
+  "rules": [
+    {"rule_id": "UC01", "kind": "unit_convert", "priority": 10,
+     "condition": {"fields": ["<数值字段>"], "from_unit": "<原单位，可省略=全部>"},
+     "action": {"to_unit": "<目标单位>", "precision": 4,
+                "factor": null, "offset": 0.0},
+     "rationale": "填写工单条目号或数据字典出处；SI 前缀换算引擎自动算净因子，仿射换算（温标）必须显式给 factor+offset，跨维度（mg/L↔mg/g）不猜须显式系数",
+     "on_fail": "无法换算的值登记 dirty_values + pending_review，原值保留不猜"},
+    {"rule_id": "SN01", "kind": "synonym_norm", "priority": 15,
+     "condition": {"field": "<文本字段>"},
+     "action": {"groups": [{"canonical": "<规范写法>", "members": ["别名1", "别名2"]}]},
+     "rationale": "大小写/空格/单位写法不一致的近似归一；成员跨组=语义歧义，双向登记冲突不归一",
+     "on_fail": "synonym_conflict 进 human_review"},
+    {"rule_id": "AF01", "kind": "anomaly_flag", "priority": 20,
+     "condition": {"field": "<字段>", "min": 0, "max": 50, "allowed": null},
+     "action": {"flag_only": true},
+     "rationale": "物理上下限来自数据字典 QC 范围；异常可能是真实高值，只标记不改动，理由写明",
+     "on_fail": "进 pending_review(kind=anomaly) 人工核实，原值保留"},
+    {"rule_id": "DD01", "kind": "dedup", "priority": 30,
+     "condition": {"key_fields": ["<主键，如 sample_id>"],
+                   "context_fields": ["<条件指纹，如 condition/source>"],
+                   "tolerance": 1e-6},
+     "action": {"merge": true},
+     "rationale": "键全同且值相容才合并；条件指纹不同=重复实验绝不合并；同键异值=科学冲突只登记",
+     "on_fail": "指纹不同进 suspected_pairs；同键异值进 conflicts + human_review"},
+    {"rule_id": "MM01", "kind": "missing_mark", "priority": 40,
+     "condition": {"fields": ["<字段>"],
+                   "tokens": ["", " ", "na", "n/a", "nd", "-999", "未检测", "无"]},
+     "action": {"keep_empty": true},
+     "rationale": "缺失保持空缺，绝不按均值/总体统计推断填补；「未检测」「低于检出限」「录入缺失」「真值 0」四类分册登记不混淆",
+     "on_fail": "登记 missing_report 并保留原记号"},
+    {"rule_id": "FM01", "kind": "field_mapping", "priority": 5,
+     "condition": {"columns": ["<仪器缩写列名>"]},
+     "action": {"target_field": "<数据字典规范字段名>"},
+     "rationale": "依据数据字典的列名映射；一列一目标，撞车时保留先者并登记",
+     "on_fail": "未映射字段列入 field_mapping.unmapped_fields 不静默丢列"}
+  ],
+  "field_dictionary": {
+    "_note": "数据字典转录：字段名→语义/QC范围/目标单位/备注；评分器据此核对规则依据",
+    "<字段>": {"meaning": "", "qc_range": [0, 50], "target_unit": "", "notes": ""}
+  },
+  "conflict_policy": {
+    "same_key_diff_value": "register_not_resolve",
+    "unknown_unit": "register_not_guess",
+    "missing": "keep_empty_not_impute"
+  }
+}

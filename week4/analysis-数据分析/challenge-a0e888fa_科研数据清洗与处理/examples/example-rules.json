@@ -1,0 +1,31 @@
+{
+  "version": "sciclean-r1-example",
+  "rules": [
+    {"rule_id": "UC01", "kind": "unit_convert", "priority": 10,
+     "condition": {"fields": ["concentration"], "from_unit": "ug/L"},
+     "action": {"to_unit": "mg/L", "precision": 4},
+     "rationale": "工单 WO-1：concentration 统一 mg/L；SI 前缀 u→m 净因子 0.001",
+     "on_fail": "登记 dirty_values + pending_review，不猜换算"},
+    {"rule_id": "AF01", "kind": "anomaly_flag", "priority": 20,
+     "condition": {"field": "concentration", "min": 0, "max": 50},
+     "action": {"flag_only": true},
+     "rationale": "字典 QC 范围 0-50 mg/L；越界只标记保留原值，异常可能是真实高值",
+     "on_fail": "进 pending_review(anomaly) 人工核实"},
+    {"rule_id": "AF02", "kind": "anomaly_flag", "priority": 20,
+     "condition": {"field": "ph", "min": 0, "max": 14},
+     "action": {"flag_only": true},
+     "rationale": "pH 物理上下限 0-14；15.3 属录入错误候选，但保留原值只标记",
+     "on_fail": "进 pending_review(anomaly) 人工核实"},
+    {"rule_id": "DD01", "kind": "dedup", "priority": 30,
+     "condition": {"key_fields": ["sample_id"], "context_fields": ["condition"], "tolerance": 1e-6},
+     "action": {"merge": true},
+     "rationale": "工单 WO-3：样品编号+条件为真实主键；键全同且值相容才合并",
+     "on_fail": "同键异值只登记 conflicts 不裁决"},
+    {"rule_id": "MM01", "kind": "missing_mark", "priority": 40,
+     "condition": {"fields": ["concentration", "ph"], "tokens": ["", " ", "na", "n/a", "nd", "-999", "未检测"]},
+     "action": {"keep_empty": true},
+     "rationale": "缺失保持空缺不填补（不做总体统计推断）；「未检测」与真值 0 区分登记",
+     "on_fail": "登记 missing_report 并保留原值"}
+  ],
+  "conflict_policy": {"same_key_diff_value": "register_not_resolve"}
+}

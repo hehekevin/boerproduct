@@ -1,0 +1,21 @@
+{
+  "case_id": "demo-clean-001",
+  "data_dictionary": {
+    "concentration": "水样重金属浓度，目标单位 mg/L，QC 范围 0-50",
+    "ph": "水样 pH，QC 范围 0-14",
+    "sample_id": "样品编号，重复判定主键"
+  },
+  "cleaning_workorder": [
+    "concentration 统一换算为 mg/L（μg/mL x1 等值，μg/L x0.001）",
+    "ph 超出 0-14 标记异常不改动",
+    "sample_id+condition 相同且值相容的行合并为重复记录"
+  ],
+  "records": [
+    {"row_id": "s01", "sample_id": "W-101", "condition": "2024-03 siteA", "concentration": "250 ug/L", "ph": "7.2"},
+    {"row_id": "s02", "sample_id": "W-101", "condition": "2024-03 siteA", "concentration": "0.25 mg/L", "ph": "7.2"},
+    {"row_id": "s03", "sample_id": "W-102", "condition": "2024-03 siteB", "concentration": "12 xyz", "ph": "6.8"},
+    {"row_id": "s04", "sample_id": "W-103", "condition": "2024-03 siteC", "concentration": "80 mg/L", "ph": "15.3"},
+    {"row_id": "s05", "sample_id": "W-104", "condition": "2024-04 siteA", "concentration": " ", "ph": "7.0"},
+    {"row_id": "s06", "sample_id": "W-105", "condition": "2024-04 siteB", "concentration": "3.1-4.4 mg/L", "ph": "7.5"}
+  ]
+}

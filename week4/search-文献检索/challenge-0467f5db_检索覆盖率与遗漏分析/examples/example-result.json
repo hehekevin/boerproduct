@@ -1,0 +1,444 @@
+{
+ "_note": "示意输出（非正式答案）：由 example-case.json 经 build_skeleton → coverage_calc → miss_audit → supp_check 链路人工整理的示意结果，所有文献与数字均为虚构演示。",
+ "case_id": "demo-covgap-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.13.x",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "示意环境；正式结果以平台运行环境为准"
+  },
+  "research_question": {
+   "question": "正念冥想干预对大学生焦虑水平的短期影响",
+   "scope": "实验性研究（RCT/对照实验），大学生被试，结局含焦虑测量",
+   "time_range": "2018-2025"
+  },
+  "reference_set": {
+   "frozen": true,
+   "frozen_at": "2026-11-19",
+   "source": "示意：源自一篇 2024 年系统综述的纳入清单（虚构）",
+   "denominator_rule": "分母=参考集中 ref_status=included 的条目；unavailable/retracted 登记但不入分母",
+   "items": [
+    {
+     "ref_id": "K01",
+     "source_ref": "reference_set.items[0]",
+     "title": "Mindfulness meditation reduces anxiety in college students: a randomized controlled trial",
+     "year": 2021,
+     "identifiers": {
+      "doi": "10.1000/mind-001",
+      "pmid": "33000001"
+     },
+     "ref_status": "included",
+     "inclusion_reason": "RCT，大学生被试，STAI 焦虑结局"
+    },
+    {
+     "ref_id": "K02",
+     "source_ref": "reference_set.items[1]",
+     "title": "Brief online mindfulness intervention for test anxiety among undergraduates",
+     "year": 2020,
+     "identifiers": {
+      "doi": "10.1000/mind-002"
+     },
+     "ref_status": "included",
+     "inclusion_reason": "线上简短干预 RCT，考试焦虑"
+    },
+    {
+     "ref_id": "K03",
+     "source_ref": "reference_set.items[2]",
+     "title": "Effects of a semester-long mindfulness course on student stress and anxiety",
+     "year": 2019,
+     "identifiers": {
+      "doi": "10.1000/mind-003"
+     },
+     "ref_status": "included",
+     "inclusion_reason": "学期课程对照研究，焦虑结局"
+    },
+    {
+     "ref_id": "K04",
+     "source_ref": "reference_set.items[3]",
+     "title": "A smartphone-based mindfulness app for academic stress and anxiety in university students",
+     "year": 2023,
+     "identifiers": {
+      "doi": "10.1000/mind-004"
+     },
+     "ref_status": "included",
+     "inclusion_reason": "App 干预 RCT，焦虑结局"
+    },
+    {
+     "ref_id": "K05",
+     "source_ref": "reference_set.items[4]",
+     "title": "Mindfulness-based cognitive therapy for social anxiety in university samples",
+     "year": 2022,
+     "identifiers": {
+      "doi": "10.1000/mind-005"
+     },
+     "ref_status": "retracted",
+     "inclusion_reason": "已撤稿（不可用记录，不入覆盖率分母）"
+    },
+    {
+     "ref_id": "K06",
+     "source_ref": "reference_set.items[5]",
+     "title": "Yoga and mindfulness combination for exam anxiety in college freshmen",
+     "year": 2017,
+     "identifiers": {
+      "doi": "10.1000/mind-006"
+     },
+     "ref_status": "included",
+     "inclusion_reason": "主题相符但发表于检索窗起点之前（演示时间窗截断遗漏）"
+    }
+   ]
+  },
+  "queries": [
+   {
+    "query_id": "Q1",
+    "query_string": "mindfulness AND anxiety AND (college OR university) AND students",
+    "fields": "title/abstract",
+    "source_db": "EuropePMC",
+    "time_window": "2018-2025"
+   },
+   {
+    "query_id": "Q2",
+    "query_string": "mindful* AND intervention AND undergraduate",
+    "fields": "title",
+    "source_db": "Crossref",
+    "time_window": "2018-2025"
+   }
+  ],
+  "items": [
+   {
+    "ref_id": "K01",
+    "source_ref": "reference_set.items[0]",
+    "title": "Mindfulness meditation reduces anxiety in college students: a randomized controlled trial",
+    "ref_status": "included",
+    "hit_status": "hit",
+    "matched_by": "identifier",
+    "matched_query_id": "Q1",
+    "matched_record_ref": "retrieved_records[0]",
+    "evidence_quote": "Mindfulness meditation reduces anxiety in college students: a randomized controlled trial",
+    "evidence_location": "retrieved_records[0].title（DOI 10.1000/mind-001 精确匹配）",
+    "rationale": "DOI 与 Q1 命中记录 R01 精确一致，判定命中；命中依据可回溯到 Q1 查询式",
+    "judged": true
+   },
+   {
+    "ref_id": "K02",
+    "source_ref": "reference_set.items[1]",
+    "title": "Brief online mindfulness intervention for test anxiety among undergraduates",
+    "ref_status": "included",
+    "hit_status": "hit",
+    "matched_by": "identifier",
+    "matched_query_id": "Q2",
+    "matched_record_ref": "retrieved_records[1]",
+    "evidence_quote": "Brief online mindfulness intervention for test anxiety among undergraduates",
+    "evidence_location": "retrieved_records[1].title（DOI 10.1000/mind-002 精确匹配）",
+    "rationale": "DOI 与 Q2 命中记录 R02 精确一致，判定命中",
+    "judged": true
+   },
+   {
+    "ref_id": "K03",
+    "source_ref": "reference_set.items[2]",
+    "title": "Effects of a semester-long mindfulness course on student stress and anxiety",
+    "ref_status": "included",
+    "hit_status": "hit",
+    "matched_by": "identifier",
+    "matched_query_id": "Q1",
+    "matched_record_ref": "retrieved_records[2]",
+    "evidence_quote": "Effects of a semester-long mindfulness course on student stress and anxiety",
+    "evidence_location": "retrieved_records[2].title（DOI 10.1000/mind-003 精确匹配）",
+    "rationale": "DOI 与 Q1 命中记录 R03 精确一致，判定命中",
+    "judged": true
+   },
+   {
+    "ref_id": "K04",
+    "source_ref": "reference_set.items[3]",
+    "title": "A smartphone-based mindfulness app for academic stress and anxiety in university students",
+    "ref_status": "included",
+    "hit_status": "miss",
+    "matched_by": null,
+    "matched_query_id": null,
+    "matched_record_ref": null,
+    "evidence_quote": null,
+    "evidence_location": null,
+    "rationale": "两条查询的命中记录中均无该文献（DOI/标题均未匹配），判定漏检；漏检归因见 miss_registry",
+    "judged": true
+   },
+   {
+    "ref_id": "K05",
+    "source_ref": "reference_set.items[4]",
+    "title": "Mindfulness-based cognitive therapy for social anxiety in university samples",
+    "ref_status": "retracted",
+    "hit_status": null,
+    "matched_by": null,
+    "matched_query_id": null,
+    "matched_record_ref": null,
+    "evidence_quote": null,
+    "evidence_location": null,
+    "rationale": "参考集标注已撤稿，属不可用记录：登记但不计入覆盖率分母，不参与命中判定",
+    "judged": true
+   },
+   {
+    "ref_id": "K06",
+    "source_ref": "reference_set.items[5]",
+    "title": "Yoga and mindfulness combination for exam anxiety in college freshmen",
+    "ref_status": "included",
+    "hit_status": "miss",
+    "matched_by": null,
+    "matched_query_id": null,
+    "matched_record_ref": null,
+    "evidence_quote": null,
+    "evidence_location": null,
+    "rationale": "两条查询的命中记录中均无该文献（DOI/标题均未匹配），判定漏检；漏检归因见 miss_registry",
+    "judged": true
+   }
+  ],
+  "retrieved_summary": {
+   "records_seen": 4,
+   "source_key": "retrieved_records"
+  },
+  "coverage": {
+   "denominator_basis": "frozen_reference_set",
+   "match_rule": "分母=参考集 included 条目；命中=标识符(DOI/PMID 归一化)精确或标题归一化精确匹配；人工裁决以 matched_by=manual + 证据登记",
+   "total_reference": 6,
+   "included": 5,
+   "unavailable": 1,
+   "judged": 6,
+   "hit": 3,
+   "miss": 2,
+   "extra_records": 1,
+   "coverage_rate": 0.6,
+   "miss_rate": 0.4,
+   "retrieved_source": "case.json"
+  },
+  "miss_registry": [
+   {
+    "ref_id": "K04",
+    "category": "synonym_gap",
+    "attribution": {
+     "query_id": "Q1",
+     "field": "title/abstract",
+     "source_db": "EuropePMC",
+     "reason": "查询式只含 mindfulness/anxiety/college/university/students 等词，未覆盖 app/smartphone/mHealth 等同义表达；K04 标题核心词 app 未被任何查询命中"
+    },
+    "evidence": "K04 标题为 A smartphone-based mindfulness app…，Q1/Q2 命中记录（R01-R04）标题均不含 app/smartphone",
+    "needed_action": "按 synonym_gap 设计补检查询：补入 app OR smartphone OR mHealth 词组",
+    "audit": {
+     "registered": true,
+     "category_valid": true,
+     "attribution_complete": true,
+     "query_id_exists": true
+    }
+   },
+   {
+    "ref_id": "K06",
+    "category": "time_window",
+    "attribution": {
+     "query_id": "Q1",
+     "field": "time_window",
+     "source_db": "EuropePMC/Crossref",
+     "reason": "Q1 与 Q2 时间窗均设 2018-2025，K06 发表于 2017 早于窗口起点，任何查询式都无法命中"
+    },
+    "evidence": "K06 发表年 2017，两条查询 time_window 均为 2018-2025",
+    "needed_action": "登记为时间窗截断遗漏；是否放宽窗口需与主题漂移权衡后人工决定，先登记不擅自扩窗",
+    "audit": {
+     "registered": true,
+     "category_valid": true,
+     "attribution_complete": true,
+     "query_id_exists": true
+    }
+   }
+  ],
+  "supplementary": {
+   "queries": [
+    {
+     "query_id": "Q3",
+     "based_on_category": "synonym_gap",
+     "query_string": "mindfulness AND (app OR smartphone OR mHealth) AND student",
+     "fields": "title/abstract",
+     "source_db": "Crossref",
+     "time_window": "2018-2025",
+     "new_hits": [
+      "K04"
+     ],
+     "rationale": "针对 synonym_gap 遗漏补同义词组 app/smartphone/mHealth；与原查询式实质不同，且来源库收录 App 类研究"
+    }
+   ],
+   "new_hits_total": 1,
+   "new_hits_distinct": [
+    "K04"
+   ],
+   "marginal_gain": 1,
+   "effective": true,
+   "effective_actual": true,
+   "post_coverage_rate": 0.8,
+   "post_miss_rate": 0.2,
+   "stop_rule": "连续两轮补检新增命中为 0 即停止；残余遗漏转为逐条解释登记",
+   "residual_misses": [
+    {
+     "ref_id": "K06",
+     "explanation": "时间窗截断：放宽窗口会引入与主题漂移风险更高的年份段，须人工权衡后决定，本轮不擅自扩窗"
+    }
+   ],
+   "note": "supp_check.py 校验回填",
+   "residual_audit_bad": []
+  },
+  "review": {
+   "sampled": [
+    "K01",
+    "K04"
+   ],
+   "agreement_rate": 1.0,
+   "residual_explanation": [
+    "K06 时间窗截断遗留（见 supplementary.residual_misses）"
+   ]
+  },
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与分母冻结台账",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "冻结参考集（frozen=true, frozen_at 记录）并声明分母口径",
+    "command": "（Agent 编辑 result.reference_set）",
+    "output_ref": "result.reference_set",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "机械命中判定与覆盖率计算",
+    "command": "python3 /skills/weekly-skill/scripts/coverage_calc.py --result /app/output/result.json --case /input/case.json",
+    "output_ref": "result.coverage",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "漏检登记与归因审计",
+    "command": "python3 /skills/weekly-skill/scripts/miss_audit.py --result /app/output/result.json --case /input/case.json",
+    "output_ref": "result.miss_registry",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "补检设计与边际收益校验",
+    "command": "python3 /skills/weekly-skill/scripts/supp_check.py --result /app/output/result.json --case /input/case.json",
+    "output_ref": "result.supplementary",
+    "status": "done"
+   },
+   {
+    "step": "step5",
+    "action": "增益对照与效率计数",
+    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
+    "output_ref": "result.gain_evidence",
+    "status": "done"
+   },
+   {
+    "step": "step6",
+    "action": "自检与交付",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --emit-into",
+    "output_ref": "/app/work/verify_check.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "covered_audited",
+  "verdict_basis": "6 条参考条目全部判定，2 条漏检全部登记且归因可回溯，补检新增 1 条命中并记录残余遗漏解释",
+  "gain_evidence": {
+   "available": false,
+   "reason": "示意文件预填占位；正式值由 gain_probe.py --emit-into 实跑回写"
+  },
+  "efficiency": {
+   "available": false,
+   "reason": "示意文件预填占位；正式值由 gain_probe.py --emit-into 实跑回写"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "K01 判定命中：DOI 与 Q1 命中记录 R01 精确一致（matched_by=identifier）",
+   "kind": "reported",
+   "source_id": "K01",
+   "location": "items[0]",
+   "evidence": [
+    {
+     "paragraph_id": "retrieved_records[0].title",
+     "quote": "Mindfulness meditation reduces anxiety in college students: a randomized controlled trial"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "K02 判定命中：DOI 与 Q2 命中记录 R02 精确一致（matched_by=identifier）",
+   "kind": "reported",
+   "source_id": "K02",
+   "location": "items[1]",
+   "evidence": [
+    {
+     "paragraph_id": "retrieved_records[1].title",
+     "quote": "Brief online mindfulness intervention for test anxiety among undergraduates"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "K03 判定命中：DOI 与 Q1 命中记录 R03 精确一致（matched_by=identifier）",
+   "kind": "reported",
+   "source_id": "K03",
+   "location": "items[2]",
+   "evidence": [
+    {
+     "paragraph_id": "retrieved_records[2].title",
+     "quote": "Effects of a semester-long mindfulness course on student stress and anxiety"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "K04 漏检归因 synonym_gap：Q1 查询式未覆盖 app/smartphone 等同义表达，补检 Q3 新增命中 K04，遗漏率由 0.4 降至 0.2；K06 残余遗漏为 time_window（2017 早于窗口起点）",
+   "kind": "reported",
+   "source_id": "K04",
+   "location": "miss_registry[0]",
+   "evidence": [
+    {
+     "paragraph_id": "reference_set.items[3].title",
+     "quote": "A smartphone-based mindfulness app for academic stress and anxiety in university students"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "覆盖率汇总：初始覆盖率 coverage_rate=0.6（命中 3 条/分母 5 条），遗漏率 miss_rate=0.4（漏 2 条）；补检 Q3 后覆盖率为 0.8、遗漏率为 0.2；分母来自冻结参考集（included 5 条，另 1 条撤稿不入分母），检索记录中 1 条与参考集无关（extra_records）",
+   "kind": "reported",
+   "source_id": "demo-covgap-001",
+   "location": "result.coverage",
+   "evidence": [
+    {
+     "paragraph_id": "reference_set.frozen_at",
+     "quote": "2026-11-19"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [],
+  "conflicts": [],
+  "human_review": [
+   "K06 是否放宽时间窗须人工权衡"
+  ],
+  "summary": "示意输出；K06 扩窗决策留给人工"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "示意输出为人工整理的演示结果，非正式案例答案"
+  }
+ ]
+}

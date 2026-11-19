@@ -1,0 +1,36 @@
+{
+  "_note": "合成示意案例（非正式答案、非真实文献）：仅用于本地自测整条链路。所有标题/DOI/摘要均为虚构，不冒充正式案例结果。",
+  "case_id": "demo-covgap-001",
+  "task_type": "search_coverage_gap_analysis",
+  "research_question": {
+    "question": "正念冥想干预对大学生焦虑水平的短期影响",
+    "scope": "实验性研究（RCT/对照实验），大学生被试，结局含焦虑测量",
+    "time_range": "2018-2025"
+  },
+  "reference_set": {
+    "frozen": true,
+    "frozen_at": "2026-11-19",
+    "source": "示意：源自一篇 2024 年系统综述的纳入清单（虚构）",
+    "items": [
+      {"ref_id": "K01", "title": "Mindfulness meditation reduces anxiety in college students: a randomized controlled trial", "year": 2021, "identifiers": {"doi": "10.1000/mind-001", "pmid": "33000001"}, "inclusion_reason": "RCT，大学生被试，STAI 焦虑结局"},
+      {"ref_id": "K02", "title": "Brief online mindfulness intervention for test anxiety among undergraduates", "year": 2020, "identifiers": {"doi": "10.1000/mind-002"}, "inclusion_reason": "线上简短干预 RCT，考试焦虑"},
+      {"ref_id": "K03", "title": "Effects of a semester-long mindfulness course on student stress and anxiety", "year": 2019, "identifiers": {"doi": "10.1000/mind-003"}, "inclusion_reason": "学期课程对照研究，焦虑结局"},
+      {"ref_id": "K04", "title": "A smartphone-based mindfulness app for academic stress and anxiety in university students", "year": 2023, "identifiers": {"doi": "10.1000/mind-004"}, "inclusion_reason": "App 干预 RCT，焦虑结局"},
+      {"ref_id": "K05", "title": "Mindfulness-based cognitive therapy for social anxiety in university samples", "year": 2022, "identifiers": {"doi": "10.1000/mind-005"}, "ref_status": "retracted", "inclusion_reason": "已撤稿（不可用记录，不入覆盖率分母）"},
+      {"ref_id": "K06", "title": "Yoga and mindfulness combination for exam anxiety in college freshmen", "year": 2017, "identifiers": {"doi": "10.1000/mind-006"}, "inclusion_reason": "主题相符但发表于检索窗起点之前（演示时间窗截断遗漏）"}
+    ]
+  },
+  "queries": [
+    {"query_id": "Q1", "query_string": "mindfulness AND anxiety AND (college OR university) AND students", "fields": "title/abstract", "source_db": "EuropePMC", "time_window": "2018-2025"},
+    {"query_id": "Q2", "query_string": "mindful* AND intervention AND undergraduate", "fields": "title", "source_db": "Crossref", "time_window": "2018-2025"}
+  ],
+  "retrieved_records": [
+    {"record_id": "R01", "title": "Mindfulness meditation reduces anxiety in college students: a randomized controlled trial", "year": 2021, "identifiers": {"doi": "10.1000/mind-001"}, "source_db": "EuropePMC", "query_id": "Q1"},
+    {"record_id": "R02", "title": "Brief online mindfulness intervention for test anxiety among undergraduates", "year": 2020, "identifiers": {"doi": "10.1000/mind-002"}, "source_db": "Crossref", "query_id": "Q2"},
+    {"record_id": "R03", "title": "Effects of a semester-long mindfulness course on student stress and anxiety", "year": 2019, "identifiers": {"doi": "10.1000/mind-003"}, "source_db": "EuropePMC", "query_id": "Q1"},
+    {"record_id": "R04", "title": "Acute effects of caffeine on anxiety in undergraduates", "year": 2022, "identifiers": {"doi": "10.1000/cafe-009"}, "source_db": "EuropePMC", "query_id": "Q1"}
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

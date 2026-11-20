@@ -1,6 +1,9 @@
 {
-  "_notice": "示意输入，非正式案例结果。仅演示 manuscript.json 结构与诊断流程；正式案例由平台提供 /input/case.json 与稿件。",
-  "_usage": "把 _text 内容存为 .txt 放入 /input 即可走 extract_input 流程（章节标题独立成行）",
-  "_text": "摘要\n本文提出了一种基于图神经网络的分子性质预测方法 GraphProp。实验表明该方法效果非常突出。\n1 引言\n药物发现需要准确预测分子性质。本文旨在解决分子性质预测中的数据稀疏问题。我们提出了 GraphProp 方法，该方法完全证明了在所有场景下均显著优于全部基线，彻底解决了这一难题。\n2 方法\n本文构建了 GraphProp 框架，采用消息传递机制聚合邻居原子特征。模型包含三层图卷积，隐藏维度为 256，学习率 0.001，批次大小 n=128。训练在 8 张 GPU 上进行，共计 72 小时。数据增强采用随机掩码策略，掩码比例为 15%。GraphProp 的损失函数结合了监督损失与对比损失，权重系数分别为 1.0 与 0.5，p<=0.05 被认为显著。\n3 结果\n实验表明 GraphProp 在基准数据集上的表现明显更好，具体如表1所示，相关系数 r=0.92，说明该方法导致了性能的大幅提升，证实了图结构信息的因果作用。我们提出了 GraphProp 方法并验证了其有效性，该方法在两组数据上均取得最优结果，n=500，准确率 91.3%。\n4 结论\n本文研究了分子性质预测问题。综上所述，GraphProp 是一种有效的分子性质预测方法。实验表明 GraphProp 在基准数据集上的表现明显更好，具体如表1所示，相关系数 r=0.92，说明该方法导致了性能的大幅提升，证实了图结构信息的因果作用。\n参考文献\n[1] Gilmer et al. Neural Message Passing for Quantum Chemistry. [2] Kipf et al. Semi-Supervised Classification with Graph Convolutional Networks.",
-  "case_id_hint": "example-8021aacb-demo"
+  "case_id": "demo-case-001",
+  "task": "对以下论文稿件做结构诊断与逻辑优化，输出可执行编辑动作与修订后全文，每处修改留痕。",
+  "output_contract": {
+    "fields": ["diagnosis_report", "revised_draft", "change_records", "uncertainty"]
+  },
+  "materials": ["paper.md"],
+  "_note": "最小调用示例输入（示意，非正式案例结果）。运行：python scripts/extract_materials.py --input ./examples/input_demo --outdir ./work/extracted"
 }

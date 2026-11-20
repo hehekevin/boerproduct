@@ -1,0 +1,403 @@
+{
+  "_example_notice": "示意样例：内容为作者编写的演示文本（README.md 的『示例材料』），不是任何真实论文或平台正式案例结果；仅用于说明接口与字段。",
+  "case_id": "EXAMPLE-NOT-A-CASE",
+  "audience": {
+    "type": "defense",
+    "prior_knowledge": "了解该领域基本概念，但不熟悉本方向的工艺细节",
+    "concerns": [
+      "创新点是否只是工程微调",
+      "数据是否只在理想条件成立"
+    ],
+    "objections": [
+      "为什么不是换材料而是换工艺",
+      "良率提升能否复现"
+    ]
+  },
+  "goal": {
+    "statement": "让评委认可双层钝化是机制层面的改进，而非参数微调",
+    "checkpoints": [
+      "评委能复述两层钝化各自作用",
+      "结论强度表述与消融/边界证据一致"
+    ]
+  },
+  "constraints": {
+    "duration_min": 15,
+    "slides_max": 12,
+    "source": "task.md",
+    "evidence": "task.md 指定 15 分钟答辩场景；示例材料未给页数，取 1.5min/页推算上限 12"
+  },
+  "adaptation": [
+    {
+      "decision": "创新点单独成页并提到方法后第 1 页",
+      "because": "听众为评委，首要关注新颖性是否成立",
+      "from": "audience"
+    },
+    {
+      "decision": "背景压到 1 页，删去相关工作综述",
+      "because": "15 分钟预算下方法+证据优先",
+      "from": "duration"
+    },
+    {
+      "decision": "限制页保留并注明仅在 4 英寸验证",
+      "because": "评审类场景边界不清会削弱可信度",
+      "from": "evidence"
+    },
+    {
+      "decision": "备用页 2 页应对机制与复现追问",
+      "because": "预期质疑集中在复现性",
+      "from": "audience"
+    }
+  ],
+  "narrative": {
+    "pattern": "问题驱动（痛点→为什么难→我们的解→证据→边界）",
+    "sections": [
+      {
+        "id": "problem",
+        "title": "问题与差距",
+        "minutes": 3.0,
+        "slides": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "method",
+        "title": "方法与创新",
+        "minutes": 4.5,
+        "slides": [
+          4,
+          5
+        ]
+      },
+      {
+        "id": "result",
+        "title": "证据",
+        "minutes": 3.0,
+        "slides": [
+          6,
+          7
+        ]
+      },
+      {
+        "id": "boundary",
+        "title": "边界与限制",
+        "minutes": 1.5,
+        "slides": [
+          8
+        ]
+      },
+      {
+        "id": "conclusion",
+        "title": "结论",
+        "minutes": 1.0,
+        "slides": [
+          9
+        ]
+      },
+      {
+        "id": "qa",
+        "title": "问答衔接",
+        "minutes": 2.0,
+        "slides": [
+          10
+        ]
+      }
+    ]
+  },
+  "slides": [
+    {
+      "no": 1,
+      "section": "problem",
+      "layout": "title",
+      "title": "双层钝化提升多层堆叠良率",
+      "purpose": "交代主题与一句话结论，让评委知道要评判什么",
+      "claim": "双层钝化把 8 层堆叠良率从 62% 提到 94%",
+      "points": [
+        "8 层堆叠良率 62% → 94%",
+        "机制：界面缺陷被第二层覆盖"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 1 第 3 句",
+          "quote": "我们提出双层钝化工艺，在同样 8 层堆叠下把良率提升到 94%。"
+        }
+      ],
+      "minutes": 0.5,
+      "evidence_strength": "中",
+      "figure_ref": null,
+      "notes": "开场不做背景铺垫，直接给结论与数字，让评委在前 30 秒建立评判坐标。强调这是同一 8 层堆叠下的对照，不是不同结构之间的比较。可能的追问是基线是否公平？指向第 6 页对照设置。"
+    },
+    {
+      "no": 2,
+      "section": "problem",
+      "layout": "bullets",
+      "purpose": "让评委认同问题真实存在",
+      "claim": "现有方案在 8 层堆叠下良率跌到 62%",
+      "points": [
+        "8 层堆叠良率 62%",
+        "失效主因：界面缺陷"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 1 第 2 句",
+          "quote": "现有方案在 8 层堆叠下良率下降到 62%，主要原因是界面缺陷。"
+        }
+      ],
+      "minutes": 1.5,
+      "evidence_strength": "中",
+      "figure_ref": null,
+      "notes": "从上一页结论回到问题本身，讲清 62% 这个数字的业务含义：低于量产门槛。强调失效机制是界面缺陷而非工艺波动，为下一页的差距陈述做铺垫。若被问样本量，见第 11 页备用页。若被问样本量，见第 11 页备用页。"
+    },
+    {
+      "no": 3,
+      "section": "problem",
+      "layout": "bullets",
+      "purpose": "把问题转成可判定的技术差距",
+      "claim": "差距在于单层钝化覆盖不到界面",
+      "points": [
+        "单层钝化只覆盖顶部界面",
+        "缺口在层间界面处"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 1 第 2-3 句推论",
+          "quote": "现有方案在 8 层堆叠下良率下降到 62%，主要原因是界面缺陷。"
+        }
+      ],
+      "minutes": 1.5,
+      "evidence_strength": "弱",
+      "figure_ref": null,
+      "notes": "这一页是推理页：材料只给了失效归因，没有直接给出覆盖分析，因此结论强度标为弱，措辞用『差距在于』而不是『证明了』。过渡到方法页时点明：因此需要第二层覆盖。追问覆盖证据时指向第 11 页。追问覆盖证据时指向第 11 页。"
+    },
+    {
+      "no": 4,
+      "section": "method",
+      "layout": "bullets",
+      "purpose": "讲清第一层的作用，建立机制理解",
+      "claim": "第一层钝化封住顶部界面",
+      "points": [
+        "第一层：封顶部界面",
+        "工艺温度沿用现有产线"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 1 第 3 句",
+          "quote": "我们提出双层钝化工艺，在同样 8 层堆叠下把良率提升到 94%。"
+        }
+      ],
+      "minutes": 2.0,
+      "evidence_strength": "中",
+      "figure_ref": null,
+      "notes": "讲方法时只讲听众能复述的最小集：每层解决一个界面。强调工艺温度不变，这点回应『能否上产线』的质疑。过渡句：第一层解决了顶部，层间还在漏。为什么不做三层？见备用页 12。"
+    },
+    {
+      "no": 5,
+      "section": "method",
+      "layout": "bullets",
+      "purpose": "讲清第二层为何是创新点",
+      "claim": "第二层钝化覆盖层间界面，是创新点",
+      "points": [
+        "第二层：覆盖层间界面",
+        "与第一层共用同一道工序窗口"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 1 第 3 句",
+          "quote": "我们提出双层钝化工艺，在同样 8 层堆叠下把良率提升到 94%。"
+        }
+      ],
+      "minutes": 2.5,
+      "evidence_strength": "中",
+      "figure_ref": null,
+      "notes": "本页是创新点页，要讲清『为什么必须是第二层』：层间界面无法由顶部钝化触及。与现有方案的区别是工序窗口复用，不新增设备。过渡到证据页：机制讲完，看消融是否支持。为什么不做三层？见备用页 12。"
+    },
+    {
+      "no": 6,
+      "section": "result",
+      "layout": "bullets",
+      "purpose": "用消融证明第二层不可省",
+      "claim": "去掉第二层，良率回落到 71%",
+      "points": [
+        "完整双层：94%",
+        "去掉第二层：71%"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 2 第 1 句",
+          "quote": "消融实验显示，去掉第二层钝化后良率回落到 71%。"
+        },
+        {
+          "locator": "示例材料 PAGE 1 第 3 句",
+          "quote": "我们提出双层钝化工艺，在同样 8 层堆叠下把良率提升到 94%。"
+        }
+      ],
+      "minutes": 1.5,
+      "evidence_strength": "强",
+      "figure_ref": null,
+      "notes": "这是唯一强证据页：同一条件下的消融对照。讲法是先给 94%，再给 71%，让差值自己说话。语气可以用『支持』而非『证明』，因为只有单批次。追问批次一致性时指向第 12 页。追问批次一致性时指向第 12 页。"
+    },
+    {
+      "no": 7,
+      "section": "result",
+      "layout": "bullets",
+      "purpose": "说明提升的可归因路径",
+      "claim": "良率差值与界面缺陷计数同向变化",
+      "points": [
+        "差值集中于层间界面",
+        "顶部界面计数变化小"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 2 第 1 句",
+          "quote": "消融实验显示，去掉第二层钝化后良率回落到 71%。"
+        }
+      ],
+      "minutes": 1.5,
+      "evidence_strength": "中",
+      "figure_ref": null,
+      "notes": "把 94 与 71 的差值归因到层间界面，避免评委认为提升来自偶然。这里不做定量外推。过渡到边界页：上述结论在什么范围内成立。追问同一差值能否分解？材料未给分解数据。"
+    },
+    {
+      "no": 8,
+      "section": "boundary",
+      "layout": "bullets",
+      "purpose": "主动划清结论适用范围",
+      "claim": "结论仅在 4 英寸晶圆上验证",
+      "points": [
+        "仅 4 英寸晶圆验证",
+        "12 英寸产线未覆盖"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 2 第 2 句",
+          "quote": "作者指出，本结论仅在 4 英寸晶圆上验证，未覆盖 12 英寸产线。"
+        }
+      ],
+      "minutes": 1.5,
+      "evidence_strength": "中",
+      "figure_ref": null,
+      "notes": "主动说限制比被问出来更可信。原话是作者自己指出的边界，逐字引用不改写。这里明确 12 英寸未验证，不讲推测性的放大结论。过渡到结论页。若被问 12 英寸迁移，只答需要补充实验。"
+    },
+    {
+      "no": 9,
+      "section": "conclusion",
+      "layout": "closing",
+      "purpose": "回到报告目标，给出与证据等强度的结论",
+      "claim": "双层钝化是机制改进，边界在 4 英寸",
+      "points": [
+        "机制：两层各封一个界面",
+        "边界：4 英寸已验证"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 1 第 3 句 / PAGE 2 第 2 句",
+          "quote": "作者指出，本结论仅在 4 英寸晶圆上验证，未覆盖 12 英寸产线。"
+        }
+      ],
+      "minutes": 1.0,
+      "evidence_strength": "中",
+      "figure_ref": null,
+      "notes": "结论页不出现结果页没出现过的数字，也不把单批次消融说成普适规律。一句话收束：机制清楚、边界清楚。追问进展时指向下一步工作口头说明。"
+    },
+    {
+      "no": 10,
+      "section": "qa",
+      "layout": "closing",
+      "purpose": "把问答引到已备页，减少现场失控",
+      "claim": "常见追问已在备用页准备",
+      "points": [
+        "机制/数据/对照/局限 四类已备",
+        "备用页见附录"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 1-2（本技能 qa 条目）",
+          "quote": "现有方案在 8 层堆叠下良率下降到 62%，主要原因是界面缺陷。"
+        }
+      ],
+      "minutes": 1.5,
+      "evidence_strength": "中",
+      "figure_ref": null,
+      "notes": "过渡到问答：先说结论页已覆盖的四点，再请评委提问。现场只承诺有据可查的回答，未备的问题如实说需要补充实验。答题口径与页面数字一致。若被问未备问题，如实说明需补实验。"
+    },
+    {
+      "no": 11,
+      "section": "qa",
+      "layout": "bullets",
+      "backup": true,
+      "purpose": "应对样本量与数据口径追问",
+      "claim": "样本口径与失效判定标准",
+      "points": [
+        "失效判定：界面缺陷计数",
+        "口径沿用产线标准"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 2 第 1 句",
+          "quote": "消融实验显示，去掉第二层钝化后良率回落到 71%。"
+        }
+      ],
+      "minutes": 0,
+      "evidence_strength": "中",
+      "figure_ref": null,
+      "notes": "备用页，仅在评委追问样本量或失效判定标准时翻到。回答口径与第 2 页一致。"
+    },
+    {
+      "no": 12,
+      "section": "qa",
+      "layout": "bullets",
+      "backup": true,
+      "purpose": "应对复现性与为何不做三层追问",
+      "claim": "工序窗口复用，可复现路径",
+      "points": [
+        "复用现有工序窗口",
+        "三层未验证，不承诺"
+      ],
+      "evidence": [
+        {
+          "locator": "示例材料 PAGE 1 第 3 句",
+          "quote": "我们提出双层钝化工艺，在同样 8 层堆叠下把良率提升到 94%。"
+        }
+      ],
+      "minutes": 0,
+      "evidence_strength": "中",
+      "figure_ref": null,
+      "notes": "备用页，用于复现性质疑。只讲材料支持的部分：同工序窗口；三层方案未验证不承诺。"
+    }
+  ],
+  "qa": [
+    {
+      "q": "良率提升会不会只是批次波动？",
+      "category": "data",
+      "answer": "单批次消融已对照，未做多批次统计；口径与页面 71%/94% 一致",
+      "pointer_slide": 6,
+      "backup_slide": 12,
+      "evidence_strength": "中"
+    },
+    {
+      "q": "为什么不做三层钝化？",
+      "category": "mechanism",
+      "answer": "材料只验证双层；三层无数据，不承诺",
+      "pointer_slide": 5,
+      "backup_slide": 12,
+      "evidence_strength": "弱"
+    },
+    {
+      "q": "基线对照是否公平？",
+      "category": "control",
+      "answer": "同一 8 层堆叠、同工序窗口下比较",
+      "pointer_slide": 6,
+      "backup_slide": null,
+      "evidence_strength": "中"
+    },
+    {
+      "q": "12 英寸产线能否直接迁移？",
+      "category": "limitation",
+      "answer": "材料明确只在 4 英寸验证，迁移需补充实验",
+      "pointer_slide": 8,
+      "backup_slide": null,
+      "evidence_strength": "弱"
+    }
+  ]
+}

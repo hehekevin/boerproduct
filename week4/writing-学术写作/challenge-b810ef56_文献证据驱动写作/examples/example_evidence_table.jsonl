@@ -1,4 +1,0 @@
-{"claim_id": "C01", "source_id": "M01", "locator": "M01:p3", "quote": "纳入120名患者的随机对照试验显示，药物A组收缩压平均下降12.4mmHg", "source_type": "原始研究", "support_scope": "full", "match": "exact"}
-{"claim_id": "C02", "source_id": "M01", "locator": "M01:p5", "quote": "结果表明药物A可降低收缩压", "source_type": "原始研究", "support_scope": "full", "match": "exact"}
-{"claim_id": "C03", "source_id": "M02", "locator": "M02:p2", "quote": "80人队列中不良事件发生率为8%", "source_type": "原始研究", "support_scope": "full", "match": "exact"}
-{"claim_id": "C04", "source_id": "M03", "locator": "M03:p1", "quote": "现有证据以小样本研究为主，结论有待更大规模验证", "source_type": "综述", "support_scope": "full", "match": "exact"}

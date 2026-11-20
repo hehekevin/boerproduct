@@ -1,0 +1,18 @@
+{
+  "_comment": "最小调用示例输入（示意数据，非正式案例）。演示从材料到成稿的完整流程。",
+  "case_id": "example-evidence-001",
+  "task": "撰写一段约300字的'某药物对2型糖尿病患者血糖控制效果'综述段落，每条实质性论断须绑定文献证据并标注证据等级。",
+  "audience": "临床科研同行",
+  "genre": "综述段落",
+  "citation_style": "gbt7714",
+  "word_range": [250, 400],
+  "required_sections": ["引言", "证据综述", "结论与局限", "参考文献"],
+  "materials": [
+    {"id": "M01", "path": "materials/study_a.pdf", "kind": "pdf", "note": "原始研究：多中心RCT n=420"},
+    {"id": "M02", "path": "materials/study_b.txt", "kind": "txt", "note": "原始研究：单中心小样本 n=45"},
+    {"id": "M03", "path": "materials/review_c.txt", "kind": "txt", "note": "系统综述"}
+  ],
+  "output_contract": {
+    "fields": ["draft_docx", "claims_evidence_table", "evidence_audit_report", "uncertainty_list"]
+  }
+}

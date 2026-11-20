@@ -1,138 +1,117 @@
 ---
-name: eviwrite-claimbind
-description: 文献证据驱动写作技能：把成稿拆成可判定论断单元，逐条绑定来源与逐字引文（章节/页码/段落定位），按 A-D 证据等级审计措辞相称性（相关不写成因果、弱证据不写成强结论、冲突不隐藏），统一校验器机检 fail_count 逐项可回查，消融双跑+污染反例机器判定增益。Use when the case asks to complete or revise evidence-based academic writing, keeping every substantive claim traceable to a specific source passage with verbatim quotes, strength grading and honest uncertainty.
+name: acwrite-evidence
+description: 文献证据驱动写作技能：先建逐字摘录证据池，再写作——把稿件拆成可判定论断单元，每条论断绑定证据池中的逐字摘录（locator+来源+证据等级+支撑范围），机器核验摘录真实性并生成论断↔来源双向映射矩阵，防孤儿引用与编造，证据强度与正文措辞相称。Use when the case asks to write or rewrite text so that every substantive claim is traceable to a verbatim source passage, grade evidence strength, or audit claim-citation correspondence.
 ---
 
-# eviwrite-claimbind — 文献证据驱动写作（论断—证据—成稿 三段交付）
+# acwrite-evidence — 证据驱动写作（证据池先行 · 逐字可核验 · 双向映射）
 
-核心思想：写作是**可指认的断言**——每句有依据的话都能指出依据在哪、依据多强。
-交付三件套：① 论断清单 claims.jsonl；② 证据表 evidence_table.jsonl（逐字引文+定位+等级）；
-③ 成稿 draft.md + result.json（含强度审计、校验报告、增益证据、uncertainty 如实）。
+核心不是多写，而是**每一句有依据的话都能被指认依据在哪里、依据有多强、且机器能复核摘录是真的**。交付三件套：
 
-### 增益证据与效率计数（回填 result.json，必须真跑）
+1. **正文**：draft.docx + draft.md（每条论断句末带 [E##] 证据标记）
+2. **论断-证据表**：claims_evidence.jsonl（论断 → 证据池逐字摘录 → locator → 支撑范围 → 证据等级 → 措辞相称性）
+3. **边界记录**：核验报告（含论断↔来源双向映射矩阵）+ uncertainty + changelog
+
+硬规则：**先建证据池再写作**——论断只能绑定证据池里已存在的逐字摘录，禁止先写正文再回头找引用；没有证据池摘录的论断不得出现在正文（背景常识句除外，须显式标 common_knowledge）；证据等级决定措辞强度，等级降一档措辞跟着降。
+
+## ★ 强制执行协议（每一步先做这三件事，再谈内容质量）
+
+1. **抄契约**：开工第一步 `cat /input/case.json`，把 output_contract 全部字段名抄进 result.json 骨架——**一个字段都不能缺**（暂无值就填 null）。
+2. **立即落骨架**：用脚本写出含 case_id + 全部契约字段 + status:"partial" 的 /app/output/result.json。此后任何阶段失败，磁盘上都有可评的诚实交付。
+3. **广度优先 + 熔断**：预算 64 次模型请求 / 900 秒。按"骨架→证据池→论断表→正文→校验→result"线性推进（≤5 个内容步骤），每个阶段先出全量粗稿再打磨；**已用 48 次请求或 700 秒即停止打磨**，把现有内容写入产物、audit 结果如实记录、status 标 partial——失败也交付。
+4. **写盘自检**：每阶段结束用 `ls -la` + `python -c "import json;json.load(open(...))"` 确认文件真的写成了、JSON 真的合法。
+5. **诚实状态**：status 只在全部自查项通过后才是 complete；材料缺口、未核验项写进 uncertainty，不编造。
+
+## 0. 运行环境与预算
+- 输入：`/input/case.json` + `/input/task.md` + 文献材料（PDF/题录/摘录）。**读真实文件，不按标签猜内容**。
+- 工作区 `/app/work`，交付 `/app/output`。脚本无第三方依赖时自动降级（三级容错），本地可直接双测。
+
+## 1. 阶段流程
+
+### Stage 0 — 定契约 + 落骨架（脚本，无条件先执行）
 ```bash
-python3 scripts/gain_probe.py --result /app/output/result.json \
-  --claims /app/work/claims.jsonl --evidence-table /app/work/evidence_table.jsonl \
-  --sources /app/work/sources --draft /app/output/draft.md --ablate --write
+ls -la /input/ && cat /input/case.json
+python scripts/extract_materials.py --input /input --outdir /app/work/extracted
+python scripts/fact_ledger.py build --sources /app/work/extracted --out /app/work/fact_ledger.jsonl
+python scripts/build_result.py --case /input/case.json --out /app/output/result.json --status partial
 ```
-- 同一校验器对三臂各跑一遍：技能臂 vs 基础臂（剥离证据绑定的同文本副本）的
-  fail_count 差 = 机器判定的质量增益；副本注入 2 条污染反例（编造 quote/相关写因果），
-  校验器必须 FAIL 才证明判据灵敏。`--write` 只写 result.json 的 gain_evidence 与 efficiency。
-- 机检 FAIL **一律 verdict 照实记录、退出码恒 0**：修一轮，仍不过如实登记并继续交付，
-  禁止以非零退出码结束。
+- 抄 output_contract 全部字段 → 骨架 result.json；constraints.json 记：体裁、受众、字数、citation_style、required_sections、terms。
+- materials_manifest.json 里 extracted:false 的材料如实标记，不得假设其内容。
 
-## ⚠️ 强制执行协议（每次运行先读完本节再动手，顺序不可调换）
+### Stage 1 — 文献库（1 次响应，产出 /app/work/sources_registry.jsonl）
+每篇文献一行：`{"id":"R1","title":…,"authors":…,"year":…,"venue":…,"doi":…,"type":"原始研究|综述|指南|预印本","mid":"M02","meta_status":"complete|missing_field(哪个)"}`。
+- 元数据从材料文献条目**逐字抄录**；缺字段标 missing_field，不猜补。
+- 二手转引（材料里引他人而原文不可得）：secondary_citation=true，正文只能转述"X 综述了 Y"，不得直接引其结论。
 
-1. **抄契约**：第一动作 `cat /input/case.json`，逐字抄下 `output_contract` 全部字段名与
-   `case_id`。result.json 必须包含全部字段，一个不缺（无值先置 null，只增不删）。
-2. **立即落骨架**：读完契约立刻写出骨架 result.json（status=in_progress）。此后任何时刻
-   中断，result.json 都完整可解析。
-3. **读真实材料**：来源文献逐个打开读原文，不按文件名/标签猜内容；材料不足、冲突、
-   仅摘要、原文矛盾一律如实标注，不补造。
-4. **写盘自检**：每次写 JSON 后 `python3 -c "import json;json.load(open(...));print('ok')"`。
-   失败重写一次；再失败改纯文本兜底并在 uncertainty 记录。
-5. **熔断**：累计约 48 次模型请求或 700 秒即停止新增工作，直接收尾（校验→组装），status 如实。
-6. **失败也交付**：任何异常不允许空手退出。partial/failed 也要有 result.json + 已完成部分。
+### Stage 2 — 证据池（1-2 次响应，产出 /app/work/evidence_pool.jsonl）★本技能核心第一步
+**从 extracted/*.txt 全文（不是记忆、不是摘要）逐字摘录**可用片段，每条：
+`{"qid":"Q01","source":"R3","mid":"M02","locator":"M02:p5|para12","quote":"逐字摘录(≤300字,不改写)","quote_type":"结果数据|方法描述|机制陈述|结论表述|研究设计","strength_hint":"meta分析|多中心RCT|单篇小样本|综述意见|专家观点","support_topics":["该摘录能支撑的话题关键词"]}`
+- 广度优先：先覆盖所有文献的所有章节（结果、方法、讨论、局限都摘），再求深；每篇至少摘 3-5 条。
+- 摘录含关键限定语（样本量、条件、时长）——**把边界一起摘进来**，写作时才不会丢。
+- 只有题录无全文的文献：不进证据池（quote_type 标 fulltext_unavailable 可选登记）。
 
-## 线性流程（5 步，按序执行）
+### Stage 3 — 论断拆解与绑定（1-2 次响应，产出 /app/work/claims_evidence.jsonl）
+先拆论断：`{"cid":"C01","section":"引言","claim":"一句可判定的话","claim_kind":"背景|方法有效性|经验结果|机制|预测"}`；
+再逐条绑定到证据池：`{"cid":"C01","sources":["R3"],"quote_ids":["Q01"],"locator":"M02:p5|para12","quote":"(从Q01复制逐字摘录)","support_scope":"直接支撑|部分支撑|仅相关","evidence_grade":"A|B|C|D","grade_basis":"…","status":"bound|unbound","wording_ok":"ok|fixed"}`
+- **一条论断多篇文献**：sources 列多条、quote_ids 逐条对应；**一篇文献支撑多条论**：正常，双向矩阵会记录。
+- **对得上**：摘录真的支撑这句论断（不是相近但更强/更弱的话）；不匹配就降级论断措辞，不许升格摘录。
+- **分级**：A=系统综述/多源一致；B=高质量原始研究；C=单篇小样本/初步结果；D=综述转述/专家意见/机制推测。
+- **措辞相称**：C/D 级必须带限定语；单篇小样本不得写成"研究表明…普遍…"；相关不得写成因果。
+- **冲突证据**：相左结论都列出，正文写"结果不一，可能因X"。
+- 绑不上的论断：status=unbound → 从正文删除或改写为待验证问题，列入 uncertainty。
 
-### Step 1 — 契约与骨架
+### Stage 4 — 成稿（1 次响应 + 1 次脚本）
+正文按论断单元组装；每条 bound 论断句末带 [E##]；参考文献表只含实际引用文献（元数据抄 sources_registry）。
 ```bash
-ls -la /input/ && cat /input/case.json && cat /input/task.md 2>/dev/null || true
-python3 scripts/build_skeleton.py --case /input/case.json --out /app/output/result.json --status in_progress
+python scripts/docx_build.py /app/work/draft.json --out-docx /app/output/draft.docx --out-md /app/output/draft.md
 ```
-- 从 case.json/task.md 提炼 `/app/work/constraints.json`：体裁、受众、引用风格、字数范围。
-- 把每个 output_contract 字段映射到「由哪个产物回填」，记入 constraints 的 field_plan。
-- 材料文件复制/整理到 `/app/work/sources/`（M01.txt…），manifest.jsonl 逐行登记
-  `{"id":"M01","type":"原始研究|综述|指南|预印本"}`；PDF 若能读取文本则落 txt 并在原文
-  保留 `[SRC:M01:p3|line12]` 定位锚点，不能读则如实记 uncertainty（不得伪造页码）。
 
-### Step 2 — 写成稿（初稿）
-- 按 constraints 与案例要求写 `/app/output/draft.md`：先全篇各段各写一版（短但有据），
-  再充实；单响应只写 1-2 节，写完自检。
-- 写作规则：**数值/样本量/统计量**与来源逐字一致（不取整不换算），来源没有的不写或标
-  [待核]；**引用**只引材料中的文献条目，作者/年份/DOI 照抄，不堆装饰性引用；
-  **措辞按证据强度选词**（A 级可用"证实"，B 级"结果表明"，C 级"综述提示"，D 级必带限定语）；
-  相关≠因果；单篇小样本不写成领域共识；冲突证据并列注明，不择边隐藏。
-
-### Step 3 — 论断切分与证据绑定
+### Stage 5 — 三重机器校验（含逐字核验与双向矩阵）
 ```bash
-python3 scripts/claim_split.py --draft /app/output/draft.md --out /app/work/claims.jsonl
-python3 scripts/evidence_bind.py --claims /app/work/claims.jsonl --sources /app/work/sources --out /app/work/evidence_table.jsonl
+python scripts/fact_ledger.py check --draft /app/output/draft.md --ledger /app/work/fact_ledger.jsonl --out /app/output/fact_check.json
+python scripts/consistency_check.py --draft /app/output/draft.md --constraints /app/work/constraints.json --out /app/output/check_report.json
+python scripts/evidence_audit.py --claims /app/work/claims_evidence.jsonl --draft /app/output/draft.md --sources /app/work/extracted --refs /app/work/sources_registry.jsonl --out /app/output/evidence_audit.json
 ```
-- claim_split 自动分类（numeric/citation/factual/interpretive）并预标 hedged/strong/universal。
-- evidence_bind 按「数字一致优先 + 字面覆盖排序」匹配来源句，quote 为逐字子串（去空白比对）。
-- match=none 的论断：回读来源找正确出处改稿，或删断言，或标 [待核] 记 uncertainty；
-  **禁止保留来源不明的实质性论断**。
+evidence_audit 机器核验：①摘录逐字存在性（quote_not_verbatim=编造风险）②[E##]↔cid 双向对应 ③裸论断 ④等级-措辞 ⑤**论断↔来源双向映射矩阵 + 孤儿来源**。fail → 回 Stage 3 修复后重跑。
 
-### Step 4 — 强度审计与双重校验（fail 必须修复一轮）
+### Stage 6 — 渲染与自包含 result.json
 ```bash
-python3 scripts/strength_gate.py --claims /app/work/claims.jsonl --evidence-table /app/work/evidence_table.jsonl --out /app/output/strength_report.json
-python3 scripts/verify_check.py --claims /app/work/claims.jsonl --evidence-table /app/work/evidence_table.jsonl --sources /app/work/sources --draft /app/output/draft.md --out /app/output/verify_report.json
+python scripts/render_preview.py --src /app/output/draft.docx --outdir /app/output/previews
+python scripts/build_result.py --case /input/case.json --out /app/output/result.json \
+  --artifact draft.docx --artifact-md draft.md \
+  --claims /app/work/claims_evidence.jsonl --draft-json /app/work/draft.json \
+  --fact-check /app/output/fact_check.json --consistency /app/output/check_report.json \
+  --audit /app/output/evidence_audit.json --status complete
 ```
-- strength_gate 5 规则：R1 强断言×C/D证据=overclaim；R2 相关×因果词=causal_overreach；
-  R3 全称词=overgeneralization；R4 未限定=needs_hedge；R5 强证据过度弱化=underclaim（双向把关）。
-- verify_check 逐条机检 5 项：bound / verbatim / locator_format / in_draft / wording。
-- FAIL 处置：只改对应论断/引文后重跑，不重写全文；修一轮仍 FAIL 照实登记继续交付。
+result.json 自包含：deliverable_text（成文全文）+ claims_evidence（论断-证据表）+ claim_source_matrix（双向矩阵）——评审者不看任何附属文件也能逐条复核。
 
-### Step 5 — 增益探针与组装收尾
-```bash
-python3 scripts/gain_probe.py --result /app/output/result.json --claims /app/work/claims.jsonl --evidence-table /app/work/evidence_table.jsonl --sources /app/work/sources --draft /app/output/draft.md --ablate --write
-python3 scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/output/guard_report.json
-python3 scripts/build_skeleton.py --case /input/case.json --out /app/output/result.json --assemble \
-  --draft /app/output/draft.md --claims /app/work/claims.jsonl \
-  --evidence-table /app/work/evidence_table.jsonl --strength /app/output/strength_report.json \
-  --verify /app/output/verify_report.json --status complete \
-  --changelog '关键决策; 降级事实' --notes '材料缺口; 待核项'
-```
-- 先 gain_probe（--ablate 真跑出 gain_evidence/efficiency）再 --assemble 回填主产物；
-  最后 schema_guard 终检（契约字段齐全、case_id 在位）。
-- status 四级：全链路=complete；部分失败=partial（写明环节）；无法产出=failed；
-  材料缺失无法开工=blocked（result.json 写明缺什么）。
-- uncertainty 必含：材料缺口、[待核] 条目、证据冲突、仅摘要来源、降级事实。
-
-## 异常处置表
+## 2. 异常处置表
 
 | 情形 | 处置 |
 |---|---|
-| 来源文献不可得/仅摘要 | source_type 如实登记，等级记 D，正文加限定语；uncertainty 注明 |
-| PDF 无法读取文本 | 不伪造页码；locator 置 p?（校验器 FAIL 如实），uncertainty 记录 |
-| 两份来源数值冲突 | 并列注明两个口径与各自来源；不擅自取舍 |
-| 论断找不到证据 | match=none → 改稿/删断言/标 [待核]；不得保留来源不明论断 |
-| 响应被截断/中断 | 已写盘文件不受影响；从下一节继续；骨架 result.json 保证可解析 |
-| claim_split 切分过碎 | 长句拆分后弱片段（<6 字）自动丢弃；关键论断可手工补入 claims.jsonl |
-| 引用编号与文献表不一致 | 以材料文献条目为准逐条改号；对不上标 [待核] |
-| 校验器异常/依赖缺失 | 脚本打印 error 后退出码仍 0；结论按 fail_count 照实写入 result.json |
-| 预算将尽（≥48 次或 ≥700 秒） | 立即 Step 5 收尾，status 如实 |
+| 文献只有题录无全文 | 不进证据池；只能支撑元数据级论断，结果级论断列入 unbound |
+| 摘录与论断强度不符 | 降级论断措辞匹配证据，不许升格摘录 |
+| 一条论断需多篇文献 | sources/quote_ids 列多条，support_scope 逐条标 |
+| 撤稿/版本差异线索 | status 标 retracted_risk，正文不引用，uncertainty 列出 |
+| DOI 无法核验（离线） | 标 doi_unverified_offline，如实说明，不伪造核验结论 |
+| 任务给的是摘要而非全文 | 只做元数据级绑定；结果级论断列入 unbound |
+| PDF 是扫描件 | extract_materials 标记 extracted:false；OCR 工具可用则用，不可用如实标注缺口 |
+| 术语不一致 | constraints.terms + consistency_check 机检 |
+| 预算将尽（48次/700秒） | 停止打磨，写盘现有内容，status=partial，audit 如实记录 |
 
-## 最小调用示例（示意，非正式案例结果）
-
+## 3. 最小调用示例（示意，非真实案例结果）
 ```bash
-python3 scripts/build_skeleton.py --case /input/case.json --out /app/output/result.json --status in_progress
-# → {"ok":true,"mode":"skeleton","contract_fields":8}
-# 写 /app/output/draft.md（示例内容见 examples/example_case.json）
-python3 scripts/claim_split.py --draft /app/output/draft.md --out /app/work/claims.jsonl
-# → {"ok":true,"claims_total":14,"by_type":{"numeric":5,"citation":6,"factual":2,"interpretive":1}}
-python3 scripts/evidence_bind.py --claims /app/work/claims.jsonl --sources /app/work/sources --out /app/work/evidence_table.jsonl
-# → {"ok":true,"claims":14,"bound_exact":12,"bound_none":2}
-python3 scripts/strength_gate.py --claims /app/work/claims.jsonl --evidence-table /app/work/evidence_table.jsonl --out /app/output/strength_report.json
-# → {"ok":true,"violations":3,"verdict":"fail"}   ← 修复一轮后
-# → {"ok":true,"violations":0,"verdict":"pass"}
-python3 scripts/verify_check.py --claims /app/work/claims.jsonl --evidence-table /app/work/evidence_table.jsonl --sources /app/work/sources --draft /app/output/draft.md --out /app/output/verify_report.json
-# → {"ok":true,"verdict":"PASS","fail_count":0}
-python3 scripts/gain_probe.py --result /app/output/result.json --claims /app/work/claims.jsonl --evidence-table /app/work/evidence_table.jsonl --sources /app/work/sources --draft /app/output/draft.md --ablate --write
-# → fail_count_diff_base_minus_skill>0 且 sensitivity_check=PASS
-python3 scripts/build_skeleton.py --case /input/case.json --out /app/output/result.json --assemble --draft /app/output/draft.md --claims /app/work/claims.jsonl --evidence-table /app/work/evidence_table.jsonl --strength /app/output/strength_report.json --verify /app/output/verify_report.json --status complete
-python3 scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/output/guard_report.json
-# → {"verdict":"PASS"}
+python scripts/extract_materials.py --input /input --outdir /app/work/extracted
+# （模型响应：sources_registry.jsonl 8篇 / evidence_pool.jsonl 31条逐字摘录 / claims_evidence.jsonl 24条:22 bound+2 unbound）
+python scripts/docx_build.py /app/work/draft.json --out-docx /app/output/draft.docx --out-md /app/output/draft.md
+python scripts/evidence_audit.py --claims /app/work/claims_evidence.jsonl --draft /app/output/draft.md --sources /app/work/extracted --refs /app/work/sources_registry.jsonl --out /app/output/evidence_audit.json
+# → {"verdict":"pass","claims":24,"bound":22,"problems":[]}  （矩阵: sources_used 7, orphan_sources 0）
+python scripts/build_result.py --case /input/case.json --out /app/output/result.json --artifact draft.docx --claims /app/work/claims_evidence.jsonl --draft-json /app/work/draft.json --status complete
 ```
 
-## 交付自查清单
-
-- [ ] result.json 含 case_id 与 output_contract 全部字段（只增不删），任何时刻可解析
-- [ ] 全部实质性论断在 claims.jsonl 且逐条绑定证据表；quote 逐字、locator 可回查
-- [ ] 措辞与证据等级相称：无 overclaim/causal_overreach/overgeneralization；D 级有限定语
-- [ ] 引用全部来自材料文献条目；冲突证据并列注明；[待核] 项在 uncertainty 显式列出
-- [ ] draft.md 与论断清单一致（in_draft 全过）；成稿可继续编辑
-- [ ] gain_probe --ablate 真跑：fail_count 差>0 且污染反例 sensitivity_check=PASS
-- [ ] status/uncertainty/changelog 如实；未编造数据、文献或渲染状态
+## 4. 交付自查清单
+- [ ] result.json 含 case_id + 契约全部字段（无值填 null）+ status + uncertainty + changelog
+- [ ] 证据池先行：每条 bound 论断的 quote 都来自证据池，逐字核验通过（无 quote_not_verbatim）
+- [ ] 无裸论断；unbound 论断已删除/改写并列入 uncertainty
+- [ ] [E##]↔cid 双向对应；双向矩阵无孤儿来源；文献表无编造条目
+- [ ] 证据等级与措辞相称（C/D 带限定语；无因果升级；冲突证据未隐藏）
+- [ ] fact_check / check_report / evidence_audit 三报告落盘；status 诚实

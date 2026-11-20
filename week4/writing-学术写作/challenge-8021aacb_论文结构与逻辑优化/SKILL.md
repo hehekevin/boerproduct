@@ -1,130 +1,106 @@
 ---
-name: struct-diag-paper
-description: 论文结构与逻辑诊断技能：对给定稿件做六类结构机检（章节结构/研究问题对齐/论证链/段落关系/重复内容/结论边界）+ 模型语义诊断，合并为定位到章节/段落/句子并附逐字引文的可执行编辑方案（move/merge/split/narrow/insert/delete），同输入消融两臂+污染反例注入产出机器判定增益证据。Use when the case asks to diagnose/optimize paper structure, logic, argument chain, redundancy, conclusion boundary, or produce an actionable revision plan.
+name: acwrite-structure
+description: 论文结构与逻辑优化技能：把稿件拆成论断-论据链做结构诊断，问题定位到章节/段落/句子并分类（论证断裂/跳跃/循环/重复/顺序/结论越界），输出可执行编辑动作清单（移动/合并/拆分/收窄）+ 修订后全文。每处修改带逐字前后对照留痕（original/revised/reason/basis/段落定位），诊断报告与修订后全文完整嵌入 result.json，评分者无需打开原稿即可逐条复核。Use when the case asks to diagnose and fix paper structure, logic gaps, claim-evidence alignment, repetition, or overclaimed conclusions — producing traceable, executable edit operations rather than a rewrite.
 ---
 
-# struct-diag-paper — 论文结构与逻辑诊断（诊得准 · 改得动 · 链得通 · 说得清）
+# acwrite-structure — 结构诊断与逻辑优化（定位到句 · 逐字留痕 · 全文嵌入可复核）
 
-核心思想：诊断是**有定位、有依据、有动作**的判断，不是写作原则罗列。每条问题必须：
-① 定位到章节/段落（诊得准）；② 给出 move/merge/split/narrow/insert/delete 可执行动作（改得动）；
-③ 论点—论据映射支撑跨章呼应检查（链得通）；④ 附逐字引文供作者复核采纳/部分采纳/驳回（说得清）。
-交付四件套：findings.json（合并问题清单）+ edit_actions.jsonl（有序动作）+ report.md（可编辑诊断报告）+ result.json（契约全字段+增益证据）。
+结构优化不是重写一稿，而是**诊断到句、动作到段、留痕到字**。每条判断指回原文位置；每处修改给出逐字前后对照；诊断与修订全文完整嵌入 result.json，作者与复核者不用打开原稿即可核对。交付三件套：
 
-### 增益证据与效率（必须本次真跑，禁止文字声明冒充数字）
+1. **诊断报告**：structure_issues.jsonl（定位/类型/严重度/原文摘句/依据/动作）+ diagnosis.md（人读版）
+2. **修订产物**：revised_outline.md（骨架+来源映射）+ revised.docx/md（修订后全文）+ edits_before_after.jsonl（逐字前后对照）
+3. **可核验交付**：verify_report.json（动作落地自检）+ result.json（诊断 issues、逐字对照、修订全文全部嵌入）
+
+## 0. 强制执行协议（置顶，任何情况下先走这一节）
+
+1. **抄契约**：`cat /input/case.json`，把 `output_contract` 的字段名**逐字抄下**（一个不缺）记入 work 笔记；同时读 `/input/task.md` 与待诊断稿件，**以真实稿件内容为准，不依据标签猜内容**。
+2. **立即落骨架**：`python scripts/extract_materials.py --input /input --outdir /app/work/extracted && python scripts/build_result.py --case /input/case.json --out /app/output/result.json --scaffold`。骨架含全部契约字段（值为 null）+ `status:"pending"`。**写盘自检**：`cat /app/output/result.json` 确认字段在盘上。
+3. **广度优先**：先对全文六类问题（研究问题对齐/章节顺序/论证链/段落重复/结论边界/贡献错配）各扫一遍拿到问题清单，再深化；不要在一个章节上耗尽预算。
+4. **熔断**：模型请求数 ≥48 或运行 ≥700 秒（平台预算 64 请求/900 秒，留安全余量）→ 立即跳到 Stage 4，用手头已有材料组装交付，`status` 如实标 `partial`，并说明缺了哪几步。**失败也要交付**：哪怕只有骨架，也交付 result.json（字段齐全、status 诚实）。
+5. **每阶段结束写盘自检**：产物文件存在、非空、JSON 可解析，才进入下一阶段。
+
+## 1. 阶段流程（线性 5 步）
+
+### Stage 0 — 契约、材料抽取与骨架（协议第 1-2 条，1-2 次脚本）
 ```bash
-python3 scripts/gain_evidence.py --manuscript /app/work/manuscript.json --result /app/output/result.json
+python scripts/extract_materials.py --input /input --outdir /app/work/extracted
+python scripts/build_result.py --case /input/case.json --out /app/output/result.json --scaffold
+cat /app/output/result.json   # 写盘自检：契约字段一个不缺
 ```
-- 同一校验器 structure_check 对同输入**消融两臂各跑一遍**：完整臂（六类机检）vs 消融臂
-  `--ablate`（六类全关，仅表层规则，模拟无结构能力的基础检查）。逐类 FAIL 数差为机器判定。
-- 污染反例：向稿件副本注入 3 处植入缺陷（跨章节重复段/绝对化结论句/无证据论断），完整臂
-  重跑副本验证检测器非空转（命中数与未命中类别均如实记录）。
-- 写入 result.json 的 `gain_evidence` 与 `efficiency`（这两个键由本脚本独占，其他脚本不碰）。
-- **机检/闸门失败一律 verdict 照实记录、退出码恒 0**；修一轮仍不过则如实登记并继续交付。
+constraints.json 记：诊断范围（哪些章节）、学科/体裁、稿件类型（全文/摘要/报告）。材料不足（缺章节/无参考文献/稿件截断/图表公式缺失）→ 记入 manifest 的 gaps，后续进 uncertainty，**不虚构**。
 
-## ⚠️ 强制执行协议（每次运行先读完本节再动手，顺序不可调换）
+### Stage 1 — 结构快照与论断-论据链（1 次响应，/app/work/claim_chain.jsonl）
+段落锚点：按"§章.节 para段序"编号。逐节抽取论断链：
+`{"aid":"A01","kind":"research_question|contribution|method_claim|result_claim|conclusion","text":"逐字或近原句","locator":"§2 para3","evidence":["A05"],"evidence_kind":"本研究数据|文献[3]|逻辑推理|无"}`
+- 专查：研究问题是否清楚提出并贯穿全文；贡献主张有几条、与实际工作是否一致；每条结论的支撑是什么。
 
-1. **抄契约**：第一动作 `cat /input/case.json`，逐字抄下 `output_contract` 全部字段名与 `case_id`。result.json 必须含全部字段，一个不缺（无值先置 null，不删键）。
-2. **立即落骨架**：`build_result.py --status in_progress`。此后任何时刻中断，result.json 完整可解析。
-3. **读真实文件**：稿件内容从实际文件提取，不按文件名/标签猜内容；领域标签错误不补造数据。
-4. **广度优先**：六类语义诊断各至少一条或明确登记「该类经复核无问题」，再逐条充实。
-5. **熔断**：累计约 48 次模型请求或 700 秒即停止新增诊断，直接收尾，status 如实。
-6. **写盘自检**：每次写 JSON/文本后自检可解析；失败重写一次，再失败在 uncertainty 记录。
-7. **失败也交付**：任何异常不空手退出；blocked/partial/failed 也要有 result.json 与已完成部分。
+### Stage 2 — 结构诊断（1-2 次响应，/app/work/structure_issues.jsonl）
+每条问题一行：
+`{"sid":"S01","location":"§4.2 para2","quote":"≤40字原文逐字摘句","type":"claim_evidence_gap|logic_jump|circular|repetition|structure_order|contribution_mismatch|conclusion_overreach|missing_limitation","severity":"high|mid|low","why":"依据：指认论断链哪条断裂/哪条重复","fix":"一句话动作","fix_ops":[{"op":"move|merge|split|narrow|delete|add_transition","target":"§4.2 para2","to":"§3.1 后","detail":"…"}]}`
 
-## 线性流程（7 步，按序执行）
+诊断规则（对号入座，禁止空泛写作原则）：
+- **论断-论据断裂**：结论句在链上无 evidence 或 evidence_kind=无 → high。
+- **论证跳跃**：指出缺哪一步中间环节（add_transition 或补论据）。
+- **循环论证**：指出 A⇄B 回路的两个定位点。
+- **重复内容**：指明保留哪处（保留信息更全者），另一处 merge/delete。
+- **结构顺序**：铺垫后置/细节前置/章节该合并 → move + 理由。
+- **贡献错配 / 结论越界**：narrow，**必须给出收窄后的替代表述**；越界含"相关写成因果""初步写成定论""缺局限说明"。
+- severity 看影响面：动摇主结论=high；局部表达=low。**不把风格偏好当结构错误**；诊断不到的类别如实写"未发现该类问题"。
 
-### Step 1 — 契约与骨架
+### Stage 3 — 修订与逐字留痕（1-2 次响应，核心可核验产物）
+1. 执行全部结构类动作（move/merge/split）→ revised_outline.md（新骨架+每节来源映射"原§x.y para n"）。
+2. 对 high 级问题执行语句级修复 → revised_draft.json → 全文：
 ```bash
-ls -la /input/ && cat /input/case.json && cat /input/task.md 2>/dev/null || true
-python3 scripts/build_result.py --case /input/case.json --out /app/output/result.json --status in_progress
+python scripts/docx_build.py /app/work/revised_draft.json --out-docx /app/output/revised.docx --out-md /app/output/revised.md
 ```
+3. **每处修改登记逐字前后对照**（/app/work/edits_before_after.jsonl）：
+`{"sid":"S01","location":"§4.2 para2","original":"≤40字原句逐字","revised":"修改后句","reason":"一句话","basis":"依据 S01/论断链 A05"}`
+   - original 必须是原稿逐字摘句（≤40 字，可在原稿中检索到）；revised 是落地到修订稿的句子；未改动的段落**逐字保留**。
+4. 需作者决策的动作（如删整段）→ action_ledger.jsonl status=needs_author，**不在稿内擅自执行**。
 
-### Step 2 — 稿件提取与切章
+### Stage 4 — 校验、嵌入与交付（3 次脚本 + 熔断出口）
 ```bash
-python3 scripts/extract_input.py --input /input --case /input/case.json --task /input/task.md --outdir /app/work
+python scripts/verify.py --edits /app/work/edits_before_after.jsonl --original /app/work/extracted --revised /app/output/revised.md --out /app/output/verify_report.json
+python scripts/build_result.py --case /input/case.json --out /app/output/result.json \
+  --embed-diagnosis /app/work/structure_issues.jsonl --embed-chain /app/work/claim_chain.jsonl \
+  --embed-edits /app/work/edits_before_after.jsonl --embed-revised /app/output/revised.md \
+  --artifact /app/output/revised.docx --verify /app/output/verify_report.json --status complete \
+  --notes 'needs_author 项;诊断未覆盖章节及原因;收窄表述待作者确认'
+python scripts/render_preview.py --src /app/output/revised.docx --outdir /app/output/previews   # 失败不阻塞
 ```
-- 产出 `/app/work/manuscript.json`（章节/段落结构 + stats + notes）与 constraints.json。
-- 稿件为 PDF 且脚本无 PyMuPDF 时：用 Harness 的 pdf-text-tool 转出文本存 /app/work/raw.txt，
-  再把该文件放回 /input 重跑本步；仍失败则 notes 记录缺口，**status 置 blocked 并交付说明**。
-- `sections==[]` 时不得编造结构，status=blocked。
+- verify.py 检查：每条 original 可在原稿定位、revised 已落进修订稿、无未授权改动 → verdict=pass/fail。
+- build_result.py 把 **diagnosis.issues、claim_chain、edits_before_after、revised_text（修订全文）完整嵌入** result.json —— 复核者不需要打开原稿即可逐条核对。
+- 最终写盘自检：`python -c "import json;d=json.load(open('/app/output/result.json',encoding='utf-8'));print(d['status'],len(d.get('diagnosis',{}).get('issues',[])),len(d.get('edits_before_after',[])))"`。字段缺失/值为 null 且无法补 → status 降级如实标注。
 
-### Step 3 — 论点—论据映射（链得通的底座）
-```bash
-python3 scripts/claim_extractor.py --manuscript /app/work/manuscript.json --out /app/work/claim_evidence_map.jsonl
-```
-- 逐句抽取论断与证据标记（数值/引用[n]/图表），support 分 same_sentence/same_paragraph/none。
-- 用一次响应复核 `support==none` 的条目：同段确无证据→进入论证链 findings；机检漏判（跨段
-  有据）→登记为机检误报，在 changelog 记录口径。
-
-### Step 4 — 模型语义诊断（诊得准的主判层）
-通读 manuscript.json，写 `/app/work/model_findings.json`（JSON 数组，schema 同机检 finding）：
-```json
-[{"finding_id":"M001","source":"model","category":"claim_boundary","category_zh":"结论边界",
-  "severity":"high","location":{"section":"4 结论","paragraph":2},"quote":"逐字原文≤80字",
-  "problem":"结论称『全面解决』，但方法仅在该数据集两类任务上验证",
-  "basis":"模型语义判断（结构级，机检无法覆盖）",
-  "suggested_action":{"type":"narrow","instruction":"收窄为『在该数据集上优于基线』"},
-  "status":"pending_author"}]
-```
-- category 六选一：section_structure/question_alignment/claim_evidence/paragraph_flow/repetition/claim_boundary。
-- 每条必须有 location+quote+动作类型；机检已覆盖的类别优先补充机检盲区（如语义层面的循环论证、跨章节呼应断裂）。
-- 材料不足/需人工确认的判断写入 `--gaps`（Step 6），不编造。
-
-### Step 5 — 机检与合并
-```bash
-python3 scripts/structure_check.py --manuscript /app/work/manuscript.json --out /app/work/findings_machine.json
-python3 scripts/edit_plan.py --machine /app/work/findings_machine.json --model /app/work/model_findings.json \
-  --manuscript /app/work/manuscript.json --out-actions /app/work/edit_actions.jsonl \
-  --out-findings /app/output/findings.json --out-report /app/output/report.md \
-  --gaps '["人工确认项/材料缺口（JSON 数组）"]'
-```
-- 机检六类：章节功能与顺序 / 研究问题与贡献对齐 / 论证链断点 / 段落衔接 / 跨章节重复 / 结论边界。
-- 合并键 = 类别+引文+位置：同位同文去重，不同位置同文各留一条；model 条目带 model_echo 留痕。
-
-### Step 6 — 增益证据（消融两臂 + 污染反例，真跑）
-```bash
-python3 scripts/gain_evidence.py --manuscript /app/work/manuscript.json --result /app/output/result.json
-```
-
-### Step 7 — 收尾组装
-```bash
-python3 scripts/build_result.py --case /input/case.json --out /app/output/result.json --status complete \
-  --findings /app/output/findings.json --actions /app/work/edit_actions.jsonl \
-  --report /app/output/report.md --claim-map /app/work/claim_evidence_map.jsonl \
-  --manuscript /app/work/manuscript.json --notes '缺口; 待核项' --changelog '关键决策; 机检误报口径'
-```
-- status 四级：六类全出+报告完整=complete；部分环节失败=partial（写明环节）；无法产出=failed；
-  无稿件/依赖缺失无法开工=blocked（notes 说明缺什么）。
-- gain_evidence/efficiency 由 Step 6 写入，本步只回填其余键（不覆盖、不删键）。
-
-## 异常处置表
+## 2. 异常处置表
 
 | 情形 | 处置 |
 |---|---|
-| 稿件缺失/PDF 无法提取 | status=blocked；notes 记录缺口与已尝试路径（pdf-text-tool 等）；不编造结构 |
-| 模型诊断（Step 4）未完成 | edit_plan 仅机检结论运行，gaps 登记「语义层未覆盖，六类可能有遗漏」 |
-| 机检误报（如描述性方法名） | 修规则一轮；仍误报则在 changelog 记录口径，不硬凑 |
-| 稿件被截断/格式混乱 | extract notes 记录；已提取部分照常诊断，uncertainty 注明覆盖范围 |
-| 无参考文献/图表缺失 | 属 section_structure 正常检出项；若体裁不需要，作者可驳回 |
-| gain_evidence 计算失败 | error 如实写入 gain_evidence 键，退出码仍 0，不冒充数字 |
-| 预算将尽（≥48 次或 ≥700 秒） | 立即 Step 7 收尾，status 如实 |
+| 稿件无明确研究问题 | type=missing_research_question，列候选问题，标 needs_author |
+| 结论链全文无支撑 | 不改写全文；输出最小修复动作 + 需补实验/数据清单 |
+| 重复段落是刻意呼应 | 保守不合并，why 说明判断依据 |
+| 多章节长文档 | 按章诊断，跨章问题单列 type=cross_chapter_issue |
+| 稿件被截断/缺章节 | gaps 记入 uncertainty，只诊断实际存在部分 |
+| 诊断与作者风格冲突 | 语句级建议标 needs_author，结构级照常执行 |
+| 稿件是摘要/短文 | 链抽取降到句级，诊断仍逐条定位 |
 
-## 最小调用示例（示意，非正式案例结果）
-
+## 3. 最小调用示例（示意，非正式结果）
 ```bash
-python3 scripts/extract_input.py --input /input --outdir /app/work
-# → {"ok":true,"case_id":"...","source":"file:manuscript.txt(text)","sections":6}
-python3 scripts/structure_check.py --manuscript /app/work/manuscript.json --out /app/work/findings_machine.json
-# → {"ok":true,"arm":"skill_full","fail_count":10}
-python3 scripts/gain_evidence.py --manuscript /app/work/manuscript.json --result /app/output/result.json
-# → {"ok":true,"written":true,"fail_diff":10,"pollution":"pass"}
+python scripts/extract_materials.py --input /input --outdir /app/work/extracted
+python scripts/build_result.py --case /input/case.json --out /app/output/result.json --scaffold
+# （模型响应：claim_chain.jsonl 31 条论断 / structure_issues.jsonl 14 条问题，全部带 locator+quote+fix_ops；
+#   edits_before_after.jsonl 18 条逐字对照）
+python scripts/docx_build.py /app/work/revised_draft.json --out-docx /app/output/revised.docx --out-md /app/output/revised.md
+python scripts/verify.py --edits /app/work/edits_before_after.jsonl --original /app/work/extracted --revised /app/output/revised.md --out /app/output/verify_report.json
+# → {"located_ratio":1.0,"landed_ratio":1.0,"unauthorized_changes":0,"verdict":"pass"}
+python scripts/build_result.py --case /input/case.json --out /app/output/result.json --embed-diagnosis /app/work/structure_issues.jsonl --embed-edits /app/work/edits_before_after.jsonl --embed-revised /app/output/revised.md --artifact /app/output/revised.docx --verify /app/output/verify_report.json --status complete
 ```
-输入结构示例见 `examples/example_input.json`（示意结构，非正式案例）。
 
-## 交付自查清单
-
-- [ ] result.json 含 case_id 与 output_contract 全部字段；任何时刻可解析（先骨架后回填）
-- [ ] 每条 finding 有 location+quote+可执行动作类型；作者可按 report.md 逐条采纳/部分采纳/驳回
-- [ ] claim_evidence_map 覆盖全部论断句；support=none 条目已复核并进入 findings 或登记误报
-- [ ] gain_evidence 含同输入两臂逐项差 + 污染反例命中数，全部为本次真跑数字
-- [ ] status/uncertainty/changelog 如实；未编造结构问题、来源或增益数字
+## 4. 交付自查清单
+- [ ] result.json 契约字段一个不缺（骨架阶段已落盘，回填不覆盖）
+- [ ] structure_issues 每条有 locator + ≤40 字逐字摘句 + 类型 + severity + 可执行 fix_ops
+- [ ] 结论越界/贡献错配项给出收窄后替代表述
+- [ ] edits_before_after 每条 original 逐字可检索、revised 已落地、reason+basis 齐全
+- [ ] verify.py verdict=pass；needs_author 项显式列出
+- [ ] diagnosis.issues / claim_chain / edits_before_after / revised_text 已完整嵌入 result.json
+- [ ] status 诚实（complete/partial），uncertainty/changelog 如实

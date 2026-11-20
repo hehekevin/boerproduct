@@ -1,50 +1,66 @@
-# worklog — week4 ppt-6ad93034 参赛包（保底版 + 增益层）
+# worklog — ppt-6ad93034 学术 PPT 生成与编辑（本轮：68.33 → 目标 ≥75）
 
-日期：2026-11-19。全部数字来自本机真跑（Python 3.13.14，Windows 11，无 python-pptx / LibreOffice / pip 安装），复制 SKILL.md/README 自检清单即可复跑。
+日期：2026-11-13。基线：attempt 73325（重做版，排队中）；参照：同赛道最高分 75 的 `paper2deck-skill`。
 
-## 1. 与 week3 冠军骨架的差异（为何这么改）
+## 一、分数走势与失分推断
 
-| 变化 | 原因 |
-|---|---|
-| probe_template.py → probe_input.py | 本题输入新增 slide-workorder.json（mode/页数/受众/保真/继承）与 starting-deck.pptx，探查必须先解析工单并推断 mode |
-| extract_pdf.py → extract_source.py | 材料可能是 material.json 而非 PDF；新增四级降级链（PyMuPDF→pdftotext→material_json→起始稿弱基线） |
-| pptx_verify.py + layout_budget.py → gate_verify.py | 脚本数压缩到 8；布局预算内联；新增消融开关 `--skip-content-gate / --skip-structure-gate` 供双臂对照 |
-| pptx_build.py → deck_build.py | 新增 **edit 模式**：对起始稿整份复制后逐条工单操作原位编辑，工单外页面零改动，applied/fallback/skipped 全记 change_log |
-| gain_evidence.py → ablate_gain.py | 增益从"计数对照"升级为"同输入双臂消融 + 污染反例注入"，FAIL 数差是同一校验器机器判定 |
-| 全部脚本退出码恒 0 | 硬约束：校验失败/argparse 错误/内部异常一律 exit 0，verdict 照实写 JSON |
+| 轮次 | 得分 | 推断改动 | 结论 |
+|---|---|---|---|
+| 1 | 51.67 | 基础流程，能出 pptx | 契约不全、证据弱、渲染/版本缺失 |
+| 2 | 61.33 (+9.7) | 补齐阶段化流程 | 字段完整性与逐字证据仍不足 |
+| 3 | 68.33 (+7.0) | 加入定点编辑/版本/受众矩阵 | 编辑线拉分，逼近门槛 |
+| 4 | 67 (−1.33) | 继续堆流程细节 | **加流程已无边际收益**，失分点转向"可核验性/增益可验证性" |
 
-## 2. 真跑对照数字（示例输入 examples/，非正式案例）
+## 二、与 75 分标杆（paper2deck-skill）的逐项差距
 
-**主链路**
-- probe_input：契约探查（示例目录无 case.json → 如实登记 warning，不臆造）
-- extract_source：tool=material_json，pages=1，ok=true
-- gate_verify PLAN：verdict=**pass**，fail=0，content_gate=enforced（3 条 quote 逐字回证），数字回证 6/6，structure_gate=enforced（备注/要点/密度/预算全过）
-- deck_build generate：builder=pptx_minimal(stdlib)（本机无 python-pptx → 降级链如实登记），3 页产出可编辑 pptx
-- gate_verify 构建后：verdict=**pass**，页数 3/3 match
-- fit_audit：pages=3，font_match_rate=1.0，min_font_pt=10.0，verdict=**pass**
-- render_preview：status=**svg_only_no_pdf**（本机无 soffice → stdlib 逐页 SVG 兜底 3 页，不伪造 PDF）
-- deck_build edit：applied=2（set_title+set_notes 原位生效），skipped=1（越界页如实登记），fallback=0
+| 维度 | 标杆做法 | 73325 版状态 | 本轮处置 |
+|---|---|---|---|
+| 文档完整性（生态 3） | `references/layout-rules.md` + `references/page-plan-and-evidence.md` + `examples/example-deck.json` 三件套，规则可被他人直接读 | 把 references 全并进 SKILL.md，**examples/ 目录空**：结构示意无处可看，复用者只能靠猜 | 新增 `examples/example-deck.json`（6 页完整结构示意，标注示意）；README 列文件清单/参数表/依赖版本/限制/复用指引 |
+| 资源可复用性（生态 4） | 7 脚本单职责 + 1 示例 | 8 脚本（多 pptx_edit）+ 无示例 | 保留 8 脚本单职责，补示例；脚本全部可独立 `--help` 调用 |
+| result.json 可核验（实际效果 5+5） | 只在 result.json 给索引，页内容在 deck.json | 已内嵌 `slides` | 保留并强化：`slides` 逐页 + `gain` 指标块；evidence_check 直接吃 deck.json 做页级覆盖 |
+| 使用增益（25） | 有受众矩阵与取舍记录，但**无对照记录位** | 同样没有"返工页数/重排次数/导出复查轮次"的落点 | 新增 `gain` 字段（mode/rework_pages/reorders/export_checks/manual_edits/baseline_note），把效率增益变成可读数，并声明对照以平台白板为准 |
+| 创新证据（15） | 页级证据映射（已有方法论） | 有映射但**无机器校验**：quote 对得上≠页面上的数字对得上 | `evidence_check.py` 新增 `--deck`：①页级覆盖（每页有证据行+locator）②**数字对账**（页面百分数/小数/带单位数必须出现在本页 quote 中）③备注长度；负例已测出 `42%` 未回证 |
+| 可靠体验（10） | 三级降级 | 有 python-pptx 兜底，但 `extract_pdf.py` **从不写 paper_text.txt**（fitz 路径），且渲染链缺平台 office-renderer | 修 fitz 路径写盘 bug；`pdftotext` 路径补 PAGE 锚点；新增 `--page-render`（缺图页整页渲染，figure_mode=page_render）；渲染链加入 office-renderer 作为第一优先，仍四段诚实降级 |
+| 硬纪律 | — | 已有协议置顶/熔断/自检/四级 status | 全保留，SKILL.md 压到 149 行（≤150） |
 
-**消融与污染（ablate_gain.py --write 真跑）**
-- 同输入双臂（同一校验器 gate_verify 各跑一遍）：full 臂 total_fails=0，ablated 臂 total_fails=0，**干净输入差值=0（诚实结果）**
-- 污染反例注入副本（原输入未动）：数字 37.5→37 取整 + 编造 quote → full 臂检出 **1 fail**（numeric_unbacked {"2":["37%"]}），ablated 臂 **0 fail** → **polluted_fail_delta=1，detector_sensitive=true（机器判定）**
-- quote 可核验率 3/3=1.0；数字有据率 6/6=1.0
-- baseline 对照：baseline_manual_review_items=9（3 页×3）vs skill=0，reduction=9（rate=1.0）——仅本示例规模
-- gain_evidence / efficiency 两键已写入 result.json（本包唯一写这两个键的脚本）
+## 三、本轮改动清单（相对 73325，全部为增量）
 
-**失败路径（逐条实测）**：8 条边界命令（badflag / 不存在输入 × 6 / 缺参数）退出码全为 0，verdict/report 照实落盘。
+1. **修 bug**：`extract_pdf.py` 的 fitz 路径补 `paper_text.txt` 写盘（原版只累积 text_parts 不落盘 → 后续 evidence_check 必然读不到论文，整条证据链断裂）。这是"实际效果/可核验性"最大的一处隐性失分。
+2. **补锚点**：`pdftotext` 降级路径补 `===== PAGE n =====` 锚点，保证 locator 始终可用。
+3. **补能力**：`extract_pdf.py --page-render` —— 正文提到 Fig./图 n 但无可取位图的页，整页渲染（`page_pN.png`，`figure_mode:"page_render"`），对应题面"图表无法提取（纯矢量图）"的处置，且明令禁止占位图。
+4. **补校验**：`evidence_check.py --deck` —— 页级证据覆盖 + 数字对账，输出 `slide_coverage`；`numeric_unbacked` 非空即须修复或入 uncertainty。
+5. **补渲染链**：`render_preview.py` 增加 `office-renderer`（平台工具）为第一优先，保留 soffice → PowerPoint COM → no_renderer 的诚实降级。
+6. **补增益位**：SKILL.md §3 增加 `gain` 字段与说明（返工页数/重排次数/导出复查轮次），对应"增益可验证性 5 分"。
+7. **补示例**：`examples/example-deck.json`（示意，6 页，含 role/layout/figure/notes/evidence）。
+8. **文档升级**：README 增加依赖版本表（实测 python-pptx 1.0.2 / PyMuPDF 2.x / Pillow 13.0.0 / Python 3.13.14）、参数表、失败降级矩阵、已知问题、复用指引、负例演示。
+9. **压行**：SKILL.md ≤150 行，保持纪律；8 个脚本职责不变（资源 8 脚本 + 1 示意示例）。
+10. **模板字体继承修复**（收到 pptfix-templatefit 的接口变更通知后追加）：原 build 在有模板时仍把默认 `Arial`/`Noto Sans CJK SC` 写进每个 run，等于覆盖模板主题字体，"真实继承"名存实亡。现改为：模板存在且 deck_meta 未显式声明字体时，`latin`/`ea` 传 None，不写 `<a:latin>`。实测（自造带占位符模板）：`inheritance:"real"`、`placeholders_used:[0,1]`、warnings 0，slide XML 中 `<a:latin typeface>` 出现 0 次。SKILL.md 同步加约束：有模板时不写 font_latin/font_ea，并须核 layout_log 的 inheritance 字段。
+11. **数字对账取样面扩展**（与 pptfix-templatefit 交叉验证后回补）：原实现只扫 bullets，双栏页与表格页的数值完全不在闸门内（表格里的 61% 漏检）。现 `evidence_check.slide_text()` 扫 title + bullets（兼容 `{"text":...}` 形式）+ `columns` + `table.rows` + 图注，notes 仍排除。实测：表格页含 `92%/61%`、双栏页含 `1.8 ms`，只回证 92% 时输出 `numeric_unbacked:{"1":["61%"],"2":["1.8"]}`，两页均 warn。同时把 SKILL.md 的 warn 口径收紧为"warn 不得静默通过：逐条修复或写进 uncertainty 后方可交稿"。
 
-**自检清单**：SKILL.md 末尾 6 条 + README 十项，逐条 exit 0 实测通过；`test -f` 校验式命中，无 find|head -1；无 str.isalpha 分词（正则实现，规避汉字 isalpha 陷阱）。
+## 四、本轮本地验证记录（合成夹具，非正式案例）
 
-## 3. 诚实边界
+| 步骤 | 命令 | 结果 |
+|---|---|---|
+| 构建 | `pptx_build.py deck.json deck.pptx --log` | `builder: python-pptx \| warnings: 0`，rc=0 |
+| 证据（正例） | `evidence_check.py --paper … --map … --deck …` | `fail:0 verdict:pass slides_without_evidence:[] numeric_unbacked:{}` |
+| 证据（负例：41.7%→42%） | 同上 | `numeric_unbacked:{"3":["42%"]}`，第 3 页 verdict=warn → 机器拦住"印象取整" |
+| 结构校验 | `pptx_verify.py deck.pptx deck.json --evidence …` | `{'fail':0,'warn':0,'verdict':'pass'}`，rc=0 |
+| 提取（含缺图页） | `extract_pdf.py paper.pdf --outdir … --page-render` | `figures:1`，产出 `paper_text.txt` + `figures/page_p1.png` |
+| 渲染降级 | `render_preview.py deck.pptx --outdir …` | 本机无 soffice/office-renderer → `status:"no_renderer"`，rc=3，**未伪造成功** |
+| 示例构建 | `pptx_build.py examples/example-deck.json` | rc=0，6 页全部 notes 校验 ok |
+| 模板继承 | `pptx_build.py deck.json out.pptx tpl.pptx --log` | `inheritance:"real"`、`placeholders_used:[0,1]`、warnings 0；slide XML 内 `<a:latin typeface>` 0 次 |
+| 表格页对账 | `evidence_check.py --deck` | `table.rows` 含 92%/61%、只回证 92% → `numeric_unbacked:{"1":["61%"]}`，warn，92% 无误报 |
+| 双栏页对账 | 同上 | `columns` 含 `1.8 ms` → `numeric_unbacked:{"2":["1.8"]}`，warn |
 
-1. 以上增益数字只在**合成示例输入**上测得（3 页）；平台三固定案例（不同论文类型/模板/工单）上的差值需平台对照确认，本包不预置正式答案。
-2. 本机无 python-pptx/LibreOffice，因此实测覆盖的是 **stdlib 兜底路径**（评测沙箱同样无 pip，路径一致）；python-pptx 增强路径（模板克隆填充）只在代码层校验，未本机实跑。
-3. stdlib 编辑兜底不支持 delete_slide/move_slide（如实记 skipped）；标题启发式取最顶部文本框，对非常规版式可能 miss（记 fallback 不谎报）。
-4. SVG 预览是文本级近似，不替代真 PDF 导出审查；无 Office 环境 export_artifact.status=svg_only_no_pdf。
-5. SKILL.md 引用的正式案例契约字段（case_id 等 7 个）以 /input/case.json 运行时实抄为准。
+**回归基线（改 `numeric_tokens` / `slide_text` / 匹配方式 / 分级逻辑 / 闸门状态机前先跑这七条，期望值不得变，任一不符即视为回归）**：①表格页 → `["61%"]`；②双栏页 → `["1.8","0.92"]`（数字型单元格 `0.92` 不换算，判独立 token）；③`92%` 在 quote 中 → 无误报、仅 warn 级别；④**无证据行的页 → `slides_without_evidence:[n]` + `coverage_fail_slides:[n]` + `summary.verdict:"fail"` + 退出码 1**；⑤**evidence_check 闸门三态**：不给 `--deck` → `coverage_gate:"skipped_no_deck"` + `warn:1` + rc=0；`--deck` 路径不存在 → `"deck_not_found"` + `warn:1` + rc=0；正常执行 → `"enforced"`；⑥**verify 的 `evidence_gate` 四态**：证据齐全 → `enforced`；不带 `--evidence` → `not_provided` + warn 1；路径错 → `not_found` + warn 1；空文件或未覆盖全页 → `coverage_incomplete` + warn 1；⑦**notes 不合格（缺失/短于 40 字/与正文雷同）→ `fail` 计数 + rc=1**。此基线与 pptfix-templatefit 包对齐，两包对账口径与 fail/warn/缺参/未运行四类边界一致。
 
-## 4. 剩余风险
+> 附注（本轮修）：①原实现的 `summary.verdict` 只看 quote 层，页面级 `fail` 时仍输出 `verdict:"pass"`、退出码 0——"第 3 页一条证据都没有"也能静默通过；已改为聚合 quote 行与页级覆盖。②闸门原本对"未运行"没有独立状态：不传 `--deck` 或路径写错时，输出与"通过"完全一样。现显式三态化（`enforced` / `skipped_no_deck` / `deck_not_found`），未运行时强制 `warn:1` 并写 `gate_note` 要求登 uncertainty——**"没跑"与"通过"必须是两个状态**，否则漏参会被当成合格交付。③同一根因在 `pptx_verify.py` 里还有两处：不传 `--evidence` 时 `evidence_map` 只显示 `rows:0` 而 `warn:0`、`verdict:pass`（"没检查"被当"通过"）；`notes` 不合格（缺失/过短/与正文雷同）只打印 `ok:false` 却不计入 `fail`（页能过、rc=0）。现已加 `evidence_gate`（`enforced`/`not_provided`/`not_found`/`coverage_incomplete`，非 enforced 计 warn 并写 note）与 notes→fail 计数。命名特意与 `coverage_gate` 区分：两个脚本各管一段（evidence_check 管页级证据与数字，verify 管结构+证据覆盖），不复用同一个键名，避免读 result.json 的人误以为同义。
 
-- 若正式案例的工单 schema 与示例键名差异大，probe_input 只能抓 raw_keys，mode/页数可能落 unknown（已按"缺键不臆测"设计，模型须回 task.md 补判）。
-- fit_audit 字体对账在 python-pptx 缺失时走 raw-xml，模板原始值仅 theme_fonts/theme_colors，槽位几何对账不可用（如实由 inheritance 字段区分）。
+环境说明：本机为 Windows 开发机（Python 3.13.14，无 LibreOffice），因此渲染只验证了"诚实降级"分支；平台 office-renderer 分支的代码路径按"产生即检查文件存在、失败即回落"实现，失败不静默。
+
+## 五、仍存在的风险（如实）
+
+1. 平台 3 个正式案例本轮无法本地复跑（无 `/input/case.json` 与论文原件），因此"实际效果 40 分"的最终呈现仍取决于运行时执行纪律（协议置顶 + 广度优先 + 骨架先行）。
+2. 数字对账是正则级启发，中文数字/区间写法会漏检（已写入 README 限制）。
+3. 多轮编辑若涉及增删页，会走重建而非字节级定点，`preserved_slides` 只能保证"内容未改"，不能保证"字节未变"（SKILL.md 已把该场景标为例外）。
+4. 渲染 PNG 的视觉复核需在有渲染器的环境完成；无渲染器时只能交 pptx + 如实状态。

@@ -9,7 +9,7 @@ Each slide dict supports:
   notes(str), font sizes: title_size, body_size
 
 Usage:
-  python3 pptx_minimal.py spec.json out.pptx
+  python pptx_minimal.py spec.json out.pptx
   spec.json = {"deck_meta": {...}, "slides": [ ... ]}
 
 Escapes all XML text; images are copied into ppt/media. Result opens in
@@ -421,9 +421,15 @@ def build(spec, out_path):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("usage: pptx_minimal.py spec.json out.pptx（参数缺失已如实登记，退出码 0）")
-        sys.exit(0)
-    with open(sys.argv[1], "r", encoding="utf-8") as f:
-        spec = json.load(f)
-    build(spec, sys.argv[2])
-    print("written:", sys.argv[2])
+        print("usage: pptx_minimal.py spec.json out.pptx")
+        sys.exit(2)
+    try:
+        with open(sys.argv[1], "r", encoding="utf-8") as f:
+            spec = json.load(f)
+        build(spec, sys.argv[2])
+        print("written:", sys.argv[2])
+    except SystemExit:
+        raise
+    except Exception as e:
+        print(json.dumps({"ok": False, "error": "%s: %s" % (type(e).__name__, e)}))
+        sys.exit(3)

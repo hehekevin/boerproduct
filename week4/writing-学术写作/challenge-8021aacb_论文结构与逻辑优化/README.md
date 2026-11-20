@@ -1,89 +1,72 @@
-# struct-diag-paper — 论文结构与逻辑诊断 Skill（challenge-8021aacb）
+# acwrite-structure — 论文结构与逻辑优化 Skill（可核验性增强版）
 
-「学术效率」产品赛 · 学术写作赛道 · 论文结构与逻辑优化 参赛 Skill。
+针对 Bohrium 第3周学术写作赛道「论文结构与逻辑优化」(challenge-8021aacb) 重做的提交包。
 
-## 用途
+## 一句话方法
 
-对一篇完整稿件做六类结构诊断（章节结构/研究问题对齐/论证链/段落关系/重复内容/结论边界），
-每条问题定位到章节/段落并附逐字引文，输出作者可直接执行的修改动作清单（move/merge/split/
-narrow/insert/delete）与可编辑诊断报告（含采纳/部分采纳/驳回裁决栏）。
+把稿件拆成**论断-论据链**做结构诊断（定位到章节/段落/句子，分 8 类结构问题），输出**可执行编辑动作**（move/merge/split/narrow）+ 修订后全文；**每处修改登记逐字前后对照**（original≤40 字逐字 / revised / reason / basis / 段落定位），诊断 issues、论断链、逐字对照、修订全文**全部完整嵌入 result.json** —— 复核者无需打开原稿即可逐条核对。
 
-## 快速开始（Harness 执行环境）
+## 文件清单
 
-1. 读 `/input/case.json` 与 `task.md`，逐字抄下 output_contract 全部字段名与 case_id。
-2. `build_result.py --status in_progress` 落骨架，此后只回填不覆盖、不删键。
-3. 按 SKILL.md 线性 7 步执行：extract_input → claim_extractor → 模型语义诊断（model_findings.json）
-   → structure_check → edit_plan 合并 → gain_evidence → build_result 收尾。
-
-## 依赖
-
-- Python 3.8+，仅标准库即可运行全部脚本；所有命令用 `python3` 调用。
-- 可选增强：PyMuPDF（PDF 稿件提取）、python-docx（docx 稿件提取）。缺失时脚本自动降级并在
-  notes 记录（此时按 SKILL.md 异常处置表借助 Harness 的 pdf-text-tool），不阻塞交付。
-
-## 文件清单（7 个脚本 + 文档，符合 ≤8 脚本 / ≤50 文件 / <2MB 限制）
-
-| 文件 | 作用 |
+| 文件 | 用途 |
 |---|---|
-| `scripts/extract_input.py` | 定位稿件（case.json 内嵌文本 > 最大文本文件；PDF/docx 可选库提取）、切章节 → manuscript.json + constraints.json |
-| `scripts/claim_extractor.py` | 论点—论据映射：论断句×证据标记（数值/引用[n]/图表）→ claim_evidence_map.jsonl |
-| `scripts/structure_check.py` | 六类结构机检校验器（完整臂）；`--ablate` 消融臂仅表层规则，供同输入对照 |
-| `scripts/edit_plan.py` | 机检+模型 findings 合并（类别+引文+位置去重）→ edit_actions.jsonl + findings.json + report.md |
-| `scripts/gain_evidence.py` | 同输入消融两臂真跑 + 污染反例注入验证 → result.json 的 gain_evidence/efficiency（独占键） |
-| `scripts/build_result.py` | result.json 骨架/回填/收尾（契约全字段 + 三桶语义 + contract_coverage；不写 gain_evidence/efficiency） |
-| `scripts/_rlog.py` | 运行日志：各脚本调用自动计数（efficiency 的 tool_calls 来源） |
-| `examples/example_input.json` | 示意输入（**示意，非正式案例**）：含故意植入缺陷的示例稿件，可复跑全流程 |
+| SKILL.md | Skill 本体（强制执行协议置顶 + 线性 5 阶段流程 + 异常处置） |
+| scripts/extract_materials.py | 抽取 /input 材料 → 带来源标记的 materials.md + manifest（含 gaps） |
+| scripts/docx_build.py | draft.json → 可编辑 revised.docx + revised.md |
+| scripts/verify.py | 校验逐字留痕：original 可定位 / revised 已落地 / 无未授权改动 → verdict |
+| scripts/build_result.py | 组装 result.json：契约字段一个不缺 + 主产物完整嵌入 |
+| scripts/render_preview.py | docx → PDF/PNG 预览（可选，失败不阻塞） |
+| examples/example_input.json | 最小调用示例输入（示意） |
 
-## 方法要点
-
-- **诊得准**：机检定位到 章节/段落/句子 三级位置 + 逐字引文；模型语义层补充机检盲区
-  （循环论证、跨章节呼应断裂等），两层合并去重。
-- **改得动**：动作类型限定六种可执行编辑操作，每条带 instruction 与位置锚点；report.md
-  逐条给作者裁决栏（采纳/部分采纳/驳回）。
-- **链得通**：claim_evidence_map 逐句建立论断—证据映射，support=none 即论证链断点候选。
-- **说得清**：每条 finding 带 basis（机检规则口径 / 模型语义判断）与逐字引文，可独立复核。
-- **键不冲突**：gain_evidence/efficiency 两键由 gain_evidence.py 独占；build_result.py 只回填其余键。
-- **退出码恒 0**：校验失败/参数错误/输入缺失全部如实写 JSON，不以退出码表达成败。
-
-## 最小调用示例（示意，非正式案例结果）
-
-输入示意见 `examples/example_input.json`（含 `_notice` 标注）。示意输出：
+## 调用方式（完整流程见 SKILL.md）
 
 ```bash
-python3 scripts/extract_input.py --input /input --outdir /app/work
-# → {"ok":true,"case_id":"...","source":"file:manuscript.txt(text)","sections":6}
-python3 scripts/structure_check.py --manuscript /app/work/manuscript.json --out /app/work/findings_machine.json
-# → {"ok":true,"arm":"skill_full","fail_count":10}
-python3 scripts/edit_plan.py --machine /app/work/findings_machine.json --out-report /app/output/report.md
-# → {"ok":true,"actions":10,"report_written":true}
-python3 scripts/gain_evidence.py --manuscript /app/work/manuscript.json --result /app/output/result.json
-# → {"ok":true,"written":true,"fail_diff":10,"pollution":"pass"}
+# Stage 0 契约与骨架
+python scripts/extract_materials.py --input /input --outdir /app/work/extracted
+python scripts/build_result.py --case /input/case.json --out /app/output/result.json --scaffold
+# Stage 1-3（模型响应）：claim_chain.jsonl → structure_issues.jsonl → revised 全文 + edits_before_after.jsonl
+# Stage 4 校验与交付
+python scripts/verify.py --edits /app/work/edits_before_after.jsonl --original /app/work/extracted --revised /app/output/revised.md --out /app/output/verify_report.json
+python scripts/build_result.py --case /input/case.json --out /app/output/result.json --embed-diagnosis /app/work/structure_issues.jsonl --embed-edits /app/work/edits_before_after.jsonl --embed-revised /app/output/revised.md --artifact /app/output/revised.docx --verify /app/output/verify_report.json --status complete
 ```
 
-## 生态贡献：依赖、安装运行、目标用户与验收
+## 最小示例（标注示意，非正式案例结果）
 
-| 项目 | 说明 |
+输入稿件含句子：`实验证明该方法能彻底解决该问题`（实际仅有小数据集 + 3 个百分点提升）。
+
+诊断条目（structure_issues.jsonl，逐条指回原文）：
+```json
+{"sid":"S01","location":"§3 para1","quote":"实验证明该方法能彻底解决该问题","type":"conclusion_overreach","severity":"high","why":"数据仅小数据集+3pp，支撑不足","fix":"收窄表述","fix_ops":[{"op":"narrow","target":"§3 para1","to":"原位","detail":"收窄为限定条件下结论"}]}
+```
+
+逐字前后对照（edits_before_after.jsonl，评分者可直接检索 original 核对）：
+```json
+{"sid":"S01","location":"§3 para1","original":"实验证明该方法能彻底解决该问题","revised":"在小数据集条件下，该方法较基线提升3个百分点，能否推广到更大规模有待验证","reason":"结论超出数据支持范围","basis":"依据 S01：结论仅由小数据集+3pp支撑"}
+```
+
+校验输出（verify_report.json）：`{"edits_total":1,"located_ratio":1.0,"landed_ratio":1.0,"unauthorized_changes":0,"verdict":"pass"}`
+
+以上示例已本地实测通过（docx/md 构建、逐字定位、未授权改动检查、result.json 嵌入）。
+
+## result.json 嵌入字段（65→70 的关键差异）
+
+| 字段 | 内容 |
 |---|---|
-| 依赖与版本 | Python 3（评测沙箱 3.12；脚本仅用标准库，无需 pip 安装）；PyMuPDF/python-docx 为可选增强，缺失自动降级。 |
-| 安装与运行 | 平台把提交目录装入 `/skills/weekly-skill`；输入 `/input/case.json` + task.md + 稿件，产物写 `/app/output/result.json`（+ findings.json + report.md）。 |
-| 输入 / 输出解释 | 输入=案例标识与稿件（case.json 内嵌文本或文件）；输出=result.json（契约全字段 + findings_merged + edit_actions + report_text + claim_evidence_map + gain_evidence + efficiency + uncertainty）。 |
-| 目标用户与场景 | 需要结构级修改意见（而非润色）的论文作者；成稿后定稿前的结构自检与协作修改留痕。 |
-| 验收方式 | ①契约键一个不缺且 JSON 可解析；②每条 finding 有位置+逐字引文+动作类型；③gain_evidence 含两臂差与污染反例命中数；④report.md 可编辑且有裁决栏。 |
-| 常见问题 | PDF 无法提取→用 Harness pdf-text-tool 转文本后重跑 extract_input；机检误报→修一轮并 changelog 记录口径；模型诊断缺失→仅机检结论并在 gaps 登记局限。 |
-| 已知限制 | 增益对照为同输入自比（完整臂 vs 消融臂），量化的是机检可发现的结构问题数，不等同跨模型横向评测；重复检测对大改写的同义表述会漏检；结论边界词表覆盖有限，委婉超边界表述需模型语义层补充。 |
-| 失败处理 | 任一步异常：已产出文件保留、status 如实降级（complete/partial/failed/blocked）、error 写入对应 JSON 键；机检结论照实记录且退出码恒 0。 |
-| 复用建议 | 六类 finding schema、两臂消融+污染反例的增益证据法、裁决栏报告格式可直接套用到同类「诊断+修改建议」任务。 |
-| 版本与维护 | v1.0；见 worklog.md；新增稿件格式时扩展 extract_input.read_text 的 ext 分支与检测规则。 |
+| `diagnosis.issues` | 全部结构问题（locator/quote/类型/severity/fix_ops） |
+| `diagnosis.summary` | 总数 + high 数 |
+| `claim_chain` | 论断-论据链全文抽取 |
+| `edits_before_after` | 每处修改的逐字前后对照 |
+| `revised_text` | 修订后全文（Markdown 字符串） |
+| `verify_report` | 动作落地自检结果 |
 
-## 最小可运行自检清单（复制即跑；本地已在 _selftest 环境以相对路径等价实测，全部 exit 0）
+## 适用范围与限制
 
-```bash
-python3 -c "import sys;print(sys.version)"                                        # 1) 解释器可用
-ls scripts/                                                                        # 2) 脚本在位
-python3 scripts/extract_input.py --input /input --outdir /app/work                 # 3) 提取+切章（无输入时也 exit 0 并如实登记）
-python3 scripts/structure_check.py --manuscript /app/work/manuscript.json --out /app/work/fm.json   # 4) 完整臂机检
-python3 scripts/structure_check.py --manuscript /app/work/manuscript.json --out /app/work/fa.json --ablate  # 5) 消融臂
-python3 scripts/gain_evidence.py --manuscript /app/work/manuscript.json --result /app/output/result.json    # 6) 增益双跑+污染反例
-python3 -c "import json;d=json.load(open('/app/output/result.json'));print(sorted(d))"  # 7) 产物可解析且含 gain_evidence/efficiency
-python3 scripts/structure_check.py --bad-flag x                                    # 8) 参数错误仍 exit 0
-```
+- 适用：完整论文/报告/摘要的结构与逻辑诊断；跨学科通用（诊断规则与学科无关）。
+- 限制：语句级修复只针对 high 级问题，其余逐字保留；需作者决策的删改标 needs_author 不擅自执行；PDF 解析失败时依赖平台 pdf-text-tool 并登记 gaps。
+- 异常处置（截断/缺章节/无研究问题/风格冲突等）见 SKILL.md 第 2 节。
+- 依赖：Python 3.8+；python-docx（可选，缺则仅出 md）；pdfminer/PyPDF2（可选）；soffice/docx2pdf（可选，预览用）。全部可选依赖缺失时仍可交付文本产物，状态如实标注。
+
+## 维护
+
+- 脚本均为三级容错（正常 → 替代解析 → 降级登记 gap），exit 0 不阻塞流水线；路径全部可参数化，无平台硬编码。
+- 修改 SKILL.md 阶段定义时，同步核对第 4 节自查清单与 build_result.py 的嵌入字段名。

@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
-"""pptx_build.py — deck.json -> deck.pptx，构建前版面预算 + 模板真实继承。
+"""pptx_build.py — deck.json -> deck.pptx with pre-flight layout budget.
 
-优先路径：python-pptx（模板克隆填充，主题继承——deck_meta 未显式指定字体时
-run 上不写 typeface，改主题即整册换字）；兜底路径：pptx_minimal（纯标准库）。
+Preferred path: python-pptx (better fidelity, template inheritance).
+Fallback path: pptx_minimal (pure stdlib, always works offline).
 
-版面预算：body 阶梯 18→10pt 自动缩档，10pt 仍溢出=trim 删内容（不再缩到不可读）；
-标题 >2 行降到 24pt；决策全部记入 layout_log.json（可审计）。
+Usage:
+  python pptx_build.py deck.json out.pptx [template.pptx] [--log layout_log.json]
 
-用法:
-  python3 pptx_build.py deck.json out.pptx [template.pptx] --report template_report.json --log layout_log.json
-退出码恒 0；失败登记在 log.warnings。
+Behavior:
+  1. Runs layout_budget on every slide; shrinks fonts along the ladder or
+     flags "trim" when even the floor size overflows.
+  2. If a template is given AND python-pptx is available, clones the template
+     and fills its own blank/layout placeholders only if usable; otherwise
+     builds standalone slides (template master untouched where possible).
+  3. Writes layout_log.json recording every size decision (auditable).
 """
 import argparse
 import json
@@ -17,19 +21,20 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from pptx_verify import budget_slide, budget_title, check_notes, MIN_FLOOR  # noqa: E402
+import layout_budget as LB  # noqa: E402
 
 try:
     from pptx import Presentation
     from pptx.util import Inches, Pt
     from pptx.dml.color import RGBColor
-    from pptx.enum.text import PP_ALIGN
+    from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
     HAVE_PPTX = True
 except Exception:
     HAVE_PPTX = False
 
 
 def _layout_catalog(prs):
+    """Map layout name + its placeholder types for template slot filling."""
     from pptx.oxml.ns import qn
     cat = []
     for lay in prs.slide_layouts:
@@ -48,6 +53,7 @@ def _layout_catalog(prs):
 
 
 def _pick_template_layout(cat, want):
+    """Keyword mapping deck layout -> template layout object (best match)."""
     keymap = {
         "title": ("title slide", "标题幻灯片", "title", "标题"),
         "closing": ("title slide", "thank", "title", "标题"),
@@ -65,6 +71,7 @@ def _pick_template_layout(cat, want):
         for name, entry in lowered:
             if key.lower() in name:
                 return entry
+    # fallback: layout with a title placeholder, else blank-ish last layout
     for name, entry in lowered:
         if any(p["type"] in ("title", "ctrTitle") for p in entry["placeholders"]):
             return entry
@@ -73,7 +80,6 @@ def _pick_template_layout(cat, want):
 
 def _fill_placeholder(ph, text, size=None, bold=None, italic=None, color=None,
                       latin=None, ea=None, clear=True):
-    from pptx.oxml.ns import qn
     tf = ph.text_frame
     if clear:
         tf.clear()
@@ -97,6 +103,7 @@ def _fill_placeholder(ph, text, size=None, bold=None, italic=None, color=None,
         if ea:
             try:
                 rPr = r._r.get_or_add_rPr()
+                from pptx.oxml.ns import qn
                 ea_el = rPr.find(qn("a:ea"))
                 if ea_el is None:
                     ea_el = rPr.makeelement(qn("a:ea"), {})
@@ -107,8 +114,8 @@ def _fill_placeholder(ph, text, size=None, bold=None, italic=None, color=None,
 
 
 def _theme_accent(report):
+    """模板主题 accent1，用于强调色（真实继承主题色而非自造配色）。"""
     try:
-        from pptx.dml.color import RGBColor
         cols = [c for c in (report or {}).get("theme_colors") or [] if c and len(c) == 6]
         return RGBColor.from_string(cols[0]) if cols else None
     except Exception:
@@ -119,9 +126,11 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
     try:
         prs = Presentation(template_path) if template_path else Presentation()
     except Exception as e:
-        log["warnings"].append({"issue": "template_unusable",
-                                "detail": "%s: %s" % (type(e).__name__, e),
-                                "fallback": "academic_default_layout"})
+        # 模板不可用：降级为学术默认版式，如实登记，不中断构建
+        if log is not None:
+            log["warnings"].append({"issue": "template_unusable",
+                                    "detail": "%s: %s" % (type(e).__name__, e),
+                                    "fallback": "academic_default_layout"})
         template_path = None
         prs = Presentation()
     if not template_path:
@@ -146,7 +155,6 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
     BLUE = RGBColor(0x2B, 0x5B, 0xA8)
 
     def set_font(run, size, bold=False, italic=False, color=BODY, latin=None, ea=None):
-        from pptx.oxml.ns import qn
         run.font.size = Pt(size)
         run.font.bold = bold
         run.font.italic = italic
@@ -157,6 +165,7 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
         if ea:
             try:
                 rPr = run._r.get_or_add_rPr()
+                from pptx.oxml.ns import qn
                 ea_el = rPr.find(qn("a:ea"))
                 if ea_el is None:
                     ea_el = rPr.makeelement(qn("a:ea"), {})
@@ -190,9 +199,9 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
         return p
 
     def _ph_by_type(placeholder_list, *types):
-        from pptx.oxml.ns import qn
         for ph in placeholder_list:
             el = ph._element
+            from pptx.oxml.ns import qn
             pe = el.find(qn("p:nvSpPr") + "/" + qn("p:nvPr") + "/" + qn("p:ph"))
             pt = (pe.get("type") if pe is not None else None) or "body"
             if pt in types:
@@ -200,6 +209,8 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
         return None
 
     meta = spec.get("deck_meta", {})
+    # 有模板且 deck_meta 未显式指定字体 -> 完全不设 typeface，交给母版主题继承
+    # （真实继承：改主题即整册换字，run 上不残留硬化字体）
     if template_path and not (meta.get("font_latin") or meta.get("font_ea")):
         latin = ea = None
         inherit_fonts = True
@@ -210,9 +221,11 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
     accent = _theme_accent(report) if template_path else None
     BLUE = accent or BLUE
     if template_path:
-        DARK = None  # 占位符标题颜色继承主题（真实继承，改主题即变色）
-    log["font_mode"] = "theme_inherit" if inherit_fonts else "explicit"
-    log["accent_color"] = str(accent) if accent else None
+        # 占位符内标题颜色不显式设置 -> 继承版式/母版主题色（真实继承，改主题即变色）
+        DARK = None
+    if log is not None:
+        log["font_mode"] = "theme_inherit" if inherit_fonts else "explicit"
+        log["accent_color"] = str(accent) if accent else None
 
     for idx, sl in enumerate(spec.get("slides", []), start=1):
         layout = sl.get("layout", "bullets")
@@ -220,7 +233,8 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
         bsize = sl.get("body_size", 18) or 18
         tentry = _pick_template_layout(catalog, layout) if catalog else None
         slide = prs.slides.add_slide(tentry["layout"] if tentry else blank)
-        used_phs, inherit = [], "standalone"
+        used_phs = []
+        inherit = "standalone"
         title_ph = body_ph = None
         if tentry is not None:
             phs = list(slide.placeholders)
@@ -231,13 +245,15 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
                 used_phs.append(title_ph.placeholder_format.idx)
             if body_ph is not None:
                 used_phs.append(body_ph.placeholder_format.idx)
-        entry = next((e for e in (log.get("slides") or []) if e.get("no") == idx), None)
-        if entry is None:
-            entry = {"no": idx}
-            log.setdefault("slides", []).append(entry)
-        entry.update({"template_layout": tentry["name"] if tentry else None,
-                      "placeholders_used": used_phs, "inheritance": inherit})
+        if log is not None:
+            entry = next((e for e in (log.get("slides") or []) if e.get("no") == idx), None)
+            if entry is None:
+                entry = {"no": idx}
+                log.setdefault("slides", []).append(entry)
+            entry.update({"template_layout": tentry["name"] if tentry else None,
+                          "placeholders_used": used_phs, "inheritance": inherit})
 
+        # page number: standalone path only (template masters usually carry their own)
         if inherit == "standalone":
             _, tf = add_text(slide, 12.4, 7.05, 0.7, 0.35, wrap_text=False)
             para(tf, str(idx), 10, color=META, align=PP_ALIGN.RIGHT, first=True, latin=latin, ea=ea)
@@ -285,6 +301,7 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
                     bx, by, bw, bh = 8.35, 1.45, 4.35, 4.6
                     body_w = 7.5
                 try:
+                    # contain-fit: compute via PIL if available else fix width
                     from PIL import Image
                     with Image.open(fig["path"]) as im:
                         iw, ih = im.size
@@ -300,8 +317,9 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
                              align=PP_ALIGN.CENTER if layout == "figure" else None,
                              first=True, latin=latin, ea=ea)
                 except Exception as e:
-                    log["warnings"].append({"slide": idx, "issue": "figure_embed_failed",
-                                            "detail": str(e)})
+                    if log is not None:
+                        log.setdefault("warnings", []).append(
+                            {"slide": idx, "issue": "figure_embed_failed", "detail": str(e)})
 
             if layout == "table":
                 rows = sl.get("table", {}).get("rows") or sl.get("rows") or []
@@ -347,29 +365,22 @@ def build_with_pythonpptx(spec, out_path, template_path=None, log=None, report=N
     return out_path
 
 
+def build_fallback(spec, out_path):
+    import pptx_minimal
+    return pptx_minimal.build(spec, out_path)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("deck")
     ap.add_argument("out")
     ap.add_argument("template", nargs="?", default=None)
     ap.add_argument("--log", default=None)
-    ap.add_argument("--report", default=None, help="template_report.json（继承主题强调色）")
+    ap.add_argument("--report", default=None, help="template_report.json（用于继承主题强调色）")
     args = ap.parse_args()
 
-    log = {"builder": None, "template": args.template, "slides": [], "warnings": []}
-    try:
-        with open(args.deck, "r", encoding="utf-8") as f:
-            spec = json.load(f)
-    except Exception as e:
-        log["builder"] = "none"
-        log["warnings"].append({"issue": "deck_unreadable",
-                                "detail": "%s: %s" % (type(e).__name__, e)})
-        log_path = args.log or (os.path.splitext(args.out)[0] + ".layout_log.json")
-        with open(log_path, "w", encoding="utf-8") as f:
-            json.dump(log, f, ensure_ascii=False, indent=1)
-        print("build failed (registered honestly, exit 0):", e)
-        return 0
-
+    with open(args.deck, "r", encoding="utf-8") as f:
+        spec = json.load(f)
     report = None
     if args.report and os.path.exists(args.report):
         try:
@@ -377,33 +388,34 @@ def main():
                 report = json.load(f)
         except Exception:
             report = None
+    log = {"builder": None, "template": args.template, "slides": [], "warnings": []}
 
-    # 构建前版面预算（阶梯缩档，决策全部记 log）
+    # pre-flight layout budget on body area
     for i, sl in enumerate(spec.get("slides", []), 1):
         layout = sl.get("layout", "bullets")
         if layout in ("title", "closing", "section"):
             b = {"font_pt": sl.get("title_size", 28), "action": "ok"}
         elif layout == "two-col":
-            b = budget_slide(sl, 5.7, 5.1)
+            b = LB.budget_slide(sl, 5.7, 5.1)
         elif layout == "figure":
             b = {"font_pt": sl.get("body_size", 18), "action": "ok"}
         elif layout == "bullets+figure":
-            b = budget_slide(sl, 7.4, 5.1)
+            b = LB.budget_slide(sl, 7.4, 5.1)
         else:
-            b = budget_slide(sl, 11.5, 5.1)
+            b = LB.budget_slide(sl, 11.5, 5.1)
         sl.setdefault("body_size", b["font_pt"])
         if b.get("action") == "shrunk":
             sl["body_size"] = b["font_pt"]
         if b.get("action") == "trim" and sl.get("bullets"):
-            sl["body_size"] = max(b["font_pt"], MIN_FLOOR)
+            sl["body_size"] = max(b["font_pt"], LB.MIN_FLOOR)
             log["warnings"].append({"slide": i, "issue": "content_exceeds_page",
                                     "detail": "even %dpt overflows; trim content" % b["font_pt"]})
-        tb = budget_title(sl, 12.0, sl.get("title_size", 28))
+        tb = LB.budget_title(sl, 12.0, sl.get("title_size", 28))
         if not tb["fits"]:
             sl["title_size"] = 24
             log["warnings"].append({"slide": i, "issue": "title_too_long",
                                     "detail": "%d lines at 28pt; title reduced to 24pt" % tb["lines"]})
-        nb = check_notes(sl, " ".join(
+        nb = LB.check_notes(sl, " ".join(
             (x.get("text", "") if isinstance(x, dict) else str(x)) for x in sl.get("bullets", []) or []))
         log["slides"].append({"no": i, "layout": layout, "body_font_pt": sl.get("body_size"),
                               "title_font_pt": sl.get("title_size"), "notes": nb,
@@ -418,8 +430,7 @@ def main():
         build_with_pythonpptx(spec, args.out, template, log, report)
     else:
         log["builder"] = "pptx_minimal(fallback, stdlib-only)"
-        import pptx_minimal
-        pptx_minimal.build(spec, args.out)
+        build_fallback(spec, args.out)
         for e in log.get("slides", []):
             e["inheritance"] = "standalone_minimal_fallback"
         if template:
@@ -430,11 +441,11 @@ def main():
     with open(log_path, "w", encoding="utf-8") as f:
         json.dump(log, f, ensure_ascii=False, indent=1)
     print("pptx:", args.out)
+    print("log :", log_path)
     print("builder:", log["builder"], "| warnings:", len(log["warnings"]))
     for w in log["warnings"]:
         print("  warn:", json.dumps(w, ensure_ascii=False))
-    return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

@@ -9,7 +9,7 @@ Each slide dict supports:
   notes(str), font sizes: title_size, body_size
 
 Usage:
-  python3 pptx_minimal.py spec.json out.pptx
+  python pptx_minimal.py spec.json out.pptx
   spec.json = {"deck_meta": {...}, "slides": [ ... ]}
 
 Escapes all XML text; images are copied into ppt/media. Result opens in
@@ -274,9 +274,6 @@ def build(spec, out_path):
 
     for idx, sl in enumerate(slides, start=1):
         layout = sl.get("layout", "bullets")
-        # bullets 版式带图时自动升级为 bullets+figure（与 python-pptx 构建路径行为一致）
-        if layout == "bullets" and sl.get("figure") and sl.get("figure", {}).get("path"):
-            layout = "bullets+figure"
         tsize = sl.get("title_size", 28)
         bsize = sl.get("body_size", 18)
         shapes = []
@@ -424,8 +421,8 @@ def build(spec, out_path):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("usage: pptx_minimal.py spec.json out.pptx（参数缺失已如实登记，退出码 0）")
-        sys.exit(0)
+        print("usage: pptx_minimal.py spec.json out.pptx")
+        sys.exit(2)
     with open(sys.argv[1], "r", encoding="utf-8") as f:
         spec = json.load(f)
     build(spec, sys.argv[2])

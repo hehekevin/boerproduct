@@ -1,52 +1,47 @@
-# worklog — challenge-b810ef56（w9-wr2）
+# worklog — challenge-b810ef56 重做（目标 ≥70 分）
 
-日期：2026-11-19。包名：eviwrite-claimbind。方向：文献证据驱动写作（论断—来源关联 + 证据强度 + 不确定性表达）。
+## 背景
+- 原提交 acwrite-evidence 聚合最高 60.00（历史 71938 排队 / 72459:52 / 72501:60）。
+- 60→70 差距定位：**论断-证据映射的完整性与可核验性**——每句事实性陈述可回溯到来源。
 
-## 改动文件清单（submission/ 内共 15 个文件）
+## 本次改动（v2）
 
-| 文件 | 说明 |
+### 1. 证据池先行（新增流程硬规则）
+- Stage 2 先从 extracted/*.txt 全文逐字摘录建 evidence_pool.jsonl（qid+locator+quote+strength_hint），Stage 3 论断只允许绑定池内摘录，quote_ids 与 sources 双登记。
+- 摘录要求连限定语（样本量/条件）一起摘，防写作时丢边界。
+
+### 2. 摘录逐字机器核验（evidence_audit.py 升级，核心新增能力）
+- 每条 bound 论断的 quote 经空白归一化后与来源 M*.txt 做子串匹配（首 40+尾 40 字符探测），**quote_not_verbatim 即编造/改写风险**，机器可判，不再依赖评审肉眼。
+- locator 的 mid 必须存在于 extracted 目录（locator_bad）；sources 目录缺失时核验降级并如实记录（不伪造通过）。
+
+### 3. 论断↔来源双向映射矩阵
+- claim→source 正向 + source→claims 反向索引，写入 evidence_audit.json 与 result.json（claim_source_matrix）。
+- 孤儿来源检测：registry 中未支撑任何 bound 论断且未在正文引用的来源（orphan_source）——防文献表挂空引用。
+
+### 4. result.json 自包含（build_result.py 升级）
+- --draft-json 嵌入成文全文（deliverable_text）；--claims 嵌入论断-证据表并生成双向矩阵；三份检查报告（fact_check/consistency/evidence_audit）全部内嵌。评审不看附属文件也能逐条复核。
+
+### 5. 已验证方法全部落实
+- 协议置顶：抄契约+立即落骨架+字段一个不缺+广度优先+48次/700秒熔断+写盘自检+失败也交付。
+- 线性 ≤5 内容步骤；SKILL.md 117 行（≤250）；资源 7 脚本（≤8）；主产物完整嵌入。
+- 脚本三级容错：输入缺失/损坏输出 fail 报告不崩溃；无硬编码平台路径（全部 CLI 传参）。
+- status 诚实；材料不足标缺口不编造（unbound→uncertainty）。
+
+## 本地双测记录（全链路，2026-11-13）
+| 测试 | 结果 |
 |---|---|
-| SKILL.md | 137 行（≤150），合法 frontmatter（name/description） |
-| README.md | 生态十项 + 12 条最小自检清单（逐条实测 exit 0） |
-| worklog.md | 本文件：真实对照数字 + 诚实边界 |
-| scripts/ 共 7 个 | build_skeleton / claim_split / evidence_bind / strength_gate / verify_check / schema_guard / gain_probe（≤8 上限内，全标准库） |
-| examples/ 共 5 个 | example_case / example_claims / example_evidence_table / example_verify_report / example_gain_result（均标注「示意，非正式案例」） |
+| extract_materials + fact_ledger build/check | 7 条事实入账，稿件数字全部回查 pass |
+| evidence_audit 故意注入编造摘录 | 正确抓出 quote_not_verbatim(C02) ✓ |
+| evidence_audit 故意注入孤儿文献 R3 | 正确抓出 orphan_source ✓ |
+| evidence_audit 修复后 pass 场景 | verdict=pass, problems=[] ✓ |
+| docx_build | python-docx 真实 docx + md ✓ |
+| consistency_check | 5 项全 pass ✓ |
+| build_result | 契约字段自动展开、deliverable_text/claims/matrix 全嵌入 ✓ |
+| 三级容错（claims 文件缺失） | 输出 claims_unreadable fail 报告，不崩溃 ✓ |
 
-## 真实对照数字（2026-11-19 本地实跑，Python 3.13.14）
+测试中修掉的 3 个误报：unbound 行结构全豁免、cid 前导零归一（C01↔E1）、句切分不再切断小数点+参考文献行不再误报裸论断。
 
-合成自测案例：3 份来源（M01 RCT 120 人 / M02 队列 80 人 / M03 综述），draft.md 4 句成稿。
-
-| 环节 | 实测值 |
-|---|---|
-| claim_split | claims_total=4（numeric 2 / factual 1 / interpretive 1） |
-| evidence_bind | bound_exact=4 / bound_none=0 |
-| strength_gate | violations=0, verdict=pass；grade_counts B=3 C=1 |
-| verify_check（技能臂） | fail_count=0, verdict=PASS（bound/verbatim/locator/in_draft/wording 全过） |
-| gain_probe 消融 | **arm_skill FAIL=0 vs arm_base FAIL=15，diff=15**（bound 4 / verbatim 4 / locator 4 / wording 3）；gain_confirmed=True |
-| 污染反例（副本注入 2 条：编造 quote+假定位 M99、相关写因果） | arm_polluted FAIL=6, verdict=FAIL → **sensitivity_check=PASS**（判据灵敏，非逢检必过） |
-| schema_guard | verdict=PASS（8/8 契约字段、case_id、三桶、uncertainty 齐备） |
-| --selftest | PASS（7 脚本 + frontmatter + ≤150 行 + examples 免责声明） |
-
-## 失败路径 exit 0 实测（硬约束 4）
-
-| 场景 | 结果 |
-|---|---|
-| 7 个脚本各传 `--bogus-flag` | 全部打印 JSON、exit=0 |
-| draft/claims/sources/result 缺失 | `ok:false` + 说明，exit=0 |
-| schema_guard --selftest 指向无 SKILL.md 目录 | `selftest=FAIL`（结论照实），exit=0 |
-| gain_probe 材料缺失 | `gain_confirmed=False` 照实写入，exit=0 |
-
-## 过程中修掉的 bug
-
-1. claim_split 句界正则：中文句号后无空格未切句（claims_total 1→4）。
-2. 定位标记（M01:p3）被 NUM_RE 误提为论断数值（分类污染）；分类前剥离定位标记。
-3. build_skeleton：契约字段名与 uncertainty/changelog 撞名时 setdefault([]) 不生效导致骨架阶段 uncertainty=None——改为判 None 后置 []。
-4. argparse 错误退出码 2 → 全部 7 脚本注入 _ArgParser.error() 打印 JSON 后 exit 0。
-
-## 诚实边界
-
-- 上述数字来自**合成自测案例**（本地 _selftest/），非组织方正式案例；正式运行数字以平台 trace 为准。
-- 增益判定只在包内规则范围（5 项机检 + 5 条措辞规则）内成立；措辞本已合规的稿子 wording 维度两臂差为 0。
-- evidence_bind 匹配是数字一致 + 字面覆盖的机械策略，语序大改的同义转写可能 match=none——此时按流程回读来源改稿或标 [待核]，不会静默编造。
-- efficiency 只统计可机械复核项（manual_review 削减量）；模型请求数/工具调用数留给 Harness 记录，不冒充。
-- PDF 直读、OCR、docx 渲染不在本包范围内（题面允许聚焦一个具体问题）；locator 锚点依赖材料 txt 化时保留 [SRC:...] 标注。
+## 遗留/边界
+- 逐字核验依赖 extract_materials 的 M*.txt；扫描件 extracted:false 时核验降级如实记录。
+- DOI 真实性离线不可核验（标 doi_unverified_offline），只能核验"摘录确实来自材料"。
+- 未提交，等 team-lead 确认。

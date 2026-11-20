@@ -8,12 +8,12 @@
               claims 不为空、status 落在合法四级枚举内
 
 用法：
-    python3 result_scaffold.py scaffold --case /input/case.json --out $WORK/result.json
-    python3 result_scaffold.py ensure   --result $WORK/result.json \
+    python result_scaffold.py scaffold --case /input/case.json --out $WORK/result.json
+    python result_scaffold.py ensure   --result $WORK/result.json \
         [--case /input/case.json] [--out /app/output/result.json]
 
 原则：修补只补结构不造内容——占位条目全部显式声明"待回填/缺失"，不编造数值。
-退出码：恒 0（含参数错误与写入失败；平台会把非零退出判为整跑 failed）。
+退出码：0=成功；2=参数错误；1=无法写入输出。
 """
 from __future__ import annotations
 
@@ -25,12 +25,6 @@ STATUSES = {"answered", "partial", "insufficient_evidence", "input_error"}
 CONTRACT = ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
 RESULT_INNER = ["formulas", "variables", "derivations", "verification", "coverage"]
 UNC_KEYS = ["unreported", "unverifiable", "conflicts", "human_review", "summary"]
-
-# 闸门四态：每个闸门记录该步是否真实跑完。没跑 != 通过。
-GATE_STATES = ("enforced", "skipped_not_provided", "not_found", "unreadable")
-GATE_KEYS = ["case_readable", "formula_source_readable", "mathml_converted",
-             "semantics_written", "derivations_written", "verification_written",
-             "gain_evidence_written"]
 
 
 def _load(path):
@@ -92,69 +86,10 @@ def scaffold(case_path, out_path):
                                "骨架阶段：尚未开始，全部内容待回填")
                             for k in UNC_KEYS}
     res["changelog"] = [{"step": "scaffold", "change": "生成骨架 result.json"}]
-    res["result"]["gates"] = {k: {"status": "not_found",
-                                  "gate_note": "骨架阶段：尚未产出，下游不得宣称已核对"}
-                              for k in GATE_KEYS}
-    res["result"]["gates"]["case_readable"] = {
-        "status": "enforced" if cid and cid != "unknown-case" else "not_found",
-        "gate_note": "case_id=%s" % cid}
-    res["result"]["gates"]["formula_source_readable"] = {
-        "status": "not_found",
-        "gate_note": "骨架阶段：尚未盘点公式来源，下游不得宣称已核对"}
     _dump(res, out_path)
     print("[result_scaffold] 骨架已写入 %s（case_id=%s，契约字段=%d）"
           % (out_path, cid, len(res)))
     return 0
-
-
-def _derive_gates(res):
-    """按 result.json 实际内容派生闸门四态（只补结构不造内容）。
-
-    enforced：该项真实产出且非空；
-    skipped_not_provided：输入本身没有该类对象（如 C02 无公式表示）；
-    not_found：应有但为空/缺失（没跑 ≠ 通过）；
-    unreadable：字段存在但类型异常。
-    """
-    inner = res.get("result") if isinstance(res.get("result"), dict) else {}
-    formulas = inner.get("formulas") or []
-    semantics_ok = any(isinstance(f, dict) and f.get("semantics") for f in formulas)
-    gates = {}
-
-    def put(key, state, note):
-        gates[key] = {"status": state, "gate_note": note}
-
-    put("case_readable",
-        "enforced" if res.get("case_id") else "not_found",
-        "case_id=%s" % (res.get("case_id") or "缺失"))
-    if not formulas:
-        put("formula_source_readable", "skipped_not_provided",
-            "输入未提供可还原的公式对象（真实缺失分支），未反推公式")
-        put("mathml_converted", "skipped_not_provided", "无可还原公式对象")
-    else:
-        non_empty = [f for f in formulas if isinstance(f, dict) and (f.get("latex") or "").strip()]
-        put("formula_source_readable",
-            "enforced" if non_empty else "not_found",
-            "公式对象 %d 条，其中 LaTeX 非空 %d 条" % (len(formulas), len(non_empty)))
-        put("mathml_converted",
-            "enforced" if non_empty else "not_found",
-            "已产出 LaTeX 的公式 %d 条" % len(non_empty))
-    put("semantics_written",
-        "enforced" if semantics_ok else ("skipped_not_provided" if not formulas else "not_found"),
-        "含逐符号语义块的公式数 %d" % sum(1 for f in formulas
-                                        if isinstance(f, dict) and f.get("semantics")))
-    derivs = inner.get("derivations") or []
-    put("derivations_written",
-        "enforced" if derivs else ("skipped_not_provided" if not formulas else "not_found"),
-        "推导步 %d 条" % len(derivs))
-    verifs = inner.get("verification") or []
-    put("verification_written",
-        "enforced" if verifs else ("skipped_not_provided" if not formulas else "not_found"),
-        "核验条目 %d 条" % len(verifs))
-    put("gain_evidence_written",
-        "enforced" if isinstance(res.get("gain_evidence"), dict)
-        and res.get("gain_evidence") else "not_found",
-        "gain_evidence %s" % ("已写入" if res.get("gain_evidence") else "缺失（Step 5 尚未运行）"))
-    return gates
 
 
 def ensure(result_path, case_path, out_path):
@@ -212,12 +147,6 @@ def ensure(result_path, case_path, out_path):
                                 for k in UNC_KEYS}
         fixes.append("uncertainties 缺失/非对象 → 重建")
 
-    # 闸门四态：只补结构（状态由实际内容派生），不造内容
-    gates = _derive_gates(res)
-    inner["gates"] = gates
-    if "gates" not in res:
-        fixes.append("result.gates 缺失 → 补闸门四态（按实际内容派生）")
-
     _dump(res, out_path)
     if fixes:
         print("[result_scaffold] ensure 修补 %d 处：" % len(fixes))
@@ -244,19 +173,9 @@ def main() -> int:
             return scaffold(args.case, args.out)
         return ensure(args.result, args.case, args.out)
     except OSError as e:
-        print("[result_scaffold] 输出写入失败: %s（退出码恒 0，不中断交付）" % e)
-        return 0
+        print("[result_scaffold] 输出写入失败: %s" % e)
+        return 1
 
 
 if __name__ == "__main__":
-    try:
-        rc = main()
-    except SystemExit as e:
-        rc = e.code if isinstance(e.code, int) else 0
-        if rc:
-            print("[result_scaffold] 参数/用法问题（退出码恒 0，不中断交付）")
-        rc = 0
-    except Exception as e:
-        print("[result_scaffold] 意外异常: %s（退出码恒 0，不中断交付）" % e)
-        rc = 0
-    sys.exit(rc or 0)
+    sys.exit(main())

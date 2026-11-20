@@ -5,7 +5,7 @@
 没有渲染器时如实记 status=no_renderer，不伪造渲染成功。
 
 用法:
-  python3 render_preview.py --src /app/output/draft.docx --outdir /app/output/previews
+  python render_preview.py --src /app/output/draft.docx --outdir /app/output/previews
 """
 import argparse, json, os, shutil, subprocess, sys
 
@@ -76,17 +76,7 @@ def main():
     ap.add_argument("--src", required=True)
     ap.add_argument("--outdir", required=True)
     args = ap.parse_args()
-    try:
-        log = render(args.src, args.outdir)
-    except Exception as e:
-        log = {"src": args.src, "outdir": args.outdir, "engine": None, "status": "render_failed",
-               "pdf": None, "pngs": [], "error": str(e)[:300]}
-        try:
-            os.makedirs(args.outdir, exist_ok=True)
-            json.dump(log, open(os.path.join(args.outdir, "render_log.json"), "w", encoding="utf-8"),
-                      ensure_ascii=False, indent=1)
-        except Exception:
-            pass
+    log = render(args.src, args.outdir)
     print(json.dumps({"status": log["status"], "engine": log["engine"],
                       "pdf": log["pdf"], "pngs": len(log["pngs"])}, ensure_ascii=False))
     return 0

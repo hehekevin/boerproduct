@@ -8,8 +8,6 @@
     --scan PATH        枚举 XML 中全部 <math> 节点：formula_id、文本摘要 → JSON
     --convert PATH     逐节点转换为 LaTeX → JSON（失败节点降级为文本拼接，标 partial）
     --text-file PATH   把整个文件当纯文本公式做规范化转 LaTeX（无 XML 时的通道）
-    --ablate           消融模式：关闭 MathML 结构化优先还原，全部公式退化为文本
-                      拼接通道（用于同输入双跑，产出可复核的基线对照数字）
 
 容错链（逐级降级，每级都保证非空输出）：
   1. 标准 ET 解析原文
@@ -17,8 +15,6 @@
   3. 正则提取 <math>…</math> / <math …/> / 未闭合 <math 块
   4. 块级解析失败 → 剥标签取纯文本 → 文本规范化为 LaTeX（标 partial+warning）
   5. 结构转换成功但 LaTeX 为空 → itertext 文本拼接回退（标 partial+warning）
-
-退出码：恒 0（verdict 照实写入 JSON 的 verdict 字段，不中断上层流程）。
 """
 from __future__ import annotations
 
@@ -312,16 +308,13 @@ def main() -> int:
                     help="把整份文件当纯文本公式规范化为 LaTeX（无 XML 时的通道）")
     ap.add_argument("--fallback", default=None,
                     help="主文件 0 节点时尝试的备用文件（如 publisher-source.xml）")
-    ap.add_argument("--ablate", action="store_true",
-                    help="消融模式：关闭 MathML 结构化优先还原，全部公式退化为文本"
-                         "拼接通道（用于同输入双跑对照）")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
 
     path = args.textfile or args.conv or args.scan
     if not path:
-        print("[mathml2latex] 需要 --scan / --convert / --text-file 之一")
-        return 0
+        print("需要 --scan / --convert / --text-file 之一")
+        return 2
 
     notes = []
     items = []
@@ -364,13 +357,7 @@ def main() -> int:
                     latex, warns = ("", [])
                     if node is not None:
                         try:
-                            if args.ablate:
-                                # 消融：关闭 MathML 结构化优先还原 → 退化为文本拼接通道
-                                txt = re.sub(r"\s+", " ", " ".join(node.itertext())).strip()
-                                latex = text2latex(txt)
-                                warns = ["ablate: 关闭 MathML 结构化优先还原，退化为文本拼接通道"]
-                            else:
-                                latex, warns = convert(node)
+                            latex, warns = convert(node)
                         except Exception as e:
                             warns = ["结构转换异常: %s" % e]
                             latex = ""
@@ -393,31 +380,18 @@ def main() -> int:
         notes.append("意外错误: %s" % e)
 
     payload = {"source": path, "fallback": args.fallback, "notes": notes,
-               "mode": "ablate" if args.ablate else "full",
                "math_nodes": len(items), "items": items}
     try:
         with open(args.out, "w", encoding="utf-8") as f:
             json.dump(payload, f, ensure_ascii=False, indent=1)
     except OSError as e:
         print("[mathml2latex] 输出写入失败: %s" % e)
-        return 0
+        return 1
     n_fail = sum(1 for x in items if x.get("conversion") == "failed")
-    verdict = "PASS" if not n_fail else "PARTIAL"
-    print("[mathml2latex] %s %d 个公式对象（failed=%d）%s → %s" % (
-        verdict, len(items), n_fail,
-        ("；" + "；".join(notes)) if notes else "", args.out))
-    return 0
+    print("[mathml2latex] %d 个公式对象（failed=%d）%s → %s" % (
+        len(items), n_fail, ("；" + "；".join(notes)) if notes else "", args.out))
+    return 0 if not n_fail else 3
 
 
 if __name__ == "__main__":
-    try:
-        rc = main()
-    except SystemExit as e:
-        rc = e.code if isinstance(e.code, int) else 0
-        if rc:
-            print("[mathml2latex] 参数/用法问题（退出码恒 0，不中断交付）")
-        rc = 0
-    except Exception as e:
-        print("[mathml2latex] 意外异常: %s（退出码恒 0，不中断交付）" % e)
-        rc = 0
-    sys.exit(rc or 0)
+    sys.exit(main())

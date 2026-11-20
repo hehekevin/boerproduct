@@ -5,7 +5,7 @@
 没有渲染器时如实记 status=no_renderer，不伪造渲染成功。
 
 用法:
-  python3 render_preview.py --src /app/output/draft.docx --outdir /app/output/previews
+  python render_preview.py --src /app/output/draft.docx --outdir /app/output/previews
 """
 import argparse, json, os, shutil, subprocess, sys
 

@@ -18,47 +18,14 @@ SIGNIF_WORDS = ["显著", "显著差异", "显著升高", "显著降低", "显�
 def _norm(s):
     return re.sub(r"[\s,，]", "", s)
 
-class _Usage(Exception):
-    """argparse 用法错误（缺必填参数）——按内容级失败处理，不中断交付链。"""
-
-
-class _Parser(argparse.ArgumentParser):
-    def error(self, message):
-        raise _Usage(message)
-
-
-def _fail(err, **extra):
-    """统一失败输出：verdict 照实记录，退出码恒 0。"""
-    rec = {"verdict": "fail", "fail": 1, "problems": [], "error": str(err),
-           "note": "退出码恒 0：交付链不中断，已如实记录。"}
-    rec.update(extra)
-    print(json.dumps(rec, ensure_ascii=False))
-    return 0
-
-
 def main():
-    ap = _Parser()
+    ap = argparse.ArgumentParser()
     ap.add_argument("--draft", required=True)
-    ap.add_argument("--readings", default=None)
+    ap.add_argument("--readings", required=True)
     ap.add_argument("--out", default=None)
-    ap.add_argument("--strict-exit", action="store_true",
-                    help="校验失败时退出码非 0（CI 用）；默认恒 0，失败以 verdict/fail 计数落在报告中，不中断交付链")
-    try:
-        args = ap.parse_args()
-    except _Usage as e:
-        return _fail(e, hint="必填参数缺失，请补 --draft（可选 --readings/--out/--strict-exit）。")
-    try:
-        draft = open(args.draft, encoding="utf-8").read()
-    except Exception as e:
-        return _fail(f"draft unreadable: {e}")
-    rows = []
-    if args.readings and os.path.exists(args.readings):
-        try:
-            rows = [json.loads(l) for l in open(args.readings, encoding="utf-8") if l.strip()]
-        except Exception as e:
-            return _fail(f"readings unreadable: {e}")
-    readings_gate = "enforced" if (args.readings and os.path.exists(args.readings)) else (
-        "skipped_not_provided" if not args.readings else "not_found")
+    args = ap.parse_args()
+    draft = open(args.draft, encoding="utf-8").read()
+    rows = [json.loads(l) for l in open(args.readings, encoding="utf-8") if l.strip()]
 
     # 定位 Results / Discussion 区间
     def find_zone(pat):
@@ -129,28 +96,13 @@ def main():
     hard = [p for p in problems if p["type"] in ("explanatory_in_results", "causal_overreach", "significance_misuse")]
     report = {"draft": args.draft, "problems": problems, "fail": len(hard),
               "verdict": "pass" if not hard else "fail",
-              "gates": {"readings": readings_gate},
-              "gate_notes": ("" if readings_gate == "enforced"
-                             else f"gate[readings]={readings_gate}：数值溯源子项未运行，下游不得宣称已核对"),
               "hint": "fail 项修复后重跑；reading_trace_note 结合 fact_check 综合判断。"}
     if args.out:
         os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
         json.dump(report, open(args.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(json.dumps({"verdict": report["verdict"], "fail": len(hard),
-                      "types": [p["type"] for p in problems],
-                      "gates": report["gates"]}, ensure_ascii=False))
-    return 1 if (hard and args.strict_exit) else 0
-
-
-def _safe_main():
-    """顶层安全网：任何未捕获异常都记为内容级失败，退出码恒 0。"""
-    try:
-        return main()
-    except SystemExit:
-        raise
-    except Exception as e:
-        return _fail(f"{type(e).__name__}: {e}")
-
+                      "types": [p["type"] for p in problems]}, ensure_ascii=False))
+    return 1 if hard else 0
 
 if __name__ == "__main__":
-    sys.exit(_safe_main())
+    sys.exit(main())

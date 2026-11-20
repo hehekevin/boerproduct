@@ -5,7 +5,7 @@
 没有渲染器时如实记 status=no_renderer，不伪造渲染成功。
 
 用法:
-  python3 render_preview.py --src /app/output/draft.docx --outdir /app/output/previews
+  python render_preview.py --src /app/output/draft.docx --outdir /app/output/previews
 """
 import argparse, json, os, shutil, subprocess, sys
 
@@ -71,45 +71,15 @@ def render(src, outdir):
     json.dump(log, open(os.path.join(outdir, "render_log.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     return log
 
-class _Usage(Exception):
-    """argparse 用法错误（缺必填参数）——按内容级失败处理，不中断交付链。"""
-
-
-class _Parser(argparse.ArgumentParser):
-    def error(self, message):
-        raise _Usage(message)
-
-
 def main():
-    ap = _Parser()
+    ap = argparse.ArgumentParser()
     ap.add_argument("--src", required=True)
     ap.add_argument("--outdir", required=True)
-    try:
-        args = ap.parse_args()
-    except _Usage as e:
-        print(json.dumps({"status": "skipped", "engine": None, "pdf": None, "pngs": 0,
-                          "error": f"用法错误: {e}",
-                          "hint": "用法: render_preview.py --src <docx> --outdir <dir>",
-                          "note": "退出码恒 0：预览缺失不阻断交付，已如实记录。"}, ensure_ascii=False))
-        return 0
+    args = ap.parse_args()
     log = render(args.src, args.outdir)
     print(json.dumps({"status": log["status"], "engine": log["engine"],
                       "pdf": log["pdf"], "pngs": len(log["pngs"])}, ensure_ascii=False))
     return 0
 
-
-def _safe_main():
-    """顶层安全网：任何未捕获异常都记为内容级失败，退出码恒 0。"""
-    try:
-        return main()
-    except SystemExit:
-        raise
-    except Exception as e:
-        print(json.dumps({"status": "render_failed", "engine": None, "pdf": None, "pngs": 0,
-                          "error": f"{type(e).__name__}: {e}",
-                          "note": "退出码恒 0：预览缺失不阻断交付，已如实记录。"}, ensure_ascii=False))
-        return 0
-
-
 if __name__ == "__main__":
-    sys.exit(_safe_main())
+    sys.exit(main())

@@ -8,26 +8,13 @@
            未能对上的数字逐条列出（FAIL），疑似模型自补的数值即真相风险点。
 
 用法:
-  python3 fact_ledger.py build  --sources /app/work/extracted --out /app/work/fact_ledger.jsonl
-  python3 fact_ledger.py check  --draft /app/work/draft.md --ledger /app/work/fact_ledger.jsonl \
+  python fact_ledger.py build  --sources /app/work/extracted --out /app/work/fact_ledger.jsonl
+  python fact_ledger.py check  --draft /app/work/draft.md --ledger /app/work/fact_ledger.jsonl \
                                --refs /app/work/references.json [--out /app/output/fact_check.json]
 
 诚实原则: check 只报告不修改；FAIL 条目需作者回材料核对或显式标注 [待核]，禁止凭印象改数。
 """
 import argparse, json, os, re, sys, glob, hashlib
-
-
-class _SafeParser(argparse.ArgumentParser):
-    """参数错误时退出码恒 0——只提示用法，不以非零码中断交付流程。"""
-
-    def error(self, message):
-        try:
-            sys.stderr.write("[arg-error] " + str(message) + "\n")
-            sys.stderr.write("[arg-error] 用法见 --help；本脚本失败路径退出码恒 0。\n")
-        except Exception:
-            pass
-        sys.exit(0)
-
 
 NUM_PAT = re.compile(
     r"(?<![.\w])(?:(?:\d+[\d,]*(?:\.\d+)?)\s*(?:%|‰|±\s*\d+(?:\.\d+)?)?"
@@ -39,7 +26,6 @@ NUM_PAT = re.compile(
 DOI_PAT = re.compile(r"10\.\d{4,9}/[-._;()/:A-Za-z0-9]+")
 YEAR_PAT = re.compile(r"\b(19|20)\d{2}\b")
 STAT_PAT = re.compile(r"\b(?:t|F|r|χ2|chi2|Z|OR|HR|RR|β|beta|d|Cohen's d)\s*[=＝]\s*[-−]?\d+(?:\.\d+)?", re.I)
-
 
 def _iter_source_lines(sources_dir):
     for fp in sorted(glob.glob(os.path.join(sources_dir, "M*.txt"))):
@@ -144,13 +130,11 @@ def cmd_check(args):
         os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
         json.dump(report, open(args.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(json.dumps({k: report[k] for k in ("checked_numbers", "unmatched", "verdict")}, ensure_ascii=False))
-    # verdict 照实写入报告（由 SKILL 嵌入 result.json）；退出码恒 0——内容级失败只提示核对，
-    # 不得中断交付或以非零码结束会话。
-    return 0
+    return 0 if not fails else 1
 
 def main():
-    ap = _SafeParser()
-    sub = ap.add_subparsers(dest="cmd")
+    ap = argparse.ArgumentParser()
+    sub = ap.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("build")
     b.add_argument("--sources", required=True)
     b.add_argument("--out", required=True)
@@ -160,11 +144,6 @@ def main():
     c.add_argument("--refs", default=None)
     c.add_argument("--out", default=None)
     args = ap.parse_args()
-    if getattr(args, "cmd", None) is None:
-        print(json.dumps({"ok": False, "verdict": "fail",
-                          "error": "缺少子命令（build/check）",
-                          "note": "退出码恒 0"}, ensure_ascii=False))
-        return 0
     if args.cmd == "build":
         return cmd_build(args)
     return cmd_check(args)

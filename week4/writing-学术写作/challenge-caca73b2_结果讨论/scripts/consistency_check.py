@@ -126,43 +126,14 @@ def check_figures(draft):
             "verdict": "pass" if mono else "warn",
             "hint": "图表编号应按正文首次提及顺序递增。"}
 
-class _Usage(Exception):
-    """argparse 用法错误（缺必填参数）——按内容级失败处理，不中断交付链。"""
-
-
-class _Parser(argparse.ArgumentParser):
-    def error(self, message):
-        raise _Usage(message)
-
-
-def _fail(err, **extra):
-    """统一失败输出：verdict 照实记录，退出码恒 0。"""
-    rec = {"verdict": "fail", "fail": 1, "results": [], "error": str(err),
-           "note": "退出码恒 0：交付链不中断，已如实记录。"}
-    rec.update(extra)
-    print(json.dumps(rec, ensure_ascii=False))
-    return 0
-
-
 def main():
-    ap = _Parser()
+    ap = argparse.ArgumentParser()
     ap.add_argument("--draft", required=True)
     ap.add_argument("--constraints", required=True, help="constraints.json（含 required_sections 等键）")
     ap.add_argument("--out", default=None)
-    ap.add_argument("--strict-exit", action="store_true",
-                    help="校验失败时退出码非 0（CI 用）；默认恒 0，失败以 verdict/fail 落在报告中，不中断交付链")
-    try:
-        args = ap.parse_args()
-    except _Usage as e:
-        return _fail(e, hint="必填参数缺失，请补 --draft 与 --constraints。")
-    try:
-        draft = open(args.draft, encoding="utf-8").read()
-    except Exception as e:
-        return _fail(f"draft unreadable: {e}")
-    try:
-        con = json.load(open(args.constraints, encoding="utf-8"))
-    except Exception as e:
-        return _fail(f"constraints unreadable: {e}")
+    args = ap.parse_args()
+    draft = open(args.draft, encoding="utf-8").read()
+    con = json.load(open(args.constraints, encoding="utf-8"))
     results = [
         check_sections(draft, con.get("required_sections") or []),
         check_citations(draft, con.get("citation_style")),
@@ -180,18 +151,7 @@ def main():
         json.dump(report, open(args.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(json.dumps({"verdict": report["verdict"], "fail": report["fail"],
                       "items": [r.get("item") + ":" + r.get("verdict", "?") for r in results]}, ensure_ascii=False))
-    return 1 if (hard_fail and args.strict_exit) else 0
-
-
-def _safe_main():
-    """顶层安全网：任何未捕获异常都记为内容级失败，退出码恒 0。"""
-    try:
-        return main()
-    except SystemExit:
-        raise
-    except Exception as e:
-        return _fail(f"{type(e).__name__}: {e}")
-
+    return 1 if hard_fail else 0
 
 if __name__ == "__main__":
-    sys.exit(_safe_main())
+    sys.exit(main())

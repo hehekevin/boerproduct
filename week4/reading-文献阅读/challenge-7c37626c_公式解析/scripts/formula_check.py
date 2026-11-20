@@ -7,7 +7,6 @@ import json
 import sys
 
 PROV = {"原文定义", "上下文推断", "常识补充"}
-GATE_STATES = {"enforced", "skipped_not_provided", "not_found", "unreadable"}
 
 
 def main() -> int:
@@ -22,8 +21,8 @@ def main() -> int:
         with open(args.result, "r", encoding="utf-8") as f:
             res = json.load(f)
     except Exception as e:
-        print("[formula_check] FAIL: result.json 不是合法 JSON: %s（退出码恒 0，不中断交付）" % e)
-        return 0
+        print("[formula_check] FAIL: result.json 不是合法 JSON: %s" % e)
+        return 1
 
     if not res.get("case_id"):
         problems.append("缺少 case_id")
@@ -107,48 +106,21 @@ def main() -> int:
             if isinstance(vr, dict) and vr.get("computed") is not None:
                 problems.append("coverage.not_recomputable=true 但 verification[%d] 有 computed（编造检测）" % i)
 
-    # 闸门四态：状态非法 / 非 enforced 缺 gate_note → FAIL
-    gates = inner.get("gates")
-    if not isinstance(gates, dict) or not gates:
-        problems.append("result.gates 缺失（闸门四态未记录，没跑≠通过）")
-    else:
-        for gk, gv in gates.items():
-            if not isinstance(gv, dict):
-                problems.append("gates[%s] 不是对象" % gk)
-                continue
-            st = gv.get("status")
-            if st not in GATE_STATES:
-                problems.append("gates[%s] 状态非法: %r（只允许 %s）"
-                                % (gk, st, "/".join(sorted(GATE_STATES))))
-            elif st != "enforced" and not (gv.get("gate_note") or "").strip():
-                problems.append("gates[%s] 非 enforced 但缺 gate_note" % gk)
-
     report = {"ok": not problems, "problems": problems,
               "counts": {"formulas": len(formulas), "variables": len(variables),
                          "derivations": len(derivs), "verification": len(verifs),
-                         "claims": len(claims),
-                         "gates": len(gates) if isinstance(gates, dict) else 0}}
+                         "claims": len(claims)}}
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=1)
 
     if problems:
-        print("[formula_check] FAIL（%d 处，已写报告；修复一轮，仍失败如实交付，退出码恒 0）" % len(problems))
+        print("[formula_check] FAIL（%d 处）" % len(problems))
         for p in problems[:50]:
             print("  - %s" % p)
-        return 0
+        return 1
     print("[formula_check] PASS（%s）" % report["counts"])
     return 0
 
 
 if __name__ == "__main__":
-    try:
-        rc = main()
-    except SystemExit as e:
-        rc = e.code if isinstance(e.code, int) else 0
-        if rc:
-            print("[formula_check] 参数/用法问题（退出码恒 0，不中断交付）")
-        rc = 0
-    except Exception as e:
-        print("[formula_check] 意外异常: %s（退出码恒 0，不中断交付）" % e)
-        rc = 0
-    sys.exit(rc or 0)
+    sys.exit(main())

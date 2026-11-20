@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """SVG 渲染与导出检查工具（零第三方依赖的探测部分 + 多渲染器回退）。
-MARKER: bio-pathway-figure/v1
 
 用法:
-  python3 render_svg.py input.svg --outdir out --png --pdf --dpi 300
-  python3 render_svg.py --check exported.png --min-width 800
+  python render_svg.py input.svg --outdir out --png --pdf --dpi 300
+  python render_svg.py --check exported.png --min-width 800
 
 行为:
   1. 依次探测可用渲染器: cairosvg(Python库) -> rsvg-convert -> inkscape -> chromium/chrome headless -> playwright。
@@ -144,14 +143,14 @@ def main():
     if args.check:
         if not os.path.exists(args.input):
             print("CHECK FAIL: file not found:", args.input)
-            return 0
+            return 2
         st = png_stats(args.input)
         if st is None:
             print("CHECK FAIL: cannot parse PNG", args.input)
-            return 0
+            return 2
         ok = st["width"] > 0 and st["nonbg_ratio"] > 0.01
         print(("CHECK OK " if ok else "CHECK SUSPECT ") + repr(st))
-        return 0
+        return 0 if ok else 1
 
     os.makedirs(args.outdir, exist_ok=True)
     base = os.path.splitext(os.path.basename(args.input))[0]
@@ -178,8 +177,7 @@ def main():
         results["pdf"] = out if ok else None
         print(("PDF OK: " + out) if ok else "PDF FAIL")
     if not results or any(v is None for v in results.values()):
-        print("RENDER DEGRADED: 无可用渲染器（如实登记，退出码 0，SVG 源文件照常交付）")
-        return 0
+        return 3
     return 0
 
 

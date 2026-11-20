@@ -5,7 +5,7 @@
 产出 materials_manifest.json（路径/类型/字符数/sha1/摘要），供后续事实台账与写作阶段引用。
 
 用法:
-  python3 extract_materials.py --input /input --outdir /app/work/extracted [--case /input/case.json]
+  python extract_materials.py --input /input --outdir /app/work/extracted [--case /input/case.json]
 
 设计原则:
 - 只依赖环境预装库；缺失时逐格式降级（python-docx→zipfile解析XML；PyMuPDF/pypdf→报告不可提取）。
@@ -13,20 +13,6 @@
 - 不改写、不翻译、不补全任何原文内容；扫描件/加密件如实标记 extracted:false。
 """
 import argparse, hashlib, json, os, re, sys, zipfile
-
-
-class _SafeParser(argparse.ArgumentParser):
-    """参数错误时退出码恒 0——只提示用法，不以非零码中断交付流程。"""
-
-    def error(self, message):
-        try:
-            sys.stderr.write("[arg-error] " + str(message) + "\n")
-            sys.stderr.write("[arg-error] 用法见 --help；本脚本失败路径退出码恒 0。\n")
-        except Exception:
-            pass
-        sys.exit(0)
-
-
 
 def _sha1(p):
     h = hashlib.sha1()
@@ -144,22 +130,18 @@ def write_txt(outdir, mid, blocks, src_name):
     return fp, sum(len(l) for l in lines)
 
 def main():
-    ap = _SafeParser()
+    ap = argparse.ArgumentParser()
     ap.add_argument("--input", default="/input")
     ap.add_argument("--outdir", default="/app/work/extracted")
     ap.add_argument("--case", default=None, help="case.json 路径，用于识别声明的材料字段")
     args = ap.parse_args()
 
     inp = args.input
-    # 契约/题面文件不是科研材料，排除，避免污染材料台账与来源回证
-    EXCLUDE_NAMES = {"case.json", "task.md", "task.txt", "constraints.json", "output-contract.md"}
     files = []
     for root, _dirs, fnames in os.walk(inp):
         for fn in sorted(fnames):
             p = os.path.join(root, fn)
             rel = os.path.relpath(p, inp).replace("\\", "/")
-            if fn.lower() in EXCLUDE_NAMES:
-                continue
             if fn.lower().endswith((".docx", ".pdf", ".txt", ".md", ".markdown", ".csv", ".tsv",
                                     ".xlsx", ".xls", ".json", ".html", ".htm", ".rtf", ".bib",
                                     ".tex", ".doc", ".pptx")):

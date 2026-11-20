@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """map_build.py — 思维导图四格式生成器（FreeMind .mm / OPML / 自包含 SVG / Markdown 大纲）
 用法:
-  python3 map_build.py --tree tree.json --relations relations.jsonl --evidence node_evidence.jsonl --outdir /app/output
+  python map_build.py --tree tree.json --relations relations.jsonl --evidence node_evidence.jsonl --outdir /app/output
 tree.json: {"root": "...", "nodes":[{"id":"N01","parent":null,"label":"...","type":"core_concept","note":...}]}
 relations.jsonl: {"rel":"R01","from":"N05","to":"N09","type":"causal|dependency|contrast|support|conflict|temporal","basis":...}
 node_evidence.jsonl: {"nid":"N12","type":"fact|summary|inference","locator":...,"quote":...}
@@ -11,19 +11,6 @@ node_evidence.jsonl: {"nid":"N12","type":"fact|summary|inference","locator":...,
 自检结果以 build_report.json 落盘，供 result.json 引用。
 """
 import argparse, html, json, math, os, sys
-
-
-class _SafeParser(argparse.ArgumentParser):
-    """参数错误时退出码恒 0——只提示用法，不以非零码中断交付流程。"""
-
-    def error(self, message):
-        try:
-            sys.stderr.write("[arg-error] " + str(message) + "\n")
-            sys.stderr.write("[arg-error] 用法见 --help；本脚本失败路径退出码恒 0。\n")
-        except Exception:
-            pass
-        sys.exit(0)
-
 import xml.etree.ElementTree as ET
 
 TYPE_COLOR = {
@@ -45,7 +32,6 @@ class Node:
         self.type = d.get("type", "other")
         self.note = d.get("note")
         self.children = []
-
 
 def load_tree(path):
     data = json.load(open(path, encoding="utf-8"))
@@ -146,11 +132,10 @@ def build_md(root_label, roots, ev, rels, nodes, path):
             L.append(f"- **{r.get('type')}**: {f} → {t} {basis}")
     open(path, "w", encoding="utf-8").write("\n".join(L) + "\n")
 
-# ---------- SVG 径向布局（带边界钳制 + 按节点数自适应半径，保证不裁切） ----------
+# ---------- SVG 径向布局 ----------
 def build_svg(root_label, roots, ev, rels, nodes, path):
-    W, H = 1600, 1100
+    W, H = 1500, 1000
     CX, CY = W/2, H/2
-    MARGIN = 78
     parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W:.0f} {H:.0f}" font-family="-apple-system,Segoe UI,Microsoft YaHei,sans-serif">',
              f'<rect width="{W:.0f}" height="{H:.0f}" fill="#ffffff"/>']
     levels = {}
@@ -163,18 +148,14 @@ def build_svg(root_label, roots, ev, rels, nodes, path):
     pos = {}
     pos["ROOT"] = (CX, CY)
     max_depth = max(levels) if levels else 1
-    def clamp_xy(x, y):
-        return (min(max(x, MARGIN), W - MARGIN), min(max(y, MARGIN), H - MARGIN))
     for d, ns in sorted(levels.items()):
+        radius = 140 + (d - 1) * 210
         cnt = len(ns)
-        # 半径随该层节点数自适应：周长要容得下所有节点框，避免叠压
-        need_r = 95 + cnt * 82
-        radius = max(160 + (d - 1) * 195, need_r)
         for i, n in enumerate(ns):
             ang = -math.pi/2 + 2*math.pi*i/max(cnt, 1) + 0.3*d
             x = CX + radius*math.cos(ang)
-            y = CY + radius*math.sin(ang)*0.58
-            pos[n.id] = clamp_xy(x, y)
+            y = CY + radius*math.sin(ang)*0.62
+            pos[n.id] = (x, y)
     def edge(n):
         if n.parent in pos and n.id in pos:
             x1, y1 = pos[n.parent]; x2, y2 = pos[n.id]
@@ -198,18 +179,11 @@ def build_svg(root_label, roots, ev, rels, nodes, path):
             evrows = ev.get(n.id, [])
             badge = " ●" if evrows else ""
             label = n.label if len(n.label) <= 16 else n.label[:15] + "…"
-            wbox = max(60, len(label) * 13 + 22)
-            # 贴边时把框拉回画布内
-            if x - wbox/2 < 6: x = wbox/2 + 6
-            if x + wbox/2 > W - 6: x = W - wbox/2 - 6
-            if y < 20: y = 20
-            if y > H - 20: y = H - 20
+            wbox = max(56, len(label) * 12 + 18)
             parts.append(f'<rect x="{x - wbox/2:.0f}" y="{y - 14:.0f}" width="{wbox:.0f}" height="28" rx="14" fill="{color}" fill-opacity="0.12" stroke="{color}" stroke-width="1.2"/>')
             parts.append(f'<text x="{x:.0f}" y="{y + 4:.0f}" font-size="13" fill="{color}" text-anchor="middle">{html.escape(label)}{badge}</text>')
             if n.type not in ("other",):
                 parts.append(f'<text x="{x:.0f}" y="{y + 26:.0f}" font-size="9" fill="#888" text-anchor="middle">{html.escape(n.type)}</text>')
-            # 节点 ID（ASCII）：无 CJK 字体的回退渲染下，PNG 仍可逐节点核对
-            parts.append(f'<text x="{x:.0f}" y="{y - 17:.0f}" font-size="9" fill="#999" text-anchor="middle">{html.escape(n.id)}</text>')
         for c in n.children:
             draw(c)
     for r in roots:
@@ -248,7 +222,7 @@ def self_check(files, n_nodes):
     return report
 
 def main():
-    ap = _SafeParser()
+    ap = argparse.ArgumentParser()
     ap.add_argument("--tree", required=True)
     ap.add_argument("--relations", default=None)
     ap.add_argument("--evidence", default=None)

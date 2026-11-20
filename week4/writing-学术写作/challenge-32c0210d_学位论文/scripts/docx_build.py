@@ -62,40 +62,6 @@ def build_markdown(draft, path):
     open(path, "w", encoding="utf-8").write("\n".join(L))
     return path
 
-def _normalize(draft):
-    """兼容两种输入形态：
-      A) 完整稿 {"title","meta","sections":[...],"references":[...],"notes_for_human":[...]}
-      B) 逐章稿 {"title","chapters":[{"ch","title","text"/"paragraphs"}],"references":[...]}
-    统一转成 A 的 sections 形态，保证 SKILL.md 的 draft_all.json 与本脚本真正接上线。
-    """
-    if not isinstance(draft, dict):
-        return {"title": "", "sections": []}
-    if isinstance(draft.get("sections"), list):
-        return draft
-    chapters = draft.get("chapters") or draft.get("chapter_drafts") or []
-    sections = []
-    for c in chapters:
-        if not isinstance(c, dict):
-            continue
-        heading = ("%s %s" % (str(c.get("ch") or "").strip(),
-                              str(c.get("title") or "").strip())).strip() or str(c.get("title") or "")
-        paras = []
-        body = c.get("text") or c.get("content") or ""
-        if isinstance(body, str):
-            paras = [b for b in body.split("\n\n") if b.strip()]
-        elif isinstance(body, list):
-            paras = body
-        elif isinstance(c.get("paragraphs"), list):
-            paras = c["paragraphs"]
-        sections.append({"heading": heading, "level": 1, "paragraphs": paras,
-                         "comments": c.get("comments") or []})
-    out = dict(draft)
-    out["sections"] = sections
-    out.setdefault("references", draft.get("references") or [])
-    out.setdefault("notes_for_human", draft.get("notes_for_human") or draft.get("needs_human") or [])
-    return out
-
-
 def _min_docx(path, draft):
     """stdlib 兜底：生成合法可打开的最小 docx（标题+段落+表格）。"""
     W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
@@ -218,14 +184,7 @@ def main():
     ap.add_argument("--out-docx", default="/app/output/draft.docx")
     ap.add_argument("--out-md", default="/app/output/draft.md")
     args = ap.parse_args()
-    try:
-        draft = json.load(open(args.draft_json, encoding="utf-8"))
-    except Exception as e:
-        print(json.dumps({"ok": False, "error": str(e)[:300],
-                          "note": "输入不可读，未产出文档；不中断交付流程。"},
-                         ensure_ascii=False))
-        return 0
-    draft = _normalize(draft)
+    draft = json.load(open(args.draft_json, encoding="utf-8"))
     os.makedirs(os.path.dirname(args.out_docx) or ".", exist_ok=True)
     info = build_docx(draft, args.out_docx)
     build_markdown(draft, args.out_md)

@@ -6,7 +6,7 @@ case.json 的 output_contract（全部字段名）+ 本题业务 schema，并在
 打印缺失字段清单，供 Agent 回填后重跑。绝不改写业务内容，只做结构校验。
 
 用法：
-    python3 schema_guard.py --result /app/output/result.json \
+    python schema_guard.py --result /app/output/result.json \
         [--case /input/case.json] [--extra-schema schema.json]
 
 退出码：0=通过；1=结构失败（打印缺失/多余字段）。
@@ -54,14 +54,14 @@ def main() -> int:
 
     problems = []
     if not os.path.exists(args.result):
-        print("[schema_guard] FAIL: result.json 不存在：%s（退出码恒 0，禁止中断交付）" % args.result)
-        return 0
+        print("[schema_guard] FAIL: result.json 不存在：%s" % args.result)
+        return 1
 
     try:
         result = load_json(args.result)
     except Exception as e:
-        print("[schema_guard] FAIL: result.json 不是合法 JSON：%s（退出码恒 0）" % e)
-        return 0
+        print("[schema_guard] FAIL: result.json 不是合法 JSON：%s" % e)
+        return 1
 
     # 1) case_id 必须存在
     if isinstance(result, dict):
@@ -116,8 +116,7 @@ def main() -> int:
             print("  - %s" % p)
         if len(problems) > 40:
             print("  ... 共 %d 处" % len(problems))
-        print("[schema_guard] 结论：fail（照实修复一轮；退出码恒 0，禁止中断交付）")
-        return 0
+        return 1
 
     print("[schema_guard] PASS: 结构完整（case_id=%s）" % (
         result.get("case_id") if isinstance(result, dict) else "(array)"))
@@ -125,14 +124,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    try:
-        rc = main()
-    except SystemExit as e:
-        rc = e.code if isinstance(e.code, int) else 0
-        if rc:
-            print("[schema_guard] 参数/用法问题（退出码恒 0，不中断交付）")
-        rc = 0
-    except Exception as e:
-        print("[schema_guard] 意外异常: %s（退出码恒 0，不中断交付）" % e)
-        rc = 0
-    sys.exit(rc or 0)
+    sys.exit(main())

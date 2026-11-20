@@ -1,4 +1,0 @@
-{"kind":"term","key":"<术语>","canonical":"<学科规范写法>","aliases":["<变体1>","<变体2>"],"basis":"M01:p3","first_used":"第1章","note":"首次定义处用 canonical，之后不得单独用 alias"}
-{"kind":"symbol","key":"<符号>","canonical":"<符号>","unit":"<单位>","basis":"M01:p3","first_used":"第2章","note":"同符号只允许一个含义"}
-{"kind":"definition","key":"<概念>","canonical":"<一句话定义>","basis":"M01:p3","first_used":"第2章","note":"全文只定义一次"}
-{"kind":"conclusion","key":"<3.1>","canonical":"结论3.1","statement":"<该结论的一句话主张>","evidence":["M01:p4"],"basis":"M01:p4","first_used":"第3章","note":"正文引用该编号时必须在登记簿中存在"}

@@ -8,23 +8,13 @@
            未能对上的数字逐条列出（FAIL），疑似模型自补的数值即真相风险点。
 
 用法:
-  python3 fact_ledger.py build  --sources /app/work/extracted --out /app/work/fact_ledger.jsonl
-  python3 fact_ledger.py check  --draft /app/work/draft.md --ledger /app/work/fact_ledger.jsonl \
+  python fact_ledger.py build  --sources /app/work/extracted --out /app/work/fact_ledger.jsonl
+  python fact_ledger.py check  --draft /app/work/draft.md --ledger /app/work/fact_ledger.jsonl \
                                --refs /app/work/references.json [--out /app/output/fact_check.json]
 
 诚实原则: check 只报告不修改；FAIL 条目需作者回材料核对或显式标注 [待核]，禁止凭印象改数。
 """
 import argparse, json, os, re, sys, glob, hashlib
-
-
-class _Usage(Exception):
-    """argparse 用法错误（缺必填参数/子命令）——按内容级失败处理，不中断交付链。"""
-
-
-class _Parser(argparse.ArgumentParser):
-    def error(self, message):
-        raise _Usage(message)
-
 
 NUM_PAT = re.compile(
     r"(?<![.\w])(?:(?:\d+[\d,]*(?:\.\d+)?)\s*(?:%|‰|±\s*\d+(?:\.\d+)?)?"
@@ -96,20 +86,8 @@ def _load_ledger(path):
     return rows
 
 def cmd_check(args):
-    try:
-        draft = open(args.draft, encoding="utf-8").read()
-    except Exception as e:
-        print(json.dumps({"checked_numbers": 0, "unmatched": 0, "verdict": "fail",
-                          "error": f"draft unreadable: {e}",
-                          "note": "交付链不中断：如实记录后继续收尾。"}, ensure_ascii=False))
-        return 0
-    try:
-        ledger = _load_ledger(args.ledger)
-    except Exception as e:
-        print(json.dumps({"checked_numbers": 0, "unmatched": 0, "verdict": "fail",
-                          "error": f"ledger unreadable: {e}",
-                          "note": "交付链不中断：如实记录后继续收尾。"}, ensure_ascii=False))
-        return 0
+    draft = open(args.draft, encoding="utf-8").read()
+    ledger = _load_ledger(args.ledger)
 
     # 台账索引：数值归一化（去千分位）字符串集合；统计量/DOI 精确串
     num_index = {}
@@ -152,10 +130,10 @@ def cmd_check(args):
         os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
         json.dump(report, open(args.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(json.dumps({k: report[k] for k in ("checked_numbers", "unmatched", "verdict")}, ensure_ascii=False))
-    return 1 if (fails and getattr(args, "strict_exit", False)) else 0
+    return 0 if not fails else 1
 
 def main():
-    ap = _Parser()
+    ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("build")
     b.add_argument("--sources", required=True)
@@ -165,34 +143,10 @@ def main():
     c.add_argument("--ledger", required=True)
     c.add_argument("--refs", default=None)
     c.add_argument("--out", default=None)
-    c.add_argument("--strict-exit", action="store_true",
-                   help="校验失败时退出码非 0（CI 用）；默认恒 0，失败以 verdict/unmatched 落在报告中，不中断交付链")
-    try:
-        args = ap.parse_args()
-    except _Usage as e:
-        print(json.dumps({"checked_numbers": 0, "unmatched": 0, "verdict": "fail",
-                          "error": f"用法错误: {e}",
-                          "hint": "子命令用法：build --sources <dir> --out <ledger.jsonl> | "
-                                  "check --draft <md> --ledger <ledger.jsonl> [--refs] [--out] [--strict-exit]",
-                          "note": "退出码恒 0：交付链不中断，已如实记录。"}, ensure_ascii=False))
-        return 0
+    args = ap.parse_args()
     if args.cmd == "build":
         return cmd_build(args)
     return cmd_check(args)
 
-
-def _safe_main():
-    """顶层安全网：任何未捕获异常都记为内容级失败，退出码恒 0。"""
-    try:
-        return main()
-    except SystemExit:
-        raise
-    except Exception as e:
-        print(json.dumps({"checked_numbers": 0, "unmatched": 0, "verdict": "fail",
-                          "error": f"{type(e).__name__}: {e}",
-                          "note": "退出码恒 0：交付链不中断，已如实记录。"}, ensure_ascii=False))
-        return 0
-
-
 if __name__ == "__main__":
-    sys.exit(_safe_main())
+    sys.exit(main())

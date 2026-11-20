@@ -1,127 +1,91 @@
 ---
-name: bio-pathway-figure
-description: >
-  Biological mechanism & pathway diagram Skill. Reads /input/case.json + task.md
-  (+ artifacts/figure-workorder.json), extracts entities (gene/protein/complex/
-  receptor/ligand/cell) and interactions (activation/inhibition/phosphorylation/
-  ubiquitination/binding/recruitment/translocation) with verbatim evidence quotes,
-  renders a layered editable SVG (compartment bands extracellular-membrane-
-  cytoplasm-nucleus, transmembrane receptors on the membrane midline, semantic
-  arrow styles: arrow/T-bar/circle/square/diamond) via pathway_svg.py, exports
-  PNG(300dpi)/PDF via render_svg.py renderer fallback chain, and mechanically
-  validates entity naming ([A-Za-z] regex, never isalpha which passes CJK chars),
-  edge-type vs arrow-style, direction (vector dot product), compartment placement,
-  and legend-vs-encoding consistency with validate_pathway.py. Writes
-  /app/output/result.json with all output_contract fields, content_map (every
-  node/edge traced to source), reproducibility block, and gain_evidence /
-  efficiency (same-validator ablation A/B + pollution counterexample injection,
-  machine-judged). All failure paths exit 0; never fabricates sources or data.
+name: pathway-figure-skill
+description: Generate and edit layered, editable biological mechanism/pathway diagrams (SVG) with traceable entity-relation extraction, direction-verified regulation semantics, legend compliance, and real PNG/PDF export with pixel checks. Reads actual case sources, never fabricates entities or relation directions.
 ---
 
-# bio-pathway-figure：生物机制图与通路图（可编辑 SVG + 机械校验）
+# 生物机制图与通路图 Skill
 
-核心承诺：**图上每个实体、每条边都逐字回证到输入材料；相互作用语义映射为可区分箭头样式；区室/跨膜位置按约束布局；图例与图面样式一一对应；全部机械校验逐条写入 compliance_checks（match=false 必修或登记）；交付分层可编辑 SVG + PNG(300dpi)/PDF 导出；gain_evidence 由同输入消融两臂 + 污染反例注入真跑得出。** 任何失败都如实登记（材料缺失/无法判断/运行失败三类分写），不编造、不静默改判。
+把一份真实机制材料变成一张**可逐条质疑、可回溯、可编辑**的通路图。核心纪律：**禁止编造**——图中不出现来源材料里不存在的实体名、浓度、时间点、单位；抑制/激活方向绝不画反。
 
-## 0. 强制执行协议（最高优先级）
+## 强制执行协议（最高优先级，覆盖后续所有步骤）
 
-1. **读完 `/input/case.json`、task.md、工单（artifacts/figure-workorder.json）后第一件事写 `/app/output/result.json` 骨架**：`output_contract` 以 case.json 实际声明为准（预期 `["case_id","status","editable_source","export_artifact","content_map","compliance_checks","exceptions"]`），读到什么抄什么，一个键不缺；暂无内容填 `"unknown"`/`[]`，`status="partial"`。此后每次实质进展增量回写。
-2. **预算硬闸**：模型请求超 48 次（上限 64）或运行超 700 秒（上限 900）立即收尾填 result.json。
-3. **失败也写 result.json**：崩溃/缺环境/缺数据时写含 `status="partial"` + exceptions 完整骨架；材料缺失、无法判断、运行失败三类在 exceptions 分别说明；禁止编造软件状态或科学数据。
-4. **所有失败路径 exit 0**：脚本 verdict 写 JSON 不写退出码；校验 FAIL 不是终止，是修复指令。
-5. 写盘前确认 `json.loads` 可解析、`case_id` 与输入一致。
+1. **先落地再优化**：读完 `/input/case.json`、工单（如 `artifacts/figure-workorder.json`）与来源材料后，**立即**写 `/app/output/result.json` 骨架。键集合 = case.json 中 `output_contract` 声明的**全部字段**（预期为 `["case_id","status","editable_source","export_artifact","content_map","compliance_checks","exceptions"]`，以实际声明为准，一个不缺），并写入真实 `case_id` 与 `status:"partial"`；暂无法产出的字段填 `"unknown"` 或 `[]`，不得留空、不得编造。
+2. **广度优先**：先保证每个阶段都有粗产出（骨架→实体清单→粗版 SVG→导出→精化），不在单步耗尽预算。
+3. **预算熔断**：模型请求超过 48 次（上限 64）或运行超过 700 秒（上限 900 秒）时，立即停止新步骤，用已有产出填写并收尾 result.json。
+4. **写盘前自检**：每次写 result.json 前，确认 JSON 可解析（`python -c "import json;json.load(open('/app/output/result.json'))"`)、output_contract 全键存在、`case_id` 与 case.json 一致。
+5. **失败也要写**：任何异常/熔断/渲染失败，都更新 result.json：`status` 如实取 `partial`/`failed`，`exceptions` 记录失败点与已尝试的回退链。**空 result.json 比崩溃更不可接受。**
 
-## 1. 线性六步主流程
+## 线性五步主流程
 
-### 步骤① 读输入（1-2 请求）
-- 读 case.json：抄 `case_id` 与 `output_contract` 全键。
-- 读 task.md + 工单：确认是**生成**还是**编辑**（source-preserving edit）、要求的通路/实体/导出格式。
-- 定位机制材料原文（PDF/文本）：材料是实体、关系、方向、数据的**唯一合法来源**；不凭记忆补造通路。
+### 步骤1：读取输入，抄录契约
+- 读 `/input/case.json`：抄 `case_id`、`output_contract` 全键（原样，不增不减不排序）。
+- 读工单（若有）：区分两类任务——**新建图**（从来源材料生成机制图）与**编辑工单**（对已有 SVG 做 source-preserving 修改），以及指定导出格式/尺寸/分辨率。
+- 通读来源材料（论文正文/图注/表格/数据文件）。所有实体与关系**只从实际文本中抽取**，不凭领域常识补造。
 
-### 步骤② 写 result.json 骨架（1 请求）
-按协议第 1 条立即落盘，之后增量回填。
+### 步骤2：写 result.json 骨架
+按强制执行协议第 1 条立即落盘。此后每次实质进展都增量回写。
 
-### 步骤③ 实体/关系抽取 → pathway_spec.json（3-5 请求）
-从材料逐句抽取，写 `/app/work/pathway_spec.json`：
-- `nodes`: `{id, label, type(gene|protein|receptor|ligand|complex|enzyme|cell|metabolite), compartment, source, evidence}`——`evidence` 必须是材料**逐字引文**；基因/蛋白书写区分（基因斜体、蛋白正体）；实体符号含 ASCII 字母。
-- `edges`: `{id, src, dst, type(activation|inhibition|phosphorylation|ubiquitination|binding|translocation|recruitment), evidence}`——**方向按原文陈述**（主语→宾语），"A promotes B"=A→B activation；模糊关系登记 exceptions 不硬画。
-- `compartments`: 按材料生物学层级（默认 `["extracellular","membrane","cytoplasm","nucleus"]`）；受体标 `membrane`（跨膜）。
-- 命名陷阱：判断"实体符号是否拉丁字母"用 `[A-Za-z]` 正则，**禁用 `isalpha()`**（`"激".isalpha()` 为 True 会漏检）。
+### 步骤3：通路抽取与关系语义核对（结果正确性的第一道防线）
+从来源材料抽取：
+- **实体**：基因/蛋白/复合物/家族成员/细胞类型/区室/刺激物/药物，逐一记录：名称（按原文书写，区分基因斜体惯例）、类型、来源位置。
+- **相互作用**：逐条记录：主体（上游）→ 客体（下游）、关系类型（激活/抑制/磷酸化/结合/泛素化/转录调控/募集/转运）、原文证据（来源位置+原文摘录）、不确定性（若原文表述模糊）。
+- 生成 `content_map`：每个实体与每条相互作用都附证据 `{source_ref, quote}`。**凡在 content_map 中找不到证据的实体/关系，一律不画。**
 
-### 步骤④ 渲染 + 导出（2-4 请求）
-先定位脚本（标志文件校验式命中，禁 `find|head -1`）：
-```bash
-SCRIPTS=""; for p in /skills/weekly-skill/scripts ./scripts /app/work/scripts; do
-  [ -f "$p/pathway_svg.py" ] && grep -q "bio-pathway-figure/v1" "$p/pathway_svg.py" && SCRIPTS="$p" && break; done
-```
-```bash
-python3 "$SCRIPTS/pathway_svg.py" /app/work/pathway_spec.json --out /app/output/figure.svg
-python3 "$SCRIPTS/render_svg.py" /app/output/figure.svg --outdir /app/output --png --pdf --dpi 300
-python3 "$SCRIPTS/render_svg.py" --check /app/output/figure.png
-```
-- 产物：分层 SVG（`<g id="compartment-*"/"node-*"/"edge-*"/"legend">`，图元带 `data-source`/`data-evidence`）+ PNG(300dpi) + PDF。
-- 渲染器回退链 cairosvg→rsvg-convert→inkscape→chrome headless 全失败：SVG 保留（仍可编辑），PNG/PDF=unknown 登记 exceptions。
-- **编辑工单**：只改 spec 中工单要求的节点/边/标签/样式，记 `edit`（旧值→新值+原因），重跑步骤④。
+**关系语义核对表（必须逐条执行，禁止跳过）**：
 
-### 步骤⑤ 机械校验（2-3 请求，match=false 必修）
-```bash
-python3 "$SCRIPTS/validate_pathway.py" /app/work/pathway_spec.json /app/output/figure.svg \
-  --corpus <材料目录或文件> --report /app/work/validate_report.json
-```
-六组校验逐条明细：entity_checks（存在/标签/区室属性/ASCII 命名/引文逐字回证）、edge_semantics（type 属性/箭头样式与语义映射一致/虚线约定/引文）、direction_checks（data-to−data-from 与 src→dst 中心向量点积>0）、compartment_checks（区室带顺序=细胞外→膜→胞质→核；节点中心在带内；膜上节点骑膜带中线）、legend_checks（图例项键=图面实际使用集合、配色一致）、export_checks（PNG 像素检查）。任一 match=false：改 spec 重渲染重校验；修不好 → status=partial + exceptions。
+| 关系类型 | 图元约定 | 方向规则 |
+|---|---|---|
+| 激活/促进 | 实线箭头 `→` | 从原因（上游）指向结果（下游） |
+| 抑制 | T型短横端 `⊣`（SVG: 直线 + 垂直短横端帽） | T端指向被抑制者 |
+| 磷酸化 | 箭头 + 标注 "P"（或按原文记号） | 激酶 → 底物 |
+| 结合/复合物 | 无方向连线或共置同一复合物框 | 依原文；无方向依据则不画箭头 |
+| 转录调控 | 箭头指向基因符号并标注 | 调控因子 → 靶基因 |
+| 转运/易位 | 箭头跨区室 | 从原区室指向目标区室 |
 
-### 步骤⑥ 填充 result.json 全字段（2-3 请求）
-```json
-{
-  "case_id": "<抄自 case.json>", "status": "complete | partial",
-  "editable_source": {"svg": "/app/output/figure.svg", "spec": "/app/work/pathway_spec.json",
-    "rerun_command": "python3 <scripts>/pathway_svg.py /app/work/pathway_spec.json --out /app/output/figure.svg"},
-  "export_artifact": {"png": {"path": "/app/output/figure.png", "dpi": 300, "pixel_check": "CHECK OK nonbg_ratio=<实测>"},
-    "pdf": {"path": "/app/output/figure.pdf"}, "font": "Helvetica/Noto Sans CJK/Microsoft YaHei"},
-  "content_map": {
-    "nodes": [{"element_id": "EGFR", "label": "EGFR", "type": "receptor", "compartment": "membrane", "source": "<材料:行/页>", "evidence": "<逐字引文>", "color": "#C44E52"}],
-    "edges": [{"element_id": "e02", "src": "EGFR", "dst": "GRB2", "type": "recruitment", "arrow_style": "marker-arrow+dashed", "evidence": "<逐字引文>"}]},
-  "compliance_checks": {"entity_checks": [], "edge_semantics": [], "direction_checks": [],
-    "compartment_checks": [], "legend_checks": [], "export_checks": []},
-  "reproducibility": {"spec_fingerprint": "11 nodes x 11 edges sha256=<实测>", "deps": "python3.8+ 标准库",
-    "export_params": "svg+png(300dpi)+pdf", "manual_edits": "无", "rerun_command": "<同 editable_source>"},
-  "exceptions": [], "edit": {}
-}
-```
-**compliance_checks 直接抄 validate_report.json 的 checks 分组**（含逐条 match）；`content_map` 与 spec 双向一致；任何 match=false 不得删除键，如实保留并登记 exceptions。
+执行方法：把每条边写成「原文句子 → 判定类型 → 方向：A→B」三列，与原文逐条比对后再落 SVG。**方向拿不准时按上下文取最保守解释（如仅写"关联"虚线）并登记 exceptions。**
 
-### 步骤X 增益证据（回填 result.json，最后执行）
-```bash
-python3 "$SCRIPTS/gain_evidence.py" --spec /app/work/pathway_spec.json \
-  --corpus <材料目录或文件> --result /app/output/result.json --outdir /app/output --write
-```
-同输入消融两臂（全量臂 vs `--ablate edge_semantics,compartment,legend` 消融臂），同一校验器各跑一遍，FAIL 数差 `fail_count_diff` 是机器判定增益；污染反例注入副本（语义反转/区室错位/图例删除）必须被抓到（caught=true）；写入 `gain_evidence` 与 `efficiency` 两键（本包唯一写入者）。
+### 步骤4：写分层可编辑 SVG 并真实导出
+- **区室分层**：外层膜/核/质用嵌套 `<g id="compartment-膜外">` 分区；跨膜蛋白置于膜边界线上的独立分组。每个区室一个 `<g>`，内含实体 `<g id="entity-XXX">`。
+- **可编辑性**：所有文字用 `<text>` 元素（不用转曲路径）；`id`/`class` 语义化命名（`entity-EGFR`、`edge-EGFR-inhibits-STAT3`、`legend`、`compartment-nucleus`）；分层顺序：底色→区室→实体→边→标注→图例。
+- **图例**：图面用到的每种线型/箭头/颜色必须在 `<g id="legend">` 中有对应说明项；颜色映射与图面一一对应。
+- **新建图**：按抽取结果从空 SVG 构建；**编辑工单**：在原 SVG 上只改工单要求的元素（改标签/位置/颜色），**保留其余 id、图层结构与未涉及元素**，并在 result.json 的 `compliance_checks.edit_record` 中记录：改了哪些元素、保留了哪些 id。
+- **导出**：`python scripts/render_svg.py figure.svg --outdir /app/output --png --pdf --dpi 300`，随后 `python scripts/render_svg.py /app/output/figure.png --check` 校验尺寸与非空像素（nonbg_ratio>0.01）。失败时按脚本内置回退链（cairosvg→rsvg-convert→inkscape→chromium headless）逐级排查，全部失败则登记 exceptions 并在 result.json 标注导出缺口。
 
-## 2. 异常处理速查
+### 步骤5：填写 result.json 全字段并自检
+- `editable_source`：SVG 路径 + 分层说明（区室/实体/边/图例的 id 结构）。
+- `export_artifact`：PNG/PDF 路径 + 尺寸/分辨率/像素检查结果。
+- `content_map`：步骤3产物（实体清单+边清单+证据）。
+- `compliance_checks`：至少含三项记录——①关系方向逐条核对表结果（每条边：原文句子↔图元方向）；②实体名与来源逐一比对结果（图中每个名字↔来源原文）；③图例完整性（线型/颜色↔图面用量）。
+- `exceptions`：材料未给出的关系、方向模糊取保守解释、渲染回退、字体回退等，逐条说明。
+- `status`：`complete` / `partial` / `failed`，如实。
+- 最后按协议第 4 条做 JSON 自检。
 
-| 情况 | 处置 |
+## 异常处理
+
+| 场景 | 处置 |
 |---|---|
-| 材料缺失/无法判断/运行失败 | exceptions 三类分别说明；已产出的 SVG/result 照常交付 |
-| 关系方向模糊（原文未指明促进/抑制） | 登记无法判断不硬画；有把握才入 edges |
-| 同名基因/蛋白歧义 | 按材料上下文消歧并在 node.source 注明；消歧不了标 partial |
-| 图例项≠使用集合 / 箭头样式错 / 区室错位 / 方向反 | 改 spec 重渲染重校验；修不好 status=partial + exceptions |
-| 渲染器全失败 | SVG 保留，PNG/PDF=unknown + exceptions（renderer_unavailable） |
-| 中文变方框 | 用环境 font-discovery 找 CJK 字体；不行改英文标签 + exceptions |
-| spec 过大写 result.json 被截断 | 分批增量写（每批 ≤1500 字），写完验 json.loads |
-| 预算触顶（48 请求/700 秒） | 立即收尾，未完成项 unknown，status 如实 |
+| 材料未给出某实体/关系 | 不画，不补常识；在 exceptions 登记"来源未提及" |
+| 关系类型/方向模糊 | 按上下文取最保守解释（如虚线"关联"），登记 exceptions 并给出原文依据 |
+| 基因名/蛋白名歧义（同名异义） | 以原文上下文和物种前缀为准，无法消歧则用原文原写法并登记 |
+| 渲染失败 | 回退链：cairosvg→rsvg-convert→inkscape→chromium headless；全失败则保留 SVG、标 partial、登记 exceptions |
+| 字体缺失 | SVG 中 font-family 使用通用栈（如 `Arial, Helvetica, sans-serif`），不依赖特定字体文件 |
+| 图面元素过多不可读 | 优先保证核心通路可读；省略项在 exceptions 说明 |
+| 输入数据与图示矛盾 | 以来源文本为准，矛盾点登记 exceptions，不擅自调和 |
 
-## 3. 自检清单（收尾前逐项过）
+## 自检清单（交稿前逐项打勾）
 
-- [ ] result.json 可 json.loads；键与 output_contract 完全一致（不删键）；case_id 一致；status 如实
-- [ ] 每个节点/边 element_id 可在 SVG 中找到对应 `<g id=...>`，evidence 为材料逐字引文且回证通过
-- [ ] 箭头样式与关系类型一一对应；方向点积>0；区室带顺序正确；膜上节点骑膜中线
-- [ ] 图例项键=图面实际使用集合，配色一致；PNG 过 --check（非空+尺寸），PDF 存在（或 unknown+exceptions）
-- [ ] 实体符号命名用 [A-Za-z] 正则校验（未用 isalpha）
-- [ ] gain_evidence 两臂 FAIL 数差与污染反例 caught=true 为本次真跑数字；efficiency 已回填
-- [ ] exceptions 覆盖材料缺失/无法判断/运行失败三类（如适用）；全部文本 UTF-8
+- [ ] 图中**每个名字**（基因/蛋白/复合物/药物/区室）都能在来源材料中找到原词——专项：逐个 text 元素与来源比对，无一个凭空出现。
+- [ ] 每条边的方向与原文一致，激活→、抑制⊣ 无一画反；每条边有原文句子佐证。
+- [ ] 关系类型可区分：实线箭头/T端/P标注/无向连线使用正确。
+- [ ] 跨膜蛋白画在膜上、区室位置正确、通路流向（受体→胞内→核）与原文一致。
+- [ ] 图例覆盖图面全部线型/箭头/颜色，说明与实际一致。
+- [ ] SVG 分层、id 语义化、文字均为 `<text>`；编辑工单仅改动要求元素且保留其余 id/图层，有 edit 记录。
+- [ ] PNG(300dpi)+PDF 已真实导出，`--check` 像素校验通过（非空白）。
+- [ ] result.json 键集合与 output_contract 完全一致，case_id 一致，JSON 可解析。
+- [ ] exceptions 如实登记，status 如实。
 
-## 4. 设计要点（为什么这样做）
+## 使用方式
 
-- **逐字回证优先于画得像**：每条 evidence 是材料原文引文且校验器做空白归一后的子串匹配——画错一处等于错误论断，回证让"像而不对"无所遁形。
-- **语义→图元映射可区分**：箭头/T棒/圆点/方点/菱形/虚线七种样式与激活/抑制/磷酸化/泛素化/结合/转运/募集一一对应，校验器按同表核对 marker 与虚线，杜绝"随意连线"。
-- **区室即布局语义**：受体—胞内—核层级由带状区室自上而下表达，跨膜受体骑膜带中线，布局本身传达机制结构，方向用向量点积机器判定。
-- **同校验器消融对照**：消融臂模拟基础 Agent 退化画法，FAIL 数差为机器判定而非自述；污染反例注入证明校验器真有判别力。
+1. 平台把本 Skill 装入 `/skills/weekly-skill`，Harness 在每个案例上执行。
+2. 输入：`/input/case.json` + task.md + 来源材料与工单；工作目录 `/app/work`；产物写 `/app/output/`。
+3. 依赖：Python 3（仅标准库即可运行 render_svg.py；有 cairosvg 时优先使用）。详见 README.md。

@@ -1,6 +1,0 @@
-{"kind": "term", "key": "有效载荷", "canonical": "有效载荷", "aliases": ["载药量"], "basis": "M01:line2"}
-{"kind": "symbol", "key": "C0", "canonical": "C0", "basis": "M01:line3"}
-{"kind": "definition", "key": "实验方案", "canonical": "实验方案", "first_used": "M01:line2"}
-{"kind": "conclusion", "key": "1.1", "canonical": "结论1.1", "basis": "M01:line2"}
-{"kind": "conclusion", "key": "3.1", "canonical": "结论3.1", "basis": "M01:line4"}
-{"kind": "conclusion", "key": "5.1", "canonical": "结论5.1", "basis": "M01:line5"}

@@ -1,70 +1,76 @@
-# bio-pathway-figure 使用说明（生物机制图与通路图）
+# pathway-figure-skill 使用说明
 
-## 用途
-从机制材料出发生成**每个实体、每条边可逐字回证**的生物机制图/通路图：相互作用语义映射为可区分箭头样式，区室/跨膜位置按约束布局，图例与图面一一对应，交付分层可编辑 SVG + PNG(300dpi)/PDF，全部机械校验逐条写入 result.json，附同校验器消融两臂增益证据。
+把一份真实机制材料变成**可回溯、可编辑、可导出**的生物通路图。所有实体与关系只来自输入材料，方向经逐条核对，不编造任何名字或调控方向。
 
-## 文件清单（9 个，全 UTF-8，总量 81KB，远小于 2MB / 50 文件）
+## 文件清单
 
 | 文件 | 作用 |
 |---|---|
-| `SKILL.md` | Skill 本体：强制协议、六步主流程、机械校验六组、异常表、自检清单（127 行 ≤150） |
-| `README.md` | 本说明 |
-| `scripts/pathway_svg.py` | spec→分层 SVG 渲染器：区室带/跨膜中线/语义箭头/图例，`--ablate` 消融开关，零依赖 |
-| `scripts/validate_pathway.py` | 机械校验器：实体/边语义/方向点积/区室/图例/导出六组逐条判定，退出码恒 0 |
-| `scripts/render_svg.py` | SVG→PNG/PDF 渲染回退链 + PNG 像素检查，零第三方依赖 |
-| `scripts/gain_evidence.py` | 增益证据层：同输入消融两臂 + 污染反例注入 + 基线对照，唯一写 `gain_evidence`/`efficiency` 键 |
-| `examples/example-spec.json` | 示意 spec（**示意，非正式案例**）：EGF-EGFR-RAS-ERK 通路 |
-| `examples/example-source.txt` | 示意材料原文（供逐字回证演示） |
-| `worklog.md` | 制作时间线与真实对照数字 |
+| `SKILL.md` | Skill 本体：强制执行协议 + 线性五步流程 + 异常处理 + 自检清单 |
+| `scripts/render_svg.py` | SVG 渲染导出与像素校验（多渲染器回退，零第三方依赖也能跑） |
+| `templates/relation-checklist-template.md` | 通路关系核对表模板（步骤3 的逐条比对记录载体） |
 
 ## 依赖与安装
-- Python 3.8+（仅标准库，无 pip 安装；评测沙箱 3.12 已验证接口）。
-- 可选渲染器（任一即可）：cairosvg / rsvg-convert / inkscape / chromium headless（render_svg.py 内置回退链）；全失败时交付 SVG 源并如实登记。
-- 安装：平台把提交目录装入 `/skills/weekly-skill`；输入 `/input/case.json` + task.md，工作目录 `/app/work`，产物写 `/app/output/`（必含 `result.json`）。
 
-## 调用方式（主流程摘自 SKILL.md）
-1. 读 case.json → 抄 `case_id` 与 `output_contract` 全键
-2. 立即写 `/app/output/result.json` 骨架（status=partial，一个键不缺）
-3. 逐句抽取实体/关系 → `/app/work/pathway_spec.json`（evidence 为材料逐字引文；方向按原文陈述）
-4. `pathway_svg.py` 渲染分层 SVG → `render_svg.py` 导出 PNG(300dpi)+PDF
-5. `validate_pathway.py` 六组机械校验，match=false 改 spec 重跑
-6. 填 result.json 全字段；`gain_evidence.py --write` 回填增益证据与效率计数
+- Python 3.8+（仅标准库）。
+- 渲染器按优先级自动探测：`cairosvg`(pip 可选) → `rsvg-convert` → `inkscape` → chromium/chrome headless。任一可用即可导出 PNG+PDF；全缺失时 SVG 仍可交付，导出缺口登记在 `exceptions`。
+- 无需其他配置，路径均相对运行目录。
+
+## 调用步骤（最小流程）
+
+1. 读 `/input/case.json`，抄 `case_id` 与 `output_contract` 全键；读工单与来源材料。
+2. 立即写 `/app/output/result.json` 骨架（全键 + `status:"partial"`）。
+3. 按 `templates/relation-checklist-template.md` 逐条抽取实体与相互作用，填证据（来源位置+原文摘录），执行方向核对。
+4. 写分层 SVG → 导出：
+   ```bash
+   python scripts/render_svg.py figure.svg --outdir /app/output --png --pdf --dpi 300
+   python scripts/render_svg.py /app/output/figure.png --check
+   ```
+5. 填全 result.json（content_map / compliance_checks / exceptions / status），做 JSON 自检。
+
+## 输入输出
+
+- **输入**：`case.json`（含 case_id、output_contract）、task.md、来源材料（论文正文/图注/数据文件）、可选 `artifacts/figure-workorder.json` 编辑工单。
+- **输出**：`/app/output/` 下 `figure.svg`（分层可编辑源文件）、`figure.png`(300dpi)、`figure.pdf`、`result.json`（含 content_map 证据链与 compliance_checks 核对记录）。
 
 ## 最小示意示例（标注：以下为示意，非正式案例结果）
 
-```bash
-# 以 examples/ 为输入跑通全链路
-python3 scripts/pathway_svg.py examples/example-spec.json --out figure.svg
-python3 scripts/render_svg.py figure.svg --outdir . --png --pdf --dpi 300
-python3 scripts/validate_pathway.py examples/example-spec.json figure.svg --corpus examples/example-source.txt
-python3 scripts/gain_evidence.py --spec examples/example-spec.json --corpus examples \
-  --result result.json --outdir . --write
+输入材料一句原文：「EGF 激活 EGFR，EGFR 磷酸化 STAT3；STAT3 促进 MYC 转录，而 SOCS3 抑制 STAT3 通路。」
+
+核对表产出（节选）：
+
+| 原文 | 类型 | 方向 |
+|---|---|---|
+| EGF 激活 EGFR | 激活 | EGF → EGFR |
+| EGFR 磷酸化 STAT3 | 磷酸化 | EGFR -P→ STAT3 |
+| STAT3 促进 MYC 转录 | 转录调控 | STAT3 → MYC |
+| SOCS3 抑制 STAT3 | 抑制 | SOCS3 ⊣ STAT3 |
+
+示意 SVG 结构（节选，完整图由流程生成）：
+
+```xml
+<g id="compartment-extracellular"><text>ECF zone</text>
+  <g id="entity-EGF"><text>EGF</text></g></g>
+<g id="compartment-membrane">
+  <g id="entity-EGFR"><text>EGFR</text></g></g>
+<g id="compartment-cytoplasm">
+  <g id="entity-SOCS3"><text>SOCS3</text></g>
+  <g id="edge-EGFR-activates-STAT3"><path marker-end="url(#arrow)"/><text>P</text></g>
+  <g id="edge-SOCS3-inhibits-STAT3"><line marker-end="url(#tbar)"/></g></g>
+<g id="compartment-nucleus">
+  <g id="entity-MYC"><text>MYC</text></g></g>
+<g id="legend"><!-- → 激活 / ⊣ 抑制 / -P→ 磷酸化 --></g>
 ```
 
-示意输出（实测节选，非正式案例）：全量臂 `fail_count=0`（141 项校验全过）；消融臂（关语义箭头/区室/图例）`fail_count=21`，`fail_count_diff=21`；污染反例注入 2 处错画被抓 `caught=true`（6 项 FAIL）；基线需人工核对 74 项 → 登记后 0 项。
+导出后 `--check` 返回 `CHECK OK {"width":..., "nonbg_ratio":>0.01}` 即像素校验通过。
 
-## 生态贡献：依赖、安装运行、目标用户与验收（十项）
+## 适用范围与限制
 
-| 项目 | 说明 |
-|---|---|
-| 依赖与版本 | Python 3（沙箱 3.12；脚本仅标准库）；可选渲染器按降级链处理；无浏览器环境照样交付 SVG 源 |
-| 安装与运行 | 平台装入 `/skills/weekly-skill`；输入 `/input/case.json`(+材料)；产物 `/app/output/result.json` + 渲染产物 |
-| 输入 / 输出解释 | 输入=案例标识、机制材料、工单；输出=result.json（契约全字段 + content_map 双层 + compliance_checks 六组 + gain_evidence + efficiency + exceptions） |
-| 目标用户与场景 | 机制图/通路图作者与评审：需「可编辑源文件 + 逐字回证 + 可核验导出件」的成稿与复核 |
-| 验收方式 | ①契约键一个不缺且 JSON 可解析；②content_map 元素=SVG 图元且逐条带 source+evidence；③compliance_checks 六组逐条明细齐全；④gain_evidence 两臂差值与污染 caught=true 为真跑数字 |
-| 常见问题 | 图元无来源→按材料补登记或删除；关系方向不明→按原文，存疑记 exceptions；导出失败→按降级链如实登记 |
-| 已知限制 | 无渲染器环境只能交付 SVG 源 + 降级记录；像素级校验需在有渲染器环境复跑 `--check`；通路数据编码（颜色→表达量映射）仅做图例一致性校验，数值语义属相邻课题 |
-| 失败处理 | 任一步异常：写盘已有产出、status 如实降级、exceptions 记录失败点与已试回退链；机检结论照实记录，不中断交付 |
-| 复用建议 | `scripts/` 可直接复制到新绘图任务；spec 结构（nodes/edges/compartments）与六组校验字段可套用到任意机制图任务 |
-| 版本与维护 | 见 worklog.md；结构变更时同步更新本表与 SKILL.md |
+- 适用：受体/激酶/转录因子类线性、分支、反馈环通路；新建图与 source-preserving 编辑两类工单。
+- 不负责：数值统计结论、实验方案、论文版式美化（相邻课题承担）。
+- 限制：材料未提及的实体/关系一律不画；方向模糊时取最保守画法并登记 exceptions；不产出预制作答。
 
-## 最小可运行自检清单（逐条实测 exit 0）
+## 维护
 
-```bash
-python3 -c "import sys;print(sys.version)"                     # 1) 解释器可用
-ls scripts/                                                     # 2) 4 个脚本在位
-python3 scripts/pathway_svg.py --badflag; echo $?               # 3) 失败路径 exit 0
-python3 scripts/pathway_svg.py examples/example-spec.json --out /tmp/f.svg   # 4) 渲染 ok:true
-python3 scripts/validate_pathway.py examples/example-spec.json /tmp/f.svg --corpus examples  # 5) fail_count=0
-python3 scripts/gain_evidence.py --spec examples/example-spec.json --corpus examples --result /tmp/r.json --outdir /tmp --write  # 6) diff>0 且 caught=true
-```
+- 关系语义约定、SVG 分层 id 规范集中定义在 SKILL.md，修改只需改该文件。
+- render_svg.py 为独立工具，可被其他绘图任务复用。

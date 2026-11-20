@@ -178,33 +178,13 @@ def build_docx(draft, path):
         _min_docx(path, draft)
         return {"builder": "stdlib-min-docx(fallback)", "file": path, "reason": str(e)[:200]}
 
-class _Usage(Exception):
-    """argparse 用法错误（缺必填位置参数）——按内容级失败处理，不中断交付链。"""
-
-
-class _Parser(argparse.ArgumentParser):
-    def error(self, message):
-        raise _Usage(message)
-
-
 def main():
-    ap = _Parser()
+    ap = argparse.ArgumentParser()
     ap.add_argument("draft_json")
     ap.add_argument("--out-docx", default="/app/output/draft.docx")
     ap.add_argument("--out-md", default="/app/output/draft.md")
-    try:
-        args = ap.parse_args()
-    except _Usage as e:
-        print(json.dumps({"ok": False, "error": f"用法错误: {e}",
-                          "hint": "用法: docx_build.py <draft.json> [--out-docx PATH] [--out-md PATH]",
-                          "note": "退出码恒 0：交付链不中断，已如实记录。"}, ensure_ascii=False))
-        return 0
-    try:
-        draft = json.load(open(args.draft_json, encoding="utf-8"))
-    except Exception as e:
-        print(json.dumps({"ok": False, "error": f"draft_json unreadable: {e}",
-                          "note": "退出码恒 0：交付链不中断，已如实记录。"}, ensure_ascii=False))
-        return 0
+    args = ap.parse_args()
+    draft = json.load(open(args.draft_json, encoding="utf-8"))
     os.makedirs(os.path.dirname(args.out_docx) or ".", exist_ok=True)
     info = build_docx(draft, args.out_docx)
     build_markdown(draft, args.out_md)
@@ -212,18 +192,5 @@ def main():
     print(json.dumps({"ok": True, **info}, ensure_ascii=False))
     return 0
 
-
-def _safe_main():
-    """顶层安全网：任何未捕获异常都记为内容级失败，退出码恒 0。"""
-    try:
-        return main()
-    except SystemExit:
-        raise
-    except Exception as e:
-        print(json.dumps({"ok": False, "error": f"{type(e).__name__}: {e}",
-                          "note": "退出码恒 0：交付链不中断，已如实记录。"}, ensure_ascii=False))
-        return 0
-
-
 if __name__ == "__main__":
-    sys.exit(_safe_main())
+    sys.exit(main())

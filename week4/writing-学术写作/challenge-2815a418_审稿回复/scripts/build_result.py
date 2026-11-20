@@ -11,27 +11,19 @@
   embed     主产物分批嵌入: --key letter_markdown|revised_markdown|... --file F [--part 标签]
             可多次调用追加（按审稿人/按章节分批，规避单次响应 token 限制）
   set       回填字段: --set key=value（value 为 JSON 或原文）
-  finalize  收尾: --status complete|partial|failed|blocked --notes --changelog；result.json 缺失时自愈重建
-            并自动派生 triad/fact_source_map/version_boundary、嵌入 gain_evidence 与 efficiency
+  finalize  收尾: --status complete|partial --notes --changelog；result.json 缺失时自愈重建
   verify    写盘自检: 契约字段齐全 / 嵌入非空 / 交付文件存在 / status 诚实
-  （所有子命令退出码恒为 0：问题记录在报告与 verdict 里，绝不中断交付）
 
 示例:
-  python3 build_result.py init --case /input/case.json --out /app/output/result.json
-  python3 build_result.py embed --key letter_markdown --file /app/work/letter_R1.md --part R1
-  python3 build_result.py embed --key revised_markdown --file /app/work/revised_part1.md --part sec1-3
-  python3 build_result.py finalize --out /app/output/result.json --status complete \
+  python build_result.py init --case /input/case.json --out /app/output/result.json
+  python build_result.py embed --key letter_markdown --file /app/work/letter_R1.md --part R1
+  python build_result.py embed --key revised_markdown --file /app/work/revised_part1.md --part sec1-3
+  python build_result.py finalize --out /app/output/result.json --status complete \
       --evidence /app/work/response_ledger.jsonl --audit /app/output/ledger_audit.json \
       --notes "C05 证据需作者确认" --changelog "Stage3 分批嵌入完成"
-  python3 build_result.py verify --case /input/case.json --out /app/output/result.json
+  python build_result.py verify --case /input/case.json --out /app/output/result.json
 """
 import argparse, json, os, sys, time
-
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-try:
-    import _runlog
-except Exception:  # pragma: no cover
-    _runlog = None
 
 
 def _load_json(p):
@@ -40,23 +32,6 @@ def _load_json(p):
             return json.load(f)
     except Exception:
         return None
-
-
-def _load_jsonl(p):
-    rows = []
-    try:
-        with open(p, encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    rows.append(json.loads(line))
-                except Exception:
-                    continue
-    except Exception:
-        return []
-    return rows
 
 
 def _contract_fields(case):
@@ -92,150 +67,7 @@ def _ensure_skeleton(result, case):
     result.setdefault("changelog", [])
     for k in _contract_fields(case):
         result.setdefault(k, None)
-    # 题面《输出要求》三行语义字段：目标产物 / 事实与来源映射 / 版本与边界
-    for k in ("triad", "fact_source_map", "version_boundary", "efficiency",
-              "gain_evidence"):
-        result.setdefault(k, None)
     return result
-
-
-def _norm(s):
-    import re
-    return re.sub(r"\s+", "", str(s))
-
-
-def _derive_triad(ledger_rows, audit):
-    """意见逐条回应 ↔ 修改点 ↔ 回复信 ↔ 修订稿 四角对应表。
-    每条子要求给：意见原文、决策、回复文字、修改定位、留痕、证据状态、
-    以及"回复在回复信中/新句在修订稿中/原句在基线稿中"三个机检事实。"""
-    per_sid = (audit or {}).get("per_sid") or {}
-    out = []
-    for r in ledger_rows:
-        sid = r.get("sid") or "?"
-        st = per_sid.get(sid, {})
-        edits = []
-        for e in r.get("edits", []) or []:
-            rl = e.get("revision_log") or {}
-            edits.append({
-                "eid": e.get("eid"), "locator": e.get("locator"),
-                "original": rl.get("original"), "revised": rl.get("revised"),
-                "reason": rl.get("reason"), "basis": rl.get("basis"),
-                "in_revised": bool(st.get("edits_revised_ok")),
-                "in_baseline": bool(st.get("edits_original_ok")),
-            })
-        out.append({
-            "sid": sid, "cm": r.get("cm"), "comment_type": r.get("type"),
-            "severity": r.get("severity"),
-            "comment_quote": r.get("raw_quote") or r.get("comment"),
-            "decision": r.get("decision"),
-            "decision_rationale": r.get("decision_rationale"),
-            "tone": r.get("tone"),
-            "response_text": r.get("letter_text"),
-            "in_letter": bool(st.get("letter_found")),
-            "edits": edits,
-            "evidence": r.get("evidence", []),
-            "triad_aligned": bool(st.get("triad_ok")),
-            "manual_review": st.get("manual", []),
-        })
-    return out
-
-
-def _derive_fact_source_map(ledger_rows):
-    """事实与来源映射：每个数字/术语/引用/关键论断 → 来源 + 修改记录。"""
-    out = []
-    for r in ledger_rows:
-        sid = r.get("sid") or "?"
-        for ev in r.get("evidence", []) or []:
-            out.append({
-                "sid": sid,
-                "item": ev.get("what"),
-                "kind": ev.get("kind") or "data_or_citation",
-                "status": ev.get("status"),
-                "source": ev.get("source"),
-                "locator": ev.get("locator"),
-                "basis_material": ev.get("material_id"),
-                "note": ev.get("note"),
-            })
-        for e in r.get("edits", []) or []:
-            rl = e.get("revision_log") or {}
-            if rl.get("basis") or rl.get("original"):
-                out.append({
-                    "sid": sid,
-                    "item": (rl.get("revised") or "")[:60] or e.get("eid"),
-                    "kind": "claim_revision",
-                    "status": "revised",
-                    "source": rl.get("basis"),
-                    "locator": e.get("locator"),
-                    "original": rl.get("original"),
-                    "revised": rl.get("revised"),
-                    "reason": rl.get("reason"),
-                })
-    return out
-
-
-def _derive_version_boundary(ledger_rows, audit, case):
-    """版本与边界：基线版本标识、差异摘要、需人工确认项、材料缺口、异常。"""
-    manual = []
-    for r in ledger_rows:
-        sid = r.get("sid") or "?"
-        st = ((audit or {}).get("per_sid") or {}).get(sid, {})
-        reasons = st.get("manual", []) or []
-        if r.get("needs_author") or r.get("manual_confirm"):
-            reasons = list(reasons) + ["needs_author"]
-        if reasons:
-            manual.append({"sid": sid, "reasons": sorted(set(reasons)),
-                           "evidence": r.get("evidence", []),
-                           "decision": r.get("decision")})
-    diff = []
-    for r in ledger_rows:
-        for e in r.get("edits", []) or []:
-            rl = e.get("revision_log") or {}
-            diff.append({"sid": r.get("sid"), "eid": e.get("eid"),
-                         "locator": e.get("locator"),
-                         "original": rl.get("original"), "revised": rl.get("revised"),
-                         "reason": rl.get("reason"), "basis": rl.get("basis")})
-    gates = (audit or {}).get("gates") or {}
-    gaps = [f"gate[{k}]={v.get('state')}" for k, v in gates.items()
-            if v.get("state") != "enforced"]
-    for u in (audit or {}).get("unbacked", []) or []:
-        gaps.append(f"evidence_unbacked@{u.get('sid')}: {u.get('reason')}")
-    baseline_version = (case or {}).get("baseline_version") or \
-        (case or {}).get("manuscript_version") or \
-        (ledger_rows[0].get("baseline_version") if ledger_rows else None) or \
-        "未声明（以 materials/manuscript-baseline 实际文本为准）"
-    return {
-        "baseline_version": baseline_version,
-        "edit_count": len(diff),
-        "revision_diff": diff,
-        "human_confirm_items": manual,
-        "material_gaps": gaps,
-        "anomalies": (audit or {}).get("problems", [])[:50],
-        "gates": gates,
-        "audit_verdict": (audit or {}).get("verdict"),
-    }
-
-
-def _collect_efficiency(runlog_path=None):
-    """从运行日志自动采集效率计数（真实值，不靠自述）。"""
-    events = _runlog.read_events(runlog_path) if _runlog else []
-    scripts = {}
-    total = 0.0
-    for e in events:
-        s = e.get("script", "?")
-        scripts[s] = scripts.get(s, 0) + 1
-        try:
-            total += float(e.get("seconds") or 0)
-        except Exception:
-            pass
-    return {
-        "measured_by": "run_log.jsonl（脚本真实调用计数）",
-        "script_calls": scripts,
-        "script_call_total": sum(scripts.values()),
-        "wall_seconds_sum": round(total, 2),
-        "pipeline_steps": len(events) or None,
-        "model_request_budget": {"skill_cap": 48, "platform_cap": 64},
-        "note": "脚本调用数与墙钟耗时由脚本自记；模型请求数由宿主平台记录，本包不虚构。",
-    }
 
 
 def cmd_init(args):
@@ -248,8 +80,6 @@ def cmd_init(args):
     print(json.dumps({"ok": True, "cmd": "init", "out": args.out,
                       "case_id": result["case_id"],
                       "contract_fields": _contract_fields(case)}, ensure_ascii=False))
-    if _runlog:
-        _runlog.log_event("build_result", "init", None, ok=True)
     return 0
 
 
@@ -259,11 +89,11 @@ def cmd_embed(args):
         print(json.dumps({"ok": False, "cmd": "embed",
                           "error": "result.json 不存在或损坏，先跑 init 或 finalize 自愈"},
                          ensure_ascii=False))
-        return 0
+        return 2
     if not os.path.exists(args.file):
         print(json.dumps({"ok": False, "cmd": "embed", "error": f"file 不存在: {args.file}"},
                          ensure_ascii=False))
-        return 0
+        return 2
     with open(args.file, encoding="utf-8") as f:
         text = f.read()
     emb = result.setdefault("embedded", {})
@@ -279,8 +109,6 @@ def cmd_embed(args):
     print(json.dumps({"ok": True, "cmd": "embed", "key": args.key, "part": args.part,
                       "chars": len(text), "total_chars": len(str(emb.get(args.key) or ""))},
                      ensure_ascii=False))
-    if _runlog:
-        _runlog.log_event("build_result", "embed", None, ok=True, key=args.key, chars=len(text))
     return 0
 
 
@@ -305,8 +133,6 @@ def cmd_set(args):
         result[k] = v
     _write(result, args.out)
     print(json.dumps({"ok": True, "cmd": "set", "keys": list(result.keys())}, ensure_ascii=False))
-    if _runlog:
-        _runlog.log_event("build_result", "set", None, ok=True, n=len(args.set))
     return 0
 
 
@@ -326,27 +152,19 @@ def cmd_finalize(args):
         except Exception:
             return [x.strip() for x in s.split(";") if x.strip()]
 
-    ledger_rows = []
     if args.evidence:
         ev = _load_json(args.evidence)
         if ev is not None:
             result["response_ledger"] = ev
         result["ledger_ref"] = args.evidence
-        ledger_rows = _load_jsonl(args.evidence)
-    audit = None
     if args.audit:
         au = _load_json(args.audit)
         if au is not None:
             result["consistency_check"] = au
-            audit = au
     if args.render:
         rd = _load_json(args.render)
         if rd is not None:
             result["render"] = rd
-    if args.gain:
-        gn = _load_json(args.gain)
-        if gn is not None:
-            result["gain_evidence"] = gn
     if args.artifact:
         result["deliverable"] = {"docx": args.artifact, "markdown": args.artifact_md,
                                  "editable": True}
@@ -355,34 +173,20 @@ def cmd_finalize(args):
     if args.changelog:
         result["changelog"].extend([{"event": e, "at": time.strftime("%H:%M:%S")}
                                     for e in as_list(args.changelog)])
-
-    # 题面《输出要求》三行语义：由台账 + 审计报告派生（脚本保证，不靠提示词纪律）
-    if ledger_rows:
-        result["triad"] = _derive_triad(ledger_rows, audit)
-        result["fact_source_map"] = _derive_fact_source_map(ledger_rows)
-        result["version_boundary"] = _derive_version_boundary(ledger_rows, audit, case)
-    result["efficiency"] = _collect_efficiency(args.runlog)
     result["status"] = args.status
     result["finalized_at"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     _write(result, args.out)
     print(json.dumps({"ok": True, "cmd": "finalize", "out": args.out, "status": args.status,
                       "embedded_keys": sorted(result.get("embedded", {}).keys()),
-                      "triad_rows": len(result.get("triad") or []),
-                      "fact_source_rows": len(result.get("fact_source_map") or []),
-                      "gain_evidence": bool(result.get("gain_evidence")),
-                      "efficiency_calls": (result.get("efficiency") or {}).get("script_call_total"),
                       "contract_null_fields": [k for k, v in result.items() if v is None
                                                and k in _contract_fields(case)]},
                      ensure_ascii=False))
-    if _runlog:
-        _runlog.log_event("build_result", "finalize", None, ok=True, status=args.status)
     return 0
 
 
 def cmd_verify(args):
     """写盘自检。partial 状态: 只报 warning（诚实部分交付不应被误杀）；
-    complete 状态: 严格机检（字段缺失/嵌入过短/文件不存在 → fail）。
-    退出码恒为 0——verdict 如实写进报告，失败绝不中断交付。"""
+    complete 状态: 严格机检（字段缺失/嵌入过短/文件不存在 → fail）。"""
     result = _load_json(args.out)
     hard, warns = [], []
     if not isinstance(result, dict):
@@ -412,51 +216,19 @@ def cmd_verify(args):
         p = dl.get(k)
         if p and not os.path.exists(p):
             add(f"交付文件不存在: {p}")
-    if result.get("status") not in ("complete", "partial", "failed", "blocked"):
+    if result.get("status") not in ("complete", "partial", "failed"):
         hard.append(f"status 非法: {result.get('status')}")
-    # 题面《输出要求》三行语义：目标产物/事实与来源映射/版本与边界
-    for key, label in (("triad", "意见-修改-回复-修订稿三角对应表"),
-                       ("fact_source_map", "事实与来源映射"),
-                       ("version_boundary", "版本与边界")):
-        v = result.get(key)
-        if strict and not v:
-            hard.append(f"status=complete 但缺《输出要求》字段 {key}（{label}）")
-        elif v is None:
-            warns.append(f"《输出要求》字段 {key}（{label}）为空")
-    if strict and not result.get("gain_evidence"):
-        hard.append("status=complete 但缺 gain_evidence（同输入增益对照未产出）")
-    if strict and not result.get("efficiency"):
-        hard.append("status=complete 但缺 efficiency（效率计数未采集）")
-    if strict:
-        # 级联机检: complete 必须内嵌审计报告且 verdict=pass（闸门未运行 ≠ 通过）
-        au = result.get("consistency_check") or {}
-        if not isinstance(au, dict) or not au:
-            hard.append("status=complete 但未嵌入 consistency_check 审计报告（--audit 缺失）")
-        elif au.get("verdict") not in ("pass", None):
-            hard.append(f"status=complete 但审计 verdict={au.get('verdict')}，必须先修复")
-        elif au.get("verdict") is None:
-            hard.append("status=complete 但审计报告无 verdict 字段")
-        elif au.get("gate_notes"):
-            for gn in au.get("gate_notes"):
-                warns.append(f"gate_note: {gn}")
     if not result.get("case_id") or result.get("case_id") == "unknown_case":
         hard.append("case_id 缺失或 unknown")
     report = {"verdict": "pass" if not hard else "fail", "problems": hard,
               "warnings": warns,
               "case_id": result.get("case_id"), "status": result.get("status"),
-              "semantic_fields": {k: (len(result.get(k)) if isinstance(result.get(k), list)
-                                      else bool(result.get(k)))
-                                  for k in ("triad", "fact_source_map", "version_boundary",
-                                            "efficiency", "gain_evidence")},
               "embedded_chars": {k: len(str(v)) for k, v in emb.items()
                                  if not k.startswith("_")}}
     if args.report:
         _write(report, args.report)
     print(json.dumps(report, ensure_ascii=False))
-    if _runlog:
-        _runlog.log_event("build_result", "verify", None,
-                          ok=(not hard), verdict=report["verdict"])
-    return 0  # 失败不中断交付
+    return 0 if not hard else 1
 
 
 def main():
@@ -490,9 +262,7 @@ def main():
     p.add_argument("--evidence", default=None, help="response_ledger.jsonl")
     p.add_argument("--audit", default=None, help="ledger_audit.json")
     p.add_argument("--render", default=None, help="render_log.json")
-    p.add_argument("--gain", default=None, help="gain_evidence.json（同输入对照）")
-    p.add_argument("--runlog", default=None, help="run_log.jsonl（效率计数来源）")
-    p.add_argument("--status", default="partial", choices=["complete", "partial", "failed", "blocked"])
+    p.add_argument("--status", default="partial", choices=["complete", "partial", "failed"])
     p.add_argument("--notes", default=None, help="uncertainty: JSON 数组或 ; 分隔")
     p.add_argument("--changelog", default=None, help="追加事件: ; 分隔")
     p.set_defaults(func=cmd_finalize)

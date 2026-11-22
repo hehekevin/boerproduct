@@ -29,15 +29,33 @@ No pre-baked numbers; every statistic traces to dataset + column + rows used.
 - /input/task.md — the concrete analysis question for this case.
 - Actual material: data table(s), data dictionary (field meaning, units, group design).
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_analysis.py --input /input --out /app/output --work /app/work`
+Auto-extracts the IR from the ACTUAL /input materials (registers sources + datasets;
+reads the data dictionary for units/outcome/group/design; recomputes real statistics
+via w4kit.describe/correlation/linreg on the actual rows), runs the engine
+(validate_ir + build), and writes a complete honest result.json preserving every
+output_contract key + case_id. Judgment fields it cannot verify (expert interpretation,
+practical significance) are flagged human_confirm — never fabricated; missing values
+are excluded pairwise, never treated as 0, never imputed.
+THEN, within remaining budget, refine judgment-heavy fields in /app/work/analysis_ir.json
+(interpretations, assumptions, method choices) and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/analysis_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
-1. Inventory inputs; register sources[] + datasets[] (real paths).
-2. Read the dictionary: which column is the outcome, which is the group/design factor,
+1. Run `PYTHONDONTWRITEBYTECODE=1 python auto_analysis.py --input /input --out /app/output --work /app/work`
+   to auto-extract materials and produce a complete baseline result.json. Then, within
+   budget, refine judgment-heavy fields in /app/work/analysis_ir.json and re-run
+   assemble.py to improve. Save partial early; never fabricate.
+2. Inventory inputs; register sources[] + datasets[] (real paths).
+3. Read the dictionary: which column is the outcome, which is the group/design factor,
    units, missing codes, pairing/independence structure. Fill the IR per
    rules/rules_stats_analysis.md — including an interpretation per analysis.
-3. Run:
+4. Run:
    `PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir stats_ir.json --input /input --out /app/output`
    → validate_ir → recompute → stats_results.json + provenance.json + report.md → result.json.
-4. Honest status: success only when all analyses computed, interpretations present, no
+5. Honest status: success only when all analyses computed, interpretations present, no
    gaps; partial on insufficient_evidence, failed analyses, missing interpretation, or
    declared uncertainty.
 

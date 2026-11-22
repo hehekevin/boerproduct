@@ -31,6 +31,17 @@ OUT: prose polishing, references styling, intro/methods prose, PPT.
 `/input/task.md`, ACTUAL content (md/txt/docx) + template (.cls/.sty) + bib + figures.
 READ files; trust content over labels. Runtime HAS latex-compiler; local may not.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_arena_write.py --input /input --out /app/output --work /app/work`
+Auto-registers sources from the ACTUAL /input materials, auto-fills the complete writing IR
+(verbatim sections/claims+evidence/citations/numbers/glossary) into work/writing_ir.json, runs
+the SAME validate+build path as the package assembler, and ALWAYS writes an honest result.json
+(try/except fallback preserves every output_contract key + case_id) — even on empty input or
+failure. Targets/translations it cannot verify are null + human_confirm; never machine-invented.
+THEN, within remaining budget, refine /app/work/writing_ir.json and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/writing_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Read & register content/template/bib sources with locators.
 2. Fill IR per `rules/rules_latex.md`: `latex` {documentclass, options, packages[],

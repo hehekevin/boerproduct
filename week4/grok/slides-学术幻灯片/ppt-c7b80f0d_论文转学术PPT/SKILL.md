@@ -31,6 +31,17 @@ conclusions, scientific figure design/beautification, prose polishing (other tra
 slide_count), `/input/task.md`, ACTUAL paper (pdf/md/txt) + tables/figure data, and the
 provided template .pptx if present. READ files; trust content over labels.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_slides.py --input /input --out /app/output --work /app/work`
+Auto-registers sources[] from the ACTUAL /input materials, extracts a complete source-bound
+Deck IR (pages/claims/bullets/notes/data-bound figures) into work/deck_ir.json, and runs the
+SAME validate+build+check+export path as assemble_deck.py. Always writes an honest result.json
+(every output_contract key + case_id preserved) — even on empty input or failure. Judgment it
+cannot verify is flagged human_confirm; never fabricated. THEN, within remaining budget, refine
+work/deck_ir.json and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble_deck.py --ir /app/work/deck_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Read & register sources (paper sections/figures/tables; template) with locators.
 2. Plan & fill Deck IR per `rules/rules_paper_to_ppt.md`: backbone

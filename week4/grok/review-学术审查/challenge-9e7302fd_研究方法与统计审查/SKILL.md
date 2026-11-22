@@ -25,9 +25,33 @@ incomplete". NOT for doing new data analysis/modeling for the authors.
 - The actual manuscript + provided data tables (csv/tsv/json) + any protocol.
 Read and register the real files; trust file content over filename labels.
 
+## Autopilot — run this FIRST
+One command auto-extracts a complete, genuinely-derived Review IR from the
+ACTUAL /input materials (sources/documents auto-registered; reported stats
+located with exact quote locators; stats_checks bound to the real data files;
+methodological findings evidence-grounded), then runs the existing engine
+(validate_ir + quote verification + REAL recomputation) and writes an honest
+result.json preserving every output_contract key + case_id:
+
+```
+PYTHONDONTWRITEBYTECODE=1 python auto_review.py --input /input --out /app/output --work /app/work
+```
+
+- Stdlib only; additive (does not modify review_engine.py / assemble.py).
+- Never fabricates: quotes are exact substrings of real paragraphs; anything
+  not locatable becomes insufficient_evidence + human_confirm (honest partial).
+- On ANY exception it still writes a failed/partial result.json — never exit
+  without result.json. Empty input is handled honestly too.
+- It also writes /app/work/review_ir.json: within budget, REFINE that IR
+  (judgment fields, extra findings/stats_checks) and re-run
+  `python assemble.py --ir /app/work/review_ir.json --input /input --out /app/output`
+  to improve. Do NOT hand-fill the rigid IR from scratch before running this.
+
 ## Workflow (detail: docs/WORKFLOW.md)
-1. Inventory inputs; register sources[] + documents[] (manuscript/data/...);
-   set manuscript_id.
+1. AUTOPILOT FIRST: run `auto_review.py` (above) to inventory inputs, register
+   sources[] + documents[], set manuscript_id and produce the baseline
+   result.json + work/review_ir.json in one command. Only if it fails or budget
+   remains, refine work/review_ir.json manually (steps 2-3) and re-run assemble.py.
 2. Audit methods per `rules/rules_methods_stats_review.md`; fill findings[].
    For every checkable reported statistic, add a stats_checks[] entry pointing
    at the ACTUAL data file/fields (or IR-transcribed values with locators).

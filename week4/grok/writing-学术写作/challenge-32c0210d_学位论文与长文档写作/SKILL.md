@@ -28,10 +28,17 @@ algorithms, experimental design, PPT software), per the statement.
 Read files; trust content over labels.
 
 ## Workflow (detail: docs/WRITING_WORKFLOW.md)
-1. Read & register sources with precise locators.
-2. Fill writing IR per `rules/rules_thesis_longdoc.md` (claims+evidence+strength,
-   citations, sections, glossary, numbers, revisions, domain fields; uncertainty +
-   human_confirm for gaps).
+1. AUTOPILOT FIRST (one command, budget-safe):
+   `PYTHONDONTWRITEBYTECODE=1 python auto_write.py --input /input --out /app/output --work /app/work [--kind thesis_longdoc]`
+   → auto-registers sources from the ACTUAL /input materials, auto-fills the complete
+   writing IR (verbatim sections/claims+evidence/citations/numbers/glossary +
+   chapter_plan), runs the SAME validate+build path as assemble_write.py, and ALWAYS
+   writes an honest result.json (try/except fallback preserves output_contract +
+   case_id; judgment fields flagged human_confirm → status partial). Then, within
+   budget, refine /app/work/writing_ir.json and re-run step 3 to improve.
+2. Manual path (only if refining): fill writing IR per `rules/rules_thesis_longdoc.md`
+   (claims+evidence+strength, citations, sections, glossary, numbers, revisions,
+   domain fields; uncertainty + human_confirm for gaps).
 3. `python assemble_write.py --ir writing_ir.json --input /input --out /app/output`
    → validate → build (md+docx / mindmap / benchmark) → consistency checks →
    export (office-renderer, honest fallback) → result.json.

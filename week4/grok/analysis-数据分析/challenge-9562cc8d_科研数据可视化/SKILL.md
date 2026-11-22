@@ -28,6 +28,20 @@ figures; the chart is recomputed from the real rows each run.
 - /input/task.md — the concrete visualization task.
 - Actual material: data table(s) + dictionary (column meaning, units, grouping, error type).
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_analysis.py --input /input --out /app/output --work /app/work`
+Auto-extracts the IR from the ACTUAL /input materials (registers sources + datasets;
+reads the data dictionary for units/outcome/group/design; recomputes real statistics
+via w4kit.describe/correlation/linreg on the actual rows), runs the engine
+(validate_ir + build), and writes a complete honest result.json preserving every
+output_contract key + case_id. Judgment fields it cannot verify (expert interpretation,
+practical significance) are flagged human_confirm — never fabricated; missing values
+are excluded pairwise, never treated as 0, never imputed.
+THEN, within remaining budget, refine judgment-heavy fields in /app/work/analysis_ir.json
+(interpretations, assumptions, method choices) and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/analysis_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory; register sources[] + datasets[] (real paths/columns).
 2. Confirm data caliber (missing/outlier/duplicate handling) and the analysis intent

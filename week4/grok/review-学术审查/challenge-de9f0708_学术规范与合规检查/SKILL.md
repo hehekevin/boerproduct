@@ -28,6 +28,28 @@ never from fabricated similarity scores.
 - The actual manuscript + any provided author guidelines / checklists.
 Read and register the real files; trust file content over filename labels.
 
+## Autopilot — run this FIRST
+One command auto-extracts a complete, genuinely-derived Review IR from the
+ACTUAL /input materials (sources/documents auto-registered; reported stats
+located with exact quote locators; stats_checks bound to the real data files;
+methodological findings evidence-grounded), then runs the existing engine
+(validate_ir + quote verification + REAL recomputation) and writes an honest
+result.json preserving every output_contract key + case_id:
+
+```
+PYTHONDONTWRITEBYTECODE=1 python auto_review.py --input /input --out /app/output --work /app/work
+```
+
+- Stdlib only; additive (does not modify review_engine.py / assemble.py).
+- Never fabricates: quotes are exact substrings of real paragraphs; anything
+  not locatable becomes insufficient_evidence + human_confirm (honest partial).
+- On ANY exception it still writes a failed/partial result.json — never exit
+  without result.json. Empty input is handled honestly too.
+- It also writes /app/work/review_ir.json: within budget, REFINE that IR
+  (judgment fields, extra findings/stats_checks) and re-run
+  `python assemble.py --ir /app/work/review_ir.json --input /input --out /app/output`
+  to improve. Do NOT hand-fill the rigid IR from scratch before running this.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory inputs; register sources[] + documents[] (manuscript/guideline/...);
    set manuscript_id. Register provided guidelines in guidelines[] with version.

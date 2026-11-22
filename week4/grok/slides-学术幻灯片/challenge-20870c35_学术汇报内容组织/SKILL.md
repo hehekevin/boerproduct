@@ -26,8 +26,17 @@ slide_count), `/input/task.md`, actual material + provided template if present.
 Read files; trust content over labels.
 
 ## Workflow (detail: docs/DECK_WORKFLOW.md)
-1. **Read & register sources** with locators.
-2. **Plan & fill Deck IR** (`rules/rules_content_org.md`):
+1. **Autopilot first — ONE command** (do not hand-fill the IR before this runs):
+   `PYTHONDONTWRITEBYTECODE=1 python auto_slides.py --input /input --out /app/output --work /app/work [--kind content_organization]`
+   Auto-registers `sources[]` from the ACTUAL /input materials, extracts a complete
+   source-bound Deck IR (pages/claims/bullets/notes/data-bound figure/qa) into
+   `work/deck_ir.json`, and runs the SAME validate+build+check+export path as
+   `assemble_deck.py`. Always writes an honest `result.json` (every
+   `output_contract` key + `case_id` preserved) — even on empty input or failure.
+2. **Refine the auto-filled Deck IR within budget** (`rules/rules_content_org.md`):
+   edit `work/deck_ir.json`, then re-run
+   `python assemble_deck.py --ir /app/work/deck_ir.json --input /input --out /app/output`.
+   Judgment fields are flagged `human_confirm`; improve:
    - checkable `goal`; `audience` (prior knowledge/concerns/challenges) driving
      background depth & terminology; `duration_min`, `slide_count_target`;
    - narrative backbone with 起承转合 (not paper TOC); one `claim`/page +
@@ -46,7 +55,8 @@ Read files; trust content over labels.
    `export_check`.
 
 ## Scripts & dependencies
-`assemble_deck.py`, `deckkit.py`, `build_deck.py` (python-pptx), `check_deck.py`,
+`auto_slides.py` (autopilot: auto-extract Deck IR + run engine), `assemble_deck.py`,
+`deckkit.py`, `build_deck.py` (python-pptx), `check_deck.py`,
 `export_deck.py`, `figkit.py`, `render_chart.py`.
 Deps: Python 3.10+, python-pptx, matplotlib, numpy, Pillow; office-renderer for true
 render. CJK auto-fallback.

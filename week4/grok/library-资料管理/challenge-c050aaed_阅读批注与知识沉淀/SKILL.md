@@ -21,6 +21,21 @@ Attach paragraph/field-located annotations to research documents and precipitate
 - The actual research material files (documents, companion tables, metadata, notes).
 Read and register the real files; trust file content over filename/domain labels.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_library.py --input /input --out /app/output --work /app/work`
+Auto-extracts the IR from the ACTUAL /input materials (registers every source file;
+builds documents[] with titles/aliases/metadata + field evidence from metadata tables
+and real file text; binds version-note chains; logs index/alias_fix/dedup/recover/
+metadata_fill operations; derives taxonomy for classify; binds verbatim-quote
+annotations for annotate), runs the engine to compute the real index/hashes/coverage,
+and writes a complete honest result.json preserving every output_contract key +
+case_id. Judgment fields it cannot verify (row->file mapping, inferred year/type,
+taxonomy design, annotation selection) are flagged human_confirm — never fabricated;
+missing metadata stays not_reported. THEN, within remaining budget, refine
+judgment-heavy fields in /app/work/library_ir.json and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/library_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory inputs (w4kit.list_materials) and register sources[] + documents[].
 2. Read the material; fill the IR per `rules/rules_library_annotate.md` and the schema below.

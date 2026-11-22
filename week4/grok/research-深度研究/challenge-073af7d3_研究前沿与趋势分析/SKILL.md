@@ -29,6 +29,18 @@ conclusion back-links independently recomputable.
   the real files; trust content over filename/domain labels. PDFs arrive without a
   pre-extracted answer layer — parse yourself if a tool exists, else mark unverifiable.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_research.py --input /input --out /app/output --work /app/work`
+Auto-extracts the Research IR from the ACTUAL /input materials (registers sources; reads
+PDF/text into paragraphs; builds records/screening, an acyclic subquestion tree, themes,
+claims bound to EXACT re-verified quotes, conflicts, gaps, tool_log and a bounded proposal),
+runs the engine to recompute screening/synthesis and re-verify every quote, and writes a
+complete honest result.json preserving every output_contract key + case_id. Quotes it cannot
+verify against binary/missing files are declared unverifiable + human_confirm — never fabricated.
+THEN, within remaining budget, refine claims/conflicts/gaps in /app/work/research_ir.json and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/research_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory inputs (w4kit.list_materials); register every used file in sources[] with an
    accurate publication year (the year basis for all trend statistics).

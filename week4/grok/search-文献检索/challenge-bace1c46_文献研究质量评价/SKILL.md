@@ -32,6 +32,18 @@ conflict / missing-metadata / permission handling), ecosystem contribution 10
 - The actual material files. Read and register the real files; trust file
   content over filename/database labels. Finite local snapshot only.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_search.py --input /input --out /app/output --work /app/work`
+Auto-extracts the IR from the ACTUAL /input materials (registers sources; parses CSV /
+Crossref-EuropePMC JSON exports / reference graphs / import states / paper text & PDF
+facsimiles), runs the engine to compute real metrics, and writes a complete honest
+result.json preserving every output_contract key + case_id. Judgment fields it cannot
+verify are abstained (insufficient_evidence) and flagged human_confirm — never fabricated.
+THEN, within remaining budget, refine judgment-heavy fields in /app/work/search_ir.json
+(miss attributions, screening decisions, grades, term alignments) and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/search_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory inputs (w4kit.list_materials); register sources[] {id, path, type, name}.
 2. Read the material; fill the IR per `rules/rules_quality_appraisal.md` and the schema below.

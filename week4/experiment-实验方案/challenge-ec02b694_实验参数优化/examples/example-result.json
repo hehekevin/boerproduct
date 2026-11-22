@@ -1,0 +1,320 @@
+{
+ "_note": "示意输出（非正式答案）：与 examples/example-case.json 配套的合成演示结果，材料/规格/文献/数据均为虚构。",
+ "case_id": "demo-paramdomain-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.13.14",
+   "packages": "stdlib-only",
+   "hardware_note": "合成演示环境"
+  },
+  "research_question": {
+   "question": "在固定机时与耗材预算内，识别催化微反应器实验的关键参数并给出每个参数的可执行可行域",
+   "scope": "单台微反应器、单次反应窗口",
+   "constraints": "材料耐温与放热安全阈值约束须满足"
+  },
+  "parameters": [
+   {
+    "name": "反应温度",
+    "current": 150,
+    "range": [
+     120,
+     175
+    ],
+    "unit": "℃",
+    "basis": "spec",
+    "source_ref": "设备手册 SOP-12 附录A（PEEK 密封件耐温 175℃）",
+    "step": 5
+   },
+   {
+    "name": "催化剂浓度",
+    "current": 15,
+    "range": [
+     5,
+     25
+    ],
+    "unit": "mmol/L",
+    "basis": "literature",
+    "source_ref": "lit-doe-2019 表3",
+    "step": 2.5
+   },
+   {
+    "name": "采样间隔",
+    "current": 30,
+    "range": [
+     10,
+     60
+    ],
+    "unit": "min",
+    "basis": "manual",
+    "source_ref": "本实验室历史实验记录（修改记录 2023-06）",
+    "step": 10
+   },
+   {
+    "name": "搅拌速率",
+    "current": 400,
+    "range": [
+     200,
+     600
+    ],
+    "unit": "rpm",
+    "basis": "spec",
+    "source_ref": "设备手册 SOP-12（MR-100 搅拌量程）",
+    "step": 100
+   }
+  ],
+  "constraints": [
+   {
+    "cid": "C-01",
+    "params": [
+     "反应温度"
+    ],
+    "expression": "反应温度 <= 175",
+    "source": "PEEK 密封件耐温 175℃（材料规格）",
+    "severity": "hard"
+   },
+   {
+    "cid": "C-02",
+    "params": [
+     "催化剂浓度",
+     "采样间隔"
+    ],
+    "expression": "催化剂浓度 * 采样间隔 <= 900",
+    "source": "机时与耗材联合上限（前瞻性预订口径）",
+    "severity": "soft"
+   }
+  ],
+  "feasibility_check": {
+   "tool": "scripts/param_check.py",
+   "scenario_note": "算术校验基于 result.json 内登记的可行域/当前值，属前瞻性规划口径，不代表实测实验室数据或供应商确认",
+   "parameters_checked": 4,
+   "constraints_declared": 2,
+   "constraint_evaluations": 2,
+   "checked_count": 6,
+   "all_within_domain": true,
+   "all_constraints_satisfied": true,
+   "violations": [],
+   "warnings": [],
+   "verdict": "PASS",
+   "summary": "域越界 0，违规 0 条，警告 0 条"
+  },
+  "risks": [
+   {
+    "risk_id": "R-01",
+    "failure_mode": "目标温度与材料耐温冲突",
+    "judge_criterion": "建议温度 > 175℃ 即冲突",
+    "stop_loss": "不得执行温度上移实验",
+    "fallback": "转人工确认耐温上限"
+   }
+  ],
+  "confirmations": [
+   {
+    "item": "温度上移实验需 EHS 确认",
+    "kind": "safety",
+    "status": "pending"
+   }
+  ],
+  "completeness": {
+   "parameters_total": 4,
+   "constraints_total": 2
+  },
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架",
+    "command": "python3 scripts/build_skeleton.py --case …",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "识别关键参数与可行域",
+    "command": "（Agent 填写 parameters）",
+    "output_ref": "result.parameters",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "数值校验",
+    "command": "python3 scripts/param_check.py --result … --emit-into",
+    "output_ref": "result.feasibility_check",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "自检",
+    "command": "python3 scripts/verify_check.py --result … --emit-into",
+    "output_ref": "result.validator_verdict",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "feasible",
+  "verdict_basis": "4 个关键参数当前值均落可行域，2 条耦合约束均成立",
+  "gain_evidence": {
+   "available": false,
+   "reason": "精简策略：预算保护降级，跳过正常/退化双重增益对照"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "反应温度当前值 150 ℃，可行域 [120, 175] ℃，依据设备手册 SOP-12 附录A",
+   "kind": "reported",
+   "source_id": "SOP-12",
+   "location": "parameters[0]",
+   "evidence": [
+    {
+     "paragraph_id": "SOP-12 附录A",
+     "quote": "PEEK 密封件耐温 175℃"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "催化剂浓度当前值 15 mmol/L，可行域 [5, 25] mmol/L，依据 lit-doe-2019 表3",
+   "kind": "reported",
+   "source_id": "lit-doe-2019",
+   "location": "parameters[1]",
+   "evidence": [
+    {
+     "paragraph_id": "表3",
+     "quote": "浓度 5–25 mmol/L"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "采样间隔当前值 30 min，可行域 [10, 60] min，依据历史实验记录",
+   "kind": "reported",
+   "source_id": "lab-log-2023",
+   "location": "parameters[2]",
+   "evidence": [
+    {
+     "paragraph_id": "历史实验记录",
+     "quote": "采样间隔 10–60 min"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "搅拌速率当前值 400 rpm，可行域 [200, 600] rpm，依据设备手册 SOP-12",
+   "kind": "reported",
+   "source_id": "SOP-12",
+   "location": "parameters[3]",
+   "evidence": [
+    {
+     "paragraph_id": "SOP-12",
+     "quote": "搅拌量程 200–600 rpm"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [],
+  "conflicts": [],
+  "human_review": [],
+  "summary": "温度上移需 EHS 确认（见 confirmations）"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step1",
+   "change": "填写 4 个关键参数可行域"
+  },
+  {
+   "step": "step3",
+   "change": "param_check 数值校验通过"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "params.count_in_range",
+   "template_value": "关键参数 3-6 个",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "parameters[0].audited",
+   "template_value": "name/range/unit/basis/step 齐备且当前值落可行域",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "parameters[1].audited",
+   "template_value": "name/range/unit/basis/step 齐备且当前值落可行域",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "parameters[2].audited",
+   "template_value": "name/range/unit/basis/step 齐备且当前值落可行域",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "parameters[3].audited",
+   "template_value": "name/range/unit/basis/step 齐备且当前值落可行域",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "params.complete",
+   "template_value": "全部关键参数可行域齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "constraints.registered",
+   "template_value": "耦合约束条目≥1（含 none_declared 声明）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "constraints[0].valid",
+   "template_value": "params 引用有效+表达式+依据齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "constraints[1].valid",
+   "template_value": "params 引用有效+表达式+依据齐备",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims.backchain",
+   "template_value": "当前值逐个回证 claims",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS",
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "skill_scripts",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "param_feasibility_check",
+   "state": "enforced",
+   "note": ""
+  }
+ ]
+}

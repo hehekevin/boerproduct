@@ -1,7 +1,7 @@
 {
   "_note": "合成示意案例（非正式答案、非真实论文）：仅用于本地自测整条链路。题目、作者、数据与参考文献均为虚构，如有雷同纯属巧合。",
   "case_id": "demo-paperaudit-001",
-  "task_type": "paper_quality_audit",
+  "task_type": "paper_fact_citation_audit",
   "manuscript": {
     "title": "在线学习平台使用强度与学业成绩的关系：一项横断研究（虚构示例稿）",
     "sections": [

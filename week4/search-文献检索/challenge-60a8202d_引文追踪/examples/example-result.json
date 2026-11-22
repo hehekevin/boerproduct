@@ -1,0 +1,179 @@
+{
+ "case_id": "demo-cite-002",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.12.x",
+   "packages": "stdlib-only",
+   "note": "合成示例"
+  },
+  "seed": {
+   "seed_id": "S0",
+   "title": "Sparse Mixture Routing for Modular Neural Retrieval",
+   "year": 2024,
+   "doi": "10.9000/smr.2024.001",
+   "source_ref": "case.json:seed",
+   "note": "合成案例种子"
+  },
+  "trace_results": [
+   {
+    "trace_id": "t1",
+    "paper_id": "B1",
+    "title": "Memory-Augmented Key-Value Networks",
+    "year": 2019,
+    "doi": "10.9000/mkv.2019.010",
+    "direction": "backward",
+    "layer": 1,
+    "relation": "method_origin",
+    "related_basis": "种子 S0 的记忆增强路由以 B1 的键值记忆网络为方法出处（后向第 1 层）",
+    "source_ref": "records.references[0]",
+    "pending": false,
+    "pending_reason": null
+   },
+   {
+    "trace_id": "t2",
+    "paper_id": "B3",
+    "title": "Routing Nets via Soft Gating",
+    "year": 2021,
+    "doi": "10.9000/rsg.2021.004",
+    "direction": "backward",
+    "layer": 1,
+    "relation": "method_origin",
+    "related_basis": "种子 S0 的软门控路由源自 B3 的 soft gating（后向第 1 层）",
+    "source_ref": "records.references[2]",
+    "pending": false,
+    "pending_reason": null
+   },
+   {
+    "trace_id": "t3",
+    "paper_id": "B2",
+    "title": "Keyed Memory Layers for Retrieval",
+    "year": 2019,
+    "doi": null,
+    "direction": "backward",
+    "layer": 1,
+    "relation": "prior_work",
+    "related_basis": "B2 为种子记忆层设计的同源前置工作，DOI 缺失（后向第 1 层）",
+    "source_ref": "records.references[1]",
+    "pending": true,
+    "pending_reason": "DOI 缺失待核验"
+   },
+   {
+    "trace_id": "t4",
+    "paper_id": "F1",
+    "title": "Gated Sparse Routing Revisited",
+    "year": 2025,
+    "doi": "10.9000/gsr.2025.002",
+    "direction": "forward",
+    "layer": 1,
+    "relation": "improvement",
+    "related_basis": "F1 改进种子 S0 的门控稀疏路由（前向第 1 层，用它并改进）",
+    "source_ref": "records.citing[0]",
+    "pending": false,
+    "pending_reason": null
+   },
+   {
+    "trace_id": "t5",
+    "paper_id": "F2",
+    "title": "A Critique of Sparse Routing Benchmarks",
+    "year": 2025,
+    "doi": "10.9000/crb.2025.003",
+    "direction": "forward",
+    "layer": 1,
+    "relation": "critique",
+    "related_basis": "F2 质疑种子 S0 的评测基准（前向第 1 层，质疑它）",
+    "source_ref": "records.citing[1]",
+    "pending": false,
+    "pending_reason": null
+   },
+   {
+    "trace_id": "t6",
+    "paper_id": "F3",
+    "title": "Cross-Modal Sparse Retrieval",
+    "year": 2026,
+    "doi": "10.9000/cms.2026.001",
+    "direction": "forward",
+    "layer": 1,
+    "relation": "application",
+    "related_basis": "F3 将种子 S0 应用到跨模态检索（前向第 1 层，用它）",
+    "source_ref": "records.citing[2]",
+    "pending": false,
+    "pending_reason": null
+   }
+  ],
+  "trace_summary": {
+   "backward_layers": 1,
+   "forward_layers": 1,
+   "backward_count": 3,
+   "forward_count": 3,
+   "max_layer": 2,
+   "per_layer_cap": 5,
+   "seed_forward_available": true,
+   "stop_rule": "控制在2层、每层≤5篇即停止",
+   "coverage_note": "第 1 层双向共 6 条；材料未给第 2 层施引/参考文献，未扩展第 2 层"
+  },
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "traced",
+  "verdict_basis": "双向第 1 层覆盖且计数一致、每条可回指",
+  "gain_evidence": {
+   "available": false,
+   "reason": "预算过半，跳过增益层"
+  },
+  "efficiency": {
+   "available": false,
+   "reason": "预算过半，跳过效率计数"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "k1",
+   "text": "后向 3 条、前向 3 条，双向第 1 层覆盖",
+   "kind": "reported",
+   "source_id": "S0",
+   "evidence": [
+    {
+     "quote": "Memory-Augmented Key-Value Networks"
+    },
+    {
+     "quote": "Routing Nets via Soft Gating"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "t3 的 DOI 缺失"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "t3 缺 DOI，需人工核验"
+  ],
+  "summary": "t3 待核验 DOI"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step2",
+   "change": "完成前后向第 1 层追踪 6 条"
+  }
+ ],
+ "self_check": [],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS",
+ "gates": [
+  {
+   "gate": "result_readable",
+   "state": "enforced",
+   "note": ""
+  }
+ ]
+}

@@ -1,0 +1,782 @@
+{
+ "_note": "示意输出（非正式答案）：与 example-case.json 配套的合成示例，论文与发现均为虚构，仅用于说明接口与自测链路，不冒充正式案例结果。",
+ "case_id": "demo-evidence-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "参考文献 [2] 全文未获取（仅见标题），其是否支持因果表述待复核"
+  ],
+  "environment": {
+   "python_version": "3.13（本地实测）",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "示例环境：Windows 11 / Python 3.13，路径全部参数化"
+  },
+  "manuscript_overview": {
+   "title": "睡眠时长与大学生学业成绩的关系及其干预价值（虚构示例稿）",
+   "sections": [
+    {
+     "section_id": "S1",
+     "name": "摘要",
+     "source_ref": "manuscript.sections[0]"
+    },
+    {
+     "section_id": "S2",
+     "name": "引言",
+     "source_ref": "manuscript.sections[1]"
+    },
+    {
+     "section_id": "S3",
+     "name": "方法",
+     "source_ref": "manuscript.sections[2]"
+    },
+    {
+     "section_id": "S4",
+     "name": "结果",
+     "source_ref": "manuscript.sections[3]"
+    },
+    {
+     "section_id": "S5",
+     "name": "讨论",
+     "source_ref": "manuscript.sections[4]"
+    }
+   ],
+   "reference_count": 2
+  },
+  "evidence_scale": {
+   "evidence_levels": {
+    "E3": "对照/实验/定量复现证据",
+    "E2": "观察性相关或单点定量证据",
+    "E1": "个案、转述或权威断言",
+    "E0": "无实证"
+   },
+   "claim_levels": {
+    "C3": "因果断言或普遍推广",
+    "C2": "限定条件下的相关结论",
+    "C1": "假说性表述"
+   },
+   "rule": "C3 须 E3；C2 须 ≥E2；E0 不得支撑任何 confirmed 结论",
+   "declared_at": "step1"
+  },
+  "severity_rubric": {
+   "levels": {
+    "critical": "直接影响主结论成立性的缺陷（如以相关证据断言因果），不改则结论不成立",
+    "major": "显著削弱结论可信度或外推范围、但可通过补充论证或限定表述修正",
+    "minor": "局部表述或覆盖面建议，不影响主结论"
+   },
+   "declared_at": "step1"
+  },
+  "issue_taxonomy": {
+   "types": {
+    "no_evidence": "无证据：主张无任何实证支撑",
+    "insufficient_evidence": "证据不足：证据存在但不足以支撑该强度表述",
+    "strength_mismatch": "强度不匹配：结论强度超出证据等级（结论超出数据）",
+    "citation_unsupported": "引用不支持：所引文献/材料不支持所引观点",
+    "overgeneralization": "外推超界：结论超出样本、场景或时限范围"
+   },
+   "declared_at": "step1"
+  },
+  "suppression_rules": [
+   {
+    "rule_id": "FP-01",
+    "text": "作者有意设置的对照组/明确标注的假设情形不是自相矛盾"
+   },
+   {
+    "rule_id": "FP-02",
+    "text": "转述他人观点（他人主张）不算作者自身缺陷"
+   }
+  ],
+  "claims": [
+   {
+    "claim_id": "c-01",
+    "text": "睡眠时长与绩点正相关（限定相关结论）",
+    "kind": "reported",
+    "claim_strength": "C2",
+    "evidence_strength": "E2",
+    "judge": "supported",
+    "judge_basis": "r=0.31 的横断相关，方向与强度表述与 E2 证据等级匹配，未超出数据",
+    "location": "S4 第1句",
+    "quote": "相关分析显示日均睡眠时长与绩点正相关（r=0.31, p=0.01）",
+    "finding_id": null
+   },
+   {
+    "claim_id": "c-02",
+    "text": "本文证实了睡眠时长是学业成绩的决定性成因",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "横断相关设计、无对照、未控制混杂，证据等级 E2 不足以『证实决定性成因』（C3）",
+    "location": "S1 第3句",
+    "quote": "本文证实了睡眠时长是学业成绩的决定性成因",
+    "finding_id": "F01"
+   },
+   {
+    "claim_id": "c-03",
+    "text": "据此建议高校强制延长学生睡眠时长以提升整体成绩",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "由横断相关直接导出干预因果建议，属结论超出数据",
+    "location": "S1 第4句",
+    "quote": "据此建议高校强制延长学生睡眠时长以提升整体成绩",
+    "finding_id": "F02"
+   },
+   {
+    "claim_id": "c-04",
+    "text": "结果表明延长睡眠时长能够提升大学生学业成绩",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "『能够提升』为因果断言，但证据仅为横断相关（E2），且方法自陈未设对照组",
+    "location": "S5 第1句",
+    "quote": "结果表明延长睡眠时长能够提升大学生学业成绩",
+    "finding_id": "F01"
+   },
+   {
+    "claim_id": "c-05",
+    "text": "绩点较低的学生睡眠更少印证了睡眠的促进作用",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "反向因果方向的观察被用作正向『促进』主张的印证，同一相关证据既当结论又当前提",
+    "location": "S5 第2句",
+    "quote": "绩点较低的学生往往睡眠更少，这印证了睡眠对成绩的促进作用",
+    "finding_id": "F04"
+   },
+   {
+    "claim_id": "c-06",
+    "text": "应在全部高校强制实施延长睡眠制度",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "由单一高校便利样本（E2）推广到全部高校，样本范围与政策适用范围之间存在无支撑跳跃",
+    "location": "S5 第3句",
+    "quote": "因此应在全部高校强制实施延长睡眠制度",
+    "finding_id": "F03"
+   },
+   {
+    "claim_id": "c-07",
+    "text": "睡眠时长是大学生学业成绩的主要原因",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "横断相关证据无法支撑『主要原因』的因果定性",
+    "location": "S5 第4句",
+    "quote": "综上，睡眠时长是大学生学业成绩的主要原因",
+    "finding_id": "F01"
+   },
+   {
+    "claim_id": "c-08",
+    "text": "引用 [2] 因果效应（全文未获取）",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E1",
+    "judge": "pending",
+    "judge_basis": "[2] 全文未获取，无法核对原文是否支持『因果效应』表述",
+    "location": "S2 第2句",
+    "quote": "另有研究证实睡眠剥夺直接导致成绩下降的因果效应 [2]",
+    "finding_id": "F05"
+   },
+   {
+    "claim_id": "c-09",
+    "text": "总体正相关结论（男生亚组方向反转被隐去）",
+    "kind": "inferred",
+    "claim_strength": "C2",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "男生亚组相关方向反转为负且被隐去（『不再报告』），总体正相关结论的稳健性被夸大",
+    "location": "S4 第3句",
+    "quote": "男生亚组中相关方向反转为负相关（r=-0.18），本文不再报告",
+    "finding_id": "F06"
+   }
+  ],
+  "findings": [
+   {
+    "finding_id": "F01",
+    "section_id": "S1",
+    "location": "S1 第3句",
+    "issue_type": "strength_mismatch",
+    "category": "insufficient_evidence",
+    "severity": "critical",
+    "quote": "本文证实了睡眠时长是学业成绩的决定性成因",
+    "evidence": "横断相关设计（方法自陈『未设对照组』、未控制混杂变量），证据等级 E2；『证实…决定性成因』为 C3 因果断言，违反 C3 须 E3 标尺规则",
+    "revision_suggestion": "把该句改为限定表述：『本研究观察到睡眠时长与绩点正相关，尚不能确定因果方向；睡眠对成绩的因果作用有待对照/前瞻研究验证』",
+    "status": "confirmed",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true,
+    "claim_id": "c-02"
+   },
+   {
+    "finding_id": "F02",
+    "section_id": "S1",
+    "location": "S1 第4句",
+    "issue_type": "overgeneralization",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "据此建议高校强制延长学生睡眠时长以提升整体成绩",
+    "evidence": "由横断相关直接导出干预建议，样本（某大学 180 名学生）与建议适用对象（高校整体）之间存在无支撑跳跃",
+    "revision_suggestion": "把建议改为提示性表述：『相关证据提示延长睡眠或与成绩改善相关，其因果与干预效果需进一步验证』",
+    "status": "confirmed",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true,
+    "claim_id": "c-03"
+   },
+   {
+    "finding_id": "F03",
+    "section_id": "S5",
+    "location": "S5 第3句",
+    "issue_type": "overgeneralization",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "因此应在全部高校强制实施延长睡眠制度",
+    "evidence": "单一高校便利抽样（E2）推广至全部高校，适用范围超出样本范围",
+    "revision_suggestion": "把适用范围限定为『与本研究样本相似的高校学生群体』，并注明政策效果需多中心/前瞻研究验证",
+    "status": "confirmed",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true,
+    "claim_id": "c-06"
+   },
+   {
+    "finding_id": "F04",
+    "section_id": "S5",
+    "location": "S5 第2句",
+    "issue_type": "strength_mismatch",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "绩点较低的学生往往睡眠更少，这印证了睡眠对成绩的促进作用",
+    "evidence": "『睡眠更少』是反向因果方向的观察，却被用来印证正向『促进』主张——同一相关证据既当结论又当前提",
+    "revision_suggestion": "删除『印证』表述，改为：『该现象同样可由反向因果解释，与正向假说无法在本设计中区分』",
+    "status": "confirmed",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true,
+    "claim_id": "c-05"
+   },
+   {
+    "finding_id": "F05",
+    "section_id": "S2",
+    "location": "S2 第2句",
+    "issue_type": "citation_unsupported",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "另有研究证实睡眠剥夺直接导致成绩下降的因果效应 [2]",
+    "evidence": "所引 [2] 全文未获取（仅见标题），无法核对原文设计是否真支持因果表述——引用对观点的支持强度待复核",
+    "revision_suggestion": "获取 [2] 全文后核对其设计；若为相关设计，需把『证实了因果效应』改写为与原文强度一致的表述",
+    "status": "pending",
+    "pending_reason": "参考文献 [2] 全文未获取，无法核对原文是否支持『因果效应』表述",
+    "suppressed_by": null,
+    "judged": true,
+    "claim_id": "c-08"
+   },
+   {
+    "finding_id": "F06",
+    "section_id": "S4",
+    "location": "S4 第3句",
+    "issue_type": "strength_mismatch",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "男生亚组中相关方向反转为负相关（r=-0.18），本文不再报告",
+    "evidence": "亚组相关方向反转被隐去（『不再报告』），总体正相关结论的稳健性被夸大",
+    "revision_suggestion": "在结果或讨论中如实报告亚组反转并讨论异质性来源；至少说明总体相关对男生亚组不稳健",
+    "status": "confirmed",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true,
+    "claim_id": "c-09"
+   }
+  ],
+  "suppressed": [],
+  "pending_review": [
+   {
+    "finding_id": "F05",
+    "reason": "参考文献 [2] 全文未获取，无法核对原文是否支持『因果效应』表述",
+    "needed_action": "获取 [2] 全文后核对其研究设计与结论强度；若为相关设计则该引用同样构成强度不匹配"
+   }
+  ],
+  "clearances": [
+   {
+    "scope": "section:S3",
+    "reason": "本技能聚焦摘要+结果的核心主张核查，方法章节已用于取证（设计类型/对比设置），不单独产出发现"
+   }
+  ],
+  "coverage": {
+   "total_sections": 5,
+   "sections_with_findings": 4,
+   "total_findings": 6,
+   "judged": 6,
+   "confirmed": 5,
+   "pending": 1,
+   "suppressed": 0,
+   "issue_type_counts": {
+    "no_evidence": 0,
+    "insufficient_evidence": 0,
+    "strength_mismatch": 3,
+    "citation_unsupported": 1,
+    "overgeneralization": 2
+   },
+   "category_counts": {
+    "fact_error": 0,
+    "insufficient_evidence": 6,
+    "norm_issue": 0,
+    "suggestion": 0
+   },
+   "severity_counts": {
+    "critical": 1,
+    "major": 5,
+    "minor": 0
+   },
+   "per_section": {
+    "S1": 2,
+    "S2": 1,
+    "S4": 1,
+    "S5": 2
+   },
+   "manuscript_stats": {
+    "chars": 765,
+    "en_words": 23,
+    "note": "字符数按全部 case 文本计；英文词数用正则统计（规避 isalpha 汉字陷阱）"
+   },
+   "note": "由 evidence_check.py 机械计数生成；unchecked 非空时 verdict 不得为 audited。"
+  },
+  "unchecked": [],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架与口径模板",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "事前声明三口径",
+    "command": "（Agent 响应步骤，无脚本）",
+    "output_ref": "/app/work/rubrics.json",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "抽主张 + 逐条核查（8 条主张、6 条发现）",
+    "command": "（Agent 响应步骤，无脚本）",
+    "output_ref": "result.claims / result.findings",
+    "status": "done"
+   },
+   {
+    "step": "step3",
+    "action": "机械校验与覆盖计数",
+    "command": "python3 /skills/weekly-skill/scripts/evidence_check.py --result /app/output/result.json --case /input/case.json --ledger /app/work/rubrics.json --out /app/work/evidence_check.json --emit-into",
+    "output_ref": "result.coverage / self_check",
+    "status": "done"
+   },
+   {
+    "step": "step4",
+    "action": "结构守卫自检",
+    "command": "python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "/app/work/schema_guard.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "audited",
+  "verdict_basis": "摘要+结果核心主张 8 条全覆盖，6 条发现全部判定（5 confirmed / 1 pending），主张 8 条全部登记强度匹配，无 unchecked 缺口",
+  "gain_evidence": {
+   "available": false,
+   "reason": "预算过半跳过增益层，如实记录不编造数字"
+  },
+  "efficiency": {
+   "wall_clock_seconds_total": null,
+   "checker_runs": 2,
+   "reproduce": "python3 /skills/weekly-skill/scripts/evidence_check.py --result /app/output/result.json --case /input/case.json"
+  }
+ },
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "参考文献 [2] 全文未获取，其是否支持因果表述无法核对（F05 pending）"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "F05 需人工获取 [2] 全文后复核引用支持强度"
+  ],
+  "summary": "本示例为合成稿件；唯一不可核对项为引用 [2] 的原文支持强度，已登记待复核。"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step1",
+   "change": "事前声明三口径并同步 rubrics.json"
+  },
+  {
+   "step": "step2",
+   "change": "抽取 8 条主张 + 6 条发现（5 confirmed / 1 pending）"
+  },
+  {
+   "step": "step3",
+   "change": "evidence_check 回写校验报告与 coverage"
+  },
+  {
+   "step": "step4",
+   "change": "schema_guard 自检通过"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "findings[0].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[5].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[0].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[1].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[2].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[3].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[4].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[5].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[6].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[7].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[8].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "issue_taxonomy.declared",
+   "template_value": "五类问题口径判定前声明（declared_at + types 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "severity_rubric.declared",
+   "template_value": "三级口径判定前声明（declared_at + levels 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[5].severity_rule",
+   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "evidence_scale.declared",
+   "template_value": "双侧强度标尺判定前声明（declared_at + levels + rule 非空）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[0].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[0].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[1].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[1].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[2].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[2].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[3].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[3].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[4].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[4].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[5].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[5].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[6].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[6].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[7].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[7].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[8].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[8].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[0].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[1].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[2].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[3].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[4].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[5].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[6].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[7].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[8].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].claim_registered",
+   "template_value": "confirmed 的强度不匹配发现 ⇒ 有主张登记（claim_id）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].claim_registered",
+   "template_value": "confirmed 的强度不匹配发现 ⇒ 有主张登记（claim_id）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[5].claim_registered",
+   "template_value": "confirmed 的强度不匹配发现 ⇒ 有主张登记（claim_id）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].pending_registered",
+   "template_value": "pending ⇒ 登记 pending_review（reason+needed_action）",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "rubrics_ledger",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "coverage_output",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "validator_verdict": "PASS"
+}

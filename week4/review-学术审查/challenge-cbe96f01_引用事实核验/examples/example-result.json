@@ -1,0 +1,362 @@
+{
+ "_note": "示意输出（synthetic，非正式答案）：对应 examples/example-case.json 的合成案例（虚构论文），用于演示接口与完整使用流程，不冒充正式案例结果。",
+ "case_id": "demo-citesup-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [
+   "参考文献 [4] 全文未获取，引用支持性无法核对（C03 已标 cannot_determine）"
+  ],
+  "environment": {
+   "python_version": "3.13.x",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "本地自测环境"
+  },
+  "manuscript_overview": {
+   "title": "社区老年人群血清维生素D水平与跌倒风险的关系研究（虚构示例稿）",
+   "sections": [
+    {
+     "section_id": "S1",
+     "name": "摘要",
+     "source_ref": "manuscript.sections[0]"
+    },
+    {
+     "section_id": "S2",
+     "name": "引言",
+     "source_ref": "manuscript.sections[1]"
+    },
+    {
+     "section_id": "S3",
+     "name": "方法",
+     "source_ref": "manuscript.sections[2]"
+    },
+    {
+     "section_id": "S4",
+     "name": "结果",
+     "source_ref": "manuscript.sections[3]"
+    },
+    {
+     "section_id": "S5",
+     "name": "讨论",
+     "source_ref": "manuscript.sections[4]"
+    }
+   ],
+   "reference_count": 4
+  },
+  "citation_scan": {
+   "candidate_sentences": [
+    {
+     "section_id": "S2",
+     "section_name": "引言",
+     "source_ref": "manuscript.sections[1]",
+     "sentence_index": 1,
+     "location": "S2 引言 第 1 句",
+     "quote": "既往研究提示维生素D缺乏与下肢肌力下降相关 [1]。",
+     "markers": [
+      "[1]"
+     ]
+    },
+    {
+     "section_id": "S2",
+     "section_name": "引言",
+     "source_ref": "manuscript.sections[1]",
+     "sentence_index": 2,
+     "location": "S2 引言 第 2 句",
+     "quote": "[2] 报告补充维生素D可使跌倒风险降低约 20%。",
+     "markers": [
+      "[2]"
+     ]
+    },
+    {
+     "section_id": "S2",
+     "section_name": "引言",
+     "source_ref": "manuscript.sections[1]",
+     "sentence_index": 3,
+     "location": "S2 引言 第 3 句",
+     "quote": "另有试验证实补充可显著降低跌倒率 [4]。",
+     "markers": [
+      "[4]"
+     ]
+    },
+    {
+     "section_id": "S2",
+     "section_name": "引言",
+     "source_ref": "manuscript.sections[1]",
+     "sentence_index": 4,
+     "location": "S2 引言 第 4 句",
+     "quote": "近期 [9] 也支持这一结论。",
+     "markers": [
+      "[9]"
+     ]
+    },
+    {
+     "section_id": "S5",
+     "section_name": "讨论",
+     "source_ref": "manuscript.sections[4]",
+     "sentence_index": 2,
+     "location": "S5 讨论 第 2 句",
+     "quote": "[2] 的结果支持这一结论。",
+     "markers": [
+      "[2]"
+     ]
+    }
+   ],
+   "candidate_count": 5,
+   "markers_in_text": [
+    "[1]",
+    "[2]",
+    "[4]",
+    "[9]"
+   ],
+   "reference_ids": [
+    "[1]",
+    "[2]",
+    "[3]",
+    "[4]"
+   ],
+   "unknown_markers": [
+    "[9]"
+   ],
+   "uncited_refs": [
+    "[3]"
+   ],
+   "scan_note": "机械提取带引用标号的结论句候选与引用标记底账；candidate_sentences 供 Agent 逐条判定入 citation_checks；unknown_markers 为正文有、参考文献表无的标记。"
+  },
+  "citation_checks": [
+   {
+    "check_id": "C01",
+    "source_ref": "manuscript.sections[1]",
+    "section_id": "S2",
+    "location": "S2 引言 第 2 句",
+    "quote": "[2] 报告补充维生素D可使跌倒风险降低约 20%。",
+    "claim": "补充维生素D可使跌倒风险降低约20%（无人群限定）",
+    "cite_markers": [
+     "[2]"
+    ],
+    "support_state": "partially_supported",
+    "over_inference": true,
+    "source_accessible": true,
+    "reason": "[2] 荟萃分析明确强调证据主要来自维生素D缺乏人群、对充足人群无额外获益；本文将其作为『补充可降低跌倒风险』的普遍支持，属部分支持+结论超出引文范围",
+    "revision_suggestion": "改写为与 [2] 一致的表述（获益限于维生素D缺乏人群），或更换支持该论断的文献",
+    "judged": true
+   },
+   {
+    "check_id": "C02",
+    "source_ref": "manuscript.sections[1]",
+    "section_id": "S2",
+    "location": "S2 引言 第 1 句",
+    "quote": "既往研究提示维生素D缺乏与下肢肌力下降相关 [1]。",
+    "claim": "维生素D缺乏与下肢肌力下降相关",
+    "cite_markers": [
+     "[1]"
+    ],
+    "support_state": "fully_supported",
+    "over_inference": false,
+    "source_accessible": true,
+    "reason": "[1] 观察性研究报告发现血清维生素D缺乏与下肢肌力下降存在相关，与本文论断一致",
+    "revision_suggestion": "无需修改",
+    "judged": true
+   },
+   {
+    "check_id": "C03",
+    "source_ref": "manuscript.sections[1]",
+    "section_id": "S2",
+    "location": "S2 引言 第 3 句",
+    "quote": "另有试验证实补充可显著降低跌倒率 [4]。",
+    "claim": "补充维生素D可显著降低跌倒率",
+    "cite_markers": [
+     "[4]"
+    ],
+    "support_state": "cannot_determine",
+    "over_inference": null,
+    "source_accessible": false,
+    "reason": "参考文献 [4] 全文未获取，无法核对被引主张与本文论断的对应关系，标无法判定，不凭空补结论",
+    "revision_suggestion": "获取 [4] 全文核对后再确认引用支持性；不支持则改写或删除",
+    "judged": true
+   },
+   {
+    "check_id": "C04",
+    "source_ref": "manuscript.sections[4]",
+    "section_id": "S5",
+    "location": "S5 讨论 第 2 句",
+    "quote": "[2] 的结果支持这一结论。",
+    "claim": "[2] 的结果支持『维生素D不足显著增加跌倒风险』这一结论",
+    "cite_markers": [
+     "[2]"
+    ],
+    "support_state": "partially_supported",
+    "over_inference": true,
+    "source_accessible": true,
+    "reason": "[2] 的证据边界（仅维生素D缺乏人群获益）与本文普遍性结论不完全一致，引用其支持普遍结论属部分支持+超出引文范围",
+    "revision_suggestion": "在讨论中区分 [2] 的证据适用人群，避免以部分人群证据支持普遍性结论",
+    "judged": true
+   }
+  ],
+  "coverage": {
+   "total_checks": 4,
+   "judged": 4,
+   "state_counts": {
+    "fully_supported": 1,
+    "partially_supported": 2,
+    "unsupported": 0,
+    "cannot_determine": 1
+   },
+   "over_inference_count": 2
+  },
+  "unchecked": [],
+  "steps": [
+   {
+    "step": "step0",
+    "action": "落骨架",
+    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
+    "output_ref": "/app/output/result.json",
+    "status": "done"
+   },
+   {
+    "step": "step1",
+    "action": "提取带引用结论句并逐条四档判定",
+    "command": "python3 /skills/weekly-skill/scripts/citation_scan.py --result /app/output/result.json --case /input/case.json --emit-into 后 Agent 逐条写入 citation_checks",
+    "output_ref": "result.citation_checks",
+    "status": "done"
+   },
+   {
+    "step": "step2",
+    "action": "双自检与交付",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "/app/work/schema_guard.json",
+    "status": "done"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "audited",
+  "verdict_basis": "带引用标号的 4 条结论句全部判定（1 完整支持 / 2 部分支持 / 1 无法判定），unchecked 为空",
+  "gain_evidence": {
+   "available": false,
+   "reason": "极简单点策略：单一引用支持判定方向，增益层在预算 50% 跳过"
+  },
+  "efficiency": {
+   "checker_runs": 4,
+   "reproduce": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "C01 引用支持：[2] 证据边界（仅缺乏人群获益）与本文普遍论断冲突，属部分支持+过度推断",
+   "kind": "reported",
+   "source_id": "C01",
+   "location": "citation_checks[0]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[1].text",
+     "quote": "[2] 报告补充维生素D可使跌倒风险降低约 20%。"
+    },
+    {
+     "paragraph_id": "manuscript.references[1].text",
+     "quote": "Dupont（2020）的荟萃分析显示补充维生素D使跌倒风险降低约 20%，但强调证据主要来自维生素D缺乏人群，对充足人群无额外获益。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "C02 引用支持：[1] 与本文论断一致（完整支持）",
+   "kind": "reported",
+   "source_id": "C02",
+   "location": "citation_checks[1]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[1].text",
+     "quote": "既往研究提示维生素D缺乏与下肢肌力下降相关 [1]。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "C03 引用支持：[4] 全文未获取，标无法判定（cannot_determine）",
+   "kind": "reported",
+   "source_id": "C03",
+   "location": "citation_checks[2]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[1].text",
+     "quote": "另有试验证实补充可显著降低跌倒率 [4]。"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [
+   "参考文献 [4] 全文未获取，引用支持性无法判定（C03）"
+  ],
+  "conflicts": [],
+  "human_review": [
+   "C03 待获取 [4] 全文后人工复核引用支持性"
+  ],
+  "summary": "1 条无法判定（引用 [4] 全文缺失）已如实登记，未凭空补结论"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step1",
+   "change": "citation_scan 提取 5 条候选，Agent 逐条判定 4 条（另 1 条 [9] 为编造引用标记不入引用支持判定）"
+  },
+  {
+   "step": "step2",
+   "change": "verify_check + schema_guard 双自检 PASS 后交付"
+  }
+ ],
+ "self_check": [
+  {
+   "item": "enums",
+   "template_value": "support_state/status/run_status.state/verdict 枚举合法",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "quote_backed",
+   "template_value": "each quote blank-normalized substring of manuscript text + location non-empty",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "cannot_determine_honest",
+   "template_value": "cannot_determine ⇔ source_accessible=false 不冒充已核对",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "cite_markers_backed",
+   "template_value": "cite_markers 均回证参考文献表（不越界）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "over_inference_consistent",
+   "template_value": "over_inference=true ⇒ partially/unsupported",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "contract_fields",
+   "template_value": "output_contract 全字段齐备",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "validator_verdict": "PASS",
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  }
+ ]
+}

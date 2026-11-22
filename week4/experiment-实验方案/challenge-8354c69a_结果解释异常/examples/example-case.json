@@ -1,0 +1,26 @@
+{
+ "case_id": "demo-exp-anomaly-001",
+ "output_contract": {
+  "fields": ["case_id", "status", "result", "uncertainties", "changelog"]
+ },
+ "datasets": [
+  {
+   "dataset_id": "ds-bend-01",
+   "title": "【示意数据，全部虚构】弯曲强度批次稳定性实验（12 个读数）",
+   "design_type": "experimental",
+   "unit": "MPa",
+   "dimension": "时间点",
+   "description": "合成示范数据集，仅用于说明接口，非正式案例。数据字典：弯曲强度 bend，单位 MPa。第 6 个读数 90.1 MPa 明显偏离其余读数。",
+   "values": [48.2, 51.7, 50.3, 49.6, 52.8, 90.1, 50.9, 51.4, 49.8, 52.2, 50.6, 51.3]
+  },
+  {
+   "dataset_id": "ds-temp-02",
+   "title": "【示意数据，全部虚构】保温过程温度通道记录（16 个采样点）",
+   "design_type": "observational",
+   "unit": "摄氏度",
+   "dimension": "时间点",
+   "description": "合成示范数据集，仅用于说明接口，非正式案例。程序在第 8 个采样点由升温段切换为保温段，设定值自 10 摄氏度升至 16 摄氏度。",
+   "values": [10.2, 10.5, 10.3, 10.4, 10.6, 10.4, 10.5, 15.8, 16.2, 16.0, 16.1, 16.3, 16.2, 16.1, 16.0, 16.2]
+  }
+ ]
+}

@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""build_skeleton.py — Step 0 自动落骨架与稿件结构清单（paper-review-audit）。
+"""build_skeleton.py — Step 0 自动落骨架（paper-fact-citation-audit）。
 
-读取 case.json 提取 output_contract 全部字段名与稿件结构（manuscript/paper/
-document 等常见键下的 sections/text），扫描输入目录补齐材料清单，写入骨架
-result.json（全部键，待回填）与 /app/work/severity_rubric.json 严重度口径
-模板（须在任何判定之前声明，之后禁止调整）。
+读取 case.json 提取 output_contract 全部字段名与稿件结构（摘要/结果章节 +
+参考文献计数），扫描输入目录补齐材料清单，写入骨架 result.json（全部键，
+待回填）与 /app/work/severity_rubric.json 严重度口径模板（判定前声明）。
 三级容错：任何一级失败都降级产出可用骨架，绝不崩溃、绝不缺 result.json。
 
 用法：
@@ -22,13 +21,10 @@ import sys
 MANUSCRIPT_KEYS = ("manuscript", "paper", "document", "full_text", "text", "body", "content")
 SECTION_KEYS = ("sections", "chapters", "parts")
 
+# 两分面：事实一致性 + 引用支持（广度让位于深度）
 FACETS = (
-    ("fact_check", "事实核验：数据/表述在摘要、正文、图表间是否一致"),
+    ("fact_check", "事实一致性与数字自洽：摘要/结果/图表间同一量的数值或论断是否矛盾"),
     ("citation_support", "引用支持：正文论断与所引文献主张是否对应"),
-    ("method_design", "方法设计：对照、样本量与抽样方式、评价选择"),
-    ("stat_reporting", "统计报告：显著性、效应量、置信区间、重复与随机化"),
-    ("argument_chain", "论证链：假设到结论的推理路径是否断裂或外推"),
-    ("integrity_norms", "学术规范：声明齐备性、术语一致、格式与可发表性"),
 )
 
 
@@ -52,7 +48,7 @@ def contract_fields(case):
 
 
 def extract_manuscript(case):
-    """从 case.json 常见键提取稿件结构与统计线索（只记结构，不复制全文）。"""
+    """从 case.json 常见键提取稿件结构（只记结构，不复制全文）。"""
     info = {"found": False, "title": None, "sections": [], "reference_count": None, "note": ""}
     if not isinstance(case, dict):
         info["note"] = "case.json 非对象，稿件结构未提取"
@@ -72,8 +68,7 @@ def extract_manuscript(case):
             v = root.get(sk)
             if isinstance(v, list) and v:
                 for i, s in enumerate(v):
-                    sid = None
-                    name = None
+                    sid, name = None, None
                     if isinstance(s, dict):
                         sid = s.get("section_id") or s.get("id") or ("S%d" % (i + 1))
                         name = s.get("name") or s.get("title") or None
@@ -90,7 +85,7 @@ def extract_manuscript(case):
             sid = s.get("section_id", "S%d" % (i + 1)) if isinstance(s, dict) else "S%d" % (i + 1)
             info["sections"].append({"section_id": str(sid), "name": "", "source_ref": "manuscript[%d]" % i})
     if not info["sections"]:
-        info["note"] = "稿件未分段（连续文本），sections 留空，按全文通读审查"
+        info["note"] = "稿件未分段（连续文本），sections 留空，按摘要+结果范围审查"
     return info
 
 
@@ -149,7 +144,7 @@ def main():
     all_files = scan_inputs(args.input_root)
     marker_hit, marker_path = check_skill_marker(__file__)
     if not marker_hit:
-        problems.append("技能标志文件未命中（%s），脚本可能未挂载在 /skills/weekly-skill" % marker_path or "SKILL.md")
+        problems.append("技能标志文件未命中（%s），脚本可能未挂载在 /skills/weekly-skill" % (marker_path or "SKILL.md"))
 
     # 二级：组装骨架（output_contract 键 + 本题业务键，一个不缺）
     try:
@@ -163,25 +158,24 @@ def main():
             "severity_rubric": {"levels": {"critical": None, "major": None, "minor": None},
                                 "declared_at": None,
                                 "note": "任何逐条判定之前必须声明三级口径，之后禁止调整"},
-            "suppression_rules": [
-                {"rule_id": "FP-01", "text": "学科写作惯例（作者自陈局限、惯用转承语）不算缺陷"},
-                {"rule_id": "FP-02", "text": "期刊格式差异（引用样式、图表编号风格）不算缺陷"},
-                {"rule_id": "FP-03", "text": "作者有意取舍（篇幅/期刊要求内的省略）不算缺陷"},
-            ],
             "facets": {k: v for k, v in FACETS},
             "findings": [],
-            "suppressed": [],
-            "pending_review": [],
             "clearances": [],
-            "coverage": {"total_sections": len(ms["sections"]), "sections_with_findings": 0,
-                         "total_findings": 0, "judged": 0, "confirmed": 0, "pending": 0,
-                         "suppressed": 0, "facet_counts": {}, "category_counts": {},
-                         "severity_counts": {}, "per_section": {}, "note": "coverage_audit.py 回填"},
+            "coverage": {"total_findings": 0,
+                         "facet_counts": {"fact_check": 0, "citation_support": 0},
+                         "note": "verify_check.py 回填"},
             "unchecked": [],
             "steps": [],
             "run_status": {"state": None, "reason": None, "manual_takeover": []},
             "verdict": None,
             "verdict_basis": None,
+            "gain_evidence": {"available": False, "reason": "骨架初始，待 gain_probe 回填",
+                              "runs": [], "delta_normal_minus_degraded": {},
+                              "mechanism_to_metric_map": [], "boundaries": [],
+                              "failure_conditions": []},
+            "efficiency": {"available": False, "reason": "骨架初始",
+                           "wall_clock_seconds_total": 0.0, "checker_runs": 0,
+                           "reproduce": None},
         }
         skeleton = {"case_id": case_id, "status": "partial", "result": inner,
                     "claims": [], "uncertainties": {"unreported": [], "unverifiable": [],
@@ -198,16 +192,15 @@ def main():
                     "changelog": []}
 
     # 三级：写盘（输出目录不存在则创建；仍失败则写到备用路径）
-    out_path = args.out
     try:
-        os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+        os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
     except Exception:
         pass
     try:
-        with open(out_path, "w", encoding="utf-8") as f:
+        with open(args.out, "w", encoding="utf-8") as f:
             json.dump(skeleton, f, ensure_ascii=False, indent=1)
     except Exception as e:
-        problems.append("骨架写出失败 %s: %s" % (out_path, e))
+        problems.append("骨架写出失败 %s: %s" % (args.out, e))
         try:
             fallback = os.path.join(args.work_dir or ".", "result.skeleton.json")
             os.makedirs(os.path.dirname(fallback) or ".", exist_ok=True)
@@ -238,7 +231,7 @@ def main():
         print("  section: %s  %s" % (s["section_id"], s["name"]))
     for p in problems:
         print("  WARN: %s" % p)
-    print("[build_skeleton] 骨架已写: %s（标志文件命中=%s）" % (out_path, marker_hit))
+    print("[build_skeleton] 骨架已写: %s（标志文件命中=%s）" % (args.out, marker_hit))
     return 0
 
 

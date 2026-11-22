@@ -1,0 +1,210 @@
+{
+ "case_id": "demo-exp-anomaly-001",
+ "status": "answered",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.13",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": "照实"
+  },
+  "contract_fields": [
+   "case_id",
+   "status",
+   "result",
+   "uncertainties",
+   "changelog"
+  ],
+  "dataset_ids": [
+   "ds-bend-01",
+   "ds-temp-02"
+  ],
+  "thresholds": {
+   "outlier_z": 3.0,
+   "jump_rel": 0.5,
+   "plateau_min_points": 3,
+   "plateau_tol_rel": 0.05
+  },
+  "anomalies": [
+   {
+    "anomaly_id": "AN-01",
+    "dataset_id": "ds-bend-01",
+    "dimension": "时间点",
+    "object_ref": "index=5",
+    "anomaly_type": "outlier",
+    "observed_value": 90.1,
+    "unit": "MPa",
+    "threshold_used": "outlier_z=3.00",
+    "severity": "z=3.16",
+    "baseline": {
+     "value": 51.1,
+     "reference": "全序列中位数"
+    },
+    "baseline_ref": "全序列中位数",
+    "deviation": "+76.3%",
+    "evidence_location": "datasets[ds-bend-01][5]",
+    "possible_cause": "该读数 90.1 MPa 明显偏高，疑与该读数对应的设备装夹状态变更同期相关（未定因果）"
+   },
+   {
+    "anomaly_id": "AN-03",
+    "dataset_id": "ds-temp-02",
+    "dimension": "时间点",
+    "object_ref": "index=7",
+    "anomaly_type": "jump",
+    "observed_value": 15.8,
+    "unit": "摄氏度",
+    "threshold_used": "jump_rel=0.50",
+    "severity": "相对前一读数 50.5%",
+    "baseline": {
+     "value": 10.5,
+     "reference": "相邻前一个读数"
+    },
+    "baseline_ref": "相邻前一个读数",
+    "deviation": "+50.5%",
+    "evidence_location": "datasets[ds-temp-02][7]",
+    "possible_cause": "相对相邻读数的明显跳变，可能与程序段切换或通道阶跃相关（未定因果）"
+   },
+   {
+    "anomaly_id": "AN-02",
+    "dataset_id": "ds-bend-01",
+    "dimension": "时间点",
+    "object_ref": "index=5",
+    "anomaly_type": "jump",
+    "observed_value": 90.1,
+    "unit": "MPa",
+    "threshold_used": "jump_rel=0.50",
+    "severity": "相对前一读数 70.6%",
+    "baseline": {
+     "value": 52.8,
+     "reference": "相邻前一个读数"
+    },
+    "baseline_ref": "相邻前一个读数",
+    "deviation": "+70.6%",
+    "evidence_location": "datasets[ds-bend-01][5]",
+    "possible_cause": "相对相邻读数的明显跳变，可能与程序段切换或通道阶跃相关（未定因果）"
+   }
+  ],
+  "detection": {
+   "computed_by": "scripts/anomaly_detect.py",
+   "thresholds_used": {
+    "outlier_z": 3.0,
+    "jump_rel": 0.5,
+    "plateau_min_points": 3.0,
+    "plateau_tol_rel": 0.05
+   },
+   "datasets_scanned": 2,
+   "anomalies_detected_total": 3,
+   "anomalies_reported": 3,
+   "per_dataset": [
+    {
+     "dataset_id": "ds-bend-01",
+     "status": "ok",
+     "stats": {
+      "n": 12,
+      "mean": 54.075,
+      "sd": 11.412364,
+      "plateaus": [
+       {
+        "start": 1,
+        "end": 3,
+        "length": 3,
+        "mean": 50.533333
+       },
+       {
+        "start": 6,
+        "end": 11,
+        "length": 6,
+        "mean": 51.033333
+       }
+      ]
+     },
+     "detected": 2
+    },
+    {
+     "dataset_id": "ds-temp-02",
+     "status": "ok",
+     "stats": {
+      "n": 16,
+      "mean": 13.6125,
+      "sd": 2.916362,
+      "plateaus": [
+       {
+        "start": 0,
+        "end": 6,
+        "length": 7,
+        "mean": 10.414286
+       },
+       {
+        "start": 7,
+        "end": 15,
+        "length": 9,
+        "mean": 16.1
+       }
+      ]
+     },
+     "detected": 1
+    }
+   ]
+  },
+  "fallbacks": {
+   "trend": "仅检异常点，不做趋势拟合（异常定位结果见 anomalies）",
+   "cause_list": "不按证据强度排序原因清单，每个异常仅配一句话可能原因",
+   "recheck": "不做可执行复核清单，异常点位已回 evidence_location 供他人复算",
+   "followup": "不做后续实验建议"
+  },
+  "gain_evidence": {
+   "available": false,
+   "reason": "预算过50%降级"
+  },
+  "input_files": [
+   "example-case.json",
+   "example-result.json"
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": []
+  },
+  "verdict": "audited",
+  "verdict_basis": "两组读数离群检测机械完成，检出的 outlier/jump 均定位到维度并给阈值与偏离幅度"
+ },
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [],
+  "conflicts": [],
+  "human_review": [],
+  "summary": "离群检测由脚本机械完成；possible_cause 为模型一句话兜底，未定因果"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架"
+  },
+  {
+   "step": "step2",
+   "change": "anomaly_detect 回填 anomalies/detection"
+  }
+ ],
+ "validator_verdict": "PASS",
+ "self_check": [
+  {
+   "item": "verify_check 校验",
+   "template_value": "verdict=PASS",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  },
+  {
+   "gate": "skill_marker",
+   "state": "enforced",
+   "note": ""
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+  "case_id": "demo-paramdomain-001",
+  "_note": "合成示例案例（非正式答案）：设备型号、材料规格、文献出处与数据均为虚构，仅用于演示接口与自测链路。",
+  "research_question": {
+    "question": "在固定机时与耗材预算内，识别催化微反应器实验的关键参数并给出每个参数的可执行可行域，使建议值落在设备量程、材料耐温与安全阈值之内",
+    "scope": "单台微反应器、单次反应窗口",
+    "constraints": "材料耐温与放热安全阈值约束须满足；EHS 确认前不得执行温度上移实验"
+  },
+  "materials": [
+    {"name": "催化微反应器（虚构型号 MR-100）", "doc": "设备手册 SOP-12"},
+    {"name": "PEEK 密封件（耐温 175℃，虚构）", "doc": "设备手册 SOP-12 附录A"},
+    {"name": "催化剂母液 25 mmol/L（虚构批号 C-2024-11）", "doc": "试剂台账"},
+    {"name": "文献 lit-doe-2019（虚构）", "doc": "DOE 表3/图4"}
+  ],
+  "prospective_contracts": {
+    "booking": "机时按 2 h/次实验折算（前瞻性预约口径，非实际报价）",
+    "price": "耗材 100 元/次实验（前瞻性折算口径，非实际报价）"
+  },
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

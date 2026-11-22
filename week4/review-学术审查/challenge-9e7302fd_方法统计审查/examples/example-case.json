@@ -1,0 +1,24 @@
+{
+  "_note": "合成示意案例（非正式答案、非真实论文）：仅用于本地自测整条链路。题目/作者/数据/统计量均为虚构，数字矛盾系为演示数字交叉比对机制而故意构造。",
+  "case_id": "demo-numconsistency-001",
+  "task_type": "research_method_stat_audit",
+  "manuscript": {
+    "title": "数字一致性审查示意稿（虚构）",
+    "sections": [
+      {"section_id": "S1", "name": "摘要", "text": "本研究共纳入本科生 48 名，干预组焦虑得分显著低于对照组（t(52)=2.10, p=0.04），均数差 95% CI [0.20, 0.30]，SE=0.10。干预后干预组不显著（p=0.03）。"},
+      {"section_id": "S2", "name": "方法", "text": "本研究在某高校招募本科生 36 名，随机分配至干预组与对照组。焦虑采用 STAI 量表测量。本研究经伦理委员会审批。"},
+      {"section_id": "S3", "name": "结果", "text": "干预组与对照组比较（t(52)=2.10, p=0.04）。相关分析显示训练时长与焦虑降幅显著相关（r=0.32, n=48）。"},
+      {"section_id": "S4", "name": "结论", "text": "八周干预可显著缓解焦虑。"}
+    ],
+    "figure_captions": [
+      {"name": "图1", "caption": "图1 两组焦虑得分前后变化。共 51 名被试完成测试。"}
+    ],
+    "references": [
+      {"ref_id": "[1]", "text": "虚构文献"},
+      {"ref_id": "[2]", "text": "虚构文献"}
+    ]
+  },
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

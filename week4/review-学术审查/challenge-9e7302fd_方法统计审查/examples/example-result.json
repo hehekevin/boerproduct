@@ -1,0 +1,558 @@
+{
+ "case_id": "demo-numconsistency-001",
+ "status": "partial",
+ "result": {
+  "material_gaps": [],
+  "environment": {
+   "python_version": "3.13.14",
+   "packages": "stdlib-only",
+   "seed": null,
+   "hardware_note": null,
+   "skill_marker": {
+    "hit": true,
+    "path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-9e7302fd\\submission\\SKILL.md"
+   }
+  },
+  "manuscript_overview": {
+   "title": "数字一致性审查示意稿（虚构）",
+   "sections": [
+    {
+     "section_id": "S1",
+     "name": "摘要",
+     "chars": 100
+    },
+    {
+     "section_id": "S2",
+     "name": "方法",
+     "chars": 58
+    },
+    {
+     "section_id": "S3",
+     "name": "结果",
+     "chars": 64
+    },
+    {
+     "section_id": "S4",
+     "name": "结论",
+     "chars": 12
+    },
+    {
+     "section_id": "figure_captions[0]",
+     "name": "图1",
+     "chars": 27
+    }
+   ],
+   "full_text_chars": 261,
+   "reference_count": 2
+  },
+  "severity_rubric": {
+   "levels": {
+    "critical": "摘要与正文/图表间样本量或主要结局效应量/CI/p 值相互矛盾，直接推翻主要结论",
+    "major": "次要统计量、自由度越界、百分比等不一致，影响可信度但不必然推翻结论",
+    "minor": "百分比四舍五入差等不改变结论的表述不一致"
+   },
+   "declared_at": "step2",
+   "note": "判定前必须声明，之后禁止调整"
+  },
+  "number_audits": [
+   {
+    "kind": "sample_size",
+    "value": 48,
+    "type_tag": "total_n",
+    "source": "case",
+    "section_id": "S1",
+    "name": "摘要",
+    "location": "共纳入/合计句",
+    "raw": "本研究共纳入本科生 48 名，干预组焦虑得分显著低于对照组（t(52)=2.",
+    "consistent": false,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N01"
+   },
+   {
+    "kind": "sample_size",
+    "value": 36,
+    "type_tag": "total_n",
+    "source": "case",
+    "section_id": "S2",
+    "name": "方法",
+    "location": "共纳入/合计句",
+    "raw": "本研究在某高校招募本科生 36 名，随机分配至干预组与对照组。焦虑采用 STAI ",
+    "consistent": false,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N02"
+   },
+   {
+    "kind": "sample_size",
+    "value": 48,
+    "type_tag": "total_n",
+    "source": "case",
+    "section_id": "S3",
+    "name": "结果",
+    "location": "n=句",
+    "raw": "显示训练时长与焦虑降幅显著相关（r=0.32, n=48）。",
+    "consistent": false,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N03"
+   },
+   {
+    "kind": "sample_size",
+    "value": 51,
+    "type_tag": "total_n",
+    "source": "case",
+    "section_id": "figure_captions[0]",
+    "name": "图1",
+    "location": "共纳入/合计句",
+    "raw": "图1 两组焦虑得分前后变化。共 51 名被试完成测试。",
+    "consistent": false,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N04"
+   },
+   {
+    "kind": "percentage",
+    "value": 95.0,
+    "type_tag": "pct",
+    "section_id": "S1",
+    "name": "摘要",
+    "location": "百分比",
+    "raw": "t(52)=2.10, p=0.04），均数差 95% CI [0.20, 0.30]，SE=0.10",
+    "line": "本研究共纳入本科生 48 名，干预组焦虑得分显著低于对照组（t(52)=2.10, p=0.04），均数差 95% CI [0.20, 0.30]，SE=0.10。干预后干预组不显著（p=0.03）。",
+    "source": "case",
+    "consistent": true,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N05"
+   },
+   {
+    "kind": "p_value",
+    "value": 0.04,
+    "type_tag": "p",
+    "op": "=",
+    "section_id": "S1",
+    "name": "摘要",
+    "location": "p值",
+    "raw": "焦虑得分显著低于对照组（t(52)=2.10, p=0.04），均数差 95% CI [0.20, 0.30",
+    "window": "本研究共纳入本科生 48 名，干预组焦虑得分显著低于对照组（t(52)=2.10, p=0.04），均数差 95% CI [0.20, 0.30]，SE=0.10。",
+    "source": "case",
+    "consistent": true,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N06"
+   },
+   {
+    "kind": "p_value",
+    "value": 0.03,
+    "type_tag": "p",
+    "op": "=",
+    "section_id": "S1",
+    "name": "摘要",
+    "location": "p值",
+    "raw": "0.30]，SE=0.10。干预后干预组不显著（p=0.03）。",
+    "window": "干预后干预组不显著（p=0.03）。",
+    "source": "case",
+    "consistent": false,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N07"
+   },
+   {
+    "kind": "p_value",
+    "value": 0.04,
+    "type_tag": "p",
+    "op": "=",
+    "section_id": "S3",
+    "name": "结果",
+    "location": "p值",
+    "raw": "干预组与对照组比较（t(52)=2.10, p=0.04）。相关分析显示训练时长与焦虑降幅显著相关（r=",
+    "window": "干预组与对照组比较（t(52)=2.10, p=0.04）。",
+    "source": "case",
+    "consistent": true,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N08"
+   },
+   {
+    "kind": "effect_size",
+    "value": 0.32,
+    "label": "r",
+    "type_tag": "effect",
+    "section_id": "S3",
+    "name": "结果",
+    "location": "效应量",
+    "raw": "04）。相关分析显示训练时长与焦虑降幅显著相关（r=0.32, n=48）。",
+    "source": "case",
+    "consistent": true,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N09"
+   },
+   {
+    "kind": "statistic",
+    "value": 2.1,
+    "label": "t",
+    "df1": 52,
+    "df2": null,
+    "type_tag": "stat_t",
+    "section_id": "S1",
+    "name": "摘要",
+    "location": "统计量",
+    "raw": "本科生 48 名，干预组焦虑得分显著低于对照组（t(52)=2.10, p=0.04），均数差 95% CI [0.",
+    "source": "case",
+    "consistent": false,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N10"
+   },
+   {
+    "kind": "statistic",
+    "value": 2.1,
+    "label": "t",
+    "df1": 52,
+    "df2": null,
+    "type_tag": "stat_t",
+    "section_id": "S3",
+    "name": "结果",
+    "location": "统计量",
+    "raw": "干预组与对照组比较（t(52)=2.10, p=0.04）。相关分析显示训练时长与焦虑降",
+    "source": "case",
+    "consistent": false,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N11"
+   },
+   {
+    "kind": "confidence_interval",
+    "value": [
+     0.2,
+     0.3
+    ],
+    "null": 0.0,
+    "type_tag": "ci",
+    "section_id": "S1",
+    "name": "摘要",
+    "location": "置信区间",
+    "raw": "10, p=0.04），均数差 95% CI [0.20, 0.30]，SE=0.10。干预后干预组不显著（p=0.",
+    "window": "本研究共纳入本科生 48 名，干预组焦虑得分显著低于对照组（t(52)=2.10, p=0.04），均数差 95% CI [0.20, 0.30]，SE=0.10。",
+    "source": "case",
+    "consistent": false,
+    "conflicts_with": [],
+    "note": "",
+    "audit_id": "N12"
+   }
+  ],
+  "findings": [
+   {
+    "finding_id": "F01",
+    "kind": "number_conflict",
+    "rule": "R1_total_n",
+    "quote": "本研究共纳入本科生 48 名，干预组焦虑得分显著低于对照组（t(52)=2.",
+    "location": "S1",
+    "severity": "critical",
+    "evidence": "入组总数在多个位置不一致: N01=48(S1:共纳入/合计句); N02=36(S2:共纳入/合计句); N03=48(S3:n=句); N04=51(figure_captions[0]:共纳入/合计句)",
+    "revision_suggestion": "统一摘要与方法的入组总数，核对原始台账",
+    "status": "confirmed",
+    "conflict_ids": [
+     "N01",
+     "N02",
+     "N03",
+     "N04"
+    ]
+   },
+   {
+    "finding_id": "F02",
+    "kind": "number_conflict",
+    "rule": "R3_df_over",
+    "quote": "本科生 48 名，干预组焦虑得分显著低于对照组（t(52)=2.10, p=0.04），均数差 95% CI [0.",
+    "location": "S1",
+    "severity": "major",
+    "evidence": "t(52)=... 中 df=52 > n-1=47，与样本量矛盾",
+    "revision_suggestion": "核对统计量的自由度",
+    "status": "confirmed",
+    "conflict_ids": [
+     "N10"
+    ]
+   },
+   {
+    "finding_id": "F03",
+    "kind": "number_conflict",
+    "rule": "R3_df_over",
+    "quote": "干预组与对照组比较（t(52)=2.10, p=0.04）。相关分析显示训练时长与焦虑降",
+    "location": "S3",
+    "severity": "major",
+    "evidence": "t(52)=... 中 df=52 > n-1=47，与样本量矛盾",
+    "revision_suggestion": "核对统计量的自由度",
+    "status": "confirmed",
+    "conflict_ids": [
+     "N11"
+    ]
+   },
+   {
+    "finding_id": "F04",
+    "kind": "number_conflict",
+    "rule": "R4_p_wording",
+    "quote": "0.30]，SE=0.10。干预后干预组不显著（p=0.03）。",
+    "location": "S1",
+    "severity": "critical",
+    "evidence": "p=0.03（≤0.05）却写不显著",
+    "revision_suggestion": "核对 p 值与显著性表述是否一致",
+    "status": "confirmed",
+    "conflict_ids": [
+     "N07"
+    ]
+   },
+   {
+    "finding_id": "F05",
+    "kind": "number_conflict",
+    "rule": "R6_ci_se",
+    "quote": "10, p=0.04），均数差 95% CI [0.20, 0.30]，SE=0.10。干预后干预组不显著（p=0.",
+    "location": "S1",
+    "severity": "major",
+    "evidence": "CI 宽=0.100 与 SE=0.100 推得期望宽≈0.392（2*1.96*SE）不符",
+    "revision_suggestion": "核对 SE 或 CI 端点是否笔误",
+    "status": "confirmed",
+    "conflict_ids": [
+     "N12"
+    ]
+   }
+  ],
+  "conflict_summary": {
+   "conflicts_total": 5,
+   "by_kind": {
+    "R1_total_n": 1,
+    "R3_df_over": 2,
+    "R4_p_wording": 1,
+    "R6_ci_se": 1
+   },
+   "by_severity": {
+    "critical": 2,
+    "major": 3
+   },
+   "rules_applied": [
+    "R1_total_n",
+    "R2_stat_conflict",
+    "R3_df_over",
+    "R4_p_wording",
+    "R5_ci_null",
+    "R6_ci_se"
+   ],
+   "extracted": {
+    "sample_size": 4,
+    "p_value": 3,
+    "effect_size": 1,
+    "confidence_interval": 1,
+    "percentage": 1,
+    "statistic": 2,
+    "df": 0
+   }
+  },
+  "unchecked": [
+   {
+    "scope": "facet:research_design",
+    "reason": "out_of_scope：本题只做数字一致性，研究设计不审"
+   },
+   {
+    "scope": "facet:variable_definition",
+    "reason": "out_of_scope：本题只做数字一致性，变量定义不审"
+   },
+   {
+    "scope": "facet:stat_method",
+    "reason": "out_of_scope：本题只做数字一致性，统计方法选择不审"
+   },
+   {
+    "scope": "facet:sample_power",
+    "reason": "out_of_scope：本题只做数字一致性，样本量估算不审"
+   }
+  ],
+  "run_status": {
+   "state": "success",
+   "reason": null,
+   "manual_takeover": [],
+   "note": "数字提取与交叉比对由 number_audit.py 机械完成"
+  },
+  "verdict": "audited",
+  "verdict_basis": "完成全文/表格/图注数字提取与交叉比对，发现 5 处数字不一致",
+  "gain_evidence": {
+   "available": false,
+   "reason": "增益层预算过半降级；built after Step 4"
+  },
+  "efficiency": {
+   "wall_clock_seconds_total": 0.0,
+   "checker_runs": 0,
+   "reproduce": "python3 scripts/number_audit.py --result /app/output/result.json --case /input/case.json --input-root /input --emit-into"
+  }
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "入组总数在多个位置不一致: N01=48(S1:共纳入/合计句); N02=36(S2:共纳入/合计句); N03=48(S3:n=句); N04=51(figure_captions[0]:共纳入/合计句)",
+   "kind": "reported",
+   "source_id": "F01",
+   "location": "S1",
+   "evidence": [
+    {
+     "paragraph_id": "case",
+     "quote": "本研究共纳入本科生 48 名，干预组焦虑得分显著低于对照组（t(52)=2."
+    }
+   ]
+  },
+  {
+   "claim_id": "c-02",
+   "text": "t(52)=... 中 df=52 > n-1=47，与样本量矛盾",
+   "kind": "reported",
+   "source_id": "F02",
+   "location": "S1",
+   "evidence": [
+    {
+     "paragraph_id": "case",
+     "quote": "本科生 48 名，干预组焦虑得分显著低于对照组（t(52)=2.10, p=0.04），均数差 95% CI [0."
+    }
+   ]
+  },
+  {
+   "claim_id": "c-03",
+   "text": "t(52)=... 中 df=52 > n-1=47，与样本量矛盾",
+   "kind": "reported",
+   "source_id": "F03",
+   "location": "S3",
+   "evidence": [
+    {
+     "paragraph_id": "case",
+     "quote": "干预组与对照组比较（t(52)=2.10, p=0.04）。相关分析显示训练时长与焦虑降"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-04",
+   "text": "p=0.03（≤0.05）却写不显著",
+   "kind": "reported",
+   "source_id": "F04",
+   "location": "S1",
+   "evidence": [
+    {
+     "paragraph_id": "case",
+     "quote": "0.30]，SE=0.10。干预后干预组不显著（p=0.03）。"
+    }
+   ]
+  },
+  {
+   "claim_id": "c-05",
+   "text": "CI 宽=0.100 与 SE=0.100 推得期望宽≈0.392（2*1.96*SE）不符",
+   "kind": "reported",
+   "source_id": "F05",
+   "location": "S1",
+   "evidence": [
+    {
+     "paragraph_id": "case",
+     "quote": "10, p=0.04），均数差 95% CI [0.20, 0.30]，SE=0.10。干预后干预组不显著（p=0."
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "unreported": [],
+  "unverifiable": [],
+  "conflicts": [],
+  "human_review": [],
+  "summary": "骨架已落盘，待数字提取与交叉比对后回填"
+ },
+ "changelog": [
+  {
+   "step": "step0",
+   "change": "build_skeleton 落骨架",
+   "at": "2026-11-22T11:18:53"
+  },
+  {
+   "step": "step2",
+   "change": "number_audit 数字提取+交叉比对",
+   "extracted": {
+    "sample_size": 4,
+    "p_value": 3,
+    "effect_size": 1,
+    "confidence_interval": 1,
+    "percentage": 1,
+    "statistic": 2,
+    "df": 0
+   },
+   "conflicts_total": 5
+  }
+ ],
+ "self_check": [
+  {
+   "item": "findings[0].quote_backed",
+   "template_value": "quote 逐字回证于稿件原文",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].quote_backed",
+   "template_value": "quote 逐字回证于稿件原文",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].quote_backed",
+   "template_value": "quote 逐字回证于稿件原文",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].quote_backed",
+   "template_value": "quote 逐字回证于稿件原文",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].quote_backed",
+   "template_value": "quote 逐字回证于稿件原文",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "severity_rubric.declared",
+   "template_value": "三级口径判定前声明",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].conflict_ids_exist",
+   "template_value": "conflict_ids 指向存在的 audit_id",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].conflict_ids_exist",
+   "template_value": "conflict_ids 指向存在的 audit_id",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].conflict_ids_exist",
+   "template_value": "conflict_ids 指向存在的 audit_id",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].conflict_ids_exist",
+   "template_value": "conflict_ids 指向存在的 audit_id",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].conflict_ids_exist",
+   "template_value": "conflict_ids 指向存在的 audit_id",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "validator_verdict": "PASS",
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  }
+ ]
+}

@@ -2,7 +2,7 @@
  "case_id": "demo-001",
  "status": "answered",
  "result": {
-  "engine": "clean2table-r5/1.0",
+  "engine": "clean2table-r3/1.0",
   "cleaned_table": {
    "columns": [
     "row_id",
@@ -15,20 +15,18 @@
      "row_id": "r1",
      "source": "PaperA",
      "value": 0.25,
-     "condition": 25.0,
+     "condition": "25C pH7",
      "__raw__": {
       "row_id": {
-       "source_column": "row_id",
-       "value": "r1"
+       "source_column": "row_id"
       },
       "source": {
-       "source_column": "source",
-       "value": "PaperA"
+       "source_column": "source"
       },
       "value": {
        "source_column": "cap_ug_g",
        "value": "250 ug/g",
-       "field_mapping_rule": "FM01",
+       "field_mapping_rule": "FM04",
        "value_raw": "250 ug/g",
        "unit_raw": "ug/g",
        "to_unit": "mg/g",
@@ -49,7 +47,7 @@
         "value_in": 250.0,
         "value_out": 0.25,
         "recompute": "250 x (1e-06/0.001) +0 = 0.25",
-        "precision": 6,
+        "precision": 4,
         "value_final": 0.25
        },
        "ledger": {
@@ -61,96 +59,95 @@
        }
       },
       "condition": {
-       "source_column": "condition",
-       "value": "25C pH7",
-       "value_raw": "25C pH7",
-       "unit_raw": "CpH7",
-       "to_unit": "CpH7",
-       "trace": {
-        "factor_source": "identity",
-        "net_factor": 1.0,
-        "offset": 0,
-        "src_unit": "CpH7",
-        "dst_unit": "CpH7",
-        "value_in": 25.0,
-        "value_out": 25.0,
-        "precision": 6,
-        "value_final": 25.0,
-        "recompute": "单位已是 CpH7，仅定型为数值（量纲不变）"
-       },
-       "ledger": {
-        "change_id": "C0004",
-        "kind": "convert",
-        "original": "25C pH7",
-        "new": 25.0,
-        "rule_id": "AUTO-UC-TYPE"
-       }
+       "source_column": "condition"
       }
      },
      "__units__": {
-      "value": "mg/g",
-      "condition": "CpH7"
+      "value": "mg/g"
      },
-     "__merged_row_ids__": [
-      "r2"
-     ],
      "__changes__": [
-      "C0001",
-      "C0004"
+      "C0001"
+     ]
+    },
+    {
+     "row_id": "r2",
+     "source": "PaperA",
+     "value": 0.25,
+     "condition": "25C pH7",
+     "__raw__": {
+      "row_id": {
+       "source_column": "row_id"
+      },
+      "source": {
+       "source_column": "source"
+      },
+      "value": {
+       "source_column": "cap_ug_g",
+       "value": "250 ug/g",
+       "field_mapping_rule": "FM04",
+       "value_raw": "250 ug/g",
+       "unit_raw": "ug/g",
+       "to_unit": "mg/g",
+       "trace": {
+        "factor_source": "si_prefix",
+        "src_prefix": "u",
+        "src_prefix_factor": 1e-06,
+        "dst_prefix": "m",
+        "dst_prefix_factor": 0.001,
+        "src_base": "g",
+        "dst_base": "g",
+        "src_denom": "g",
+        "dst_denom": "g",
+        "net_factor": 0.001,
+        "offset": 0.0,
+        "src_unit": "ug/g",
+        "dst_unit": "mg/g",
+        "value_in": 250.0,
+        "value_out": 0.25,
+        "recompute": "250 x (1e-06/0.001) +0 = 0.25",
+        "precision": 4,
+        "value_final": 0.25
+       },
+       "ledger": {
+        "change_id": "C0002",
+        "kind": "convert",
+        "original": "250 ug/g",
+        "new": 0.25,
+        "rule_id": "UC01"
+       }
+      },
+      "condition": {
+       "source_column": "condition"
+      }
+     },
+     "__units__": {
+      "value": "mg/g"
+     },
+     "__changes__": [
+      "C0002"
      ]
     },
     {
      "row_id": "r3",
      "source": "PaperB",
      "value": "12 xyz",
-     "condition": 25.0,
+     "condition": "25C pH7",
      "__raw__": {
       "row_id": {
-       "source_column": "row_id",
-       "value": "r3"
+       "source_column": "row_id"
       },
       "source": {
-       "source_column": "source",
-       "value": "PaperB"
+       "source_column": "source"
       },
       "value": {
        "source_column": "cap_ug_g",
-       "value": "12 xyz",
-       "field_mapping_rule": "FM01"
+       "field_mapping_rule": "FM04"
       },
       "condition": {
-       "source_column": "condition",
-       "value": "25C pH7",
-       "value_raw": "25C pH7",
-       "unit_raw": "CpH7",
-       "to_unit": "CpH7",
-       "trace": {
-        "factor_source": "identity",
-        "net_factor": 1.0,
-        "offset": 0,
-        "src_unit": "CpH7",
-        "dst_unit": "CpH7",
-        "value_in": 25.0,
-        "value_out": 25.0,
-        "precision": 6,
-        "value_final": 25.0,
-        "recompute": "单位已是 CpH7，仅定型为数值（量纲不变）"
-       },
-       "ledger": {
-        "change_id": "C0006",
-        "kind": "convert",
-        "original": "25C pH7",
-        "new": 25.0,
-        "rule_id": "AUTO-UC-TYPE"
-       }
+       "source_column": "condition"
       }
      },
-     "__units__": {
-      "condition": "CpH7"
-     },
-     "__changes__": [
-      "C0006"
-     ]
+     "__changes__": []
     },
     {
      "row_id": "r4",
@@ -159,17 +156,15 @@
      "condition": "25C pH8",
      "__raw__": {
       "row_id": {
-       "source_column": "row_id",
-       "value": "r4"
+       "source_column": "row_id"
       },
       "source": {
-       "source_column": "source",
-       "value": "PaperB"
+       "source_column": "source"
       },
       "value": {
        "source_column": "cap_ug_g",
        "value": "3.1-4.4 mg/L",
-       "field_mapping_rule": "FM01",
+       "field_mapping_rule": "FM04",
        "value_raw": "3.1-4.4 mg/L",
        "unit_raw": "mg/L",
        "to_unit": "g/L",
@@ -192,9 +187,7 @@
           "dst_unit": "g/L",
           "value_in": 3.1,
           "value_out": 0.0031000000000000003,
-          "recompute": "3.1 x (0.001/1) +0 = 0.0031",
-          "value_final": 0.0031,
-          "precision": 6
+          "recompute": "3.1 x (0.001/1) +0 = 0.0031"
          },
          {
           "factor_source": "si_prefix",
@@ -212,15 +205,12 @@
           "dst_unit": "g/L",
           "value_in": 4.4,
           "value_out": 0.0044,
-          "recompute": "4.4 x (0.001/1) +0 = 0.0044",
-          "value_final": 0.0044,
-          "precision": 6
+          "recompute": "4.4 x (0.001/1) +0 = 0.0044"
          }
         ],
         "src_unit": "mg/L",
         "dst_unit": "g/L",
         "value_out": "0.0031–0.0044",
-        "value_final": "0.0031–0.0044",
         "recompute": "区间双端各自换算，不取中点",
         "precision": 6
        },
@@ -233,8 +223,7 @@
        }
       },
       "condition": {
-       "source_column": "condition",
-       "value": "25C pH8"
+       "source_column": "condition"
       }
      },
      "__units__": {
@@ -255,7 +244,7 @@
     "rule_id": "UC01",
     "kind": "convert",
     "formula": "250 ug/g x 0.001 +0 = 0.25 mg/g",
-    "precision": 6,
+    "precision": 4,
     "trace": {
      "factor_source": "si_prefix",
      "src_prefix": "u",
@@ -273,7 +262,7 @@
      "value_in": 250.0,
      "value_out": 0.25,
      "recompute": "250 x (1e-06/0.001) +0 = 0.25",
-     "precision": 6,
+     "precision": 4,
      "value_final": 0.25
     },
     "change_id": "C0001"
@@ -286,7 +275,7 @@
     "rule_id": "UC01",
     "kind": "convert",
     "formula": "250 ug/g x 0.001 +0 = 0.25 mg/g",
-    "precision": 6,
+    "precision": 4,
     "trace": {
      "factor_source": "si_prefix",
      "src_prefix": "u",
@@ -304,7 +293,7 @@
      "value_in": 250.0,
      "value_out": 0.25,
      "recompute": "250 x (1e-06/0.001) +0 = 0.25",
-     "precision": 6,
+     "precision": 4,
      "value_final": 0.25
     },
     "change_id": "C0002"
@@ -337,9 +326,7 @@
        "dst_unit": "g/L",
        "value_in": 3.1,
        "value_out": 0.0031000000000000003,
-       "recompute": "3.1 x (0.001/1) +0 = 0.0031",
-       "value_final": 0.0031,
-       "precision": 6
+       "recompute": "3.1 x (0.001/1) +0 = 0.0031"
       },
       {
        "factor_source": "si_prefix",
@@ -357,99 +344,16 @@
        "dst_unit": "g/L",
        "value_in": 4.4,
        "value_out": 0.0044,
-       "recompute": "4.4 x (0.001/1) +0 = 0.0044",
-       "value_final": 0.0044,
-       "precision": 6
+       "recompute": "4.4 x (0.001/1) +0 = 0.0044"
       }
      ],
      "src_unit": "mg/L",
      "dst_unit": "g/L",
      "value_out": "0.0031–0.0044",
-     "value_final": "0.0031–0.0044",
      "recompute": "区间双端各自换算，不取中点",
      "precision": 6
     },
     "change_id": "C0003"
-   },
-   {
-    "row_id": "r1",
-    "field": "condition",
-    "original": "25C pH7",
-    "new": 25.0,
-    "rule_id": "AUTO-UC-TYPE",
-    "kind": "convert",
-    "formula": "单位已是 CpH7，定型为数值（量纲不变）",
-    "precision": 6,
-    "trace": {
-     "factor_source": "identity",
-     "net_factor": 1.0,
-     "offset": 0,
-     "src_unit": "CpH7",
-     "dst_unit": "CpH7",
-     "value_in": 25.0,
-     "value_out": 25.0,
-     "precision": 6,
-     "value_final": 25.0,
-     "recompute": "单位已是 CpH7，仅定型为数值（量纲不变）"
-    },
-    "change_id": "C0004"
-   },
-   {
-    "row_id": "r2",
-    "field": "condition",
-    "original": "25C pH7",
-    "new": 25.0,
-    "rule_id": "AUTO-UC-TYPE",
-    "kind": "convert",
-    "formula": "单位已是 CpH7，定型为数值（量纲不变）",
-    "precision": 6,
-    "trace": {
-     "factor_source": "identity",
-     "net_factor": 1.0,
-     "offset": 0,
-     "src_unit": "CpH7",
-     "dst_unit": "CpH7",
-     "value_in": 25.0,
-     "value_out": 25.0,
-     "precision": 6,
-     "value_final": 25.0,
-     "recompute": "单位已是 CpH7，仅定型为数值（量纲不变）"
-    },
-    "change_id": "C0005"
-   },
-   {
-    "row_id": "r3",
-    "field": "condition",
-    "original": "25C pH7",
-    "new": 25.0,
-    "rule_id": "AUTO-UC-TYPE",
-    "kind": "convert",
-    "formula": "单位已是 CpH7，定型为数值（量纲不变）",
-    "precision": 6,
-    "trace": {
-     "factor_source": "identity",
-     "net_factor": 1.0,
-     "offset": 0,
-     "src_unit": "CpH7",
-     "dst_unit": "CpH7",
-     "value_in": 25.0,
-     "value_out": 25.0,
-     "precision": 6,
-     "value_final": 25.0,
-     "recompute": "单位已是 CpH7，仅定型为数值（量纲不变）"
-    },
-    "change_id": "C0006"
-   },
-   {
-    "row_id": "r2",
-    "field": "__row__",
-    "original": "r2",
-    "new": "r1",
-    "rule_id": "DD01",
-    "kind": "merge",
-    "formula": "判定键=('papera', '0.25', '25.0')；值相容(容差 1e-06)，合并到 r1",
-    "precision": null,
-    "change_id": "C0007"
    }
   ],
   "pending_review": [
@@ -461,15 +365,36 @@
     "issue": "单位 'xyz' 未被任何换算规则处理，原值保留",
     "suggest": "补 UC 规则（from_unit=xyz）或人工确认单位语义",
     "pending_id": "P0001"
+   },
+   {
+    "row_id": "r1,r2,r3,r4",
+    "field": "__row__",
+    "value": "-",
+    "kind": "dedup_skipped",
+    "issue": "判定键字段缺失，4 行跳过去重",
+    "suggest": "补齐键字段或改判定键规则后重跑",
+    "pending_id": "P0002"
    }
   ],
   "field_mapping": {
    "map": [
     {
+     "source_column": "adsorbate",
+     "target_field": "substance",
+     "rule_id": "FM01",
+     "rationale": "同义列名→规范字段（依据：字段字典 aliases）"
+    },
+    {
+     "source_column": "q_exp",
+     "target_field": "value",
+     "rule_id": "FM02",
+     "rationale": "拆分/别名列→value"
+    },
+    {
      "source_column": "cap_ug_g",
      "target_field": "value",
-     "rule_id": "FM01",
-     "rationale": "示例：容量列→规范字段 value"
+     "rule_id": "FM04",
+     "rationale": "demo 列→value"
     }
    ],
    "notes": [],
@@ -484,13 +409,25 @@
     "rule_id": "FM01",
     "kind": "field_mapping",
     "priority": 10,
-    "rationale": "示例：容量列→规范字段 value"
+    "rationale": "同义列名→规范字段（依据：字段字典 aliases）"
+   },
+   {
+    "rule_id": "FM02",
+    "kind": "field_mapping",
+    "priority": 11,
+    "rationale": "拆分/别名列→value"
+   },
+   {
+    "rule_id": "FM04",
+    "kind": "field_mapping",
+    "priority": 13,
+    "rationale": "demo 列→value"
    },
    {
     "rule_id": "UC01",
     "kind": "unit_convert",
     "priority": 20,
-    "rationale": "1 ug/g = 0.001 mg/g（SI 数量级前缀）"
+    "rationale": "1 ug/g = 0.001 mg/g（数量级前缀，见 units-table.md）；引擎自动产出 trace 中间值留痕（前后缀因子/net_factor/前后值/recompute），可复算"
    },
    {
     "rule_id": "UC02",
@@ -499,64 +436,88 @@
     "rationale": "1 mg/L = 0.001 g/L"
    },
    {
+    "rule_id": "UC03",
+    "kind": "unit_convert",
+    "priority": 22,
+    "rationale": "规则显式给 factor（也可用于 ppm≈mg/kg 等须显式声明的近似换算）；factor_source=rule 一样进 trace"
+   },
+   {
+    "rule_id": "SN01",
+    "kind": "synonym_norm",
+    "priority": 30,
+    "rationale": "同义写法归一到允许值集合"
+   },
+   {
+    "rule_id": "SN02",
+    "kind": "synonym_norm",
+    "priority": 31,
+    "rationale": "指标名归一"
+   },
+   {
     "rule_id": "MM01",
     "kind": "missing_mark",
     "priority": 40,
-    "rationale": "缺失保持空缺不编造"
+    "rationale": "缺失保持空缺，绝不编造；记号→空缺属值变更，进 changelog 并内嵌行级 ledger"
    },
    {
     "rule_id": "AF01",
     "kind": "anomaly_flag",
     "priority": 50,
-    "rationale": "越界只标记不改值"
+    "rationale": "越界只标记不改值（改值需人工）"
    },
    {
     "rule_id": "DD01",
     "kind": "dedup",
     "priority": 60,
-    "rationale": "判定键含条件指纹：条件不同=重复实验，绝不合并"
+    "rationale": "判定键=归一物质+归一指标+条件指纹；键全同且值相容→重复记录合并；条件指纹不同→重复实验绝不合并并逐条登记 dirty_values；值不一致→冲突登记不合并。link_field 可指向组织方给出的重复身份列（如 duplicate_of）"
    }
   ],
   "dedup_report": {
-   "merged_groups": [
-    {
-     "kept_row_id": "r1",
-     "merged_row_ids": [
-      "r2"
-     ],
-     "key": [
-      "papera",
-      "0.25",
-      "25.0"
-     ],
-     "rule_id": "DD01"
-    }
-   ],
+   "merged_groups": [],
    "suspected_pairs": []
   },
   "missing_report": {
-   "fields": {},
-   "cells": []
+   "fields": {
+    "unit": 4
+   },
+   "cells": [
+    {
+     "row_id": "r1",
+     "field": "unit"
+    },
+    {
+     "row_id": "r2",
+     "field": "unit"
+    },
+    {
+     "row_id": "r3",
+     "field": "unit"
+    },
+    {
+     "row_id": "r4",
+     "field": "unit"
+    }
+   ]
   },
   "anomalies": [],
   "conflicts": [],
   "summary": {
    "rows_in": 4,
-   "rows_out": 3,
-   "changed_cells": 7,
-   "merged_groups": 1,
-   "missing_marked": 0,
+   "rows_out": 4,
+   "changed_cells": 3,
+   "merged_groups": 0,
+   "missing_marked": 4,
    "unknown_units": 1,
    "dirty_values": 1,
    "synonyms_normalized": 0,
    "anomalies": 0,
    "conflicts": 0,
-   "pending_items": 1
+   "pending_items": 2
   },
   "artifacts": {
-   "cleaned_csv": "C:/Users/hzm/AppData/Local/Temp/exres\\cleaned.csv",
-   "changelog_jsonl": "C:/Users/hzm/AppData/Local/Temp/exres\\changelog.jsonl",
-   "pending_review_json": "C:/Users/hzm/AppData/Local/Temp/exres\\pending_review.json"
+   "cleaned_csv": "_selftest/out\\cleaned.csv",
+   "changelog_jsonl": "_selftest/out\\changelog.jsonl",
+   "pending_review_json": "_selftest/out\\pending_review.json"
   },
   "check_standard": [
    "output_contract 键一个不缺",
@@ -568,250 +529,12 @@
    "pending_review 非空 => uncertainties.human_review 非空",
    "dirty_values 逐条登记且 == summary.unknown_units",
    "rows_out == cleaned_table 行数 == cleaned.csv 数据行数",
-   "status 如实",
-   "machine_checks：全量校验三元组 {item,template_value,applied,match} 逐条嵌入 result.json",
-   "换算抽检机检：value_final == round(value_in x net_factor + offset, precision) 逐条复算并嵌入"
-  ],
-  "machine_checks": {
-   "engine": "clean2table-r5/1.0",
-   "round": "check",
-   "triple_format": "{item, template_value, applied, match}",
-   "checks": [
-    {
-     "item": "output_contract 字段齐全",
-     "template_value": [
-      "case_id",
-      "status",
-      "result",
-      "claims",
-      "uncertainties"
-     ],
-     "applied": [],
-     "match": true
-    },
-    {
-     "item": "case_id 与输入一致",
-     "template_value": "demo-001",
-     "applied": "demo-001",
-     "match": true
-    },
-    {
-     "item": "status 合法（如实四级）",
-     "template_value": [
-      "answered",
-      "partial",
-      "insufficient_evidence",
-      "input_error"
-     ],
-     "applied": "answered",
-     "match": true
-    },
-    {
-     "item": "changed_cells == changelog 条数",
-     "template_value": 7,
-     "applied": 7,
-     "match": true
-    },
-    {
-     "item": "rows_out == cleaned_table 行数",
-     "template_value": 3,
-     "applied": 3,
-     "match": true
-    },
-    {
-     "item": "dirty_values == unknown_units（脏值逐条登记）",
-     "template_value": 1,
-     "applied": 1,
-     "match": true
-    },
-    {
-     "item": "每行 __changes__ 条数 == 该行 changelog 条数",
-     "template_value": 3,
-     "applied": 3,
-     "match": true
-    },
-    {
-     "item": "被改格 ledger 变更号在该行 __changes__ 内",
-     "template_value": "all",
-     "applied": "all",
-     "match": true
-    },
-    {
-     "item": "换算变更带 formula/precision/trace（可复算）",
-     "template_value": 6,
-     "applied": 6,
-     "match": true
-    },
-    {
-     "item": "uncertainties 六键齐全",
-     "template_value": 6,
-     "applied": 6,
-     "match": true
-    },
-    {
-     "item": "pending 非空 => human_review 非空",
-     "template_value": "non-empty",
-     "applied": "non-empty",
-     "match": true
-    },
-    {
-     "item": "pending 脏值逐条登记 dirty_values",
-     "template_value": "all",
-     "applied": "all",
-     "match": true
-    },
-    {
-     "item": "claims 六键齐全且 kind 合法",
-     "template_value": 5,
-     "applied": 5,
-     "match": true
-    }
-   ],
-   "convert_spot_checks": [
-    {
-     "item": "changelog[C0001] 复算 round(value_in x net_factor + offset, precision)",
-     "template_value": "round(250.0 x 0.001 + 0.0, 6) == 0.25",
-     "applied": 0.25,
-     "match": true
-    },
-    {
-     "item": "changelog[C0002] 复算 round(value_in x net_factor + offset, precision)",
-     "template_value": "round(250.0 x 0.001 + 0.0, 6) == 0.25",
-     "applied": 0.25,
-     "match": true
-    },
-    {
-     "item": "changelog[C0003].end1 复算 round(value_in x net_factor + offset, precision)",
-     "template_value": "round(3.1 x 0.001 + 0.0, 6) == 0.0031",
-     "applied": 0.0031,
-     "match": true
-    },
-    {
-     "item": "changelog[C0003].end2 复算 round(value_in x net_factor + offset, precision)",
-     "template_value": "round(4.4 x 0.001 + 0.0, 6) == 0.0044",
-     "applied": 0.0044,
-     "match": true
-    },
-    {
-     "item": "changelog[C0003] 区间双端各自换算不取中点",
-     "template_value": "ends 两端均有 trace",
-     "applied": "0.0031–0.0044",
-     "match": true
-    },
-    {
-     "item": "changelog[C0004] 复算 round(value_in x net_factor + offset, precision)",
-     "template_value": "round(25.0 x 1.0 + 0, 6) == 25.0",
-     "applied": 25.0,
-     "match": true
-    },
-    {
-     "item": "changelog[C0005] 复算 round(value_in x net_factor + offset, precision)",
-     "template_value": "round(25.0 x 1.0 + 0, 6) == 25.0",
-     "applied": 25.0,
-     "match": true
-    },
-    {
-     "item": "changelog[C0006] 复算 round(value_in x net_factor + offset, precision)",
-     "template_value": "round(25.0 x 1.0 + 0, 6) == 25.0",
-     "applied": 25.0,
-     "match": true
-    }
-   ],
-   "gates": [
-    {
-     "gate": "case_read",
-     "state": "enforced",
-     "note": ""
-    },
-    {
-     "gate": "contract_fields",
-     "state": "enforced",
-     "note": ""
-    },
-    {
-     "gate": "rules_file",
-     "state": "skipped_not_provided",
-     "note": ""
-    },
-    {
-     "gate": "machine_verify",
-     "state": "enforced",
-     "note": "全量三元组校验 + 换算抽检机检"
-    },
-    {
-     "gate": "gate_note",
-     "state": "enforced",
-     "note": "闸门 rules_file 未 enforced，下游不得宣称已核对"
-    }
-   ],
-   "problems": [],
-   "all_pass": true,
-   "gate_note": "闸门未全部 enforced 时下游不得宣称已核对",
-   "gates_at_run": [
-    {
-     "gate": "case_read",
-     "state": "enforced",
-     "note": ""
-    },
-    {
-     "gate": "contract_fields",
-     "state": "enforced",
-     "note": ""
-    },
-    {
-     "gate": "rules_file",
-     "state": "enforced",
-     "note": ""
-    },
-    {
-     "gate": "machine_verify",
-     "state": "enforced",
-     "note": "全量三元组校验 + 换算抽检机检"
-    }
-   ]
-  },
-  "efficiency": {
-   "wall_seconds": 0.0043,
-   "rows_in": 4,
-   "rows_out": 3,
-   "rules_evaluated": 6,
-   "unit_rules_hit": 2,
-   "cells_changed": 7,
-   "pending_added": 1,
-   "dirty_added": 1,
-   "pivot": {
-    "pivoted": false
-   },
-   "rules_source": "rules_file",
-   "ablate": [],
-   "reproduce": [
-    "python3 scripts/clean_run.py profile --case <case.json> --out <profile.json>",
-    "python3 scripts/clean_run.py run --case <case.json> --rules <rules.json> --outdir <outdir>",
-    "python3 scripts/clean_run.py check --result <outdir>/result.json --case <case.json>"
-   ],
-   "note": "wall_seconds 为本次引擎单趟耗时；模型请求数由平台统计，引擎不臆造。"
-  }
+   "status 如实"
+  ]
  },
  "claims": [
   {
    "claim_id": "CL001",
-   "text": "行 r1 与 r2 判定为重复记录并合并（判定键=['papera', '0.25', '25.0']，规则 DD01）",
-   "kind": "inferred",
-   "source_id": "r1",
-   "location": "rows:r1",
-   "evidence": [
-    {
-     "paragraph_id": "r1",
-     "quote": "value='250 ug/g'"
-    },
-    {
-     "paragraph_id": "r2",
-     "quote": "value: 250 ug/g -> 0.25"
-    }
-   ]
-  },
-  {
-   "claim_id": "CL002",
    "text": "规则 UC01 对字段 value 执行 convert 共 2 格（样例：250 ug/g -> 0.25，公式与 trace 见 changelog；trace 中间值可复算（250 x (1e-06/0.001) +0 = 0.25））",
    "kind": "inferred",
    "source_id": "UC01",
@@ -828,7 +551,7 @@
    ]
   },
   {
-   "claim_id": "CL003",
+   "claim_id": "CL002",
    "text": "规则 UC02 对字段 value 执行 convert 共 1 格（样例：3.1-4.4 mg/L -> 0.0031–0.0044，公式与 trace 见 changelog；trace 中间值可复算（区间双端各自换算，不取中点））",
    "kind": "inferred",
    "source_id": "UC02",
@@ -841,28 +564,7 @@
    ]
   },
   {
-   "claim_id": "CL004",
-   "text": "规则 AUTO-UC-TYPE 对字段 condition 执行 convert 共 3 格（样例：25C pH7 -> 25.0，公式与 trace 见 changelog；trace 中间值可复算（单位已是 CpH7，仅定型为数值（量纲不变）））",
-   "kind": "inferred",
-   "source_id": "AUTO-UC-TYPE",
-   "location": "changelog:C0004",
-   "evidence": [
-    {
-     "paragraph_id": "r1",
-     "quote": "condition: 25C pH7 -> 25.0"
-    },
-    {
-     "paragraph_id": "r2",
-     "quote": "condition: 25C pH7 -> 25.0"
-    },
-    {
-     "paragraph_id": "r3",
-     "quote": "condition: 25C pH7 -> 25.0"
-    }
-   ]
-  },
-  {
-   "claim_id": "CL005",
+   "claim_id": "CL003",
    "text": "行 r3 字段 value 存在无法清洗的脏值 '12 xyz'，原值保留并登记待确认（单位 'xyz' 未被任何换算规则处理，原值保留）",
    "kind": "reported",
    "source_id": "r3",
@@ -876,13 +578,31 @@
   }
  ],
  "uncertainties": {
-  "unreported": [],
+  "unreported": [
+   {
+    "row_id": "r1",
+    "field": "unit"
+   },
+   {
+    "row_id": "r2",
+    "field": "unit"
+   },
+   {
+    "row_id": "r3",
+    "field": "unit"
+   },
+   {
+    "row_id": "r4",
+    "field": "unit"
+   }
+  ],
   "unverifiable": [
    "无法清洗的脏值 1 处，已逐条登记 uncertainties.dirty_values（原值保留，不静默丢弃，同步 pending_review）"
   ],
   "conflicts": [],
   "human_review": [
-   "[P0001] 单位 'xyz' 未被任何换算规则处理，原值保留（r3）"
+   "[P0001] 单位 'xyz' 未被任何换算规则处理，原值保留（r3）",
+   "[P0002] 判定键字段缺失，4 行跳过去重（r1,r2,r3,r4）"
   ],
   "dirty_values": [
    {
@@ -893,8 +613,8 @@
     "pending_id": "P0001"
    }
   ],
-  "summary": "清洗完成：rows_in=4 rows_out=3 changed=7 merged=1 pending=1 dirty=1；改动均含 row_id+rule_id+原值->新值并逐条内嵌行级台账；换算含公式、精度与 trace 中间值（可复算）；无法清洗的脏值逐条登记不静默丢弃；不同条件/来源不错并；科学冲突只登记不裁决；缺失保持空缺。"
+  "summary": "清洗完成：rows_in=4 rows_out=4 changed=3 merged=0 pending=2 dirty=1；改动均含 row_id+rule_id+原值->新值并逐条内嵌行级台账；换算含公式、精度与 trace 中间值（可复算）；无法清洗的脏值逐条登记不静默丢弃；不同条件/来源不错并；科学冲突只登记不裁决；缺失保持空缺。"
  },
- "_note": "本文件是 examples/example-case.json（合成演示数据，非正式案例）经引擎真实跑出的结果，用于展示接口形态；不是正式案例答案，正式结果以平台 3 个固定案例实际运行为准。",
- "_engine_version": "clean2table-r5/1.0"
+ "_note": "示意输出（非正式答案）：由 examples/example-case.json + 按 resources/rules-template.json 实例化的规则（FM04: cap_ug_g→value）实际运行产出，仅说明接口形态；正式结果以平台 3 个固定案例为准。",
+ "_rules_used": "resources/rules-template.json + FM04(cap_ug_g→value)，去重判定键字段(substance/metric)在本示意数据中缺失，故 4 行跳过去重并登记 pending"
 }

@@ -79,7 +79,7 @@ trace 同时内嵌在被改格 `__raw__[field].trace` 与 changelog 条目中，
 ## 用法（示意，非正式答案）
 
 ```bash
-python3 scripts/clean_run.py run --case /input/case.json --rules /app/work/rules.json --outdir /app/output
+python scripts/clean_run.py run --case /input/case.json --rules /app/work/rules.json --outdir /app/output
 ```
 
 换算细节以 `scripts/clean_run.py` 的 `convert_scalar()` 实现为准；本表与之保持一致。

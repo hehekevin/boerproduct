@@ -14,7 +14,7 @@
    extraction_failed：failure_reason。
 
 用法：
-    python3 check.py --result R.json --case C.json --fields F.json [--paras P.json] [--out report.json]
+    python check.py --result R.json --case C.json --fields F.json [--paras P.json] [--out report.json]
 退出码：0=PASS，1=FAIL。内部异常降级为报告项，绝不裸崩。
 """
 from __future__ import annotations
@@ -369,8 +369,7 @@ def main():
         print("  - %s" % p)
     for w in report.get("warnings", [])[:10]:
         print("  ~ %s" % w)
-    print("[check] FAIL 已照实记录，退出码 0，交付不中断")
-    return 0
+    return 1
 
 
 if __name__ == "__main__":
@@ -378,4 +377,4 @@ if __name__ == "__main__":
         sys.exit(main())
     except Exception as e:
         print("[check] 未捕获异常已兜底: %s" % e)
-        sys.exit(0)
+        sys.exit(1)

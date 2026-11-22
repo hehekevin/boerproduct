@@ -5,7 +5,7 @@
 产出 materials_manifest.json（路径/类型/字符数/sha1/摘要），供后续事实台账与写作阶段引用。
 
 用法:
-  python3 extract_materials.py --input /input --outdir /app/work/extracted [--case /input/case.json]
+  python extract_materials.py --input /input --outdir /app/work/extracted [--case /input/case.json]
 
 设计原则:
 - 只依赖环境预装库；缺失时逐格式降级（python-docx→zipfile解析XML；PyMuPDF/pypdf→报告不可提取）。

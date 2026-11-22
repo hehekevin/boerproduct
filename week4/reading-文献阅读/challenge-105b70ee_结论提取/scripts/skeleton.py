@@ -11,7 +11,7 @@
 任何异常都降级写盘，绝不裸崩，退出码恒为 0。
 
 用法：
-    python3 skeleton.py --fields /input/target-fields.json --case /input/case.json \
+    python skeleton.py --fields /input/target-fields.json --case /input/case.json \
         --out /app/output/result.json --paras /app/work/paragraphs.json
 """
 from __future__ import annotations

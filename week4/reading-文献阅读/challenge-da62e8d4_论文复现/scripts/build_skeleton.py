@@ -6,7 +6,7 @@
 三级容错：任何一级失败都降级产出可用骨架，绝不崩溃、绝不缺 result.json。
 
 用法：
-    python3 build_skeleton.py --case /input/case.json --input-root /input \
+    python build_skeleton.py --case /input/case.json --input-root /input \
         --out /app/output/result.json --work-dir /app/work
 退出码恒为 0（失败以 problems 报告，骨架仍写出）。
 """
@@ -92,17 +92,10 @@ def main():
             "parameters": [],
             "candidates": [{"candidate_id": os.path.splitext(os.path.basename(p))[0],
                             "entry": p, "ran": False, "run_log": None,
-                            "failure_stage": None, "failure_reason": None,
-                            "pending": True}
+                            "failure_stage": None, "pending": True}
                            for p in code_files],
             "metric_checks": [],
             "attributions": [],
-            "steps": [],
-            "declared_tolerances": [],
-            "recomputability": {"total_items": 0, "recomputable_items": 0,
-                                "non_recomputable_items": 0, "ratio": None,
-                                "note": "Step 1/3 回填：条目数由参数+指标行统计得出"},
-            "run_status": {"state": None, "reason": None, "manual_takeover": []},
             "verdict": None,
             "verdict_basis": None,
         }
@@ -147,10 +140,8 @@ def main():
         tol_path = os.path.join(args.work_dir, "declared_tolerances.json")
         if not os.path.exists(tol_path):
             with open(tol_path, "w", encoding="utf-8") as f:
-                json.dump({"note": "Step 1 验算前必须填写；声明后禁止事后调容差。"
-                                   "每行须与 metric_checks[].tolerance 一致并写明 basis",
+                json.dump({"note": "Step 1 验算前必须填写；声明后禁止事后调容差",
                            "declared_by": "skill（论文未给出时按指标量级保守设定）",
-                           "declared_at": None,
                            "tolerances": []}, f, ensure_ascii=False, indent=1)
     except Exception as e:
         problems.append("容差模板写出失败: %s" % e)

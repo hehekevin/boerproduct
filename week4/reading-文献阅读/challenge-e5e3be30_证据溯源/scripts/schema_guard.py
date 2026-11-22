@@ -6,11 +6,10 @@ case.json 的 output_contract（全部字段名）+ 本题业务 schema，并在
 打印缺失字段清单，供 Agent 回填后重跑。绝不改写业务内容，只做结构校验。
 
 用法：
-    python3 schema_guard.py --result /app/output/result.json \
+    python schema_guard.py --result /app/output/result.json \
         [--case /input/case.json] [--extra-schema schema.json]
 
-退出码：**恒为 0**。校验结论写在输出的 ok/problems 字段中；脚本不中断交付链
-（交付失败不能由结构校验器单方面阻断），问题清单照实打印。
+退出码：0=通过；1=结构失败（打印缺失/多余字段）。
 """
 from __future__ import annotations
 
@@ -18,18 +17,6 @@ import argparse
 import json
 import os
 import sys
-
-# 题面「Skill 运行后的输出要求」表的通用字段（case.json 无 output_contract 时的兜底）
-CONTRACT_FALLBACK = ("case_id", "status", "result", "claims", "uncertainties")
-
-
-class Exit0Parser(argparse.ArgumentParser):
-    """参数错误也 exit 0：不因调用方笔误阻断交付链。"""
-
-    def error(self, message):  # noqa: D401
-        print("[schema_guard] FAIL 参数错误: %s" % message)
-        print("[schema_guard] exit=0（结论：FAIL）")
-        raise SystemExit(0)
 
 
 def load_json(path: str):
@@ -56,7 +43,7 @@ def contract_fields(case: dict) -> list:
 
 
 def main() -> int:
-    ap = Exit0Parser()
+    ap = argparse.ArgumentParser()
     ap.add_argument("--result", required=True)
     ap.add_argument("--case", default="/input/case.json")
     ap.add_argument("--extra-schema", default=None,
@@ -68,41 +55,27 @@ def main() -> int:
     problems = []
     if not os.path.exists(args.result):
         print("[schema_guard] FAIL: result.json 不存在：%s" % args.result)
-        print("[schema_guard] exit=0（结论：FAIL）")
-        return 0
+        return 1
 
     try:
         result = load_json(args.result)
     except Exception as e:
         print("[schema_guard] FAIL: result.json 不是合法 JSON：%s" % e)
-        print("[schema_guard] exit=0（结论：FAIL）")
-        return 0
+        return 1
 
     # 1) case_id 必须存在
     if isinstance(result, dict):
         if not result.get("case_id"):
             problems.append("缺少 case_id")
-        # 2) output_contract 全字段（case.json 未给 output_contract 时用题面通用字段兜底）
-        contract = []
+        # 2) output_contract 全字段
         if os.path.exists(args.case):
             try:
                 case = load_json(args.case)
-                contract = contract_fields(case)
+                for f in contract_fields(case):
+                    if f not in result:
+                        problems.append("缺少 output_contract 字段: %s" % f)
             except Exception as e:
                 problems.append("case.json 读取失败（跳过契约校验）: %s" % e)
-        if not contract:
-            contract = list(CONTRACT_FALLBACK)
-        for f in contract:
-            if f not in result:
-                problems.append("缺少 output_contract 字段: %s" % f)
-        # 3) 题面「证据与边界 / 运行状态」要求的边界字段
-        unc = result.get("uncertainties")
-        if isinstance(unc, dict):
-            for k in ("uncovered", "unreported", "unverifiable", "conflicts", "human_review"):
-                if k not in unc:
-                    problems.append("uncertainties 缺字段: %s" % k)
-        elif "uncertainties" in result:
-            problems.append("uncertainties 不是对象")
 
     # 3) 题目业务 schema
     if args.extra_schema and os.path.exists(args.extra_schema):
@@ -143,12 +116,10 @@ def main() -> int:
             print("  - %s" % p)
         if len(problems) > 40:
             print("  ... 共 %d 处" % len(problems))
-        print("[schema_guard] exit=0（结论：FAIL，问题清单需回填后重跑）")
-        return 0
+        return 1
 
     print("[schema_guard] PASS: 结构完整（case_id=%s）" % (
         result.get("case_id") if isinstance(result, dict) else "(array)"))
-    print("[schema_guard] exit=0")
     return 0
 
 

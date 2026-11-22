@@ -7,7 +7,7 @@
 合并产物可直接交给 docx_build.py 构建 docx/md。
 
 用法:
-  python3 merge_chapters.py --chapters-dir /app/work/chapters --out /app/work/draft.json \
+  python merge_chapters.py --chapters-dir /app/work/chapters --out /app/work/draft.json \
       [--title "申请书标题"] [--meta-file /app/work/meta.json]
 """
 import argparse, glob, json, os, re, sys
@@ -69,6 +69,5 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except Exception as e:
-        # 容错：合稿失败也返回 0 并如实登记，不中断交付链
         print(json.dumps({"ok": False, "error": str(e)[:300]}, ensure_ascii=False))
-        sys.exit(0)
+        sys.exit(1)

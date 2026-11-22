@@ -1,5 +1,5 @@
 {
-  "version": "clean2table-r4",
+  "version": "clean2table-r3",
   "note": "示意模板（非正式答案）。按实际 case.json 的列名/单位改写 condition 与 action；规则可增删可改优先级，改完重跑 clean_run.py run 即可。",
   "contract_keys": ["case_id", "status", "result", "claims", "uncertainties"],
   "field_dictionary": {

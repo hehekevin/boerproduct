@@ -28,9 +28,28 @@ evidence table, conclusions).
   trust file content over filename/domain labels. PDFs arrive without a pre-extracted
   answer layer — parse them yourself if a tool exists, else mark quotes unverifiable.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_research.py --input /input --out /app/output --work /app/work`
+Auto-extracts the Research IR from the ACTUAL /input materials (registers sources with
+real titles/years/DOIs; parses md/txt/PDF/docx text and CSV/JSON tables; screens records;
+builds acyclic subquestions, themes, claims with EXACT re-verifiable quotes, conflicts,
+gaps, tool_log and a bounded proposal, plus kind-specific trend/topic blocks), runs the
+engine (validate_ir + build) and writes a complete honest result.json preserving every
+output_contract key + case_id. Judgment fields it cannot verify are abstained and flagged
+human_confirm — never fabricated. On ANY failure it still writes an honest partial/failed
+result.json. THEN, within remaining budget, refine judgment-heavy fields in
+/app/work/research_ir.json (screening decisions, claim strength, themes, novelty coverage)
+and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/research_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
-1. Inventory inputs (w4kit.list_materials); register every used file in sources[].
-2. Read the material; fill research_ir.json per `rules/rules_deep_research.md` + schema below.
+1. Run `PYTHONDONTWRITEBYTECODE=1 python auto_research.py --input /input --out /app/output --work /app/work`
+   to auto-extract materials and produce a complete baseline result.json. Then, within
+   budget, refine judgment-heavy fields in /app/work/research_ir.json and re-run
+   assemble.py to improve. Save partial early; never fabricate.
+2. Inventory inputs (w4kit.list_materials); register every used file in sources[].
+   Read the material; fill/refine research_ir.json per `rules/rules_deep_research.md` + schema below.
 3. Run:
    `PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir research_ir.json --input /input --out /app/output`
    -> validate_ir -> compute_screening/synthesis + check_quotes -> build artifacts +
@@ -90,7 +109,8 @@ mark paragraphs as `[P3] ...`; the engine restricts quote search to that paragra
    and no completed-experiment wording (the engine scans and rejects over-boundary text).
 
 ## Scripts & dependencies
-assemble.py (CLI), research_engine.py (validate_ir + compute_screening/synthesis/trend/
+auto_research.py (autopilot CLI: auto-extract IR from /input + run engine), assemble.py
+(CLI), research_engine.py (validate_ir + compute_screening/synthesis/trend/
 novelty + check_quotes + build md/docx/csv/svg + provenance + summarize), w4kit.py (case
 load / source check / dedup / result.json). Python 3.10+ standard library only — no
 third-party packages required (numpy optional, never needed). See requirements.txt.

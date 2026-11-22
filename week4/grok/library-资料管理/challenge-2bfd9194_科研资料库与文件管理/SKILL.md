@@ -21,8 +21,26 @@ Organize a real batch of research files into a verifiable library: content-hash 
 - The actual research material files (documents, companion tables, metadata, notes).
 Read and register the real files; trust file content over filename/domain labels.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_library.py --input /input --out /app/output --work /app/work`
+Auto-extracts the IR from the ACTUAL /input materials (registers every source file;
+builds documents[] with titles/aliases/metadata + field evidence from metadata tables
+and real file text; binds version-note chains; logs index/alias_fix/dedup/recover/
+metadata_fill operations; derives taxonomy for classify; binds verbatim-quote
+annotations for annotate), runs the engine to compute the real index/hashes/coverage,
+and writes a complete honest result.json preserving every output_contract key +
+case_id. Judgment fields it cannot verify (row->file mapping, inferred year/type,
+taxonomy design, annotation selection) are flagged human_confirm — never fabricated;
+missing metadata stays not_reported. THEN, within remaining budget, refine
+judgment-heavy fields in /app/work/library_ir.json and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/library_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
-1. Inventory inputs (w4kit.list_materials) and register sources[] + documents[].
+1. Run `PYTHONDONTWRITEBYTECODE=1 python auto_library.py --input /input --out /app/output`
+   to auto-extract materials and produce a complete baseline result.json. Then, within
+   budget, refine judgment-heavy fields in /app/work/library_ir.json and re-run
+   assemble.py to improve. Save partial early; never fabricate.
 2. Read the material; fill the IR per `rules/rules_library_manage.md` and the schema below.
 3. Run:
    `PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir library_ir.json --input /input --out /app/output`

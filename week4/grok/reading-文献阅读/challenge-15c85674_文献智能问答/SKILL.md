@@ -27,8 +27,18 @@ no online retrieval / pixel-guessing unless provided & asked.
 (target-fields.json / comparison-workorder.json / benchmark workorder).
 
 ## Workflow (detail: docs/READING_WORKFLOW.md)
-1. Read & register sources (document_id + paragraph/page locator + version).
-2. Fill reading IR per `rules/rules_literature_qa.md`.
+1. AUTOPILOT FIRST (one command, budget-safe):
+   `PYTHONDONTWRITEBYTECODE=1 python auto_read.py --input /input --out /app/output --work /app/work [--kind KIND]`
+   → auto-registers sources from /input, reads the ACTUAL papers + workorders,
+   auto-fills the complete reading IR (items/claims/matrix/figures with exact
+   paragraph locators + verbatim quotes; missing → insufficient_evidence +
+   human_confirm), saves work/reading_ir.json, then runs the SAME
+   assemble_read.py validate+build path → result.json (honest success/partial).
+   Never exits without result.json; output_contract + case_id preserved.
+2. Refine within budget: edit /app/work/reading_ir.json per
+   `rules/rules_literature_qa.md` (improve answers/conditions/support judgments),
+   then re-run step 3. Manual fallback (no autopilot): read & register sources
+   (document_id + paragraph/page locator + version) and fill the IR by hand.
 3. `python assemble_read.py --ir reading_ir.json --input /input --out /app/output`
    → validate → domain helper (clean/formula/compare/benchmark) → reading_result.json
    + reading_result.md (+domain artifacts) → result.json.

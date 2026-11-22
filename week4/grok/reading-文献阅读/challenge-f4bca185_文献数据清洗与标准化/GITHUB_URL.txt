@@ -1,2 +1,2 @@
-https://github.com/hehekevin/boerproduct/tree/main/week4/grok/reading-%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/challenge-f4bca185_%E6%96%87%E7%8C%AE%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%B8%8E%E6%A0%87%E5%87%86%E5%8C%96
+https://github.com/hehekevin/boerproduct/tree/main/week4/grok/reading-%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/challenge-f4bca185_%E6%96%87%E7%8C%AE%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%B8%8E%E6%A0%87%E5%87%86%E5%8C%96/
 SKILL.md

@@ -25,6 +25,16 @@ no online retrieval / pixel-guessing unless provided & asked.
 (paragraph/table text, figures, formulas) + workorder files when present
 (target-fields.json / comparison-workorder.json / benchmark workorder).
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_read.py --input /input --out /app/output --work /app/work`
+Auto-registers sources from the ACTUAL /input materials, auto-fills a complete source-bound IR
+into work/reading_ir.json, runs the SAME validate+build path as the package assembler, and ALWAYS writes an
+honest result.json (try/except fallback preserves every output_contract key + case_id) — even on
+empty input or failure. Judgment it cannot verify is flagged human_confirm; never fabricated.
+THEN, within remaining budget, refine /app/work/reading_ir.json and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble_read.py --ir /app/work/reading_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/READING_WORKFLOW.md)
 1. Read & register sources (document_id + paragraph/page locator + version).
 2. Fill reading IR per `rules/rules_figure_parse.md`.

@@ -34,6 +34,16 @@ Only given local material; no online retrieval.
 4. ALL material files (one or more papers). Register every file actually used in
    sources[] (id + real path); cross-paper alignment keeps per-paper locators.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_arena_read.py --input /input --out /app/output --work /app/work`
+Auto-registers sources from the ACTUAL /input materials, auto-fills a complete source-bound IR
+into work/ir.json, runs the SAME validate+build path as the package assembler, and ALWAYS writes an
+honest result.json (try/except fallback preserves every output_contract key + case_id) — even on
+empty input or failure. Judgment it cannot verify is flagged human_confirm; never fabricated.
+THEN, within remaining budget, refine /app/work/ir.json and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory /input; open case.json + task.md + workorder + material.
 2. Fill IR per rules/rules_knowledge_graph.md: sources[], nodes[{id, label, type,

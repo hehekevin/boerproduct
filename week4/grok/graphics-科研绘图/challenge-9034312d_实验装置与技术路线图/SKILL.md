@@ -25,6 +25,16 @@ technical roadmap (workorder `apparatus_and_technical_route`).
 `/input/case.json` (copy `case_id`; read `output_contract`), `/input/task.md`, actual
 materials under `/input`. Read files; trust content over labels.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_graphics.py --input /input --out /app/output --work /app/work`
+Auto-registers sources from the ACTUAL /input materials, auto-fills a complete source-bound IR
+into work/figure_ir.json, runs the SAME validate+build path as the package assembler, and ALWAYS writes an
+honest result.json (try/except fallback preserves every output_contract key + case_id) — even on
+empty input or failure. Judgment it cannot verify is flagged human_confirm; never fabricated.
+THEN, within remaining budget, refine /app/work/figure_ir.json and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/figure_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. **Read & register sources** (parts list / methods / procedure) with locators.
 2. **Extract IR** (`rules/rules_apparatus.md`):

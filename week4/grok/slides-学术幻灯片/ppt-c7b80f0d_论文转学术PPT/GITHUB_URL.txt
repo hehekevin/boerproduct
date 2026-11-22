@@ -1,2 +1,2 @@
-https://github.com/hehekevin/boerproduct/tree/main/week4/grok/slides-%E5%AD%A6%E6%9C%AF%E5%B9%BB%E7%81%AF%E7%89%87/ppt-c7b80f0d_%E8%AE%BA%E6%96%87%E8%BD%AC%E5%AD%A6%E6%9C%AFPPT
+https://github.com/hehekevin/boerproduct/tree/main/week4/grok/slides-%E5%AD%A6%E6%9C%AF%E5%B9%BB%E7%81%AF%E7%89%87/ppt-c7b80f0d_%E8%AE%BA%E6%96%87%E8%BD%AC%E5%AD%A6%E6%9C%AFPPT/
 SKILL.md

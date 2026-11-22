@@ -1,2 +1,2 @@
-https://github.com/hehekevin/boerproduct/tree/main/week4/grok/writing-%E5%AD%A6%E6%9C%AF%E5%86%99%E4%BD%9C/challenge-bb17a294_%E5%86%99%E4%BD%9C12_%E5%AD%A6%E6%9C%AF%E7%BF%BB%E8%AF%91%E4%B8%8E%E5%8F%8C%E8%AF%AD%E5%86%99%E4%BD%9C
+https://github.com/hehekevin/boerproduct/tree/main/week4/grok/writing-%E5%AD%A6%E6%9C%AF%E5%86%99%E4%BD%9C/challenge-bb17a294_%E5%86%99%E4%BD%9C12_%E5%AD%A6%E6%9C%AF%E7%BF%BB%E8%AF%91%E4%B8%8E%E5%8F%8C%E8%AF%AD%E5%86%99%E4%BD%9C/
 SKILL.md

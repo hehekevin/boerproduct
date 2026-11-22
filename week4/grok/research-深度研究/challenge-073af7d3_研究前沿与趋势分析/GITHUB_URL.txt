@@ -1,2 +1,2 @@
-https://github.com/hehekevin/boerproduct/tree/main/week4/grok/research-%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6/challenge-073af7d3_%E7%A0%94%E7%A9%B6%E5%89%8D%E6%B2%BF%E4%B8%8E%E8%B6%8B%E5%8A%BF%E5%88%86%E6%9E%90
+https://github.com/hehekevin/boerproduct/tree/main/week4/grok/research-%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6/challenge-073af7d3_%E7%A0%94%E7%A9%B6%E5%89%8D%E6%B2%BF%E4%B8%8E%E8%B6%8B%E5%8A%BF%E5%88%86%E6%9E%90/
 SKILL.md

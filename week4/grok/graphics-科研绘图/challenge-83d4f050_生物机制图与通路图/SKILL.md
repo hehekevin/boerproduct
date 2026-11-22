@@ -28,18 +28,32 @@ pathway, or interaction network (workorder `biological_mechanism_pathway`).
   files; never infer content from labels or domain tags.**
 
 ## Workflow (detail: docs/WORKFLOW.md)
-1. **Read & register sources.** Inventory `/input`; open each material; record
-   `sources[]` with precise locators (page/section/row).
-2. **Extract IR** (`figure_ir.json`, schema `schema/figure_ir.schema.json`) following
-   `rules/rules_mechanism.md`:
+1. **Autopilot first — one command yields a complete, genuinely-derived baseline.**
+   `PYTHONDONTWRITEBYTECODE=1 python auto_graphics.py --input /input --out /app/output --work /app/work [--kind KIND]`
+   It reads the ACTUAL `/input` materials, auto-registers `sources[]` with precise
+   locators, detects the figure kind, and auto-fills a complete Figure IR from real
+   data (CSV/JSON tables via `read_table` → x/y/series/error bound to actual columns
+   for charts; symbol/term + verb→type grammar → entities/relations/compartments for
+   diagrams), then runs the SAME validate+render+export+check path as `assemble.py`
+   and writes an honest `result.json` preserving every `output_contract` key +
+   `case_id`. Stdlib only; matplotlib is optional/lazy — a stdlib `svgkit` fallback
+   still emits an editable, source-bound `figure.svg` when the renderer is absent.
+   The whole pipeline is wrapped: on ANY exception it still writes an honest
+   failed/partial `result.json` (never exits without one) and never fabricates data
+   (missing/ambiguous → `uncertainty[]` + `human_confirm`, honest status `partial`).
+   Use this baseline first to stay within budget; do NOT hand-fill the rigid IR from
+   scratch.
+2. **Refine the IR** (optional, within budget): open the autopilot's editable
+   `work/figure_ir.json` (schema `schema/figure_ir.schema.json`) and improve the
+   judgment fields following `rules/rules_mechanism.md`:
    - entities with exact source names, category (gene italic / protein upright /
      complex / compartment), group, source+locator, confidence;
    - relations with correct semantic type + direction (verb→type table in rules);
      inhibition≠activation; regulator→target; evidence strength;
    - compartments as `groups` (membrane/cytoplasm/nucleus) so topology is right;
    - `uncertainty[]` for anything missing/ambiguous (do not fabricate).
-3. **Validate + render + export + check** in one command:
-   `python assemble.py --ir figure_ir.json --input /input --out /app/output`
+3. **Validate + render + export + check** in one command (re-run after refining):
+   `python assemble.py --ir work/figure_ir.json --input /input --out /app/output`
    - validates the six checkpoints; renders a **layered editable SVG** (svgkit)
      with compartment bands, semantic arrows (activate filled head / inhibit flat
      bar / bind plain / transport dashed), reserved legend strip, curved feedback
@@ -52,6 +66,9 @@ pathway, or interaction network (workorder `biological_mechanism_pathway`).
    (element_map), `validation`, `export_check`. Partial results state limits.
 
 ## Scripts & dependencies
+- `auto_graphics.py` (autopilot: auto-extract Figure IR from `/input` + run the
+  validate/render/export/result pipeline in one command; stdlib only, matplotlib
+  optional with a stdlib svgkit fallback; always writes an honest result.json).
 - `assemble.py` (orchestrator), `figkit.py` (case/IR/validation/result, stdlib),
   `render_diagram.py` + `svgkit.py` (diagram + layered SVG), `render_chart.py`
   (chart panels), `export_check.py` (compliance).

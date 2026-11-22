@@ -1,2 +1,2 @@
-https://github.com/hehekevin/boerproduct/tree/main/week4/grok/research-%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6/agent-f8fb8bda_%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6Agent
+https://github.com/hehekevin/boerproduct/tree/main/week4/grok/research-%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6/agent-f8fb8bda_%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6Agent/
 SKILL.md

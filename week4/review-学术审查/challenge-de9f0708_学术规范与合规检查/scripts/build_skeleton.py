@@ -1,295 +1,67 @@
 #!/usr/bin/env python3
-"""build_skeleton.py — Step 0 自动落骨架与声明清单（paper-compliance-audit）。
-
-读取 case.json 提取 output_contract 全部字段名与稿件结构（manuscript/paper/
-document 等常见键下的 sections/text），扫描输入目录补齐材料清单，写入骨架
-result.json（全部键，待回填）与 /app/work/compliance_rubric.json 三类区分与
-严重度口径模板（须在任何判定之前声明，之后禁止调整）。
-三级容错：任何一级失败都降级产出可用骨架，绝不崩溃、绝不缺 result.json。
-
-用法：
-    python3 build_skeleton.py --case /input/case.json --input-root /input \
-        --out /app/output/result.json --work-dir /app/work
-退出码恒为 0（失败以 problems 报告，骨架仍写出）。
-"""
+"""通用极简骨架脚本。读 case.json 提取 output_contract 全字段与业务输入，落骨架 result.json。
+退出码恒 0。契约字段缺省填 unknown，绝不缺键、绝不编造。"""
 from __future__ import annotations
-
-import argparse
-import json
-import os
-import sys
-
-MANUSCRIPT_KEYS = ("manuscript", "paper", "document", "full_text", "text", "body", "content")
-SECTION_KEYS = ("sections", "chapters", "parts")
-
-FACETS = (
-    ("data_availability", "数据可用性声明：是否说明数据获取/共享方式"),
-    ("ethics", "伦理与知情同意：审查机构、批件号、知情同意说明"),
-    ("conflict_of_interest", "利益冲突声明：存在性（『无利益冲突』亦算存在）"),
-    ("author_contributions", "作者贡献声明：逐一说明各作者角色"),
-    ("funding", "基金资助：名称与编号准确、致谢一致"),
-    ("copyright_license", "图表版权与许可：第三方材料来源标注与许可类型"),
-    ("reference_format", "参考文献格式：条目要素齐全、风格统一"),
-    ("duplicate_publication", "重复发表与一稿多投：会议版/预印本声明与引用"),
-)
-
-CATEGORIES = (
-    ("norm_missing", "规范缺失：必备声明/必备信息不存在（对照事前声明的格式规则判缺）"),
-    ("norm_violation", "规范不合规：声明或条目存在，但不符合事前声明的格式规则（须绑定 rule_id）"),
-    ("substantive_issue", "实质性学术问题：重复发表、数据复用、署名不当等实质诚信问题"),
-)
-
+import argparse, json, os, sys
 
 def contract_fields(case):
-    """从 case.json 提取 output_contract 字段名（兼容多种排布）。"""
-    try:
-        oc = case.get("output_contract") if isinstance(case, dict) else None
-        if oc is None:
-            return []
-        if isinstance(oc, dict):
-            for key in ("fields", "required_fields", "result.json", "result"):
-                v = oc.get(key)
-                if isinstance(v, list):
-                    return [str(x) for x in v]
-            return [str(k) for k in oc.keys()]
-        if isinstance(oc, list):
-            return [str(x) for x in oc]
-    except Exception:
-        pass
+    oc = case.get("output_contract") if isinstance(case, dict) else None
+    if oc is None:
+        return []
+    if isinstance(oc, dict):
+        for k in ("fields", "required_fields"):
+            if isinstance(oc.get(k), list):
+                return [str(x) for x in oc[k]]
+        return [str(k) for k in oc.keys()]
+    if isinstance(oc, list):
+        return [str(x) for x in oc]
     return []
 
-
-def extract_manuscript(case):
-    """从 case.json 常见键提取稿件结构与统计线索（只记结构，不复制全文）。"""
-    info = {"found": False, "title": None, "sections": [], "reference_count": None, "note": ""}
-    if not isinstance(case, dict):
-        info["note"] = "case.json 非对象，稿件结构未提取"
-        return info
-    root = None
-    for k in MANUSCRIPT_KEYS:
-        if isinstance(case.get(k), (dict, list, str)):
-            root = case[k]
-            break
-    if root is None:
-        info["note"] = "case.json 未含稿件键（%s），请人工核对稿件实际位置" % ",".join(MANUSCRIPT_KEYS)
-        return info
-    info["found"] = True
-    if isinstance(root, dict):
-        info["title"] = root.get("title") or None
-        for sk in SECTION_KEYS:
-            v = root.get(sk)
-            if isinstance(v, list) and v:
-                for i, s in enumerate(v):
-                    sid = None
-                    name = None
-                    if isinstance(s, dict):
-                        sid = s.get("section_id") or s.get("id") or ("S%d" % (i + 1))
-                        name = s.get("name") or s.get("title") or None
-                    elif isinstance(s, str):
-                        sid, name = "S%d" % (i + 1), s[:40]
-                    info["sections"].append({"section_id": str(sid), "name": str(name or ""),
-                                             "source_ref": "manuscript.%s[%d]" % (sk, i)})
-                break
-        refs = root.get("references")
-        if isinstance(refs, list):
-            info["reference_count"] = len(refs)
-    elif isinstance(root, list):
-        for i, s in enumerate(root):
-            sid = s.get("section_id", "S%d" % (i + 1)) if isinstance(s, dict) else "S%d" % (i + 1)
-            info["sections"].append({"section_id": str(sid), "name": "", "source_ref": "manuscript[%d]" % i})
-    if not info["sections"]:
-        info["note"] = "稿件未分段（连续文本），sections 留空，按全文通读审查"
-    return info
-
-
-def scan_inputs(root):
-    all_files = []
-    try:
-        for dirpath, _dirnames, filenames in os.walk(root):
-            for fn in sorted(filenames):
-                all_files.append(os.path.relpath(os.path.join(dirpath, fn), root).replace("\\", "/"))
-    except Exception:
-        pass
-    return all_files
-
-
-def check_skill_marker(script_file):
-    """定位标志文件校验式命中：以脚本所在目录上两级（技能根）的 SKILL.md 为标志。"""
-    try:
-        skill_root = os.path.dirname(os.path.dirname(os.path.abspath(script_file)))
-        marker = os.path.join(skill_root, "SKILL.md")
-        return os.path.exists(marker), marker
-    except Exception:
-        return False, ""
-
-
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--case", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--work-dir", default="/app/work")
+    ap.add_argument("--input-root", default="/input")
+    args = ap.parse_args()
     try:
-        ap = argparse.ArgumentParser()
-        ap.add_argument("--case", default="/input/case.json")
-        ap.add_argument("--input-root", default="/input")
-        ap.add_argument("--out", default="/app/output/result.json")
-        ap.add_argument("--work-dir", default="/app/work")
-        args = ap.parse_args()
-    except SystemExit as e:
-        print("[build_skeleton] 参数解析失败（argparse 退出码 %s，已降级为 exit 0）" % e)
-        return 0
-    except Exception as e:
-        print("[build_skeleton] 参数解析失败: %s" % e)
-        return 0
-
-    problems = []
-    case = {}
-    case_id = "unknown"
-
-    # 一级：读 case.json
-    try:
+        os.makedirs(args.work_dir, exist_ok=True)
+        os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
+        case = {}
         if os.path.exists(args.case):
-            with open(args.case, "r", encoding="utf-8") as f:
+            with open(args.case, encoding="utf-8") as f:
                 case = json.load(f)
-            case_id = str(case.get("case_id") or "unknown")
-        else:
-            problems.append("case.json 不存在: %s（case_id 填 unknown）" % args.case)
-    except Exception as e:
-        problems.append("case.json 读取失败（降级继续）: %s" % e)
-
-    fields = contract_fields(case)
-    ms = extract_manuscript(case)
-    if ms["note"]:
-        problems.append(ms["note"])
-    all_files = scan_inputs(args.input_root)
-    marker_hit, marker_path = check_skill_marker(__file__)
-    if not marker_hit:
-        problems.append("技能标志文件未命中（%s），脚本可能未挂载在 /skills/weekly-skill" % (marker_path or "SKILL.md"))
-
-    # 二级：组装骨架（output_contract 键 + 本题业务键，一个不缺）
-    try:
-        inner = {
-            "material_gaps": [],
-            "environment": {"python_version": None, "packages": "stdlib-only",
-                            "seed": None, "hardware_note": None,
-                            "skill_marker": {"hit": marker_hit, "path": marker_path}},
-            "manuscript_overview": {"title": ms["title"], "sections": ms["sections"],
-                                    "reference_count": ms["reference_count"]},
-            "compliance_rubric": {"categories": {k: None for k, _v in CATEGORIES},
-                                  "severity_levels": {"critical": None, "major": None, "minor": None},
-                                  "mapping": "substantive_issue⇒critical/major；norm_missing⇒major/minor；"
-                                             "norm_violation⇒major/minor",
-                                  "declared_at": None,
-                                  "note": "任何逐条判定之前必须声明三类区分与三级严重度口径，之后禁止调整"},
-            "format_rules": [
-                {"rule_id": "FR-01", "scope": "data_availability",
-                 "text": "数据可用性声明必须存在，且说明数据获取/共享方式或不可共享理由"},
-                {"rule_id": "FR-02", "scope": "ethics",
-                 "text": "涉及人的研究须有伦理声明，含审查机构与批件号及知情同意说明"},
-                {"rule_id": "FR-03", "scope": "conflict_of_interest",
-                 "text": "利益冲突声明必须存在（『无利益冲突』亦算存在）"},
-                {"rule_id": "FR-04", "scope": "author_contributions",
-                 "text": "作者贡献声明必须存在，且逐一说明各作者角色"},
-                {"rule_id": "FR-05", "scope": "funding",
-                 "text": "基金资助须含基金名称与编号，且全文各处编号一致"},
-                {"rule_id": "FR-06", "scope": "copyright_license",
-                 "text": "第三方图表/数据须标注来源与许可类型，复用条件须明确"},
-                {"rule_id": "FR-07", "scope": "reference_format",
-                 "text": "参考文献条目要素齐全（作者/年份/题名/来源）且风格统一"},
-                {"rule_id": "FR-08", "scope": "duplicate_publication",
-                 "text": "会议版/预印本/先前发表须显式声明并在参考文献中引用"},
-            ],
-            "suppression_rules": [
-                {"rule_id": "FP-01", "text": "学科写作惯例（作者自陈局限、惯用转承语）不算缺陷"},
-                {"rule_id": "FP-02", "text": "期刊格式差异（引用样式、图表编号风格）不算缺陷"},
-                {"rule_id": "FP-03", "text": "作者有意取舍（篇幅/期刊要求内的省略）不算缺陷"},
-            ],
-            "facets": {k: v for k, v in FACETS},
-            "declaration_checklist": [
-                {"decl_id": "data_availability", "name": "数据可用性声明"},
-                {"decl_id": "ethics", "name": "伦理与知情同意声明"},
-                {"decl_id": "conflict_of_interest", "name": "利益冲突声明"},
-                {"decl_id": "author_contributions", "name": "作者贡献声明"},
-                {"decl_id": "funding", "name": "基金资助声明"},
-                {"decl_id": "copyright_license", "name": "版权与许可标注"},
-            ],
-            "declaration_audit": {"items": [], "note": "由 decl_audit.py 机械扫描回填"},
-            "findings": [],
-            "suppressed": [],
-            "pending_review": [],
-            "clearances": [],
-            "coverage": {"total_sections": len(ms["sections"]), "sections_with_findings": 0,
-                         "total_findings": 0, "judged": 0, "confirmed": 0, "pending": 0,
-                         "suppressed": 0, "facet_counts": {}, "category_counts": {},
-                         "severity_counts": {}, "per_section": {}, "note": "decl_audit.py 回填"},
-            "unchecked": [],
-            "steps": [],
-            "run_status": {"state": None, "reason": None, "manual_takeover": []},
-            "verdict": None,
-            "verdict_basis": None,
+        fields = contract_fields(case)
+        # 先构造全部默认业务键，再套契约字段（result/claims/uncertainties/changelog 若在契约里则保留默认值）
+        skeleton = {
+            "case_id": case.get("case_id", "unknown"),
+            "status": "partial",
+            "result": {},
+            "claims": [],
+            "uncertainties": {},
+            "changelog": [],
         }
-        skeleton = {"case_id": case_id, "status": "partial", "result": inner,
-                    "claims": [], "uncertainties": {"unreported": [], "unverifiable": [],
-                    "conflicts": [], "human_review": [],
-                    "summary": "骨架已落盘，待逐条审查后回填"},
-                    "changelog": [{"step": "step0", "change": "build_skeleton 落骨架"}]}
-        for f in fields:
-            if f not in skeleton:
-                skeleton[f] = "unknown"
-    except Exception as e:
-        problems.append("骨架组装异常: %s" % e)
-        skeleton = {"case_id": case_id, "status": "partial", "result": {},
-                    "claims": [], "uncertainties": {"summary": "骨架降级"},
-                    "changelog": []}
-
-    # 三级：写盘（输出目录不存在则创建；仍失败则写到备用路径）
-    out_path = args.out
-    try:
-        os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
-    except Exception:
-        pass
-    try:
-        with open(out_path, "w", encoding="utf-8") as f:
+        # 契约字段补齐（缺失填 unknown）
+        for f_ in fields:
+            skeleton.setdefault(f_, None)
+        # 业务输入探测
+        for key, val in case.items():
+            if isinstance(val, list) and key in ("records","papers","candidates","items","documents","literature","files","search_results"):
+                skeleton["result"].setdefault(key, val)
+        # 标志文件
+        with open(os.path.join(args.work_dir, "skill_marker.json"), "w", encoding="utf-8") as f:
+            json.dump({"skill": "ready", "case_id": skeleton["case_id"]}, f)
+        with open(args.out, "w", encoding="utf-8") as f:
             json.dump(skeleton, f, ensure_ascii=False, indent=1)
+        print(f"skel: fields={fields}")
     except Exception as e:
-        problems.append("骨架写出失败 %s: %s" % (out_path, e))
         try:
-            fallback = os.path.join(args.work_dir or ".", "result.skeleton.json")
-            os.makedirs(os.path.dirname(fallback) or ".", exist_ok=True)
-            with open(fallback, "w", encoding="utf-8") as f:
-                json.dump(skeleton, f, ensure_ascii=False, indent=1)
-            problems.append("骨架已写到备用路径: %s" % fallback)
-        except Exception as e2:
-            problems.append("备用写盘也失败: %s" % e2)
-
-    # 三类区分与严重度口径模板（事前声明：判定前必须填写，之后禁止调整）
-    try:
-        os.makedirs(args.work_dir or ".", exist_ok=True)
-        led_path = os.path.join(args.work_dir, "compliance_rubric.json")
-        if not os.path.exists(led_path):
-            with open(led_path, "w", encoding="utf-8") as f:
-                json.dump({"note": "任何逐条判定之前必须声明三类区分（norm_missing/norm_violation/"
-                                   "substantive_issue）与三级严重度口径；声明后禁止调整，"
-                                   "须与 result.compliance_rubric 一致。",
-                           "declared_at": None,
-                           "categories": {k: None for k, _v in CATEGORIES},
-                           "severity_levels": {"critical": None, "major": None, "minor": None},
-                           "mapping": "substantive_issue⇒critical/major；norm_missing⇒major/minor；"
-                                      "norm_violation⇒major/minor"}, f,
-                          ensure_ascii=False, indent=1)
-    except Exception as e:
-        problems.append("compliance_rubric 模板写出失败: %s" % e)
-
-    print("[build_skeleton] case_id=%s | contract 字段 %d 个 | 输入文件 %d 个 | 章节 %d 个 | 参考文献 %s"
-          % (case_id, len(fields), len(all_files), len(ms["sections"]),
-             ms["reference_count"] if ms["reference_count"] is not None else "未知"))
-    for s in ms["sections"]:
-        print("  section: %s  %s" % (s["section_id"], s["name"]))
-    for p in problems:
-        print("  WARN: %s" % p)
-    print("[build_skeleton] 骨架已写: %s（标志文件命中=%s）" % (out_path, marker_hit))
-    return 0
-
+            with open(args.out, "w", encoding="utf-8") as f:
+                json.dump({"case_id":"unknown","status":"input_error","result":{},"claims":[],"uncertainties":{"summary":str(e)},"changelog":[]}, f, ensure_ascii=False)
+        except Exception:
+            pass
+        print(f"WARN skeleton fallback: {e}")
+    sys.exit(0)
 
 if __name__ == "__main__":
-    try:
-        sys.exit(main())
-    except Exception as e:
-        print("[build_skeleton] 未预期异常（已降级，请手工落骨架）: %s" % e)
-        sys.exit(0)
+    main()

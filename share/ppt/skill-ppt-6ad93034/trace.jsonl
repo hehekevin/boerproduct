@@ -1,0 +1,4 @@
+{"role":"user","content":"参加 Bohrium「AI文献阅读与学术写作」比赛，题目「学术 PPT 生成与编辑」（challenge-id: ppt-6ad93034）。请完整阅读题目文件 task.md，按题目要求与 Harbor 运行契约创作参赛 Skill 并交付到 submission/ 目录，目标是高分。评分维度：实际效果40/使用增益25/创新增益15/可靠体验10/生态贡献10。"}
+{"role":"assistant","content":"[第1步] 开始工作。完整阅读题目文件 task.md，按题目要求创作参赛 Skill。"}
+{"role":"assistant","content":"[第2步] 完成全部交付物。最终文件清单：\nexamples/example-deck.json (5802 bytes)\nREADME.md (11388 bytes)\nscripts/evidence_check.py (8448 bytes)\nscripts/extract_pdf.py (5948 bytes)\nscripts/layout_budget.py (4656 bytes)\nscripts/pptx_build.py (18560 bytes)\nscripts/pptx_edit.py (7653 bytes)\nscripts/pptx_minimal.py (25153 bytes)\nscripts/pptx_verify.py (11499 bytes)\nscripts/render_preview.py (7256 bytes)\nSKILL.md (12367 bytes)\nworklog.md (10573 bytes)"}
+{"role":"assistant","content":"[第3步] 自查：SKILL.md 含有效 YAML frontmatter（name/description）；资源均为UTF-8文本文件且在大小限制内；README 含完整使用说明与最小调用示例（已标注为示意输出）；worklog 与交付一致。准备提交。"}

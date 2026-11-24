@@ -1,0 +1,161 @@
+{
+ "_note": "示意文件：仅示范 deck.json 的字段结构与板块关系，内容为虚构示例，不是任何正式案例结果，也不能作为答案提交。",
+ "deck_meta": {
+  "title": "Sparse Routing for Long-Context Retrieval",
+  "audience": "评审/答辩",
+  "language": "zh",
+  "template": null,
+  "slide_cap": 10,
+  "font_latin": "Arial",
+  "font_ea": "Noto Sans CJK SC"
+ },
+ "slides": [
+  {
+   "no": 1,
+   "role": "hook",
+   "layout": "title",
+   "title": "长上下文检索的稀疏路由",
+   "claim": "把检索成本从全量注意力降到稀疏路由，是本次汇报的唯一主线。",
+   "bullets": [
+    "组会汇报 · 2026",
+    "基于 XXX 论文（示例）"
+   ],
+   "figure": null,
+   "notes": "承上：无，本页定场。强调：一句话把听众带到「长上下文下的检索成本」这一个问题上，不铺背景。预判：为什么不直接换更大的检索库？→ 见问题页的规模数据。",
+   "evidence": [
+    {
+     "type": "section",
+     "locator": "Abstract p.1",
+     "quote": null
+    }
+   ]
+  },
+  {
+   "no": 2,
+   "role": "problem",
+   "layout": "bullets",
+   "title": "问题：全量注意力的成本随长度平方增长",
+   "claim": "全量注意力在长文档上不可用，瓶颈是每查询的计算量而非存储。",
+   "bullets": [
+    "查询长度 8K 时计算量为主瓶颈",
+    "全量注意力随长度平方增长",
+    "需要只激活部分专家的路由"
+   ],
+   "figure": null,
+   "notes": "承上：从标题页的「成本」落到具体的平方增长。强调：这三条都来自 §1 的问题陈述，未做单位换算。预判：平方增长的实测证据在哪？→ 结果页的延迟数据。",
+   "evidence": [
+    {
+     "type": "quote",
+     "locator": "§1 p.2",
+     "quote": "示例原文句：full attention scales quadratically with context length"
+    }
+   ]
+  },
+  {
+   "no": 3,
+   "role": "method",
+   "layout": "bullets+figure",
+   "title": "方法：两阶段门控",
+   "claim": "路由由一个轻量门控两阶段决定，先粗筛专家再精排。",
+   "bullets": [
+    "阶段一：按 token 粗筛候选专家",
+    "阶段二：对候选做精排",
+    "门控参数量占比 <2%"
+   ],
+   "figure": {
+    "path": "extracted/figures/fig_p3_1.png",
+    "caption": "Figure 1: 原文图注逐字照录，不改写。",
+    "locator": "Fig.1 p.3",
+    "figure_mode": "embedded"
+   },
+   "notes": "承上：问题页说计算量是瓶颈，方法页给出解决路径。强调：图 1 是机制示意，不能从中读任何数值；数值只在结果页出现。预判：与 MoE 路由的差别？→ 候选集从全局改为按 token 粗筛。",
+   "evidence": [
+    {
+     "type": "quote",
+     "locator": "§3.2 p.3",
+     "quote": "示例原文句：routing is learned with a two-stage gate"
+    },
+    {
+     "type": "figure",
+     "locator": "Fig.1 p.3",
+     "quote": null,
+     "figure_mode": "embedded"
+    }
+   ]
+  },
+  {
+   "no": 4,
+   "role": "result",
+   "layout": "bullets",
+   "title": "主结果：精确匹配提升 3.5 个点",
+   "claim": "在 BEIR-3 上精确匹配优于稠密基线，且延迟未变差。",
+   "bullets": [
+    "精确匹配 41.7%（基线 38.2%）",
+    "单查询延迟 12.4 ms（8 专家）",
+    "提升集中在长文档子集"
+   ],
+   "figure": null,
+   "notes": "承上：方法页的门控设计，换来本页的精度收益。强调：41.7/38.2/12.4 三个数均为原文逐字，未取整、未换单位。预判：提升是否只在长文档上成立？→ 见下一页的分组结果。",
+   "evidence": [
+    {
+     "type": "quote",
+     "locator": "Abstract p.1",
+     "quote": "示例原文句：our method reaches 41.7% exact match on BEIR-3, versus 38.2% for the dense baseline"
+    },
+    {
+     "type": "quote",
+     "locator": "Table 1 p.5",
+     "quote": "示例原文句：12.4 ms per query with 8 experts"
+    }
+   ]
+  },
+  {
+   "no": 5,
+   "role": "limitation",
+   "layout": "bullets",
+   "title": "限制：专家数增加时门控训练不稳定",
+   "claim": "收益成立的前提是专家数不超过 16；再往上需要额外正则。",
+   "bullets": [
+    "专家数 >16 时训练方差上升",
+    "未在跨语言检索上验证",
+    "小样本任务收益变弱"
+   ],
+   "figure": null,
+   "notes": "承上：结果页的收益需要边界说明，否则会被误读为普遍结论。强调：这三条是原文 §6 自述的限制，不是我们的推测。预判：那能不能靠调参解决？→ 原文说需要正则化，未给出方案。",
+   "evidence": [
+    {
+     "type": "quote",
+     "locator": "§6 p.8",
+     "quote": "示例原文句：training becomes unstable when the number of experts exceeds sixteen"
+    },
+    {
+     "type": "section",
+     "locator": "§6 Limitations p.8",
+     "quote": null
+    }
+   ]
+  },
+  {
+   "no": 6,
+   "role": "conclusion",
+   "layout": "bullets",
+   "title": "结论：稀疏路由是长上下文检索的低成本解",
+   "claim": "在两阶段门控下，精度提升与延迟持平可以同时成立。",
+   "bullets": [
+    "问题：长上下文成本平方增长",
+    "方法：两阶段门控，粗筛加精排",
+    "结果：41.7% vs 38.2%，12.4 ms",
+    "限制：专家数不超过 16，未验证跨语言"
+   ],
+   "figure": null,
+   "notes": "承上：把问题-方法-结果-限制四件事压成一页收尾。强调：结论强度与证据一致，不额外加强语气。预判：下一步？→ 跨语言验证与门控正则化。",
+   "evidence": [
+    {
+     "type": "section",
+     "locator": "§7 Conclusion p.9",
+     "quote": null
+    }
+   ]
+  }
+ ]
+}

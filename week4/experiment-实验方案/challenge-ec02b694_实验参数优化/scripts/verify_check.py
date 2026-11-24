@@ -193,6 +193,17 @@ def analyze(res, case, case_state="enforced", marker_state="not_found"):
     if bad:
         report["problems"].append("completeness 汇总与实际条目不符: %s" % bad)
 
+    # ---- 四方面覆盖 + 成文方案（始终开启） ----
+    if not inner.get("response_metric"):
+        report["problems"].append("response_metric 缺失（响应指标口径/单位/测量/波动未产出）")
+    if not inner.get("search_strategy"):
+        report["problems"].append("search_strategy 缺失（搜索策略未产出）")
+    if not inner.get("cost_tradeoff"):
+        report["problems"].append("cost_tradeoff 缺失（成本时间权衡未产出）")
+    plan_report = inner.get("plan_report") or ""
+    if len(str(plan_report).strip()) < 200:
+        report["problems"].append("plan_report 缺失或不足 200 字（须成文方案嵌入 result）")
+
     # ---- verdict 一致性（始终开启） ----
     verdict = inner.get("verdict")
     gaps = inner.get("material_gaps") or []

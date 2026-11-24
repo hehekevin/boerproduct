@@ -31,8 +31,8 @@ import os
 import re
 import sys
 
-FACETS = ("fact_check", "citation_support")
-CATEGORIES = ("fact_error", "citation_mismatch", "insufficient_evidence", "suggestion")
+FACETS = ("fact_check", "citation_support", "method_design", "stat_reporting", "argument_chain", "integrity_norms")
+CATEGORIES = ("fact_error", "citation_mismatch", "insufficient_evidence", "norm_issue", "suggestion")
 SEVERITIES = ("critical", "major", "minor")
 STATUSES = ("confirmed", "pending")
 RUN_STATES = ("success", "partial", "unable_to_determine", "refused", None)
@@ -40,8 +40,8 @@ MANU_KEYS = ("manuscript", "paper", "document", "full_text", "text", "body", "co
 
 RESULT_REQUIRED = [
     "material_gaps", "environment", "manuscript_overview", "severity_rubric",
-    "facets", "findings", "clearances", "coverage", "unchecked", "steps",
-    "run_status", "verdict", "verdict_basis", "gain_evidence", "efficiency",
+    "findings", "facet_coverage", "review_report", "clearances", "steps",
+    "run_status", "verdict", "verdict_basis",
 ]
 FINDING_REQUIRED = ["finding_id", "source_ref", "section_id", "location", "facet",
                     "category", "severity", "quote", "evidence", "revision_suggestion",
@@ -146,9 +146,10 @@ def analyze(res, case, ablate="none", case_state="enforced"):
 
     findings = [f for f in (inner.get("findings") or []) if isinstance(f, dict)]
     claims = [c for c in (res.get("claims") or []) if isinstance(c, dict)]
-    cov = inner.get("coverage") or {}
+    cov = inner.get("facet_coverage") or []
     unchecked = inner.get("unchecked") or []
     rubric = inner.get("severity_rubric") or {}
+    review_report = inner.get("review_report") or ""
     src = manuscript_text(case)
 
     # ---- 闸门 ----
@@ -224,27 +225,31 @@ def analyze(res, case, ablate="none", case_state="enforced"):
             not off("evidence"), (not off("evidence")) and backed)
         if not off("evidence") and not backed:
             report["problems"].append("%s confirmed 但 claims 证据链无逐字回证" % fid)
-        if not off("evidence") and f.get("category") in ("fact_error", "citation_mismatch") \
+        if not off("evidence") and f.get("category") in ("fact_error", "citation_mismatch", "norm_issue") \
                 and not str(f.get("evidence") or "").strip():
             report["problems"].append("%s 缺对照依据 evidence" % fid)
         if not off("evidence") and not str(f.get("revision_suggestion") or "").strip():
             report["problems"].append("%s 已判定但 revision_suggestion 为空" % fid)
 
-    # ---- D. 两分面覆盖（始终开启） ----
-    if not findings:
-        report["problems"].append("findings 为空（须产出至少 1 条问题，或登记 unchecked 并判 cannot_verify）")
+    # ---- D. 六分面覆盖 + 成文报告（始终开启） ----
     real_fc = {k: sum(1 for f in findings if f.get("facet") == k) for k in FACETS}
-    zero = [k for k in FACETS if real_fc.get(k, 0) == 0]
-    if zero and not unchecked:
-        report["problems"].append("分面 %s 零发现但 unchecked 为空（须登记豁免或补查）" % ",".join(zero))
-    if cov:
-        exp = {"total_findings": len(findings)}
-        if isinstance(cov.get("total_findings"), int) and cov["total_findings"] != len(findings):
-            report["problems"].append("coverage.total_findings 与实际不符")
-        fc = cov.get("facet_counts") or {}
-        for k in FACETS:
-            if isinstance(fc.get(k), int) and fc[k] != real_fc[k]:
-                report["problems"].append("coverage.facet_counts[%s] 与实际不符" % k)
+    covered_facets = set()
+    for c in cov:
+        if isinstance(c, dict) and c.get("facet") in FACETS:
+            covered_facets.add(c["facet"])
+    # 每个分面要么有 finding，要么在 facet_coverage 里登记 checked_no_issue
+    for k in FACETS:
+        has_finding = real_fc.get(k, 0) > 0
+        if not has_finding and k not in covered_facets:
+            report["problems"].append("分面 %s 未覆盖（既无 finding 也未在 facet_coverage 登记）" % k)
+    # 成文报告
+    if len(str(review_report).strip()) < 200:
+        report["problems"].append("review_report 缺失或不足 200 字（须成文审查报告嵌入 result）")
+    # 计数一致性
+    for c in cov:
+        if isinstance(c, dict) and c.get("facet") in FACETS:
+            if isinstance(c.get("count"), int) and c["count"] != real_fc.get(c["facet"], 0):
+                report["problems"].append("facet_coverage[%s].count 与实际不符" % c["facet"])
 
     # ---- verdict/run_status 一致性（始终开启） ----
     verdict = inner.get("verdict")

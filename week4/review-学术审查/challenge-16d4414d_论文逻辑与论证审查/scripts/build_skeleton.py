@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""build_skeleton.py — Step 0 自动落骨架与稿件结构清单（argchain-review）。
+"""build_skeleton.py — Step 0 自动落骨架与稿件结构清单（evidence-support-review）。
 
 读取 case.json 提取 output_contract 全部字段名与稿件结构（manuscript/paper/
 document 等常见键下的 sections/text），扫描输入目录补齐材料清单，写入骨架
-result.json（全部键，待回填）与 /app/work/rubrics.json 口径三合一模板
-（severity_rubric 三级判据 + issue_taxonomy 六类问题 + strength_scale 双侧
-强度标尺；须在任何判定之前声明，之后禁止调整）。
+result.json（全部键，待回填）与 /app/work/rubrics.json 口径模板（证据双侧
+强度标尺 + 三级严重度 + 误报抑制规则，须在任何判定之前声明，之后禁止调整）。
 三级容错：任何一级失败都降级产出可用骨架，绝不崩溃、绝不缺 result.json。
 
 用法：
@@ -23,27 +22,7 @@ import sys
 MANUSCRIPT_KEYS = ("manuscript", "paper", "document", "full_text", "text", "body", "content")
 SECTION_KEYS = ("sections", "chapters", "parts")
 
-# 六分面（覆盖审计维度）
-FACETS = (
-    ("argument_chain", "论证链：假设→前提→推理→结论逐环是否断裂或循环"),
-    ("strength_match", "强度匹配：结论强度与证据等级是否相称"),
-    ("rebuttal_coverage", "反驳与局限：替代解释、反例、局限性是否覆盖"),
-    ("cross_section", "章节衔接：引言承诺/方法结果口径/摘要与结论一致"),
-    ("fact_check", "事实核验：数据/表述在摘要、正文、图表间是否一致"),
-    ("integrity_norms", "学术规范：声明齐备性、术语一致、格式与可发表性"),
-)
-
-# 六类逻辑问题（issue_taxonomy，判定前须声明）
-TAXONOMY = (
-    ("broken_chain", "断链：前提与结论之间缺必要推理环节或隐含假设未交代"),
-    ("circular_reasoning", "循环论证：结论（或其等价改写）被用作前提"),
-    ("correlation_causation", "因果相关混淆：仅相关/观察证据却做因果表述"),
-    ("over_extrapolation", "外推超界：超出样本、场景或时限的推广"),
-    ("strength_mismatch", "强度不匹配：结论强度超出证据等级"),
-    ("missing_rebuttal", "反驳缺失：对明显替代解释或已知反例无讨论且未声明局限"),
-)
-
-# 强度标尺（strength_scale，判定前须声明）
+# 证据双侧强度标尺（判定前须声明）
 EVIDENCE_LEVELS = (
     ("E3", "对照/实验/定量复现证据"),
     ("E2", "观察性相关或单点定量证据"),
@@ -54,6 +33,15 @@ CLAIM_LEVELS = (
     ("C3", "因果断言或普遍推广"),
     ("C2", "限定条件下的相关结论"),
     ("C1", "假说性表述"),
+)
+
+# 五类证据支撑问题（issue_taxonomy，判定前须声明）
+TAXONOMY = (
+    ("no_evidence", "无证据：主张无任何实证支撑"),
+    ("insufficient_evidence", "证据不足：证据存在但不足以支撑该强度表述"),
+    ("strength_mismatch", "强度不匹配：结论强度超出证据等级（结论超出数据）"),
+    ("citation_unsupported", "引用不支持：所引文献/材料不支持所引观点"),
+    ("overgeneralization", "外推超界：结论超出样本、场景或时限范围"),
 )
 
 
@@ -185,41 +173,42 @@ def main():
                             "skill_marker": {"hit": marker_hit, "path": marker_path}},
             "manuscript_overview": {"title": ms["title"], "sections": ms["sections"],
                                     "reference_count": ms["reference_count"]},
+            "evidence_scale": {"evidence_levels": {k: None for k, _v in EVIDENCE_LEVELS},
+                               "claim_levels": {k: None for k, _v in CLAIM_LEVELS},
+                               "rule": None, "declared_at": None,
+                               "note": "双侧强度标尺判定前声明；C3须E3，C2须≥E2，E0不得支撑任何confirmed结论"},
             "severity_rubric": {"levels": {"critical": None, "major": None, "minor": None},
                                 "declared_at": None,
                                 "note": "任何逐条判定之前必须声明三级口径，之后禁止调整"},
             "issue_taxonomy": {"types": {k: None for k, _v in TAXONOMY},
                                "declared_at": None,
-                               "note": "六类问题口径判定前声明；issue_type 必居其一"},
-            "strength_scale": {"evidence_levels": {k: None for k, _v in EVIDENCE_LEVELS},
-                               "claim_levels": {k: None for k, _v in CLAIM_LEVELS},
-                               "rule": None, "declared_at": None,
-                               "note": "双侧强度标尺判定前声明；C3须E3，C2须≥E2，E0不得支撑confirmed结论"},
+                               "note": "五类问题口径判定前声明；issue_type 必居其一"},
             "suppression_rules": [
                 {"rule_id": "FP-01", "text": "作者有意设置的对照组/明确标注的假设情形不是自相矛盾"},
                 {"rule_id": "FP-02", "text": "转述他人观点（他人主张）不算作者自身缺陷"},
-                {"rule_id": "FP-03", "text": "学科写作惯例与期刊格式差异（篇幅内省略、惯用转承语）不算缺陷"},
             ],
-            "facets": {k: v for k, v in FACETS},
-            "argument_chains": [],
+            "claims": [],
             "findings": [],
-            "strength_matches": [],
             "suppressed": [],
             "pending_review": [],
             "clearances": [],
             "coverage": {"total_sections": len(ms["sections"]), "sections_with_findings": 0,
                          "total_findings": 0, "judged": 0, "confirmed": 0, "pending": 0,
-                         "suppressed": 0, "facet_counts": {}, "issue_type_counts": {},
-                         "category_counts": {}, "severity_counts": {}, "per_section": {},
-                         "note": "chain_audit.py 回填"},
+                         "suppressed": 0, "issue_type_counts": {}, "category_counts": {},
+                         "severity_counts": {}, "per_section": {},
+                         "note": "evidence_check.py 回填"},
             "unchecked": [],
             "steps": [],
             "run_status": {"state": None, "reason": None, "manual_takeover": []},
             "verdict": None,
             "verdict_basis": None,
+            "gain_evidence": {"available": False,
+                              "reason": "预算过半即跳过增益层，如实记录不编造数字"},
+            "efficiency": {"wall_clock_seconds_total": None, "checker_runs": None,
+                           "reproduce": "python3 /skills/weekly-skill/scripts/evidence_check.py --result /app/output/result.json --case /input/case.json"},
         }
         skeleton = {"case_id": case_id, "status": "partial", "result": inner,
-                    "claims": [], "uncertainties": {"unreported": [], "unverifiable": [],
+                    "uncertainties": {"unreported": [], "unverifiable": [],
                     "conflicts": [], "human_review": [],
                     "summary": "骨架已落盘，待逐条审查后回填"},
                     "changelog": [{"step": "step0", "change": "build_skeleton 落骨架"}]}
@@ -229,7 +218,7 @@ def main():
     except Exception as e:
         problems.append("骨架组装异常: %s" % e)
         skeleton = {"case_id": case_id, "status": "partial", "result": {},
-                    "claims": [], "uncertainties": {"summary": "骨架降级"},
+                    "uncertainties": {"summary": "骨架降级"},
                     "changelog": []}
 
     # 三级：写盘（输出目录不存在则创建；仍失败则写到备用路径）
@@ -252,23 +241,23 @@ def main():
         except Exception as e2:
             problems.append("备用写盘也失败: %s" % e2)
 
-    # 口径三合一模板（事前声明：判定前必须填写，之后禁止调整）
+    # 口径模板（事前声明：判定前必须填写，之后禁止调整）
     try:
         os.makedirs(args.work_dir or ".", exist_ok=True)
         rub_path = os.path.join(args.work_dir, "rubrics.json")
         if not os.path.exists(rub_path):
             with open(rub_path, "w", encoding="utf-8") as f:
                 json.dump({"note": "任何逐条判定之前必须声明三口径；声明后禁止调整，"
-                                   "须与 result.severity_rubric / issue_taxonomy / "
-                                   "strength_scale 一致。",
+                                   "须与 result.evidence_scale / severity_rubric / "
+                                   "issue_taxonomy 一致。",
+                           "evidence_scale": {"declared_at": None,
+                                              "evidence_levels": {k: None for k, _v in EVIDENCE_LEVELS},
+                                              "claim_levels": {k: None for k, _v in CLAIM_LEVELS},
+                                              "rule": None},
                            "severity_rubric": {"declared_at": None,
                                                "levels": {"critical": None, "major": None, "minor": None}},
                            "issue_taxonomy": {"declared_at": None,
-                                              "types": {k: None for k, _v in TAXONOMY}},
-                           "strength_scale": {"declared_at": None,
-                                              "evidence_levels": {k: None for k, _v in EVIDENCE_LEVELS},
-                                              "claim_levels": {k: None for k, _v in CLAIM_LEVELS},
-                                              "rule": None}}, f,
+                                              "types": {k: None for k, _v in TAXONOMY}}}, f,
                           ensure_ascii=False, indent=1)
     except Exception as e:
         problems.append("rubrics.json 模板写出失败: %s" % e)

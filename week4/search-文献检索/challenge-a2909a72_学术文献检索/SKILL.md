@@ -1,72 +1,84 @@
 ---
-name: query-plan-keywords
-description: Academic literature search planning skill (focused). Decomposes a research question into a structured query plan: for each core concept, expands keywords (terms, synonyms, abbreviations, cross-language) and builds an executable search string with boolean logic and field limits, each annotated with its intent. Only keyword-expansion and query-string construction are in scope; multi-round retrieval orchestration and dedup are one-line notes. Use when the task asks to plan academic search queries for a research question.
+name: lit-search-resultset
+description: Academic literature search skill (focused on delivering a usable result set). Given a research question and provided multi-database response snippets, extracts real bibliographic records from the material (not fabricating), deduplicates near-duplicate records (e.g. same paper from two databases), normalizes fields (title/authors/year/doi/venue), and produces a ranked, source-traceable result set with coverage note (which relevant works are present). Emits BOTH a structured result set AND a prose search report (search_report) embedded into result.json. Only extraction/dedup/normalization from provided material is in scope; no live database query is claimed. Use when the task asks to deliver a usable literature result set for a research question.
 ---
-## 强制执行协议（最高优先级）
-以下 4 条优先级高于本文档其余内容；冲突时以本节为准。
+
+## 强制执行协议（最高优先级，冲突时以本节为准）
 1. **第 0 步先落骨架**：读完 `/input/case.json` 第一个动作运行 `build_skeleton.py`，写含 output_contract 全字段 + case_id 的 result.json。此后 result.json 必须存在且可解析。
-2. **检索式要有意图说明**：每组查询写清布尔逻辑+字段+意图，检索式不可退化成关键词串。
-3. **失败也交付**：任何中断仍写 result.json。脚本退出码恒 0，判据看 verdict。
-4. **预算保护**：超 32 次请求或 450 秒停止，用现有结果定稿。
+2. **只从给定材料提取**：结果集每条记录必须来自 case.json 的 materials（真实响应 snippet），不编造文献；材料里没有的标"未覆盖"。
+3. **去重 + 标准化 + 来源回溯**：同一文献多库出现要去重合并，字段标准化，每条保留来源库。
+4. **成文报告必嵌入**：除结果集外，必须写 `result.search_report`（≥200 字），说明检索范围、结果集规模、去重情况、覆盖缺口。
+5. **失败也交付**：任何中断仍写 result.json。脚本退出码恒 0，判据看 verdict。
+6. **预算保护**：模型请求超 40 次或 600 秒即停止，用现有结果写 search_report 收尾。
 
 ## 定位与约定
-锁定子场景：给定研究问题 + 范围 + 材料，完成「概念拆解 → 关键词扩展 → 检索式构建（3-5 组）」。只做查询规划与关键词扩展，不真实调库检索、不做结果去重。材料里的术语按材料为准。
-- 输入：`/input/case.json`（research_question + scope + materials[] + output_contract）、`task.md`。
+锁定子场景：给定研究问题 + 范围（年份/数据库）+ 多库响应材料，完成「真实记录提取 → 去重 → 字段标准化 → 排序 → 来源回溯 → 覆盖说明」。评分看"是否交付可用的文献结果集、是否覆盖关键文献、Recall@k 与关键文献命中率"。不声称实时检索、不编造材料外的文献。
+- 输入：`/input/case.json`（research_question + scope + materials[] + output_contract）、`task.md`。以实际文件为准。
 - 工作区：`/app/work`；产物：`/app/output/result.json`。预算 64 请求/900 秒；仅标准库。
-- 线性 3 步。脚本定位以 skill_marker.json 校验。
+- 脚本定位以 skill_marker.json 校验。
 
-## 三步流程
+## 四步流程
 
-### Step 0 — 落骨架
+### Step 0 — 落骨架（1 次脚本，必做）
 ```bash
 python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json \
   --input-root /input --out /app/output/result.json --work-dir /app/work
 ```
 
-### Step 1 — 关键词扩展 + 检索式构建（核心，1-2 次响应）
-- `concepts[]`：把研究问题拆 3-5 个核心概念，每个概念给 term + 同义词 + 缩写 + 跨语言表达
-- `query_plan[]`：3-5 组检索式，每组 query_string（布尔逻辑，如 `("graph neural network" OR GNN) AND ("molecular property" OR ADMET)`）+ field（title/abstract/all）+ intent（这段检索式想命中什么）
+### Step 1 — 记录提取 + 去重 + 标准化（核心，1-2 次响应）
+- 从 materials[] 逐条提取书目记录：`title`/`authors`/`year`/`doi`/`venue`/`source_db`
+- `result.records[]`：去重后的结果集，每条带 title/year/doi/source_db/venue/abstract_snippet
+- 识别关键文献（直接相关，如 GNN 预训练、分子性质预测），标注 relevance ∈ high/medium/low
+- 材料里 DOI 缺失的重复记录（如 m4 是 m3 的 duplicate），按标题相似合并，保留有 DOI 的那条，记入 dedup
 
-### Step 2 — 汇总 + 自检
+### Step 2 — 排序 + 覆盖说明（1 次响应）
+- `result.ranked_records[]`：按相关性 + 年份排序
+- `result.coverage_note`：说明覆盖了哪些关键研究方向、哪些缺口（如材料里没有的年份/主题）
+
+### Step 3 — 写成文报告 + 自检（1 次响应 + 1 脚本）
 ```bash
 python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json \
   --case /input/case.json --out /app/work/verify_check.json --emit-into
 ```
-- `result.summary`：概念数/检索式数；`run_status` + `verdict` 如实。
-- verify_check 判据看 validator_verdict；FAIL 则逐条修复重跑直到 PASS。
+- `result.search_report`（≥200 字）：检索问题、范围、结果集规模、去重数、覆盖缺口、来源可追溯性
+- 判据看 validator_verdict；FAIL 则修复→重跑直到 PASS。
 
-## 输出 schema（result.json 顶层 6 契约字段 + result 核心键）
+## 输出 schema（result.json 顶层契约字段 + result 核心键）
 ```json
 {
   "case_id":"…","status":"answered|partial|input_error",
   "result":{
     "research_question":"…",
-    "concepts":[{"concept_id":"C1","term":"graph neural network","synonyms":["GNN","message passing"],"abbreviations":["GNN"],"cross_language":[]}],
-    "query_plan":[{"query_id":"Q1","query_string":"(\"graph neural network\" OR GNN) AND \"molecular property\"","field":"title,abstract","intent":"…"}],
-    "summary":{"concepts":"3-5","queries":"3-5","note":"…"},
+    "scope":{"years":"2019-2024","databases":["Crossref","EuropePMC","OpenAlex"]},
+    "records":[{"record_id":"R01","title":"…","authors":"…","year":2019,"doi":"…","venue":"…","source_db":"Crossref","relevance":"high","abstract_snippet":"…","duplicate_of":null}],
+    "dedup":[{"kept":"R03","merged":"R04","basis":"title_similar_no_doi"}],
+    "ranked_records":["R01","R02","R03"],
+    "coverage_note":"覆盖 GNN 预训练、分子表征学习；缺口：2022-2023 应用类文献未在材料中",
+    "search_report":"## 检索结果\n……（≥200字成文）",
     "run_status":{"state":"success","reason":null},
-    "verdict":"planned|partially_planned|cannot_verify","verdict_basis":"…"
+    "verdict":"delivered|partially_delivered|cannot_verify","verdict_basis":"…"
   },
-  "claims":[{"claim_id":"c-01","text":"…","kind":"inferred","source_id":"Q1","location":"concepts[0]","evidence":[{"quote":"…"}]}],
-  "uncertainties":{"summary":"…","human_review":[]},
-  "changelog":[]
+  "claims":[{"claim_id":"c-01","text":"…","kind":"reported","source_id":"R01","location":"materials[0].snippet","evidence":[{"quote":"…"}]}],
+  "uncertainties":{"summary":"…"},"changelog":[]
 }
 ```
 
 ## 校验器会抓的错（verify_check.py）
-1. concepts 空或 <3；query_plan 空。
-2. query_string 无布尔逻辑（退化成关键词串）或空。
-3. 每条 query 缺 intent（意图）。
-4. verdict 与进度矛盾；缺 output_contract 字段。
+1. records 为空；每条记录 title 缺或不在 materials 里（编造）。
+2. dedup 里 merged 记录无对应；同一论文两库出现未合并。
+3. search_report 缺失或 <200 字。
+4. ranked_records 与 records 不一致。
+5. verdict 与进度矛盾；缺 output_contract 字段。
 
 ## 异常处置
 | 场景 | 处置 |
 |---|---|
-| 研究问题模糊 | 先拆可检索结构，模糊处登记 uncertainties，不硬编术语 |
-| 材料术语冲突 | 以材料为准 + 登记冲突 |
-| 范围过宽 | 检索式加时间/字段限制 + 注明 |
-| 校验失败 | 退出码恒 0，结论记 verdict |
+| materials 为空 | records 空 + verdict=cannot_verify，不编造 |
+| DOI 缺失重复 | 标题相似合并，保留有 DOI 的，记 dedup |
+| 材料只覆盖部分方向 | coverage_note 说明缺口，不补造 |
+| 校验 FAIL | 修复后重跑；修不了如实登记，绝不中断交付 |
 
 ## 已知限制
-- 只做查询规划，不真实检索；检索式为给定问题+材料的推导，不声称命中结果。
-- examples/ 为合成示意非正式答案。
+- 只从给定材料提取，不声称实时检索/全域召回；结果集是材料快照的整理。
+- 相关性判断是语义判断，机械校验只保证记录来自材料、去重与计数一致。
+- examples/ 为合成示意（虚构），非正式答案。

@@ -259,7 +259,9 @@
      "N02",
      "N03",
      "N04"
-    ]
+    ],
+    "aspect": "result_reporting",
+    "category": "fact_error"
    },
    {
     "finding_id": "F02",
@@ -273,7 +275,9 @@
     "status": "confirmed",
     "conflict_ids": [
      "N10"
-    ]
+    ],
+    "aspect": "result_reporting",
+    "category": "insufficient_evidence"
    },
    {
     "finding_id": "F03",
@@ -287,7 +291,9 @@
     "status": "confirmed",
     "conflict_ids": [
      "N11"
-    ]
+    ],
+    "aspect": "result_reporting",
+    "category": "insufficient_evidence"
    },
    {
     "finding_id": "F04",
@@ -301,7 +307,9 @@
     "status": "confirmed",
     "conflict_ids": [
      "N07"
-    ]
+    ],
+    "aspect": "result_reporting",
+    "category": "fact_error"
    },
    {
     "finding_id": "F05",
@@ -315,7 +323,57 @@
     "status": "confirmed",
     "conflict_ids": [
      "N12"
-    ]
+    ],
+    "aspect": "result_reporting",
+    "category": "insufficient_evidence"
+   },
+   {
+    "finding_id": "F06",
+    "aspect": "research_design",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "随机分配至干预组与对照组",
+    "location": "S2 方法",
+    "evidence": "未说明随机化方式与盲法，对照设置是否成立需补充说明",
+    "revision_suggestion": "补充随机化方式、盲法与分组隐藏说明",
+    "status": "confirmed",
+    "conflict_ids": []
+   },
+   {
+    "finding_id": "F07",
+    "aspect": "variable_definition",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "焦虑采用 STAI 量表测量",
+    "location": "S2 方法",
+    "evidence": "结局变量焦虑的测量工具已说明，但未说明总分/分量表口径与编码方式",
+    "revision_suggestion": "补充焦虑结局的操作定义与评分口径",
+    "status": "confirmed",
+    "conflict_ids": []
+   },
+   {
+    "finding_id": "F08",
+    "aspect": "stat_method",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "t(52)=2.10",
+    "location": "S1 摘要",
+    "evidence": "样本量48人但自由度52（应为n1+n2-2≤46），自由度与样本量不符",
+    "revision_suggestion": "核对自由度或样本量，修正报告",
+    "status": "confirmed",
+    "conflict_ids": []
+   },
+   {
+    "finding_id": "F09",
+    "aspect": "sample_power",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "招募本科生 36 名",
+    "location": "S2 方法",
+    "evidence": "摘要写48名、方法写36名，样本量不一致；未报告样本量估算依据与把握度",
+    "revision_suggestion": "统一样本量并补充样本量估算依据",
+    "status": "confirmed",
+    "conflict_ids": []
    }
   ],
   "conflict_summary": {
@@ -348,24 +406,6 @@
     "df": 0
    }
   },
-  "unchecked": [
-   {
-    "scope": "facet:research_design",
-    "reason": "out_of_scope：本题只做数字一致性，研究设计不审"
-   },
-   {
-    "scope": "facet:variable_definition",
-    "reason": "out_of_scope：本题只做数字一致性，变量定义不审"
-   },
-   {
-    "scope": "facet:stat_method",
-    "reason": "out_of_scope：本题只做数字一致性，统计方法选择不审"
-   },
-   {
-    "scope": "facet:sample_power",
-    "reason": "out_of_scope：本题只做数字一致性，样本量估算不审"
-   }
-  ],
   "run_status": {
    "state": "success",
    "reason": null,
@@ -382,7 +422,35 @@
    "wall_clock_seconds_total": 0.0,
    "checker_runs": 0,
    "reproduce": "python3 scripts/number_audit.py --result /app/output/result.json --case /input/case.json --input-root /input --emit-into"
-  }
+  },
+  "aspect_coverage": [
+   {
+    "aspect": "research_design",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "aspect": "variable_definition",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "aspect": "stat_method",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "aspect": "sample_power",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "aspect": "result_reporting",
+    "status": "checked_findings",
+    "count": 5
+   }
+  ],
+  "review_report": "## 总体结论\n本文为一项随机对照研究，考察八周干预对本科生焦虑的缓解效果。整体方法报告存在若干需修订的问题：样本量前后不一致（48 vs 36）、自由度与样本量不符（t(52) vs n=48）、显著性表述与 p 值矛盾、统计量报告不完整。\n\n## 五方面小结\n- 研究设计：未说明随机化方式与盲法，对照设置成立性需补充。\n- 变量定义：焦虑结局的测量工具已说明（STAI），但操作定义与评分口径需补充。\n- 统计方法：t 检验自由度 52 与样本量 48 不符，需核对检验方法适用性。\n- 样本量与效能：摘要 48 名、方法 36 名，样本量不一致，且未报告估算依据与把握度。\n- 结果报告：p=0.03 却写\"不显著\"、SE=0.10 与 CI 宽 0.10 不匹配，存在数字自相矛盾。\n\n## 主要问题清单\n共识别 9 处问题（critical 2 / major 7），详见 findings 逐条。\n\n## 待复核项\n自由度与样本量的正确值需作者确认；样本量估算依据需补充。"
  },
  "claims": [
   {
@@ -511,6 +579,30 @@
    "match": true
   },
   {
+   "item": "findings[5].quote_backed",
+   "template_value": "quote 逐字回证于稿件原文",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[6].quote_backed",
+   "template_value": "quote 逐字回证于稿件原文",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[7].quote_backed",
+   "template_value": "quote 逐字回证于稿件原文",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[8].quote_backed",
+   "template_value": "quote 逐字回证于稿件原文",
+   "applied": true,
+   "match": true
+  },
+  {
    "item": "severity_rubric.declared",
    "template_value": "三级口径判定前声明",
    "applied": true,
@@ -542,6 +634,30 @@
   },
   {
    "item": "findings[4].conflict_ids_exist",
+   "template_value": "conflict_ids 指向存在的 audit_id",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[5].conflict_ids_exist",
+   "template_value": "conflict_ids 指向存在的 audit_id",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[6].conflict_ids_exist",
+   "template_value": "conflict_ids 指向存在的 audit_id",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[7].conflict_ids_exist",
+   "template_value": "conflict_ids 指向存在的 audit_id",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[8].conflict_ids_exist",
    "template_value": "conflict_ids 指向存在的 audit_id",
    "applied": true,
    "match": true

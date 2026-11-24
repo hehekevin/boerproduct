@@ -25,6 +25,7 @@ import sys
 
 KINDS = ("sample_size", "p_value", "effect_size", "confidence_interval",
          "percentage", "statistic", "df")
+ASPECTS = ("research_design", "variable_definition", "stat_method", "sample_power", "result_reporting")
 SEVERITIES = ("critical", "major", "minor")
 STATUSES = ("confirmed", "pending", "suppressed")
 RUN_STATES = ("success", "partial", "unable_to_determine", "refused")
@@ -110,6 +111,8 @@ def analyze(res, case, case_state="enforced"):
     # A. 定位可回证 + 结构
     for i, f in enumerate(findings):
         fid = f.get("finding_id") or "findings[%d]" % i
+        if f.get("aspect") not in ASPECTS:
+            report["problems"].append("%s aspect 枚举非法或缺失: %r（须五方面之一）" % (fid, f.get("aspect")))
         q = norm(f.get("quote"))
         in_src = bool(src) and len(q) >= 6 and q in src
         check("findings[%d].quote_backed" % i, in_src, "quote 逐字回证于稿件原文")
@@ -182,6 +185,18 @@ def analyze(res, case, case_state="enforced"):
         for fn in contract_fields(case):
             if fn not in res:
                 report["problems"].append("缺少 output_contract 字段: %s" % fn)
+
+    # G. 五方面覆盖 + 成文报告（始终开启）
+    real_aspect = {k: sum(1 for f in findings if f.get("aspect") == k) for k in ASPECTS}
+    asp_cov = inner.get("aspect_coverage") or []
+    covered_aspects = {c.get("aspect") for c in asp_cov if isinstance(c, dict)}
+    for k in ASPECTS:
+        has_finding = real_aspect.get(k, 0) > 0
+        if not has_finding and k not in covered_aspects:
+            report["problems"].append("方面 %s 未覆盖（既无 finding 也未在 aspect_coverage 登记）" % k)
+    review_report = inner.get("review_report") or ""
+    if len(str(review_report).strip()) < 200:
+        report["problems"].append("review_report 缺失或不足 200 字（须成文审查报告嵌入 result）")
 
     report["verdict"] = "FAIL" if report["problems"] else "PASS"
     return report

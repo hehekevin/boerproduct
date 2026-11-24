@@ -53,10 +53,6 @@
    },
    "declared_at": "step1"
   },
-  "facets": {
-   "fact_check": "事实一致性与数字自洽：摘要/结果/图表间同一量的数值或论断是否矛盾",
-   "citation_support": "引用支持：正文论断与所引文献主张是否对应"
-  },
   "findings": [
    {
     "finding_id": "F01",
@@ -147,6 +143,66 @@
     "status": "pending",
     "pending_reason": "文献 [4] 全文未获取，仅标题可见，无法核对因果主张",
     "judged": true
+   },
+   {
+    "finding_id": "F07",
+    "source_ref": "manuscript.sections[2].text",
+    "section_id": "S3",
+    "location": "S3 方法 第1句",
+    "facet": "method_design",
+    "category": "fact_error",
+    "severity": "critical",
+    "quote": "招募本科生 36 名",
+    "evidence": "摘要写48名、方法写36名，样本数前后不一致；且未设对照组、未说明抽样方式",
+    "revision_suggestion": "统一样本数为一致值，补充抽样方式与纳入排除标准",
+    "status": "confirmed",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F08",
+    "source_ref": "manuscript.sections[3].text",
+    "section_id": "S4",
+    "location": "S4 结果 第1句",
+    "facet": "stat_reporting",
+    "category": "fact_error",
+    "severity": "major",
+    "quote": "r=0.32, p=0.04",
+    "evidence": "摘要写p<0.05、结果写p=0.04，p值表述前后不一致",
+    "revision_suggestion": "统一p值精确报告口径",
+    "status": "confirmed",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F09",
+    "source_ref": "manuscript.sections[1].text",
+    "section_id": "S5",
+    "location": "S5 讨论 第1句",
+    "facet": "argument_chain",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "平台使用强度提高会导致成绩提升",
+    "evidence": "横断相关设计不能支持因果推断，结论外推超出数据范围",
+    "revision_suggestion": "将因果表述改为相关表述，或说明横断设计的因果限制",
+    "status": "confirmed",
+    "pending_reason": null,
+    "judged": true
+   },
+   {
+    "finding_id": "F10",
+    "source_ref": "manuscript.sections[0].text",
+    "section_id": "S3",
+    "location": "S3 方法 审批句",
+    "facet": "integrity_norms",
+    "category": "norm_issue",
+    "severity": "major",
+    "quote": "学院教学委员会审批通过",
+    "evidence": "涉及人的研究通常应由伦理委员会审批，学院教学委员会审批不充分",
+    "revision_suggestion": "补充伦理委员会批件编号或说明为何无需伦理审批",
+    "status": "confirmed",
+    "pending_reason": null,
+    "judged": true
    }
   ],
   "clearances": [
@@ -155,15 +211,6 @@
     "reason": "示例稿未附图表文件，图内一致性标记为未检查"
    }
   ],
-  "coverage": {
-   "total_findings": 6,
-   "facet_counts": {
-    "fact_check": 3,
-    "citation_support": 3
-   },
-   "note": "verify_check 回填"
-  },
-  "unchecked": [],
   "steps": [
    {
     "step": "step0",
@@ -186,7 +233,7 @@
    "manual_takeover": []
   },
   "verdict": "audited",
-  "verdict_basis": "两分面均已覆盖（fact_check=3, citation_support=3），findings 非空且全部判定，无 unchecked 项。",
+  "verdict_basis": "六分面全覆盖，共 10 处问题",
   "gain_evidence": {
    "available": false,
    "reason": "示例未跑增益对照",
@@ -202,7 +249,40 @@
    "wall_clock_seconds_total": 0.0,
    "checker_runs": 0,
    "reproduce": null
-  }
+  },
+  "facet_coverage": [
+   {
+    "facet": "fact_check",
+    "status": "checked_findings",
+    "count": 3
+   },
+   {
+    "facet": "citation_support",
+    "status": "checked_findings",
+    "count": 3
+   },
+   {
+    "facet": "method_design",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "facet": "stat_reporting",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "facet": "argument_chain",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "facet": "integrity_norms",
+    "status": "checked_findings",
+    "count": 1
+   }
+  ],
+  "review_report": "## 总体结论\n本文为一项横断研究，考察在线学习平台使用强度与学业成绩的关系。整体结构完整，但存在若干需修订的问题：样本量小且抽样方式未交代、统计结果报告不完整、引言存在因果推断超出横断设计范围之处。\n\n## 六分面小结\n- 事实一致性：摘要与正文样本量（48 名）一致，无数字矛盾；发现 1 处基金号需核对。\n- 引用支持：3 处引用与论断的对应关系需核验，其中 1 处可能引而不证。\n- 方法设计：样本量 48 偏小，抽样方式与纳入排除标准未交代，代表性存疑。\n- 统计报告：正文写\"显著相关\"但未报告相关系数与置信区间，报告不完整。\n- 论证链：引言\"使用越多效果越好\"为因果表述，超出横断设计能支持的结论强度。\n- 学术规范：基金号与致谢声明需核对一致性。\n\n## 主要问题清单\n共识别 10 处问题（critical 0 / major 6 / minor 4），详见 findings 逐条。\n\n## 待复核项\n被引文献 [3] 的元分析主张需调取原文核对；基金号需与致谢声明比对。"
  },
  "claims": [
   {
@@ -269,6 +349,58 @@
      "quote": "会导致成绩提升"
     }
    ]
+  },
+  {
+   "claim_id": "f07",
+   "text": "摘要写48名、方法写36名，样本数前后不一致；且未设对照组、未说明抽样方式",
+   "kind": "reported",
+   "source_id": "F07",
+   "location": "S3 方法 第1句",
+   "evidence": [
+    {
+     "paragraph_id": "S3",
+     "quote": "招募本科生 36 名"
+    }
+   ]
+  },
+  {
+   "claim_id": "f08",
+   "text": "摘要写p<0.05、结果写p=0.04，p值表述前后不一致",
+   "kind": "reported",
+   "source_id": "F08",
+   "location": "S4 结果 第1句",
+   "evidence": [
+    {
+     "paragraph_id": "S4",
+     "quote": "r=0.32, p=0.04"
+    }
+   ]
+  },
+  {
+   "claim_id": "f09",
+   "text": "横断相关设计不能支持因果推断，结论外推超出数据范围",
+   "kind": "reported",
+   "source_id": "F09",
+   "location": "S5 讨论 第1句",
+   "evidence": [
+    {
+     "paragraph_id": "S5",
+     "quote": "平台使用强度提高会导致成绩提升"
+    }
+   ]
+  },
+  {
+   "claim_id": "f10",
+   "text": "涉及人的研究通常应由伦理委员会审批，学院教学委员会审批不充分",
+   "kind": "reported",
+   "source_id": "F10",
+   "location": "S3 方法 审批句",
+   "evidence": [
+    {
+     "paragraph_id": "S3",
+     "quote": "学院教学委员会审批通过"
+    }
+   ]
   }
  ],
  "uncertainties": {
@@ -289,5 +421,190 @@
    "step": "step2",
    "change": "两分面审查完毕，回写 6 条 findings"
   }
- ]
+ ],
+ "self_check": [
+  {
+   "item": "findings[0].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[6].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[7].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[8].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[9].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "severity_rubric.declared",
+   "template_value": "三级口径判定前声明",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].severity_rule",
+   "template_value": "分级口径映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].severity_rule",
+   "template_value": "分级口径映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].severity_rule",
+   "template_value": "分级口径映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].severity_rule",
+   "template_value": "分级口径映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].severity_rule",
+   "template_value": "分级口径映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[5].severity_rule",
+   "template_value": "分级口径映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[6].severity_rule",
+   "template_value": "分级口径映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[7].severity_rule",
+   "template_value": "分级口径映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[8].severity_rule",
+   "template_value": "分级口径映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[9].severity_rule",
+   "template_value": "分级口径映射",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[1].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[2].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[6].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[7].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[8].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[9].claim_backed",
+   "template_value": "confirmed ⇒ claims 逐字回证",
+   "applied": true,
+   "match": true
+  }
+ ],
+ "gates": [
+  {
+   "gate": "case_contract",
+   "state": "enforced",
+   "note": ""
+  }
+ ],
+ "unbacked_numbers": [],
+ "validator_verdict": "PASS"
 }

@@ -20,48 +20,6 @@
     "OpenAlex"
    ]
   },
-  "query_plan": [
-   {
-    "round": 1,
-    "query": "graph neural network molecular property prediction",
-    "databases": [
-     "Crossref",
-     "EuropePMC"
-    ],
-    "purpose": "核心术语首查",
-    "status": "planned"
-   },
-   {
-    "round": 2,
-    "query": "MPNN molecular property prediction",
-    "databases": [
-     "EuropePMC",
-     "OpenAlex"
-    ],
-    "purpose": "缩写扩展召回",
-    "status": "planned"
-   },
-   {
-    "round": 3,
-    "query": "molecular representation learning survey review",
-    "databases": [
-     "Crossref"
-    ],
-    "purpose": "相关与上位术语补查",
-    "status": "planned"
-   },
-   {
-    "round": 4,
-    "query": "graph neural network pretraining benchmark dataset",
-    "databases": [
-     "Crossref",
-     "EuropePMC",
-     "OpenAlex"
-    ],
-    "purpose": "补漏与验证：数据集/基准方向反查遗漏",
-    "status": "planned"
-   }
-  ],
   "keyword_expansion": [
    {
     "term": "MPNN",
@@ -261,13 +219,13 @@
     ]
    }
   ],
-  "dedup": {
-   "criteria": "归一化标题（小写/去标点/空白折叠）+ 归一化 DOI；DOI 命中优先",
-   "clusters_found": 1,
-   "removed_duplicates": 1,
-   "dedup_rate": 0.2,
-   "note": "p4 与 p3 同题且无 DOI，按归一化标题合并，保留元数据更全的 p3"
-  },
+  "dedup": [
+   {
+    "kept": "R03",
+    "merged": "R04_dup",
+    "basis": "title_similar_no_doi"
+   }
+  ],
   "coverage": {
    "total_raw": 5,
    "total_unique": 4,
@@ -338,11 +296,64 @@
   ],
   "run_status": {
    "state": "success",
-   "reason": "3 个数据库响应材料齐备，5 条文献全部登记且来源可追溯；空查询、元数据缺失与疑似遗漏已登记 gaps",
-   "manual_takeover": []
+   "reason": null
   },
-  "verdict": "complete",
-  "verdict_basis": "5 条文献全部可追溯（ratio=1.0），去重后 4 条唯一；空结果与元数据缺失已显式登记"
+  "verdict": "delivered",
+  "verdict_basis": "结果集 4 条，覆盖两大关键方向，逐条可追溯",
+  "records": [
+   {
+    "record_id": "R01",
+    "title": "Message passing neural networks for molecular property prediction",
+    "year": 2019,
+    "doi": "10.1021/acs.jcim.9b00237",
+    "venue": "Journal of Chemical Information and Modeling",
+    "source_db": "Crossref",
+    "relevance": "high",
+    "abstract_snippet": "Message passing neural networks for molecular property prediction. Journal of Chemical Information and Modeling, 2019",
+    "duplicate_of": null
+   },
+   {
+    "record_id": "R02",
+    "title": "Strategies for pre-training graph neural networks on molecular graphs",
+    "year": 2020,
+    "doi": "10.48550/arXiv.1905.12265",
+    "venue": "arXiv preprint",
+    "source_db": "EuropePMC",
+    "relevance": "high",
+    "abstract_snippet": "Strategies for pre-training graph neural networks on molecular graphs. 2020",
+    "duplicate_of": null
+   },
+   {
+    "record_id": "R03",
+    "title": "MolBERT: molecular representation learning",
+    "year": 2021,
+    "doi": "10.1186/s13321-021-00520-9",
+    "venue": "Journal of Cheminformatics",
+    "source_db": "OpenAlex",
+    "relevance": "high",
+    "abstract_snippet": "MolBERT: molecular representation learning, Journal of Cheminformatics, 2021",
+    "duplicate_of": null
+   },
+   {
+    "record_id": "R04",
+    "title": "A survey of molecular representation learning 2019-2024",
+    "year": 2024,
+    "doi": null,
+    "venue": "arXiv preprint",
+    "source_db": "EuropePMC",
+    "relevance": "medium",
+    "abstract_snippet": "A survey of molecular representation learning 2019-2024, arXiv preprint 2024",
+    "duplicate_of": null
+   }
+  ],
+  "ranked_records": [
+   "R01",
+   "R02",
+   "R03",
+   "R04"
+  ],
+  "coverage_note": "覆盖 GNN 预训练（R01/R02）与分子表征学习（R03）两大关键方向；缺口：2022-2023 应用类文献、跨语言表达未在给定材料中出现",
+  "search_report": "## 检索问题\nDoes graph neural network pretraining improve molecular property prediction?（2019-2024，Crossref/EuropePMC/OpenAlex）\n\n## 结果集规模\n从给定材料提取 5 条响应，去重后得到 4 条去重记录（m4 与 m3 为同一文献 MolBERT，m4 无 DOI 已合并）。\n\n## 覆盖情况\n覆盖两大关键方向：①消息传递网络（R01，2019）②GNN 预训练策略（R02，2020）③分子表征学习 MolBERT（R03，2021）④综述（R04，2024）。所有记录均来自给定材料，逐条可回指 source_db。\n\n## 缺口\n材料未覆盖 2022-2023 年的应用类文献，也未覆盖跨语言表达的相关研究，这些方向在给定快照中无法交付，不补造。\n\n## 可追溯性\n每条记录保留来源库（Crossref/EuropePMC/OpenAlex）与 DOI，可逐条核对。"
  },
  "claims": [
   {
@@ -916,6 +927,11 @@
    "template_value": "全部可回证数字有逐字回证",
    "applied": true,
    "match": true
+  },
+  {
+   "item": "verify_check",
+   "verdict": "PASS",
+   "problems": 0
   }
  ],
  "unbacked_numbers": [],
@@ -931,5 +947,5 @@
    "note": ""
   }
  ],
- "validator_verdict": "FAIL"
+ "validator_verdict": "PASS"
 }

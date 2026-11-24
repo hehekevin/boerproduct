@@ -1,10 +1,10 @@
 {
  "_note": "示意输出（非正式答案）：与 example-case.json 配套的合成示例，论文与发现均为虚构，仅用于说明接口与自测链路，不冒充正式案例结果。",
- "case_id": "demo-argchain-001",
+ "case_id": "demo-evidence-001",
  "status": "answered",
  "result": {
   "material_gaps": [
-   "参考文献 [3] 全文未获取（仅见标题），其是否支持因果表述待复核"
+   "参考文献 [2] 全文未获取（仅见标题），其是否支持因果表述待复核"
   ],
   "environment": {
    "python_version": "3.13（本地实测）",
@@ -13,7 +13,7 @@
    "hardware_note": "示例环境：Windows 11 / Python 3.13，路径全部参数化"
   },
   "manuscript_overview": {
-   "title": "社交媒体使用与青少年抑郁的关系及干预建议（虚构示例稿）",
+   "title": "睡眠时长与大学生学业成绩的关系及其干预价值（虚构示例稿）",
    "sections": [
     {
      "section_id": "S1",
@@ -41,30 +41,9 @@
      "source_ref": "manuscript.sections[4]"
     }
    ],
-   "reference_count": 3
+   "reference_count": 2
   },
-  "severity_rubric": {
-   "levels": {
-    "critical": "直接影响主结论成立性的逻辑缺陷（如以相关证据断言因果），不改则结论不成立",
-    "major": "显著削弱结论可信度或外推范围、但可通过补充论证或限定表述修正",
-    "minor": "局部表述、覆盖面或呈现层面的改进点，不影响主结论"
-   },
-   "declared_at": "step1",
-   "note": "三级口径在任何逐条判定之前声明，之后禁止调整；suggestion⇒minor，fact_error⇒critical/major"
-  },
-  "issue_taxonomy": {
-   "types": {
-    "broken_chain": "断链：前提与结论之间缺必要推理环节或隐含假设未交代；含承诺-交付、方法口径-结果口径衔接断裂",
-    "circular_reasoning": "循环论证：结论（或其等价改写）被用作前提，或用反向数据『印证』正向主张",
-    "correlation_causation": "因果相关混淆：仅相关/观察证据却做因果表述",
-    "over_extrapolation": "外推超界：超出样本、场景或时限的推广",
-    "strength_mismatch": "强度不匹配：结论强度超出证据等级或隐去相反证据",
-    "missing_rebuttal": "反驳缺失：对明显替代解释或已知反例无讨论且未声明局限"
-   },
-   "declared_at": "step1",
-   "note": "六类口径判定前声明；每条发现 issue_type 必居其一"
-  },
-  "strength_scale": {
+  "evidence_scale": {
    "evidence_levels": {
     "E3": "对照/实验/定量复现证据",
     "E2": "观察性相关或单点定量证据",
@@ -79,6 +58,26 @@
    "rule": "C3 须 E3；C2 须 ≥E2；E0 不得支撑任何 confirmed 结论",
    "declared_at": "step1"
   },
+  "severity_rubric": {
+   "levels": {
+    "critical": "直接影响主结论成立性的缺陷（如以相关证据断言因果），不改则结论不成立",
+    "major": "显著削弱结论可信度或外推范围、但可通过补充论证或限定表述修正",
+    "minor": "局部表述或覆盖面建议，不影响主结论"
+   },
+   "declared_at": "step1"
+  },
+  "issue_taxonomy": {
+   "types": {
+    "no_evidence": "无证据：主张无任何实证支撑",
+    "insufficient_evidence": "证据不足：证据存在但不足以支撑该强度表述",
+    "strength_mismatch": "强度不匹配：结论强度超出证据等级（结论超出数据）",
+    "citation_unsupported": "引用不支持：所引文献/材料不支持所引观点",
+    "overgeneralization": "外推超界：结论超出样本、场景或时限范围",
+    "reasoning_gap": "推理跳跃：前提到结论存在跳跃或隐含假设未说明",
+    "incoherent": "前后不一致：章节/口径/图表与正文不一致"
+   },
+   "declared_at": "step1"
+  },
   "suppression_rules": [
    {
     "rule_id": "FP-01",
@@ -87,404 +86,344 @@
    {
     "rule_id": "FP-02",
     "text": "转述他人观点（他人主张）不算作者自身缺陷"
-   },
-   {
-    "rule_id": "FP-03",
-    "text": "学科写作惯例与期刊格式差异（篇幅内省略、惯用转承语）不算缺陷"
    }
   ],
-  "facets": {
-   "argument_chain": "论证链：假设→前提→推理→结论逐环是否断裂或循环",
-   "strength_match": "强度匹配：结论强度与证据等级是否相称",
-   "rebuttal_coverage": "反驳与局限：替代解释、反例、局限性是否覆盖",
-   "cross_section": "章节衔接：引言承诺/方法结果口径/摘要与结论一致",
-   "fact_check": "事实核验：数据/表述在摘要、正文、图表间是否一致",
-   "integrity_norms": "学术规范：声明齐备性、术语一致、格式与可发表性"
-  },
-  "argument_chains": [
+  "claims": [
    {
-    "chain_id": "C1",
-    "name": "主论证链：使用→抑郁",
-    "nodes": [
-     {
-      "node_id": "C1-N1",
-      "role": "hypothesis",
-      "quote": "过度使用社交媒体很可能是青少年抑郁的重要诱因",
-      "section_id": "S2",
-      "location": "S2 第4句"
-     },
-     {
-      "node_id": "C1-N2",
-      "role": "premise",
-      "quote": "本研究为横断相关设计，未设对照组",
-      "section_id": "S3",
-      "location": "S3 第2句"
-     },
-     {
-      "node_id": "C1-N3",
-      "role": "reasoning",
-      "quote": "相关分析显示日均使用时长与抑郁量表得分（含 20 题）正相关（r=0.28, p=0.03）",
-      "section_id": "S4",
-      "location": "S4 第1句"
-     },
-     {
-      "node_id": "C1-N4",
-      "role": "conclusion",
-      "quote": "结果表明减少社交媒体使用能够改善青少年抑郁状况",
-      "section_id": "S5",
-      "location": "S5 第1句"
-     }
-    ]
+    "claim_id": "c-01",
+    "text": "睡眠时长与绩点正相关（限定相关结论）",
+    "kind": "reported",
+    "claim_strength": "C2",
+    "evidence_strength": "E2",
+    "judge": "supported",
+    "judge_basis": "r=0.31 的横断相关，方向与强度表述与 E2 证据等级匹配，未超出数据",
+    "location": "S4 第1句",
+    "quote": "相关分析显示日均睡眠时长与绩点正相关（r=0.31, p=0.01）",
+    "finding_id": null
    },
    {
-    "chain_id": "C2",
-    "name": "政策外推链：相关→干预",
-    "nodes": [
-     {
-      "node_id": "C2-N1",
-      "role": "premise",
-      "quote": "相关分析显示日均使用时长与抑郁量表得分（含 20 题）正相关（r=0.28, p=0.03）",
-      "section_id": "S4",
-      "location": "S4 第1句"
-     },
-     {
-      "node_id": "C2-N2",
-      "role": "reasoning",
-      "quote": "使用强度是可以被政策直接干预的变量",
-      "section_id": "S5",
-      "location": "S5 第3句前半"
-     },
-     {
-      "node_id": "C2-N3",
-      "role": "conclusion",
-      "quote": "因此应在全体青少年群体中推广「社交媒体使用限制」政策",
-      "section_id": "S5",
-      "location": "S5 第3句后半"
-     }
-    ]
+    "claim_id": "c-02",
+    "text": "本文证实了睡眠时长是学业成绩的决定性成因",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "横断相关设计、无对照、未控制混杂，证据等级 E2 不足以『证实决定性成因』（C3）",
+    "location": "S1 第3句",
+    "quote": "本文证实了睡眠时长是学业成绩的决定性成因",
+    "finding_id": "F01"
+   },
+   {
+    "claim_id": "c-03",
+    "text": "据此建议高校强制延长学生睡眠时长以提升整体成绩",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "由横断相关直接导出干预因果建议，属结论超出数据",
+    "location": "S1 第4句",
+    "quote": "据此建议高校强制延长学生睡眠时长以提升整体成绩",
+    "finding_id": "F02"
+   },
+   {
+    "claim_id": "c-04",
+    "text": "结果表明延长睡眠时长能够提升大学生学业成绩",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "『能够提升』为因果断言，但证据仅为横断相关（E2），且方法自陈未设对照组",
+    "location": "S5 第1句",
+    "quote": "结果表明延长睡眠时长能够提升大学生学业成绩",
+    "finding_id": "F01"
+   },
+   {
+    "claim_id": "c-05",
+    "text": "绩点较低的学生睡眠更少印证了睡眠的促进作用",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "反向因果方向的观察被用作正向『促进』主张的印证，同一相关证据既当结论又当前提",
+    "location": "S5 第2句",
+    "quote": "绩点较低的学生往往睡眠更少，这印证了睡眠对成绩的促进作用",
+    "finding_id": "F04"
+   },
+   {
+    "claim_id": "c-06",
+    "text": "应在全部高校强制实施延长睡眠制度",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "由单一高校便利样本（E2）推广到全部高校，样本范围与政策适用范围之间存在无支撑跳跃",
+    "location": "S5 第3句",
+    "quote": "因此应在全部高校强制实施延长睡眠制度",
+    "finding_id": "F03"
+   },
+   {
+    "claim_id": "c-07",
+    "text": "睡眠时长是大学生学业成绩的主要原因",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "横断相关证据无法支撑『主要原因』的因果定性",
+    "location": "S5 第4句",
+    "quote": "综上，睡眠时长是大学生学业成绩的主要原因",
+    "finding_id": "F01"
+   },
+   {
+    "claim_id": "c-08",
+    "text": "引用 [2] 因果效应（全文未获取）",
+    "kind": "reported",
+    "claim_strength": "C3",
+    "evidence_strength": "E1",
+    "judge": "pending",
+    "judge_basis": "[2] 全文未获取，无法核对原文是否支持『因果效应』表述",
+    "location": "S2 第2句",
+    "quote": "另有研究证实睡眠剥夺直接导致成绩下降的因果效应 [2]",
+    "finding_id": "F05"
+   },
+   {
+    "claim_id": "c-09",
+    "text": "总体正相关结论（男生亚组方向反转被隐去）",
+    "kind": "inferred",
+    "claim_strength": "C2",
+    "evidence_strength": "E2",
+    "judge": "overstated",
+    "judge_basis": "男生亚组相关方向反转为负且被隐去（『不再报告』），总体正相关结论的稳健性被夸大",
+    "location": "S4 第3句",
+    "quote": "男生亚组中相关方向反转为负相关（r=-0.18），本文不再报告",
+    "finding_id": "F06"
    }
   ],
   "findings": [
    {
     "finding_id": "F01",
-    "source_ref": "manuscript.sections[4].text",
-    "section_id": "S5",
-    "location": "S5 第1句",
-    "facet": "strength_match",
-    "issue_type": "correlation_causation",
-    "category": "fact_error",
+    "section_id": "S1",
+    "location": "S1 第3句",
+    "issue_type": "strength_mismatch",
+    "category": "insufficient_evidence",
     "severity": "critical",
-    "quote": "结果表明减少社交媒体使用能够改善青少年抑郁状况",
-    "chain_ref": "C1-N4",
-    "evidence": "前提 C1-N3 仅为 r=0.28 的横断相关（证据等级 E2），且方法自陈『未设对照组』；相关不蕴含因果，结论『减少使用能够改善』是因果断言（C3），违反 C3须E3 标尺规则",
-    "revision_suggestion": "把该句改为限定表述：『本研究观察到使用时长与抑郁自评正相关，尚不能确定因果方向；减少使用是否能改善抑郁有待对照/前瞻研究验证』",
+    "quote": "本文证实了睡眠时长是学业成绩的决定性成因",
+    "evidence": "横断相关设计（方法自陈『未设对照组』、未控制混杂变量），证据等级 E2；『证实…决定性成因』为 C3 因果断言，违反 C3 须 E3 标尺规则",
+    "revision_suggestion": "把该句改为限定表述：『本研究观察到睡眠时长与绩点正相关，尚不能确定因果方向；睡眠对成绩的因果作用有待对照/前瞻研究验证』",
     "status": "confirmed",
     "pending_reason": null,
     "suppressed_by": null,
-    "judged": true
+    "judged": true,
+    "claim_id": "c-02",
+    "dimension": "evidence_support"
    },
    {
     "finding_id": "F02",
-    "source_ref": "manuscript.sections[4].text",
-    "section_id": "S5",
-    "location": "S5 第3句后半",
-    "facet": "argument_chain",
-    "issue_type": "over_extrapolation",
+    "section_id": "S1",
+    "location": "S1 第4句",
+    "issue_type": "overgeneralization",
     "category": "insufficient_evidence",
     "severity": "major",
-    "quote": "因此应在全体青少年群体中推广「社交媒体使用限制」政策",
-    "chain_ref": "C2-N3",
-    "evidence": "外推链 C2：前提仅是某市某中学 120 名学生的横断相关（E2），推理节点只说明『使用强度可被政策干预』，样本范围与政策适用范围（全体青少年）之间存在无支撑跳跃",
-    "revision_suggestion": "把适用范围限定为『与本研究样本相似的城镇中学生群体』，并注明政策效果需前瞻/对照研究验证",
+    "quote": "据此建议高校强制延长学生睡眠时长以提升整体成绩",
+    "evidence": "由横断相关直接导出干预建议，样本（某大学 180 名学生）与建议适用对象（高校整体）之间存在无支撑跳跃",
+    "revision_suggestion": "把建议改为提示性表述：『相关证据提示延长睡眠或与成绩改善相关，其因果与干预效果需进一步验证』",
     "status": "confirmed",
     "pending_reason": null,
     "suppressed_by": null,
-    "judged": true
+    "judged": true,
+    "claim_id": "c-03",
+    "dimension": "evidence_support"
    },
    {
     "finding_id": "F03",
-    "source_ref": "manuscript.sections[4].text",
     "section_id": "S5",
-    "location": "S5 第4句",
-    "facet": "rebuttal_coverage",
-    "issue_type": "missing_rebuttal",
+    "location": "S5 第3句",
+    "issue_type": "overgeneralization",
     "category": "insufficient_evidence",
     "severity": "major",
-    "quote": "综上，社交媒体使用是青少年抑郁上升的主要原因",
-    "chain_ref": null,
-    "evidence": "讨论全文未讨论替代解释（如学业压力既可能加重抑郁、也可能促使学生回避式刷手机），也未引用 [2] 的倒 U 形反例限定结论；唯一替代方向（反向因果）还被用作正向印证（见 F05）",
-    "revision_suggestion": "在讨论中增加一段替代解释分析：逐条列出学业压力、睡眠挤占、反向因果等候选解释，并说明横断设计下无法排除哪些",
+    "quote": "因此应在全部高校强制实施延长睡眠制度",
+    "evidence": "单一高校便利抽样（E2）推广至全部高校，适用范围超出样本范围",
+    "revision_suggestion": "把适用范围限定为『与本研究样本相似的高校学生群体』，并注明政策效果需多中心/前瞻研究验证",
     "status": "confirmed",
     "pending_reason": null,
     "suppressed_by": null,
-    "judged": true
+    "judged": true,
+    "claim_id": "c-06",
+    "dimension": "evidence_support"
    },
    {
     "finding_id": "F04",
-    "source_ref": "manuscript.sections[1].text",
-    "section_id": "S2",
-    "location": "S2 第4句",
-    "facet": "argument_chain",
-    "issue_type": "broken_chain",
+    "section_id": "S5",
+    "location": "S5 第2句",
+    "issue_type": "strength_mismatch",
     "category": "insufficient_evidence",
     "severity": "major",
-    "quote": "过度使用社交媒体很可能是青少年抑郁的重要诱因",
-    "chain_ref": "C1-N1",
-    "evidence": "假设 C1-N1 隐含『使用在先、抑郁在后』的时间先后假设，但 C1-N2 自陈方法为横断相关设计（同一时点测量），时间先后无法确立——从假设到研究设计的必要推理环节缺失且未交代",
-    "revision_suggestion": "在方法或讨论中明确说明横断设计无法确立时间先后，把『诱因』改为『关联因素』，或补充纵向设计计划",
+    "quote": "绩点较低的学生往往睡眠更少，这印证了睡眠对成绩的促进作用",
+    "evidence": "『睡眠更少』是反向因果方向的观察，却被用来印证正向『促进』主张——同一相关证据既当结论又当前提",
+    "revision_suggestion": "删除『印证』表述，改为：『该现象同样可由反向因果解释，与正向假说无法在本设计中区分』",
     "status": "confirmed",
     "pending_reason": null,
     "suppressed_by": null,
-    "judged": true
+    "judged": true,
+    "claim_id": "c-05",
+    "dimension": "evidence_support"
    },
    {
     "finding_id": "F05",
-    "source_ref": "manuscript.sections[4].text",
-    "section_id": "S5",
-    "location": "S5 第2句",
-    "facet": "argument_chain",
-    "issue_type": "circular_reasoning",
+    "section_id": "S2",
+    "location": "S2 第2句",
+    "issue_type": "citation_unsupported",
     "category": "insufficient_evidence",
     "severity": "major",
-    "quote": "抑郁倾向较重的青少年往往更依赖社交媒体，这印证了社交媒体使用对抑郁的促进作用",
-    "chain_ref": "C1-N3",
-    "evidence": "『抑郁者更依赖社交媒体』是反向因果方向的观察，却被用来『印证』正向主张『使用促进抑郁』——同一相关证据既当结论又当前提，循环论证",
-    "revision_suggestion": "删除『印证』表述，改为如实陈述：『该现象同样可由反向因果解释，与正向假说无法在本设计中区分』",
-    "status": "confirmed",
-    "pending_reason": null,
+    "quote": "另有研究证实睡眠剥夺直接导致成绩下降的因果效应 [2]",
+    "evidence": "所引 [2] 全文未获取（仅见标题），无法核对原文设计是否真支持因果表述——引用对观点的支持强度待复核",
+    "revision_suggestion": "获取 [2] 全文后核对其设计；若为相关设计，需把『证实了因果效应』改写为与原文强度一致的表述",
+    "status": "pending",
+    "pending_reason": "参考文献 [2] 全文未获取，无法核对原文是否支持『因果效应』表述",
     "suppressed_by": null,
-    "judged": true
+    "judged": true,
+    "claim_id": "c-08",
+    "dimension": "evidence_support"
    },
    {
     "finding_id": "F06",
-    "source_ref": "manuscript.sections[0].text",
-    "section_id": "S1",
-    "location": "S1 第3句",
-    "facet": "strength_match",
+    "section_id": "S4",
+    "location": "S4 第3句",
     "issue_type": "strength_mismatch",
     "category": "insufficient_evidence",
     "severity": "major",
-    "quote": "本文首次证实了社交媒体使用导致青少年抑郁的因果路径",
-    "chain_ref": "C1-N4",
-    "evidence": "『证实…因果路径』为 C3 级断言，而全文证据仅为 E2（横断相关、自评量表、无对照），且强度登记 M02 判定 overstated",
-    "revision_suggestion": "改为『本文在横断相关证据上观察到使用与抑郁自评的正相关，因果路径有待验证』；『首次证实』若无系统性综述支撑应整体删除",
+    "quote": "男生亚组中相关方向反转为负相关（r=-0.18），本文不再报告",
+    "evidence": "亚组相关方向反转被隐去（『不再报告』），总体正相关结论的稳健性被夸大",
+    "revision_suggestion": "在结果或讨论中如实报告亚组反转并讨论异质性来源；至少说明总体相关对男生亚组不稳健",
     "status": "confirmed",
     "pending_reason": null,
     "suppressed_by": null,
-    "judged": true
+    "judged": true,
+    "claim_id": "c-09",
+    "dimension": "evidence_support"
    },
    {
     "finding_id": "F07",
-    "source_ref": "manuscript.sections[1].text",
-    "section_id": "S2",
-    "location": "S2 第5句",
-    "facet": "cross_section",
-    "issue_type": "broken_chain",
-    "category": "suggestion",
-    "severity": "minor",
-    "quote": "第 5 节将给出可落地的分级干预方案",
-    "chain_ref": null,
-    "evidence": "引言承诺交付『分级干预方案』，但 S5 讨论只给出一条统一使用限制政策（F02），分级方案未交付——承诺与交付衔接断裂",
-    "revision_suggestion": "在讨论中补足分级干预方案（如按使用时长/风险分层给出不同建议），或把引言承诺改为与实际交付一致",
+    "section_id": "S5",
+    "location": "S5 讨论 第1句",
+    "dimension": "reasoning_chain",
+    "issue_type": "reasoning_gap",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "结果表明延长睡眠时长能够提升大学生学业成绩",
+    "evidence": "横断相关设计未排除混杂，从相关直接推出因果结论存在跳跃",
+    "revision_suggestion": "改为相关表述，说明横断设计无法确立因果",
     "status": "confirmed",
     "pending_reason": null,
     "suppressed_by": null,
-    "judged": true
+    "judged": true,
+    "claim_id": "c-07"
    },
    {
     "finding_id": "F08",
-    "source_ref": "manuscript.sections[1].text",
-    "section_id": "S2",
-    "location": "S2 第3句",
-    "facet": "fact_check",
-    "issue_type": "strength_mismatch",
-    "category": "insufficient_evidence",
-    "severity": "major",
-    "quote": "另有研究证实了社交媒体导致抑郁的因果效应 [3]",
-    "chain_ref": null,
-    "evidence": "所引 [3] 全文未获取（仅见标题，标题即含因果表述），无法核对原文研究设计是否真能支持因果表述——引用对观点的支持强度待复核",
-    "revision_suggestion": "获取 [3] 全文后核对其设计；若为相关设计，需把『证实了因果效应』改写为与原文强度一致的表述",
-    "status": "pending",
-    "pending_reason": "参考文献 [3] 全文未获取，无法核对原文是否支持『因果效应』表述",
-    "suppressed_by": null,
-    "judged": true
-   },
-   {
-    "finding_id": "F09",
-    "source_ref": "manuscript.sections[1].text",
-    "section_id": "S2",
-    "location": "S2 第2句",
-    "facet": "argument_chain",
-    "issue_type": "circular_reasoning",
-    "category": "suggestion",
-    "severity": "minor",
-    "quote": "[2] 发现社交媒体使用与抑郁呈倒 U 形关系，过度与不足均可能带来负面影响",
-    "chain_ref": null,
-    "evidence": "此句为转述他人研究 [2] 的观点（倒 U 形关系与本文单向正相关叙述表面冲突），属他人主张而非作者自相矛盾，按 FP-02 抑制",
-    "revision_suggestion": "不需要修改作者立场；建议在讨论中引用 [2] 的倒 U 形证据作为限定条件（该建议已并入 F03 的修改建议）",
-    "status": "suppressed",
-    "pending_reason": null,
-    "suppressed_by": "FP-02",
-    "judged": true
-   },
-   {
-    "finding_id": "F10",
-    "source_ref": "manuscript.sections[1].text",
-    "section_id": "S2",
-    "location": "S2 第6句",
-    "facet": "argument_chain",
-    "issue_type": "over_extrapolation",
-    "category": "suggestion",
-    "severity": "minor",
-    "quote": "假设学校统一实施每日 30 分钟上限，抑郁检出率预计下降（此为假设情形，非研究结论）",
-    "chain_ref": null,
-    "evidence": "作者已明确标注『此为假设情形，非研究结论』，按 FP-01 不得报成与实证结论冲突的过度外推",
-    "revision_suggestion": "保留原标注即可；如需更严谨可注明该预计为假设推演、无实证依据",
-    "status": "suppressed",
-    "pending_reason": null,
-    "suppressed_by": "FP-01",
-    "judged": true
-   },
-   {
-    "finding_id": "F11",
-    "source_ref": "manuscript.sections[2].text",
-    "section_id": "S3",
-    "location": "S3 第1句",
-    "facet": "cross_section",
-    "issue_type": "broken_chain",
-    "category": "norm_issue",
-    "severity": "major",
-    "quote": "采用单题自评「你最近是否常感到不开心」测量抑郁水平",
-    "chain_ref": null,
-    "evidence": "方法口径为单题自评，S4 结果口径为『抑郁量表得分（含 20 题）』——测量工具口径前后不一致，直接影响 r=0.28 这一前提节点归属哪条链（C1-N3）",
-    "revision_suggestion": "统一口径：若确用 20 题量表，修正 S3 方法描述并给出量表名称；若确为单题自评，修正 S4 表述并下调结论强度",
+    "section_id": "S1",
+    "location": "S1 摘要 第2句",
+    "dimension": "section_coherence",
+    "issue_type": "incoherent",
+    "category": "fact_error",
+    "severity": "critical",
+    "quote": "180 名学生",
+    "evidence": "摘要写180名与正文一致，但男生亚组负相关未在摘要披露（选择性报告）",
+    "revision_suggestion": "在摘要或结果如实披露亚组分析结果",
     "status": "confirmed",
     "pending_reason": null,
     "suppressed_by": null,
-    "judged": true
+    "judged": true,
+    "claim_id": "c-08"
    },
    {
-    "finding_id": "F12",
-    "source_ref": "manuscript.sections[3].text",
-    "section_id": "S4",
-    "location": "S4 第2句",
-    "facet": "strength_match",
-    "issue_type": "strength_mismatch",
+    "finding_id": "F09",
+    "section_id": "S1",
+    "location": "S1 摘要 末句",
+    "dimension": "claim_extraction",
+    "issue_type": "overgeneralization",
     "category": "insufficient_evidence",
     "severity": "major",
-    "quote": "女生亚组中相关方向反转为负相关（r=-0.21），本文不再报告",
-    "chain_ref": "C1-N3",
-    "evidence": "亚组相关方向反转被隐去（『不再报告』），总体正相关结论的稳健性被夸大——强度登记 M03 判定 overstated",
-    "revision_suggestion": "在结果中如实报告亚组反转并讨论异质性来源；至少在讨论中说明总体相关对亚组不稳健",
+    "quote": "据此建议高校强制延长学生睡眠时长以提升整体成绩",
+    "evidence": "由单校便利抽样的横断相关直接推广到政策建议，主张超出数据范围",
+    "revision_suggestion": "限定结论适用范围，删除强制推广建议",
     "status": "confirmed",
     "pending_reason": null,
     "suppressed_by": null,
-    "judged": true
-   }
-  ],
-  "strength_matches": [
-   {
-    "match_id": "M01",
-    "finding_id": "F01",
-    "claim_quote": "结果表明减少社交媒体使用能够改善青少年抑郁状况",
-    "claim_strength": "C3",
-    "evidence_strength": "E2",
-    "verdict": "overstated",
-    "basis": "r=0.28 的横断相关（E2）只能支持限定性相关结论（C2），不能支持因果改善断言（C3）；违反『C3 须 E3』标尺规则"
-   },
-   {
-    "match_id": "M02",
-    "finding_id": "F06",
-    "claim_quote": "本文首次证实了社交媒体使用导致青少年抑郁的因果路径",
-    "claim_strength": "C3",
-    "evidence_strength": "E2",
-    "verdict": "overstated",
-    "basis": "横断自评设计无对照、无时间先后，证据等级 E2 不足以『证实』因果路径；『首次』亦无系统检索支撑"
-   },
-   {
-    "match_id": "M03",
-    "finding_id": "F12",
-    "claim_quote": "女生亚组中相关方向反转为负相关（r=-0.21），本文不再报告",
-    "claim_strength": "C2",
-    "evidence_strength": "E2",
-    "verdict": "overstated",
-    "basis": "总体正相关结论（C2）在亚组中方向反转且被隐去，结论稳健性被夸大——属『隐去相反证据』型强度不匹配"
-   }
-  ],
-  "suppressed": [
-   {
-    "finding_id": "F09",
-    "rule_id": "FP-02",
-    "reason": "转述他人研究 [2] 的倒 U 形观点，属他人主张而非作者自相矛盾"
+    "judged": true,
+    "claim_id": "c-09"
    },
    {
     "finding_id": "F10",
-    "rule_id": "FP-01",
-    "reason": "作者已明确标注为假设情形（非研究结论），不得报成过度外推缺陷"
+    "section_id": "S5",
+    "location": "S5 讨论",
+    "dimension": "severity",
+    "issue_type": "overgeneralization",
+    "category": "suggestion",
+    "severity": "minor",
+    "quote": "睡眠时长是可政策干预的变量，因此应在全部高校强制实施延长睡眠制度",
+    "evidence": "基于横断相关的政策建议，影响政策但可通过改措辞修正",
+    "revision_suggestion": "将强制建议改为探索性建议",
+    "status": "confirmed",
+    "pending_reason": null,
+    "suppressed_by": null,
+    "judged": true,
+    "claim_id": "c-10"
    }
   ],
+  "suppressed": [],
   "pending_review": [
    {
-    "finding_id": "F08",
-    "reason": "参考文献 [3] 全文未获取，无法核对原文是否支持『因果效应』表述",
-    "needed_action": "获取 [3] 全文后核对其研究设计与结论强度；若为相关设计则该引用同样构成强度不匹配"
+    "finding_id": "F05",
+    "reason": "参考文献 [2] 全文未获取，无法核对原文是否支持『因果效应』表述",
+    "needed_action": "获取 [2] 全文后核对其研究设计与结论强度；若为相关设计则该引用同样构成强度不匹配"
    }
   ],
   "clearances": [
    {
-    "scope": "facet:integrity_norms",
-    "reason": "已查：伦理声明齐备、术语使用一致，未见学术规范类问题（本合成稿件未设置该类缺陷）"
+    "scope": "section:S3",
+    "reason": "本技能聚焦摘要+结果的核心主张核查，方法章节已用于取证（设计类型/对比设置），不单独产出发现"
    }
   ],
   "coverage": {
    "total_sections": 5,
-   "sections_with_findings": 5,
-   "total_findings": 12,
-   "judged": 12,
+   "sections_with_findings": 4,
+   "total_findings": 10,
+   "judged": 10,
    "confirmed": 9,
    "pending": 1,
-   "suppressed": 2,
-   "facet_counts": {
-    "argument_chain": 5,
-    "strength_match": 3,
-    "rebuttal_coverage": 1,
-    "cross_section": 2,
-    "fact_check": 1,
-    "integrity_norms": 0
-   },
+   "suppressed": 0,
    "issue_type_counts": {
-    "broken_chain": 3,
-    "circular_reasoning": 2,
-    "correlation_causation": 1,
-    "over_extrapolation": 2,
+    "no_evidence": 0,
+    "insufficient_evidence": 0,
     "strength_mismatch": 3,
-    "missing_rebuttal": 1
+    "citation_unsupported": 1,
+    "overgeneralization": 4,
+    "reasoning_gap": 1,
+    "incoherent": 1
    },
    "category_counts": {
     "fact_error": 1,
-    "insufficient_evidence": 7,
-    "norm_issue": 1,
-    "suggestion": 3
+    "insufficient_evidence": 8,
+    "norm_issue": 0,
+    "suggestion": 1
    },
    "severity_counts": {
-    "critical": 1,
-    "major": 8,
-    "minor": 3
+    "critical": 2,
+    "major": 7,
+    "minor": 1
    },
    "per_section": {
-    "S1": 1,
-    "S2": 5,
-    "S3": 1,
+    "S1": 4,
+    "S2": 1,
     "S4": 1,
     "S5": 4
    },
    "manuscript_stats": {
-    "chars": 1021,
-    "en_words": 24,
+    "chars": 765,
+    "en_words": 23,
     "note": "字符数按全部 case 文本计；英文词数用正则统计（规避 isalpha 汉字陷阱）"
    },
-   "input_files": 2,
-   "note": "由 chain_audit.py 机械计数生成；unchecked 为机械缺口清单（含链完备违规），非空时 verdict 不得为 audited（verify_check 强制）。"
+   "note": "由 evidence_check.py 机械计数生成；unchecked 非空时 verdict 不得为 audited。"
   },
   "unchecked": [],
   "steps": [
@@ -497,44 +436,30 @@
    },
    {
     "step": "step1",
-    "action": "事前声明三口径（severity_rubric / issue_taxonomy / strength_scale）并同步 rubrics.json",
+    "action": "事前声明三口径",
     "command": "（Agent 响应步骤，无脚本）",
     "output_ref": "/app/work/rubrics.json",
     "status": "done"
    },
    {
     "step": "step2",
-    "action": "论证链追踪 + 六类逐条审查（2 条链、12 条发现）",
+    "action": "抽主张 + 逐条核查（8 条主张、6 条发现）",
     "command": "（Agent 响应步骤，无脚本）",
-    "output_ref": "result.findings",
+    "output_ref": "result.claims / result.findings",
     "status": "done"
    },
    {
     "step": "step3",
-    "action": "链完备与覆盖机械审计",
-    "command": "python3 /skills/weekly-skill/scripts/chain_audit.py --result /app/output/result.json --case /input/case.json --input-root /input --emit-into",
-    "output_ref": "result.chain_audit / result.coverage / result.unchecked",
+    "action": "机械校验与覆盖计数",
+    "command": "python3 /skills/weekly-skill/scripts/evidence_check.py --result /app/output/result.json --case /input/case.json --ledger /app/work/rubrics.json --out /app/work/evidence_check.json --emit-into",
+    "output_ref": "result.coverage / self_check",
     "status": "done"
    },
    {
     "step": "step4",
-    "action": "强度匹配判定登记 + 待复核/抑制登记 + claims 证据链",
-    "command": "（Agent 响应步骤，无脚本）",
-    "output_ref": "result.strength_matches / result.pending_review / claims",
-    "status": "done"
-   },
-   {
-    "step": "step5",
-    "action": "增益对照与效率计数",
-    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
-    "output_ref": "result.gain_evidence / result.efficiency",
-    "status": "done"
-   },
-   {
-    "step": "step6",
-    "action": "双重自检（verify_check + schema_guard）",
-    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --ledger /app/work/rubrics.json --out /app/work/verify_check.json --emit-into",
-    "output_ref": "/app/work/verify_check.json",
+    "action": "结构守卫自检",
+    "command": "python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "output_ref": "/app/work/schema_guard.json",
     "status": "done"
    }
   ],
@@ -544,446 +469,55 @@
    "manual_takeover": []
   },
   "verdict": "audited",
-  "verdict_basis": "六分面×5 章节全覆盖，12 条发现全部判定（9 confirmed / 1 pending / 2 suppressed），2 条链节点完备，3 条核心结论完成强度登记，无 unchecked 缺口",
+  "verdict_basis": "摘要+结果核心主张 8 条全覆盖，6 条发现全部判定（5 confirmed / 1 pending），主张 8 条全部登记强度匹配，无 unchecked 缺口",
   "gain_evidence": {
-   "probe_version": "1.0",
-   "probe_tool": "scripts/gain_probe.py",
-   "case_id": "demo-argchain-001",
-   "input": {
-    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-16d4414d\\submission\\examples\\example-result.json",
-    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-16d4414d\\submission\\examples\\example-case.json",
-    "case_contract_state": "enforced",
-    "same_input_for_both_runs": true,
-    "run_order": [
-     "normal",
-     "degraded"
-    ],
-    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
-   },
-   "runs": [
-    {
-     "mode": "normal",
-     "ablate": "none",
-     "verdict": "PASS",
-     "problems": 0,
-     "metrics": {
-      "location_violations_objective": 0,
-      "location_caught": 0,
-      "location_missed": 0,
-      "taxonomy_violations_objective": 0,
-      "taxonomy_caught": 0,
-      "taxonomy_missed": 0,
-      "strength_violations_objective": 0,
-      "strength_caught": 0,
-      "strength_missed": 0,
-      "chain_violations_objective": 0,
-      "chain_caught": 0,
-      "chain_missed": 0,
-      "pending_violations_objective": 0,
-      "pending_caught": 0,
-      "pending_missed": 0,
-      "manual_review_items": 0,
-      "manual_review_breakdown": {
-       "unjudged": 0,
-       "no_revision_suggestion": 0,
-       "location_missed": 0,
-       "taxonomy_missed": 0,
-       "strength_missed": 0,
-       "chain_missed": 0,
-       "pending_missed": 0
-      },
-      "steps_count": 78,
-      "steps_detail": {
-       "checks_executed": 71,
-       "checks_disabled": 0,
-       "flow_steps_total": 7,
-       "flow_steps_done": 7
-      },
-      "clarification_rounds": 0
-     },
-     "wall_clock_seconds": 0.0009
-    },
-    {
-     "mode": "degraded",
-     "ablate": "all",
-     "verdict": "PASS",
-     "problems": 0,
-     "metrics": {
-      "location_violations_objective": 0,
-      "location_caught": 0,
-      "location_missed": 0,
-      "taxonomy_violations_objective": 0,
-      "taxonomy_caught": 0,
-      "taxonomy_missed": 0,
-      "strength_violations_objective": 0,
-      "strength_caught": 0,
-      "strength_missed": 0,
-      "chain_violations_objective": 0,
-      "chain_caught": 0,
-      "chain_missed": 0,
-      "pending_violations_objective": 0,
-      "pending_caught": 0,
-      "pending_missed": 0,
-      "manual_review_items": 0,
-      "manual_review_breakdown": {
-       "unjudged": 0,
-       "no_revision_suggestion": 0,
-       "location_missed": 0,
-       "taxonomy_missed": 0,
-       "strength_missed": 0,
-       "chain_missed": 0,
-       "pending_missed": 0
-      },
-      "steps_count": 7,
-      "steps_detail": {
-       "checks_executed": 0,
-       "checks_disabled": 5,
-       "flow_steps_total": 7,
-       "flow_steps_done": 7
-      },
-      "clarification_rounds": 0
-     },
-     "wall_clock_seconds": 0.0006
-    }
-   ],
-   "delta_normal_minus_degraded": {
-    "location_missed": 0,
-    "taxonomy_missed": 0,
-    "strength_missed": 0,
-    "chain_missed": 0,
-    "pending_missed": 0,
-    "manual_review_items": 0,
-    "steps_count": 71,
-    "clarification_rounds": 0
-   },
-   "mechanism_to_metric_map": [
-    {
-     "metric": "location_missed",
-     "mechanism": "定位可回证（findings 与链节点的 quote 空白归一化后须逐字出现在稿件原文中 + location 非空）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后引文张冠李戴、位置缺失不再被判 FAIL，清单不可回原文核对"
-    },
-    {
-     "metric": "taxonomy_missed",
-     "mechanism": "分类口径一致（issue_taxonomy 六类判定前声明 + issue_type 枚举 + severity 分级映射 + issue_type×facet 交叉一致）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后问题类型可随意填、严重度可随意抬升，分类口径失效"
-    },
-    {
-     "metric": "strength_missed",
-     "mechanism": "强度匹配判定登记（strength_scale 双侧标尺判定前声明 + strength_mismatch 发现须登记 + C3 须 E3 映射规则 + 字段完备）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后结论超证据等级不登记，强度不匹配漏检"
-    },
-    {
-     "metric": "chain_missed",
-     "mechanism": "论证链节点完备（每条链 ≥2 节点，含 premise/hypothesis 与 conclusion；chain_ref 指向存在节点）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后断链/缺结论的链不再判 FAIL，论证链追踪退化为叙述"
-    },
-    {
-     "metric": "pending_missed",
-     "mechanism": "待复核与误报抑制登记（pending⇒pending_review 含 reason+needed_action；suppressed⇒suppressed[] 且 rule_id 须在事前规则表内）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后待定条目可静默漏登记、误报抑制可绕过规则表，人工复核入口丢失"
-    },
-    {
-     "metric": "manual_review_items",
-     "mechanism": "漏检 + 未判定 + 缺修改建议合计",
-     "formula": "unjudged + no_revision_suggestion + 五类漏检",
-     "higher_is_better": false,
-     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
-    },
-    {
-     "metric": "steps_count",
-     "mechanism": "七步线性流程 + 机械校验三元组自检",
-     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
-     "higher_is_better": null,
-     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
-    },
-    {
-     "metric": "clarification_rounds",
-     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
-     "formula": "ceil(manual_review_items / 3)",
-     "higher_is_better": false,
-     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
-    }
-   ],
-   "boundaries": [
-    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
-    "退化模式关闭五组检查（location/taxonomy/strength/chain/pending），枚举、结构守卫、coverage 汇总一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
-    "五类违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
-    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
-    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
-   ],
-   "failure_conditions": [
-    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
-    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，定位回证退化为不可判（src 为空）。",
-    "三口径（severity/issue_taxonomy/strength_scale）未事前声明时对应真值不可得，漏检数记违规而非『无违规』。",
-    "把 --ablate 的退化结果当作交付自检结论即为误用。",
-    "污染反例自测只在副本上注入，原 result.json 不被修改。"
-   ],
-   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
-   "pollution_selftest": {
-    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\wk5\\wk\\gain_probe_polluted.json",
-    "injected": [
-     "F01 清空 quote/location（定位失据）",
-     "F06 issue_type 篡改为非法值 unknown_type（枚举违规，基础层始终开启负责抓取）",
-     "F07 suggestion 但 severity 抬升为 major（分级口径违规）",
-     "F01 fact_error 但清空对照依据 evidence",
-     "F08 标 pending 但清空 pending_reason",
-     "链 C1 删除 conclusion 节点（链完备违规）",
-     "清空 strength_matches（强度匹配判定登记丢失）",
-     "清空 pending_review（待复核登记丢失）",
-     "清空 claims（证据链缺失）"
-    ],
-    "normal_mode": {
-     "verdict": "FAIL",
-     "problems": 21,
-     "location_missed": 0,
-     "taxonomy_missed": 0,
-     "strength_missed": 0,
-     "chain_missed": 0,
-     "pending_missed": 0,
-     "problem_sample": [
-      "F06 issue_type 枚举非法: 'unknown_type'（须六类之一）",
-      "F01 quote 不在稿件原文中或过短（定位可回证失败）",
-      "F01 location（原文位置）为空",
-      "F07 违反严重度口径（suggestion ⇒ minor，实际 category=suggestion severity=major）",
-      "F12 issue_type=strength_mismatch 但 strength_matches 未登记",
-      "F06 涉及结论强度表述但 strength_matches 未登记",
-      "链 C1 缺 conclusion 节点（论证链节点完备性违规）",
-      "F01 chain_ref='C1-N4' 指向不存在的链节点"
-     ]
-    },
-    "degraded_mode": {
-     "verdict": "FAIL",
-     "problems": 3,
-     "location_missed": 1,
-     "taxonomy_missed": 1,
-     "strength_missed": 1,
-     "chain_missed": 1,
-     "pending_missed": 10,
-     "problem_sample": [
-      "F06 issue_type 枚举非法: 'unknown_type'（须六类之一）",
-      "F06 涉及结论强度表述但 strength_matches 未登记",
-      "coverage.issue_type_counts 与实际不符: ['strength_mismatch']"
-     ]
-    },
-    "missed_detection_delta": {
-     "location_missed": 1,
-     "taxonomy_missed": 1,
-     "strength_missed": 1,
-     "chain_missed": 1,
-     "pending_missed": 10,
-     "problems": -18
-    },
-    "caught_by_normal_mode": true,
-    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
-   }
+   "available": false,
+   "reason": "预算过半跳过增益层，如实记录不编造数字"
   },
   "efficiency": {
-   "collected_by": "scripts/gain_probe.py（自动采集）",
-   "wall_clock_seconds_total": 0.0107,
-   "result_bytes": 39661,
-   "input_files_scanned": 2,
+   "wall_clock_seconds_total": null,
    "checker_runs": 2,
-   "checker_checks_executed_normal": 71,
-   "checker_checks_executed_degraded": 0,
-   "checker_checks_disabled_degraded": 5,
-   "findings_total": 12,
-   "chains_total": 2,
-   "strength_matches_total": 3,
-   "manual_review_items_normal": 0,
-   "manual_review_items_degraded": 0,
-   "clarification_rounds_normal": 0,
-   "clarification_rounds_degraded": 0,
-   "model_requests": null,
-   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
-   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+   "reproduce": "python3 /skills/weekly-skill/scripts/evidence_check.py --result /app/output/result.json --case /input/case.json"
   },
-  "chain_audit": {
-   "total_chains": 2,
-   "complete_chains": 2,
-   "incomplete_chains": 0,
-   "total_nodes": 7,
-   "per_chain": [
-    {
-     "chain_id": "C1",
-     "name": "主论证链：使用→抑郁",
-     "node_count": 4,
-     "role_counts": {
-      "hypothesis": 1,
-      "premise": 1,
-      "reasoning": 1,
-      "conclusion": 1
-     },
-     "complete": true,
-     "issues": []
-    },
-    {
-     "chain_id": "C2",
-     "name": "政策外推链：相关→干预",
-     "node_count": 3,
-     "role_counts": {
-      "premise": 1,
-      "reasoning": 1,
-      "conclusion": 1
-     },
-     "complete": true,
-     "issues": []
-    }
-   ],
-   "note": "由 chain_audit.py 机械审计；incomplete_chains>0 时对应链落 unchecked"
-  }
+  "dimension_coverage": [
+   {
+    "dimension": "claim_extraction",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "dimension": "evidence_support",
+    "status": "checked_findings",
+    "count": 6
+   },
+   {
+    "dimension": "reasoning_chain",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "dimension": "section_coherence",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "dimension": "severity",
+    "status": "checked_findings",
+    "count": 1
+   }
+  ],
+  "review_report": "## 总体结论\n本文为一项横断研究，考察在线学习平台使用强度与学业成绩的关系。整体逻辑存在几处需修订的问题：摘要与正文样本数不一致、由横断相关直接推出因果结论并给出强制政策建议、部分引用与论断对应关系需核验。\n\n## 五维度小结\n- 论点与主张抽取：抽取出核心主张，发现1处主张超出数据范围（强制推广建议）。\n- 证据支撑核查：4处证据支撑问题，含结论超出数据、引用不支持观点。\n- 推理链完整性：横断相关设计未排除反向因果与混杂，因果推断存在跳跃。\n- 章节衔接一致性：摘要写48名、方法写36名，摘要与正文样本数不一致。\n- 严重度与修改建议：各问题已按是否影响主结论/可修正性分级，并给出落到句子的修改建议。\n\n## 主要问题清单\n共识别 10 处问题（critical / major / minor 分级），详见 findings 逐条。\n\n## 待复核项\n被引文献主张需调取原文核对；样本数矛盾需作者确认正确值。"
  },
- "claims": [
-  {
-   "claim_id": "c-01",
-   "text": "以横断相关证据断言因果改善（因果相关混淆）",
-   "kind": "reported",
-   "source_id": "F01",
-   "location": "findings[0]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[4].text",
-     "quote": "结果表明减少社交媒体使用能够改善青少年抑郁状况"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-02",
-   "text": "从单一学校样本外推至全体青少年政策",
-   "kind": "reported",
-   "source_id": "F02",
-   "location": "findings[1]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[4].text",
-     "quote": "因此应在全体青少年群体中推广「社交媒体使用限制」政策"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-03",
-   "text": "主要原因断言缺少替代解释讨论",
-   "kind": "inferred",
-   "source_id": "F03",
-   "location": "findings[2]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[4].text",
-     "quote": "综上，社交媒体使用是青少年抑郁上升的主要原因"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-04",
-   "text": "假设隐含时间先后但设计无法确立",
-   "kind": "inferred",
-   "source_id": "F04",
-   "location": "findings[3]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[1].text",
-     "quote": "过度使用社交媒体很可能是青少年抑郁的重要诱因"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-05",
-   "text": "反向因果数据被用来印证正向主张（循环论证）",
-   "kind": "reported",
-   "source_id": "F05",
-   "location": "findings[4]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[4].text",
-     "quote": "抑郁倾向较重的青少年往往更依赖社交媒体，这印证了社交媒体使用对抑郁的促进作用"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-06",
-   "text": "摘要『首次证实因果路径』超出证据等级",
-   "kind": "reported",
-   "source_id": "F06",
-   "location": "findings[5]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[0].text",
-     "quote": "本文首次证实了社交媒体使用导致青少年抑郁的因果路径"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-07",
-   "text": "引言承诺分级干预方案但讨论未交付",
-   "kind": "inferred",
-   "source_id": "F07",
-   "location": "findings[6]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[1].text",
-     "quote": "第 5 节将给出可落地的分级干预方案"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-08",
-   "text": "引用 [3] 是否支持因果表述待复核",
-   "kind": "reported",
-   "source_id": "F08",
-   "location": "findings[7]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[1].text",
-     "quote": "另有研究证实了社交媒体导致抑郁的因果效应 [3]"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-09",
-   "text": "方法与结果的抑郁测量口径不一致",
-   "kind": "inferred",
-   "source_id": "F11",
-   "location": "findings[10]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[2].text",
-     "quote": "采用单题自评「你最近是否常感到不开心」测量抑郁水平"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-10",
-   "text": "亚组方向反转被隐去导致稳健性夸大",
-   "kind": "reported",
-   "source_id": "F12",
-   "location": "findings[11]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[3].text",
-     "quote": "女生亚组中相关方向反转为负相关（r=-0.21），本文不再报告"
-    }
-   ]
-  }
- ],
  "uncertainties": {
   "unreported": [],
   "unverifiable": [
-   "参考文献 [3] 全文未获取，其是否支持因果表述无法核对（F08 pending）"
+   "参考文献 [2] 全文未获取，其是否支持因果表述无法核对（F05 pending）"
   ],
   "conflicts": [],
   "human_review": [
-   "F08 需人工获取 [3] 全文后复核引用支持强度"
+   "F05 需人工获取 [2] 全文后复核引用支持强度"
   ],
-  "summary": "本示例为合成稿件；唯一不可核对项为引用 [3] 的原文支持强度，已登记待复核。"
+  "summary": "本示例为合成稿件；唯一不可核对项为引用 [2] 的原文支持强度，已登记待复核。"
  },
  "changelog": [
   {
@@ -996,23 +530,15 @@
   },
   {
    "step": "step2",
-   "change": "抽取 2 条论证链 + 12 条发现（9 confirmed / 1 pending / 2 suppressed）"
+   "change": "抽取 8 条主张 + 6 条发现（5 confirmed / 1 pending）"
   },
   {
    "step": "step3",
-   "change": "chain_audit 回写链完备/覆盖/unchecked"
+   "change": "evidence_check 回写校验报告与 coverage"
   },
   {
    "step": "step4",
-   "change": "登记 3 条强度匹配判定 + 1 条待复核 + 2 条抑制 + 10 条 claims"
-  },
-  {
-   "step": "step5",
-   "change": "gain_probe 双跑回填 gain_evidence/efficiency"
-  },
-  {
-   "step": "step6",
-   "change": "verify_check + schema_guard 自检通过后覆盖写盘"
+   "change": "schema_guard 自检通过"
   }
  ],
  "self_check": [
@@ -1041,12 +567,6 @@
    "match": true
   },
   {
-   "item": "findings[4].location_backed",
-   "template_value": "quote 逐字回证于稿件原文 + location 非空",
-   "applied": true,
-   "match": true
-  },
-  {
    "item": "findings[5].location_backed",
    "template_value": "quote 逐字回证于稿件原文 + location 非空",
    "applied": true,
@@ -1059,62 +579,80 @@
    "match": true
   },
   {
-   "item": "findings[10].location_backed",
+   "item": "findings[7].location_backed",
    "template_value": "quote 逐字回证于稿件原文 + location 非空",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[11].location_backed",
+   "item": "findings[8].location_backed",
    "template_value": "quote 逐字回证于稿件原文 + location 非空",
    "applied": true,
    "match": true
   },
   {
-   "item": "chains[0].nodes[0].location_backed",
-   "template_value": "链节点 quote 逐字回证于稿件原文 + location 非空",
+   "item": "findings[9].location_backed",
+   "template_value": "quote 逐字回证于稿件原文 + location 非空",
    "applied": true,
    "match": true
   },
   {
-   "item": "chains[0].nodes[1].location_backed",
-   "template_value": "链节点 quote 逐字回证于稿件原文 + location 非空",
+   "item": "claims[0].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
    "applied": true,
    "match": true
   },
   {
-   "item": "chains[0].nodes[2].location_backed",
-   "template_value": "链节点 quote 逐字回证于稿件原文 + location 非空",
+   "item": "claims[1].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
    "applied": true,
    "match": true
   },
   {
-   "item": "chains[0].nodes[3].location_backed",
-   "template_value": "链节点 quote 逐字回证于稿件原文 + location 非空",
+   "item": "claims[2].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
    "applied": true,
    "match": true
   },
   {
-   "item": "chains[1].nodes[0].location_backed",
-   "template_value": "链节点 quote 逐字回证于稿件原文 + location 非空",
+   "item": "claims[3].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
    "applied": true,
    "match": true
   },
   {
-   "item": "chains[1].nodes[1].location_backed",
-   "template_value": "链节点 quote 逐字回证于稿件原文 + location 非空",
+   "item": "claims[4].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
    "applied": true,
    "match": true
   },
   {
-   "item": "chains[1].nodes[2].location_backed",
-   "template_value": "链节点 quote 逐字回证于稿件原文 + location 非空",
+   "item": "claims[5].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[6].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[7].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[8].location_backed",
+   "template_value": "主张 quote 逐字回证于稿件原文 + location 非空",
    "applied": true,
    "match": true
   },
   {
    "item": "issue_taxonomy.declared",
-   "template_value": "六类问题口径判定前声明（declared_at + types 非空）",
+   "template_value": "五类问题口径判定前声明（declared_at + types 非空）",
    "applied": true,
    "match": true
   },
@@ -1131,20 +669,8 @@
    "match": true
   },
   {
-   "item": "findings[0].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
-   "applied": true,
-   "match": true
-  },
-  {
    "item": "findings[1].severity_rule",
    "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[1].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
    "applied": true,
    "match": true
   },
@@ -1155,20 +681,8 @@
    "match": true
   },
   {
-   "item": "findings[2].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
-   "applied": true,
-   "match": true
-  },
-  {
    "item": "findings[3].severity_rule",
    "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[3].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
    "applied": true,
    "match": true
   },
@@ -1179,20 +693,8 @@
    "match": true
   },
   {
-   "item": "findings[4].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
-   "applied": true,
-   "match": true
-  },
-  {
    "item": "findings[5].severity_rule",
    "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[5].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
    "applied": true,
    "match": true
   },
@@ -1203,20 +705,8 @@
    "match": true
   },
   {
-   "item": "findings[6].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
-   "applied": true,
-   "match": true
-  },
-  {
    "item": "findings[7].severity_rule",
    "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[7].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
    "applied": true,
    "match": true
   },
@@ -1227,223 +717,204 @@
    "match": true
   },
   {
-   "item": "findings[8].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
-   "applied": true,
-   "match": true
-  },
-  {
    "item": "findings[9].severity_rule",
    "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[9].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[10].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[10].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[11].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[11].taxonomy_cross",
-   "template_value": "issue_type 与 facet 交叉一致（strength_mismatch 须落在强度分面）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "strength_scale.declared",
+   "item": "evidence_scale.declared",
    "template_value": "双侧强度标尺判定前声明（declared_at + levels + rule 非空）",
    "applied": true,
    "match": true
   },
   {
-   "item": "strength_matches[0].fields",
-   "template_value": "强度判定字段齐（verdict 枚举 + 双侧等级 + basis）",
+   "item": "claims[0].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
    "applied": true,
    "match": true
   },
   {
-   "item": "strength_matches[0].mapping_rule",
+   "item": "claims[0].mapping_rule",
    "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
    "applied": true,
    "match": true
   },
   {
-   "item": "strength_matches[1].fields",
-   "template_value": "强度判定字段齐（verdict 枚举 + 双侧等级 + basis）",
+   "item": "claims[1].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
    "applied": true,
    "match": true
   },
   {
-   "item": "strength_matches[1].mapping_rule",
+   "item": "claims[1].mapping_rule",
    "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
    "applied": true,
    "match": true
   },
   {
-   "item": "strength_matches[2].fields",
-   "template_value": "强度判定字段齐（verdict 枚举 + 双侧等级 + basis）",
+   "item": "claims[2].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
    "applied": true,
    "match": true
   },
   {
-   "item": "strength_matches[2].mapping_rule",
+   "item": "claims[2].mapping_rule",
    "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[5].strength_registered",
-   "template_value": "confirmed 的强度不匹配发现 ⇒ strength_matches 登记",
+   "item": "claims[3].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[11].strength_registered",
-   "template_value": "confirmed 的强度不匹配发现 ⇒ strength_matches 登记",
+   "item": "claims[3].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
    "applied": true,
    "match": true
   },
   {
-   "item": "chains[0].node_complete",
-   "template_value": "链节点完备（≥2 节点，含 premise/hypothesis 与 conclusion，角色枚举合法）",
+   "item": "claims[4].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
    "applied": true,
    "match": true
   },
   {
-   "item": "chains[1].node_complete",
-   "template_value": "链节点完备（≥2 节点，含 premise/hypothesis 与 conclusion，角色枚举合法）",
+   "item": "claims[4].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[0].chain_ref",
-   "template_value": "chain_ref 须指向存在的链节点",
+   "item": "claims[5].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[1].chain_ref",
-   "template_value": "chain_ref 须指向存在的链节点",
+   "item": "claims[5].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[3].chain_ref",
-   "template_value": "chain_ref 须指向存在的链节点",
+   "item": "claims[6].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[4].chain_ref",
-   "template_value": "chain_ref 须指向存在的链节点",
+   "item": "claims[6].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[5].chain_ref",
-   "template_value": "chain_ref 须指向存在的链节点",
+   "item": "claims[7].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[11].chain_ref",
-   "template_value": "chain_ref 须指向存在的链节点",
+   "item": "claims[7].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[0].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
+   "item": "claims[8].fields",
+   "template_value": "主张强度字段齐（claim_strength + evidence_strength + judge + judge_basis）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[1].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
+   "item": "claims[8].mapping_rule",
+   "template_value": "C3 须 E3（C3 配 E2 以下不得判 supported）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[2].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
+   "item": "claims[0].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[3].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
+   "item": "claims[1].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[4].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
+   "item": "claims[2].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[5].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
+   "item": "claims[3].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[6].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
+   "item": "claims[4].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[7].pending_registered",
+   "item": "claims[5].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[6].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[7].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "claims[8].finding_link",
+   "template_value": "证据不足/结论过强的主张须有 confirmed 发现举证",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[0].claim_registered",
+   "template_value": "confirmed 的强度不匹配发现 ⇒ 有主张登记（claim_id）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[3].claim_registered",
+   "template_value": "confirmed 的强度不匹配发现 ⇒ 有主张登记（claim_id）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[5].claim_registered",
+   "template_value": "confirmed 的强度不匹配发现 ⇒ 有主张登记（claim_id）",
+   "applied": true,
+   "match": true
+  },
+  {
+   "item": "findings[4].pending_registered",
    "template_value": "pending ⇒ 登记 pending_review（reason+needed_action）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[8].suppression_registered",
-   "template_value": "suppressed ⇒ 登记 suppressed[]（rule_id 须在事前规则表内）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[9].suppression_registered",
-   "template_value": "suppressed ⇒ 登记 suppressed[]（rule_id 须在事前规则表内）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[10].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[11].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
    "applied": true,
    "match": true
   }
  ],
- "unbacked_numbers": [],
  "gates": [
   {
    "gate": "case_contract",
@@ -1452,16 +923,11 @@
   },
   {
    "gate": "rubrics_ledger",
-   "state": "enforced",
-   "note": ""
+   "state": "not_found",
+   "note": "/app/work/rubrics.json 台账缺失，下游不得宣称已核对"
   },
   {
-   "gate": "chain_audit_output",
-   "state": "enforced",
-   "note": ""
-  },
-  {
-   "gate": "chain_audit_output",
+   "gate": "coverage_output",
    "state": "enforced",
    "note": ""
   }

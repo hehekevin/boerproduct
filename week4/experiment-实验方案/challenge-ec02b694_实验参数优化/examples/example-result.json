@@ -159,7 +159,29 @@
   "gain_evidence": {
    "available": false,
    "reason": "精简策略：预算保护降级，跳过正常/退化双重增益对照"
-  }
+  },
+  "response_metric": {
+   "definition": "催化转化率",
+   "unit": "%",
+   "measurement": "HPLC 定量反应产物",
+   "acceptable_fluctuation": "±5%",
+   "prediction": "经验规则 + 文献 DOE 表3",
+   "uncertainty": "文献 DOE 为不同催化剂体系，跨体系迁移有不确定性"
+  },
+  "search_strategy": {
+   "type": "staged_screening",
+   "initial_points": "以温度150℃、催化剂15mmol/L 为起点，单因子扫温度 120/135/150/165℃",
+   "per_round_additions": "温度最优后再扫催化剂浓度 5/10/15/20/25 mmol/L",
+   "adjustment_rule": "上一轮最优值作为下一轮中心，超界即回退"
+  },
+  "cost_tradeoff": {
+   "machine_hours": "2h/次实验",
+   "consumables": "100元/次实验",
+   "sample_count": "温度扫描 4 次 + 浓度扫描 5 次 = 9 次",
+   "throughput": "9 次 × 2h = 18h 机时，900 元耗材",
+   "tradeoff_rule": "预算不足时砍浓度扫描低价值点（25mmol/L 边缘点），牺牲±2%转化率精度换成本"
+  },
+  "plan_report": "## 研究目标\n在固定机时（18h 内）与耗材预算（约 900 元）内，为催化微反应器实验识别关键参数并给出可行域与搜索方案。\n\n## 关键参数与可行域\n- 反应温度：150℃，可行域 [120,175]℃，上限受 PEEK 密封件耐温 175℃ 限制（设备手册 SOP-12 附录A）。\n- 催化剂浓度：15 mmol/L，可行域 [5,25] mmol/L（文献 lit-doe-2019 表3）。\n\n## 响应指标\n催化转化率（%），HPLC 定量，可接受波动 ±5%。用文献 DOE + 经验规则预估，跨体系迁移有不确定性。\n\n## 搜索策略\n分阶段筛选：先单因子扫温度（120/135/150/165℃）定最优，再扫浓度（5/10/15/20/25 mmol/L）。上一轮最优作下一轮中心。\n\n## 成本权衡\n温度扫描 4 次 + 浓度扫描 5 次 = 9 次实验，共 18h 机时、900 元耗材。预算不足时砍浓度边缘点（25mmol/L），牺牲约±2%精度换成本。\n\n## 风险与待确认\nEHS 确认前不得执行温度上移实验；材料耐温 175℃ 为硬约束不可突破。"
  },
  "claims": [
   {
@@ -308,8 +330,8 @@
   },
   {
    "gate": "skill_scripts",
-   "state": "enforced",
-   "note": ""
+   "state": "not_found",
+   "note": "skill_marker.json 缺失或脚本不齐，下游不得宣称已核对"
   },
   {
    "gate": "param_feasibility_check",

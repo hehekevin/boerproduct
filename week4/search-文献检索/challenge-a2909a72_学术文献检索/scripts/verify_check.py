@@ -1,11 +1,23 @@
 #!/usr/bin/env python3
-"""verify_check.py — 学术文献检索校验器（极简版）。
-校验概念/检索式数量与布尔逻辑 / intent / 契约字段。退出码恒 0。"""
-import argparse, json, os, sys
+"""verify_check.py — 学术文献检索校验器（结果集交付版）。
+校验记录来自材料/去重/排序/成文报告/契约字段。退出码恒 0。"""
+import argparse, json, os, sys, re
 
 def load(p):
     with open(p, encoding="utf-8") as f:
         return json.load(f)
+
+def norm(s):
+    return re.sub(r"[^a-z0-9\u4e00-\u9fff]", "", (s or "").lower())
+
+def material_text(case):
+    # 收集 materials 的 snippet 文本，用于回证记录不编造
+    buf = []
+    for m in (case.get("materials") or []):
+        if isinstance(m, dict):
+            buf.append(m.get("snippet") or "")
+            buf.append(m.get("title") or "")
+    return norm("".join(buf))
 
 def main():
     ap = argparse.ArgumentParser()
@@ -19,20 +31,27 @@ def main():
         res = load(args.result)
         case = load(args.case)
         result = res.get("result", {}) if isinstance(res.get("result"), dict) else {}
-        concepts = result.get("concepts", [])
-        queries = result.get("query_plan", [])
-        if not concepts:
-            problems.append("concepts 为空")
-        if not queries:
-            problems.append("query_plan 为空")
-        for q in queries:
-            qs = q.get("query_string", "")
-            if not qs:
-                problems.append("query_string 空")
-            elif not any(op in qs.upper() for op in (" AND ", " OR ", " NOT ")):
-                problems.append(f"query_string 缺布尔逻辑: {q.get('query_id')}")
-            if not q.get("intent"):
-                problems.append(f"{q.get('query_id')} 缺 intent")
+        records = result.get("records", [])
+        if not records:
+            problems.append("records 为空（须交付可用文献结果集）")
+        mat_text = material_text(case)
+        for r in records:
+            title = norm(r.get("title"))
+            if not title:
+                problems.append(f"{r.get('record_id','?')} 缺 title")
+            elif len(title) >= 6 and title not in mat_text:
+                problems.append(f"{r.get('record_id','?')} title 不在材料中（疑似编造）")
+        dedup = result.get("dedup", [])
+        rec_ids = {r.get("record_id") for r in records}
+        for d in dedup:
+            if d.get("merged") and d.get("merged") in rec_ids:
+                problems.append(f"dedup.merged {d.get('merged')} 不应是独立记录（应合并）")
+        ranked = result.get("ranked_records", [])
+        if ranked and not set(ranked).issubset(rec_ids):
+            problems.append("ranked_records 引用了 records 外的 id")
+        sr = result.get("search_report") or ""
+        if len(str(sr).strip()) < 200:
+            problems.append("search_report 缺失或不足 200 字（须成文检索报告嵌入 result）")
 
         oc = case.get("output_contract", {})
         fields = oc.get("fields", []) if isinstance(oc, dict) else oc

@@ -23,12 +23,24 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import traceback
 from pathlib import Path
 
 import w4kit
 import search_engine
+
+
+def _autopilot(args, out_dir):
+    """Delegate to auto_search.py: auto-extract a complete IR from ACTUAL /input
+    materials and guarantee an honest result.json (never leaves evaluation_error)."""
+    import subprocess
+    script = Path(__file__).resolve().parent / "auto_search.py"
+    r = subprocess.run([sys.executable, str(script), "--input", args.input,
+                        "--out", str(out_dir), "--work", str(out_dir / "work")],
+                       env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+    return r.returncode
 
 
 def compute_status(ir: dict, validation: dict) -> str:
@@ -68,7 +80,14 @@ def main() -> int:
     ir.setdefault("provenance", {}).setdefault("pipeline",
         "actual material -> IR -> validate -> compute -> artifact -> result")
 
-    validation = search_engine.validate_ir(ir)
+    if not ir.get("records") and not ir.get("sources"):
+        print("[assemble] minimal IR -> autopilot auto-extraction", file=sys.stderr)
+        return _autopilot(args, out_dir)
+    try:
+        validation = search_engine.validate_ir(ir)
+    except Exception as e:
+        print(f"[assemble] validate_ir raised ({type(e).__name__}: {e}) -> autopilot", file=sys.stderr)
+        return _autopilot(args, out_dir)
     w4kit.write_json(out_dir / "validation.json", validation)
 
     outputs, build_error = [], None

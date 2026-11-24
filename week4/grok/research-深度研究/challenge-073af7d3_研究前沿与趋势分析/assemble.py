@@ -12,6 +12,7 @@ IR file's directory and the input directory.
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 import traceback
 from pathlib import Path
@@ -19,6 +20,17 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import w4kit  # noqa: E402
 import research_engine as engine  # noqa: E402
+
+
+def _autopilot(args, out_dir):
+    """Delegate to auto_research.py: auto-extract a complete IR from ACTUAL /input
+    materials and guarantee an honest result.json (never leaves evaluation_error)."""
+    import subprocess
+    script = Path(__file__).resolve().parent / "auto_research.py"
+    r = subprocess.run([sys.executable, str(script), "--input", args.input,
+                        "--out", str(out_dir), "--work", str(out_dir / "work")],
+                       env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+    return r.returncode
 
 
 def main() -> int:
@@ -49,7 +61,14 @@ def main() -> int:
     ir["_base_dirs"] = [str(Path(args.ir).resolve().parent),
                         str(Path(args.input).resolve())]
 
-    validation = engine.validate_ir(ir)
+    if not ir.get("sources") and not ir.get("claims"):
+        print("[assemble] minimal IR -> autopilot auto-extraction", file=sys.stderr)
+        return _autopilot(args, out_dir)
+    try:
+        validation = engine.validate_ir(ir)
+    except Exception as e:
+        print(f"[assemble] validate_ir raised ({type(e).__name__}: {e}) -> autopilot", file=sys.stderr)
+        return _autopilot(args, out_dir)
     w4kit.write_json(out_dir / "validation.json", validation)
 
     outputs, build_error = [], None

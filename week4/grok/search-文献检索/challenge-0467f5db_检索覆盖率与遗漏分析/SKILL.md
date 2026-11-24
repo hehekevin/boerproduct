@@ -45,7 +45,10 @@ THEN, within remaining budget, refine judgment-heavy fields in /app/work/search_
 to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
 
 ## Workflow (detail: docs/WORKFLOW.md)
-1. Inventory inputs (w4kit.list_materials); register sources[] {id, path, type, name}.
+1. Run `PYTHONDONTWRITEBYTECODE=1 python auto_search.py --input /input --out /app/output`
+   to auto-extract materials and produce a complete baseline result.json. Then, within
+   budget, refine judgment-heavy fields in /app/work/search_ir.json and re-run
+   assemble.py to improve. Save partial early; never fabricate.
 2. Read the material; fill the IR per `rules/rules_coverage_analysis.md` and the schema below.
    Keep original queries, raw snippets, field-level sources; judge relevance /
    decisions / grades yourself and attach evidence locators.

@@ -28,6 +28,16 @@ kind `result_anomaly` (实验结果解释与异常分析).
   values + tolerances, calibration records, run logs, control measurements. Register
   the real files; trust content over labels.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_experiment.py --input /input --out /app/output --work /app/work`
+Auto-registers sources/documents from the ACTUAL /input materials, auto-fills the complete experiment
+IR into /app/work, runs the SAME validate+build path as assemble.py, and ALWAYS writes an honest
+result.json (try/except fallback preserves every output_contract key + case_id) — even on empty input
+or failure. Judgment it cannot verify is flagged human_confirm; never fabricated. THEN, within remaining
+budget, refine the auto-filled IR in /app/work and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/experiment_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory inputs (w4kit.list_materials); register sources[] + documents[].
 2. Read material; fill results[] {metric, expected, observed (value or replicate list), tolerance (abs or {abs,pct}), unit, evidence, series?}. Transcribe anomalies[] {id, observation, candidate_causes[{cause, support, evidence, status}], action}. A cause asserted as supported REQUIRES evidence; unsupported → unknown/insufficient_evidence. Add follow_up[] and unexplained[].

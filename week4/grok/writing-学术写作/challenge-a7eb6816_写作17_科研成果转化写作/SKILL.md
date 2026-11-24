@@ -27,6 +27,16 @@ algorithms, experimental design, PPT software), per the statement.
 `/input/task.md`, actual materials (docx/pdf/csv/images) + template if provided.
 Read files; trust content over labels.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_write.py --input /input --out /app/output --work /app/work`
+Auto-registers sources from the ACTUAL /input materials, auto-fills the complete writing IR into
+/app/work, runs the SAME validate+build path as the package assembler, and ALWAYS writes an honest
+result.json (try/except fallback preserves every output_contract key + case_id) — even on empty
+input or failure. Targets/translations it cannot verify are null + human_confirm; never invented.
+THEN, within remaining budget, refine the auto-filled IR in /app/work and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble_write.py --ir /app/work/<ir>.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WRITING_WORKFLOW.md)
 1. Read & register sources with precise locators.
 2. Fill writing IR per `rules/rules_sci_translation.md` (claims+evidence+strength,

@@ -68,6 +68,13 @@ show shows shown found report reported reports according given figure fig table
 SKILL_KIND = {
     "literature-intelligent-qa": "literature_qa",
     "scientific-figure-parsing": "figure_parse",
+    "multi-document-comparison": "multi_doc_compare",
+    "literature-conclusion-data-extraction": "conclusion_extraction",
+    "literature-evidence-verification": "evidence_verification",
+    "formula-parsing-math-reasoning": "formula_reasoning",
+    "paper-reproduction-method-verification": "reproduction",
+    "literature-reading-benchmark-eval": "reading_benchmark",
+    "literature-data-cleaning-standardization": "data_cleaning",
 }
 
 WORKORDER_HINTS = [
@@ -76,6 +83,7 @@ WORKORDER_HINTS = [
     ("data_cleaning", ["cleaning-workorder", "clean"]),
     ("formula_reasoning", ["formula"]),
     ("reading_benchmark", ["benchmark-workorder", "benchmark"]),
+    ("reproduction", ["reproduction-workorder", "reproduction", "replication", "repro"]),
     ("literature_qa", ["questions.json", "question"]),
     ("conclusion_extraction", ["target-fields", "fields.json"]),
 ]
@@ -363,7 +371,8 @@ def detect_kind(args_kind, case, store):
     valid = (readkit.KINDS if readkit else
              {"literature_qa", "figure_parse", "conclusion_extraction",
               "evidence_verification", "multi_doc_compare", "data_cleaning",
-              "formula_reasoning", "reading_client"})
+              "formula_reasoning", "reading_client", "reproduction",
+              "reading_benchmark"})
     if args_kind:
         k = args_kind.strip().replace("-", "_")
         if k in valid:
@@ -416,16 +425,22 @@ def best_sentence(store, query_text, min_hits=1):
     return d, p, s, hits, ratio
 
 
-def extract_field(store, fid, ftext):
+def extract_field(store, fid, ftext, docs=None):
     """One honest item per requested field: label match > numeric match >
-    lexical sentence match > insufficient_evidence."""
+    lexical sentence match > insufficient_evidence. `docs` optionally restricts
+    the search to a subset of documents (per-document comparison cells)."""
     label = re.sub(r"[_\-]+", " ", str(ftext or fid)).strip()
     item = {"id": fid, "field_id": fid, "value": None, "units": None,
             "kind": "reported", "status": "insufficient_evidence", "evidence": []}
+    scoped = [(d, p) for d in (docs if docs is not None else store.documents)
+              for p in d.get("paragraphs", [])]
+
+    def paragraphs():
+        return iter(scoped)
     # 1) explicit "label: value" / "label = value" in a paragraph
     pat = re.compile(r"(?:^|\n|(?<=[.!?])\s*)(" + re.escape(label) +
                      r")\s*[:：=]\s*([^\n]+)", re.I)
-    for d, p in store.all_paragraphs():
+    for d, p in paragraphs():
         m = pat.search(p["text"])
         if m:
             val = m.group(2).strip()
@@ -445,7 +460,7 @@ def extract_field(store, fid, ftext):
     qtok = tokens(label)
     if qtok:
         count_like = bool(re.search(r"\bn\b|sample|count|number|size", str(fid).lower() + " " + label.lower()))
-        for d, p in store.all_paragraphs():
+        for d, p in paragraphs():
             for s in sentences(p["text"]):
                 st = tokens(s)
                 hits = qtok & st
@@ -474,10 +489,19 @@ def extract_field(store, fid, ftext):
                                          "sentence); human_confirm",
                                  "evidence": [store.ev(d, p, s)]})
                     return item
-        # 3) lexical sentence match (text-valued field)
-        found = best_sentence(store, label, min_hits=max(1, min(2, len(qtok))))
+        # 3) lexical sentence match (text-valued field), within the scoped docs
+        found = None
+        for d, p in paragraphs():
+            for s in sentences(p["text"]):
+                hits = qtok & tokens(s)
+                if len(hits) < max(1, min(2, len(qtok))):
+                    continue
+                ratio = len(hits) / len(qtok)
+                key = (ratio, len(hits))
+                if found is None or key > found[0]:
+                    found = (key, d, p, s, ratio)
         if found:
-            d, p, s, hits, ratio = found
+            _, d, p, s, ratio = found
             if ratio >= 0.5:
                 item.update({"value": clip(s, 400), "status": "answered",
                              "evidence": [store.ev(d, p, s)]})
@@ -669,24 +693,45 @@ def build_figure(ir, store, req):
 
 
 def build_compare(ir, store, req):
+    """Common-field matrix, ONE ROW PER DOCUMENT; every cell is extracted from
+    THAT document only (scoped extract_field) so source_document_id, paragraph_id
+    and quote always agree. Missing cells stay honest insufficient_evidence."""
     fields = [f["id"] for f in req["fields"]] or ["main_result", "n", "condition"]
     texts = {f["id"]: f["text"] for f in req["fields"]}
     rows = []
     for d in store.documents:
         cells = []
         for fid in fields:
-            it = extract_field(store, fid, texts.get(fid))
+            it = extract_field(store, fid, texts.get(fid), docs=[d])
             ev = (it.get("evidence") or [{}])[0]
             cells.append({"field": fid, "value": it.get("value"),
                           "units": it.get("units"),
                           "status": it.get("status"),
                           "source_document_id": d["sid"],
                           "paragraph_id": ev.get("paragraph_id"),
-                          "quote": ev.get("quote")})
+                          "quote": ev.get("quote"),
+                          "metric": texts.get(fid) or fid,
+                          "condition": it.get("condition")})
         rows.append({"document_id": d["sid"], "task": store.case.get("case_id"),
                      "metric": ", ".join(fields), "condition": d["name"],
                      "cells": cells})
-    ir["matrix"] = {"fields": fields, "rows": rows, "conflict_explanation": {}}
+    # conflict explanation: attribute differing values to document/condition,
+    # never silently merge; only fields with >=2 reported differing values.
+    conflicts = {}
+    for fid in fields:
+        vals = [(r["document_id"], c) for r in rows for c in r["cells"]
+                if c["field"] == fid and c.get("value") is not None]
+        if len(vals) >= 2 and len({str(c["value"]) for _, c in vals}) > 1:
+            conflicts[fid] = ("values differ across documents (" +
+                              ", ".join(f"{doc}={c['value']}" for doc, c in vals) +
+                              "); attributed to sample/method/condition/metric "
+                              "differences between the source documents; see "
+                              "per-cell source_document_id + paragraph_id + quote")
+    ir["matrix"] = {"fields": fields, "rows": rows, "conflict_explanation": conflicts}
+    if conflicts:
+        store.add_unc("comparison conflicts",
+                      "differing values across documents for: " + ", ".join(conflicts) +
+                      "; comparability limited to same task/metric/condition")
     if len(store.documents) < 2:
         store.add_unc("comparison", "fewer than 2 document materials provided; "
                       "cross-document comparison not possible")
@@ -703,9 +748,22 @@ def build_cleaning(ir, store, req):
                                 "original": v, "value": v, "unit": None,
                                 "source": t["sid"],
                                 "condition": f"row {i}"})
-    ir["cleaning"] = {"field_mapping": {}, "allowed_values": {},
-                      "target_unit": None,
-                      "dedup_keys": ["source", "field", "condition"],
+    # organizer cleaning-workorder may declare mapping/allowed values/target unit
+    mapping, allowed, target_unit, dedup = {}, {}, None, ["source", "field", "condition"]
+    for name, data in store.workorder_raw.items():
+        if not isinstance(data, dict):
+            continue
+        if isinstance(data.get("field_mapping"), dict):
+            mapping.update(data["field_mapping"])
+        if isinstance(data.get("allowed_values"), dict):
+            allowed.update(data["allowed_values"])
+        if data.get("target_unit"):
+            target_unit = data["target_unit"]
+        if isinstance(data.get("dedup_keys"), list) and data["dedup_keys"]:
+            dedup = data["dedup_keys"]
+    ir["cleaning"] = {"field_mapping": mapping, "allowed_values": allowed,
+                      "target_unit": target_unit,
+                      "dedup_keys": dedup,
                       "records": records}
     if not records:
         store.add_unc("cleaning", "no tabular data material found; nothing to clean")
@@ -730,6 +788,191 @@ def build_formulas(ir, store, req):
         store.add_unc("formulas", "no formula located in provided material")
 
 
+def build_reproduction(ir, store, req):
+    """Reproduction workflow IR from ACTUAL material (text-only, honest):
+    locate code/data/params/deps/license mentions with locators (missing ones
+    registered not_reported); record paper-side params/env/results with evidence.
+    The autopilot NEVER executes code: repro values stay null, within-tolerance
+    is not computed, and the run is flagged human_confirm (partial)."""
+    asset_kw = {"code": r"\b(?:code|repository|repo|github|gitlab|source\s+code)\b",
+                "data": r"\b(?:data(?:set)?s?|csv|database|archive)\b",
+                "params": r"\b(?:param(?:eter)?s?|hyperparam(?:eter)?s?|settings?|config(?:uration)?)\b",
+                "deps": r"\b(?:dependenc(?:y|ies)|requirements?|package|library|version|python|pytorch|tensorflow)\b",
+                "license": r"\blicen[cs]e\b"}
+    assets = []
+    for name, pat in asset_kw.items():
+        found = None
+        for d, p in store.all_paragraphs():
+            m = re.search(pat, p["text"], re.I)
+            if m:
+                found = {"asset": name, "status": "reported",
+                         "locator": exact_quote(p["text"], m.group(0)) or clip(p["text"], 200),
+                         "version": None,
+                         "evidence": [store.ev(d, p, p["text"])]}
+                vm = re.search(r"\bv(?:ersion)?\.?\s*(\d+(?:\.\d+)+)", p["text"], re.I)
+                if vm:
+                    found["version"] = vm.group(1)
+                break
+        if found is None:
+            found = {"asset": name, "status": "not_reported", "version": None,
+                     "human_confirm": True,
+                     "note": f"{name} not located in provided material; registered missing"}
+        assets.append(found)
+    # params: explicit "name = value" / "name: value" patterns in the material
+    params = []
+    seen = set()
+    for d, p in store.all_paragraphs():
+        for m in re.finditer(r"(?:^|\n|(?<=[.!?])\s*)([A-Za-z][\w \-]{1,40}?)\s*[:：=]\s*"
+                             r"([-+]?\d+(?:\.\d+)?(?:\s*[a-zA-Zμ°%][\w/%.°μ-]*)?)\s*(?=[,.;\n]|$)",
+                             p["text"]):
+            name = m.group(1).strip()
+            if name.lower() in seen or len(name) < 2:
+                continue
+            seen.add(name.lower())
+            params.append({"name": name, "paper_value": m.group(2).strip(),
+                           "repo_value": None, "used": None,
+                           "source": d["sid"],
+                           "evidence": [store.ev(d, p, m.group(0))]})
+    # env mentions
+    env = []
+    for d, p in store.all_paragraphs():
+        if re.search(r"\b(?:environment|runtime|OS|ubuntu|windows|cuda|gpu|cpu|"
+                     r"python\s*\d|pytorch|tensorflow)\b", p["text"], re.I):
+            env.append({"source": d["sid"], "paragraph_id": p["id"],
+                        "description": clip(p["text"], 300),
+                        "evidence": [store.ev(d, p, p["text"])]})
+    # results: paper-side numeric findings; repro side never fabricated
+    results = []
+    metric_reqs = req["fields"] or []
+    if metric_reqs:
+        for f in metric_reqs:
+            it = extract_field(store, f["id"], f["text"])
+            ev = (it.get("evidence") or [{}])[0]
+            results.append({"metric": f["id"], "paper": it.get("value"),
+                            "repro": None, "tolerance": None, "within": None,
+                            "units": it.get("units"),
+                            "paragraph_id": ev.get("paragraph_id"),
+                            "evidence": it.get("evidence", []),
+                            "status": it.get("status"),
+                            "note": "paper value extracted from material; reproduction NOT "
+                                    "executed by autopilot (text-only); tolerance not "
+                                    "declared in material; human_confirm"})
+    else:
+        for d, p in store.all_paragraphs():
+            if not re.search(r"\bResults?\b", p.get("section") or "", re.I) and \
+                    not re.match(r"^\s*Results?\b", p["text"], re.I):
+                continue
+            for s in sentences(p["text"]):
+                nm = re.search(r"(?<![A-Za-z0-9.])(\d+(?:\.\d+)?)", s)
+                if nm and len(tokens(s)) >= 3:
+                    results.append({"metric": clip(s, 80), "paper": float(nm.group(1)),
+                                    "repro": None, "tolerance": None, "within": None,
+                                    "evidence": [store.ev(d, p, s)],
+                                    "note": "first number in verbatim results sentence "
+                                            "(heuristic); repro not executed; human_confirm"})
+    ir["reproduction"] = {"assets": assets, "params": params[:20], "env": env[:10],
+                          "results": results[:12], "attribution": [],
+                          "steps": [{"step": "locate assets/params/env in material",
+                                     "status": "done"},
+                                    {"step": "restore env + run with paper params",
+                                     "status": "not_executed",
+                                     "reason": "text-only autopilot; no code execution"},
+                                    {"step": "compare within declared tolerance + attribute",
+                                     "status": "pending_human"}]}
+    for f in req["fields"]:
+        ir["items"].append(extract_field(store, f["id"], f["text"]))
+    store.add_unc("reproduction", "reproduction not executed (text-only autopilot); "
+                  "repro values null, tolerance/within-tolerance and difference "
+                  "attribution pending a human run; never fabricated")
+    if not params:
+        store.add_unc("reproduction params", "no explicit parameter assignments located "
+                      "in provided material")
+
+
+def build_benchmark(ir, store, req):
+    """Reading-benchmark task cards derived from the ACTUAL material: every
+    instruction/reference answer/required point is grounded in verbatim material
+    sentences (never invented). Scoring anchors are observable substring checks
+    (benchkit eval.py). Repeat-run stability is NOT measured here -> flagged."""
+    tasks = []
+    # organizer-provided task cards win if present and decidable
+    for name, data in store.workorder_raw.items():
+        cand = data.get("tasks") if isinstance(data, dict) else None
+        if isinstance(cand, list):
+            for t in cand:
+                if isinstance(t, dict) and t.get("instruction") and t.get("required_points"):
+                    t.setdefault("id", f"T{len(tasks) + 1}")
+                    t.setdefault("input_material", ", ".join(
+                        f["name"] for f in store.files if f["role"] == "document") or name)
+                    tasks.append(t)
+    if not tasks:
+        body = [(d, p) for d, p in store.all_paragraphs()
+                if not re.match(r"^\s*(?:SYNTHETIC|EXAMPLE SOURCE)", p["text"], re.I)]
+        candidates = []
+        for d, p in body:
+            for s in sentences(p["text"]):
+                if "?" in s:
+                    candidates.append(("question", d, p, s))
+        for d, p in body:
+            sec = (p.get("section") or "") + " " + p["text"][:40]
+            if re.search(r"\b(?:Results?|Conclusion)\b", sec, re.I):
+                for s in sentences(p["text"]):
+                    if re.search(r"(?<![A-Za-z0-9.])\d+(?:\.\d+)?", s) and len(tokens(s)) >= 4:
+                        candidates.append(("finding", d, p, s))
+        seen_ans = set()
+        for ctype, d, p, s in candidates:
+            if ctype == "question":
+                found = best_sentence(store, s, min_hits=2)
+                if not found:
+                    continue
+                d2, p2, ans, hits, ratio = found
+                if "?" in ans:
+                    continue
+                instruction = s
+            else:
+                d2, p2, ans = d, p, s
+                topic = ", ".join(sorted(tokens(s))[:4])
+                instruction = (f"According to {d['name']} ({p['id']}), what does the "
+                               f"material report regarding {topic}?")
+            if ans in seen_ans:
+                continue
+            seen_ans.add(ans)
+            nums = re.findall(r"\d+(?:\.\d+)?%?", ans)
+            words = [t for t in sorted(tokens(ans)) if len(t) >= 5][:3]
+            points = list(dict.fromkeys(nums + words))[:5]
+            if not points:
+                continue
+            variants = [x for x in sentences(p2["text"])
+                        if x != ans and len(tokens(x) & tokens(ans)) >= 3][:2]
+            tasks.append({"id": f"T{len(tasks) + 1}",
+                          "instruction": clip(instruction, 400),
+                          "input_material": f"{d2['name']} ({p2['id']})",
+                          "required_points": points,
+                          "forbidden": [],
+                          "anchors": [{"criterion": "each required point present verbatim",
+                                       "observable": True, "check": "substring"},
+                                      {"criterion": "no forbidden content",
+                                       "observable": True, "check": "substring"}],
+                          "acceptable_variants": variants,
+                          "reference_answer": clip(ans, 500),
+                          "reference_locator": {"source": d2["sid"],
+                                                "paragraph_id": p2["id"],
+                                                "quote": clip(ans, 400)},
+                          "difficulty": "derived", "license": "as-provided material"})
+            if len(tasks) >= 8:
+                break
+    ir["tasks"] = tasks
+    ir["benchmark_meta"] = {"runner": {"tools": "stdlib eval.py (benchkit)",
+                                       "budget": "fixed per task", "output_format": "markdown"},
+                            "scoring": "0/1/2 rule anchors + human review",
+                            "stability": "repeat-run stability NOT measured by autopilot"}
+    store.add_unc("benchmark stability", "repeat-run stability not measured; task cards "
+                  "derived by deterministic heuristics from verbatim material; human_confirm")
+    if not tasks:
+        store.add_unc("benchmark tasks", "no decidable task could be derived from the "
+                      "provided material (no questions/numeric findings)")
+
+
 BUILDERS = {
     "literature_qa": build_qa,
     "reading_client": build_qa,
@@ -739,6 +982,8 @@ BUILDERS = {
     "multi_doc_compare": build_compare,
     "data_cleaning": build_cleaning,
     "formula_reasoning": build_formulas,
+    "reproduction": build_reproduction,
+    "reading_benchmark": build_benchmark,
 }
 
 
@@ -854,11 +1099,12 @@ def run(args):
                                   "reason": "input directory empty or unreadable; nothing to extract",
                                   "handling": "human_confirm"})
     if kind in ("literature_qa", "reading_client", "conclusion_extraction",
-                "evidence_verification", "figure_parse"):
+                "evidence_verification", "figure_parse", "multi_doc_compare",
+                "reproduction", "reading_benchmark"):
         ir["uncertainty"].append({"item": "judgment fields",
-                                  "reason": "answer/claim/figure selection uses deterministic "
-                                            "lexical heuristics over verbatim quotes, not expert "
-                                            "judgment; human_confirm",
+                                  "reason": "answer/claim/figure/cell/task selection uses "
+                                            "deterministic lexical heuristics over verbatim "
+                                            "quotes, not expert judgment; human_confirm",
                                   "handling": "human_confirm"})
     # de-duplicate uncertainty
     seen, uniq = set(), []
@@ -877,7 +1123,8 @@ def run(args):
            "--ir", str(work_ir), "--input", str(args.input), "--out", str(out_dir)]
     if has_gaps(ir):
         cmd += ["--status", "partial"]
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    # AUTOPILOT_DELEGATED guards the hardened assemble against re-delegation loops
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", AUTOPILOT_DELEGATED="1")
     proc = subprocess.run(cmd, cwd=str(SCRIPT_DIR), env=env, capture_output=True,
                           text=True, timeout=300)
     if proc.stdout:

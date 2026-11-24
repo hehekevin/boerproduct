@@ -25,6 +25,16 @@ format / batch consistency / fix export (workorder `template_adaptation`).
 paper/tables, and the **provided master/layout template .pptx** (required for this
 workorder; if absent, create a programmatic master and record that). Read files.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_slides.py --input /input --out /app/output --work /app/work`
+Auto-registers sources from the ACTUAL /input materials, auto-fills a complete source-bound IR
+into /app/work, runs the SAME validate+build path as the package assembler, and ALWAYS writes an
+honest result.json (try/except fallback preserves every output_contract key + case_id) — even on
+empty input or failure. Judgment it cannot verify is flagged human_confirm; never fabricated.
+THEN, within remaining budget, refine the auto-filled IR in /app/work and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble_deck.py --ir /app/work/<ir>.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/DECK_WORKFLOW.md)
 1. **Inspect template**: read master/layouts/placeholders; register in `sources[]`;
    set `template` (theme font, cjk font, title/body/min pt, accent, footer).

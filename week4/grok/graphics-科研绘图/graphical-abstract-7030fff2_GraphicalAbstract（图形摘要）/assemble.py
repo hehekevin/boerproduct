@@ -19,8 +19,19 @@ import json
 import sys
 from pathlib import Path
 
+import os
 import figkit
 
+
+
+def _autopilot(args, out_dir):
+    """Delegate to auto_graphics.py: auto-extract figure IR from ACTUAL /input, guarantee result.json."""
+    import subprocess
+    script = Path(__file__).resolve().parent / "auto_graphics.py"
+    r = subprocess.run([sys.executable, str(script), "--input", args.input,
+                        "--out", str(out_dir), "--work", str(out_dir / "work")],
+                       env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+    return r.returncode
 
 def main():
     ap = argparse.ArgumentParser()
@@ -47,7 +58,14 @@ def main():
         if cand.exists():
             ch["data_path"] = str(cand)
 
-    validation = figkit.validate_ir(ir)
+    if not ir.get("sources") and not ir.get("figures") and not ir.get("pages"):
+        print("[assemble] minimal IR -> autopilot", file=sys.stderr)
+        return _autopilot(args, out_dir)
+    try:
+        validation = figkit.validate_ir(ir)
+    except Exception as e:
+        print(f"[assemble] validate_ir raised ({type(e).__name__}: {e}) -> autopilot", file=sys.stderr)
+        return _autopilot(args, out_dir)
     figkit.write_json(out_dir / "validation.json", validation)
 
     artifacts = []

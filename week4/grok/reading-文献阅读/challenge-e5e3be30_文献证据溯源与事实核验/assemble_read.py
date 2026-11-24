@@ -18,9 +18,20 @@ import json
 import sys
 from pathlib import Path
 
+import os
 import figkit
 import readkit
 
+
+
+def _autopilot(args, out_dir):
+    """Delegate to auto_read.py: auto-extract IR from ACTUAL /input, guarantee result.json."""
+    import subprocess
+    script = Path(__file__).resolve().parent / "auto_read.py"
+    r = subprocess.run([sys.executable, str(script), "--input", args.input,
+                        "--out", str(out_dir), "--work", str(out_dir / "work")],
+                       env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+    return r.returncode
 
 def main():
     ap = argparse.ArgumentParser()
@@ -35,6 +46,9 @@ def main():
     if case.get("case_id") and case["case_id"] != "unknown-case":
         ir["case_id"] = case["case_id"]
     kind = ir.get("kind")
+    if not ir.get("sources") and not ir.get("records") and not ir.get("claims") and not ir.get("nodes") and not ir.get("fields"):
+        print("[assemble] minimal IR -> autopilot", file=sys.stderr)
+        return _autopilot(args, out_dir)
 
     # week4: auto-discover organizer workorder files and guarantee one result per
     # requested field/claim/question (honest insufficient_evidence for gaps).

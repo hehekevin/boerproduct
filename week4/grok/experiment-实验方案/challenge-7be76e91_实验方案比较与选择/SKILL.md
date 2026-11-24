@@ -28,6 +28,16 @@ choice must all withstand independent re-computation. Trigger: workorder kind
   yield/safety/reproducibility figures, and any price/booking contracts. Register the
   real files; trust content over labels.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_experiment.py --input /input --out /app/output --work /app/work`
+Auto-registers sources/documents from the ACTUAL /input materials, auto-fills the complete experiment
+IR into /app/work, runs the SAME validate+build path as assemble.py, and ALWAYS writes an honest
+result.json (try/except fallback preserves every output_contract key + case_id) — even on empty input
+or failure. Judgment it cannot verify is flagged human_confirm; never fabricated. THEN, within remaining
+budget, refine the auto-filled IR in /app/work and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/experiment_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory inputs (w4kit.list_materials); register sources[] + documents[] + protocols[] (one per candidate version).
 2. Read material; fill comparison.criteria[] {id, name, direction, weight}, candidates[] {id, source_id, protocol_id, title}, and matrix cells {criterion_id, candidate_id, value, status, evidence}. Quote each figure from the actual plan text. Missing figure → status=not_reported (never guessed).

@@ -15,12 +15,23 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
 import figkit
 import deckkit
 
+
+
+def _autopilot(args, out_dir):
+    """Delegate to auto_slides.py: auto-extract Deck IR from ACTUAL /input, guarantee result.json."""
+    import subprocess
+    script = Path(__file__).resolve().parent / "auto_slides.py"
+    r = subprocess.run([sys.executable, str(script), "--input", args.input,
+                        "--out", str(out_dir), "--work", str(out_dir / "work")],
+                       env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+    return r.returncode
 
 def main():
     ap = argparse.ArgumentParser()
@@ -50,7 +61,14 @@ def main():
                 if cand.exists():
                     ch["data_path"] = str(cand)
 
-    validation = deckkit.validate_deck(ir)
+    if not ir.get("pages"):
+        print("[assemble_deck] minimal IR -> autopilot", file=sys.stderr)
+        return _autopilot(args, out_dir)
+    try:
+        validation = deckkit.validate_deck(ir)
+    except Exception as e:
+        print(f"[assemble_deck] validate_deck raised ({type(e).__name__}: {e}) -> autopilot", file=sys.stderr)
+        return _autopilot(args, out_dir)
     figkit.write_json(out_dir / "validation.json", validation)
 
     artifacts = []

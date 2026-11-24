@@ -32,6 +32,17 @@ Only given local material; no online retrieval; no generic template summaries.
    `workorder.json` (requested note field_ids). Engine auto-reads them for coverage.
 4. ALL material files. Register every file actually used in sources[] (id + real path).
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_arena_read.py --input /input --out /app/output --work /app/work`
+Auto-registers sources from the ACTUAL /input papers+workorders, auto-fills the complete reading IR
+into /app/work (requested fields/claims with EXACT [Pn] quote locators; honest not_reported /
+insufficient_evidence for missing), runs the SAME validate+build path as the package assembler, and
+ALWAYS writes an honest result.json (try/except fallback preserves every output_contract key +
+case_id) — even on empty input or failure. Never fabricated. THEN, within remaining budget, refine
+the auto-filled IR in /app/work and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/<ir>.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory /input; open case.json + task.md + workorder + material; map the paper's
    real section structure first.

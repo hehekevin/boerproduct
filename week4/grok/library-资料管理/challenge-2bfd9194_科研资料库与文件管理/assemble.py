@@ -20,9 +20,20 @@ import sys
 import traceback
 from pathlib import Path
 
+import os
 import w4kit
 import library_engine
 
+
+
+def _autopilot(args, out_dir):
+    """Delegate to auto_library.py: auto-extract IR from ACTUAL /input, guarantee result.json."""
+    import subprocess
+    script = Path(__file__).resolve().parent / "auto_library.py"
+    r = subprocess.run([sys.executable, str(script), "--input", args.input,
+                        "--out", str(out_dir), "--work", str(out_dir / "work")],
+                       env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+    return r.returncode
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="library track assembler")
@@ -52,7 +63,14 @@ def main() -> int:
     ir.setdefault("provenance", {}).setdefault("pipeline",
         "actual material -> IR -> validate -> index/compute -> artifact -> result")
 
-    validation = library_engine.validate_ir(ir)
+    if not ir.get("sources") and not ir.get("records") and not ir.get("documents") and not ir.get("claims"):
+        print("[assemble] minimal IR -> autopilot", file=sys.stderr)
+        return _autopilot(args, out_dir)
+    try:
+        validation = library_engine.validate_ir(ir)
+    except Exception as e:
+        print(f"[assemble] validate_ir raised ({type(e).__name__}: {e}) -> autopilot", file=sys.stderr)
+        return _autopilot(args, out_dir)
     w4kit.write_json(out_dir / "validation.json", validation)
 
     outputs, summary, build_error = [], {}, None

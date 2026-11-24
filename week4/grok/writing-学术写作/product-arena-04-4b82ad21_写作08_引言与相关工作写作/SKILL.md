@@ -31,6 +31,16 @@ gap / contributions (workorder kind=intro_related). IN: grounded intro+related w
 style), `/input/task.md`, ACTUAL provided literature (pdf/md/txt/bib) + any draft
 method/results material. READ files; trust content over labels.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_arena_write.py --input /input --out /app/output --work /app/work`
+Auto-registers sources from the ACTUAL /input materials, auto-fills the complete writing IR into
+/app/work, runs the SAME validate+build path as the package assembler, and ALWAYS writes an honest
+result.json (try/except fallback preserves every output_contract key + case_id) — even on empty
+input or failure. Targets/translations it cannot verify are null + human_confirm; never invented.
+THEN, within remaining budget, refine the auto-filled IR in /app/work and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/<ir>.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Read & register literature sources with locators; build `citations[]` (accurate
    authors/year/title/journal/DOI from the material).

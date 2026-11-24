@@ -28,6 +28,16 @@ not_reported, not a pass. Trigger: workorder kind `feasibility` (实验方案可
   approvals. Register the real files; trust content over labels. Prospective contracts
   are NOT claimed actual labs/vendor quotes/safety approvals.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_experiment.py --input /input --out /app/output --work /app/work`
+Auto-registers sources/documents from the ACTUAL /input materials, auto-fills the complete experiment
+IR into /app/work, runs the SAME validate+build path as assemble.py, and ALWAYS writes an honest
+result.json (try/except fallback preserves every output_contract key + case_id) — even on empty input
+or failure. Judgment it cannot verify is flagged human_confirm; never fabricated. THEN, within remaining
+budget, refine the auto-filled IR in /app/work and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/experiment_ir.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory inputs (w4kit.list_materials); register sources[] + documents[]; register the protocol in protocols[].
 2. Read the protocol; extract each requirement as an item {category, requirement, needed quantity/hours/cost, evidence}. Read the inventory; register each entry {name, category, available, available_qty/capacity, cost, approved, evidence}. Link items to inventory via inventory_id (or matching name).

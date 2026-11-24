@@ -19,9 +19,20 @@ import json
 import sys
 from pathlib import Path
 
+import os
 import figkit
 import writekit
 
+
+
+def _autopilot(args, out_dir):
+    """Delegate to auto_write.py: auto-extract IR from ACTUAL /input, guarantee result.json."""
+    import subprocess
+    script = Path(__file__).resolve().parent / "auto_write.py"
+    r = subprocess.run([sys.executable, str(script), "--input", args.input,
+                        "--out", str(out_dir), "--work", str(out_dir / "work")],
+                       env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+    return r.returncode
 
 def main():
     ap = argparse.ArgumentParser()
@@ -37,6 +48,9 @@ def main():
         ir["case_id"] = case["case_id"]
 
     kind = ir.get("kind")
+    if not ir.get("sources") and not ir.get("records") and not ir.get("claims") and not ir.get("nodes") and not ir.get("fields"):
+        print("[assemble] minimal IR -> autopilot", file=sys.stderr)
+        return _autopilot(args, out_dir)
     if kind == "writing_benchmark":
         validation = writekit.validate_writing(ir) if ir.get("claims") else {"ok": True, "errors": [], "warnings": []}
         bv = __import__("benchkit").validate_benchmark(ir)

@@ -29,6 +29,16 @@ metrics (back-fill check). No pre-baked answers; the whole pipeline recomputes f
 - /input/task.md — the concrete multi-step analysis request.
 - Actual material: one or more data tables/databases + dictionary (fields, units, keys, design).
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_analysis.py --input /input --out /app/output --work /app/work`
+Auto-registers sources from the ACTUAL /input materials, auto-fills a complete source-bound IR
+into /app/work, runs the SAME validate+build path as the package assembler, and ALWAYS writes an
+honest result.json (try/except fallback preserves every output_contract key + case_id) — even on
+empty input or failure. Judgment it cannot verify is flagged human_confirm; never fabricated.
+THEN, within remaining budget, refine the auto-filled IR in /app/work and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/<ir>.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory; register sources[] + datasets[] (real paths/columns). Read the dictionary.
 2. Decompose into steps[] (load/clean/stats/viz/query/interpret) with depends_on ordering and

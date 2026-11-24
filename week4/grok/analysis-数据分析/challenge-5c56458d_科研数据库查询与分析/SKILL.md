@@ -28,6 +28,16 @@ No pre-baked answers; every result row comes from executing the SQL on the real 
 - /input/task.md — the concrete query/analysis questions.
 - Actual material: SQLite database (.db/.sqlite/.sqlite3) or a .sql dump + data dictionary.
 
+## Autopilot — run this FIRST (complete baseline within budget)
+`PYTHONDONTWRITEBYTECODE=1 python auto_analysis.py --input /input --out /app/output --work /app/work`
+Auto-registers sources from the ACTUAL /input materials, auto-fills a complete source-bound IR
+into /app/work, runs the SAME validate+build path as the package assembler, and ALWAYS writes an
+honest result.json (try/except fallback preserves every output_contract key + case_id) — even on
+empty input or failure. Judgment it cannot verify is flagged human_confirm; never fabricated.
+THEN, within remaining budget, refine the auto-filled IR in /app/work and re-run
+`PYTHONDONTWRITEBYTECODE=1 python assemble.py --ir /app/work/<ir>.json --input /input --out /app/output`
+to improve. Save partial early. If autopilot is unavailable, use the manual Workflow below.
+
 ## Workflow (detail: docs/WORKFLOW.md)
 1. Inventory; register sources[] + datasets[] (dataset path = the real db/dump).
 2. Discover schema (engine does PRAGMA table_info; you can also PRAGMA via a query). Read the

@@ -1,0 +1,81 @@
+{
+ "_note": "示意输出（合成，非正式答案）：对应 example-case.json，演示多维度覆盖 + 成文报告",
+ "case_id": "demo-challenge-95",
+ "status": "answered",
+ "result": {
+  "severity_rubric": {
+   "levels": {
+    "critical": "动摇核心结论",
+    "major": "局部问题可修正",
+    "minor": "表述/建议"
+   },
+   "declared_at": "step1"
+  },
+  "findings": [
+   {
+    "finding_id": "F01",
+    "aspect": "chart_selection",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "示意示例句子（回证）",
+    "location": "示例章节",
+    "evidence": "示例对照依据",
+    "revision_suggestion": "示例修改建议",
+    "status": "confirmed"
+   }
+  ],
+  "aspect_coverage": [
+   {
+    "aspect": "chart_selection",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "aspect": "encoding",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "annotation",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "readability",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "publication_export",
+    "status": "checked_no_issue",
+    "count": 0
+   }
+  ],
+  "review_report": "## 总体结论\n本案例完成5方面覆盖审查，发现示例问题，其余方面已查无异常。\n\n## 逐面小结\n- encoding：已查。\n- annotation：已查。\n- readability：已查。\n- publication_export：已查。\n\n## 主要问题清单\n示例问题1条，详见findings。\n\n## 待复核项\n示例待复核项。",
+  "run_status": {
+   "state": "success",
+   "reason": null
+  },
+  "verdict": "audited",
+  "verdict_basis": "5方面全覆盖"
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "示例主张",
+   "kind": "reported",
+   "source_id": "F01",
+   "location": "示例章节",
+   "evidence": [
+    {
+     "quote": "示意示例句子（回证）"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "summary": "示例不确定性",
+  "human_review": []
+ },
+ "changelog": []
+}

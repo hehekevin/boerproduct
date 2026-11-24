@@ -1,196 +1,81 @@
 {
-  "case_id": "demo-stat-audit-001",
-  "status": "answered",
-  "result": {
-    "material_gaps": [],
-    "environment": {"python_version": null, "packages": "stdlib-only", "seed": null, "hardware_note": null},
-    "review_scope": {
-      "question": "对两组示范数据做统计分析审计：描述统计复算、检验选择依据、效应量与CI报告检查、解读强度分级与因果表述约束",
-      "dataset_refs": ["ds-exp-01", "ds-obs-02"],
-      "unit_policy": "单位取自数据字典（kg/plot、score），不换算",
-      "checklist_version": "stat-audit-checklist-v1"
-    },
-    "checklist": {
-      "version": "stat-audit-checklist-v1",
-      "domains": ["data_quality", "descriptive", "test_choice", "effect_ci", "interpretation", "causal_claim"],
-      "items": [
-        {"checklist_id": "DQ-01", "domain": "data_quality", "prompt": "缺失/重复/异常值的处理口径是否声明（删了多少、怎么判、单位口径）", "evidence_required": true},
-        {"checklist_id": "DE-01", "domain": "descriptive", "prompt": "样本量、中心位置、离散程度与分位数是否给出且口径/单位明确", "evidence_required": true},
-        {"checklist_id": "TC-01", "domain": "test_choice", "prompt": "检验方法是否与分布、样本量、设计结构匹配（正态性/方差齐性/组数/配对）", "evidence_required": true},
-        {"checklist_id": "EC-01", "domain": "effect_ci", "prompt": "效应量与置信区间是否与检验匹配给出并解释方向", "evidence_required": true},
-        {"checklist_id": "IR-01", "domain": "interpretation", "prompt": "结论强度是否与数据强度匹配（显著≠证明、统计显著≠实际意义）", "evidence_required": true},
-        {"checklist_id": "CC-01", "domain": "causal_claim", "prompt": "观察性/相关性设计是否使用因果表述（相关≠因果）", "evidence_required": true}
-      ]
-    },
-    "claim_rules": {
-      "version": "claim-rules-v1",
-      "declared_at": "2026-11-19T00:00:00Z",
-      "grade_map": {"supported": "high", "concerns": "medium", "inadequate": "low", "unreported": "uncertain", "unassessable": "uncertain", "not_applicable": null},
-      "category_map": {"supported": "none", "concerns": "interpretation_risk", "inadequate": "method_error", "unreported": "reporting_gap", "unassessable": "none", "not_applicable": "none"},
-      "penalty_map": {"supported": 0, "concerns": 1, "inadequate": 3, "unreported": 1, "unassessable": 0, "not_applicable": 0},
-      "thresholds": {"low": [0, 1], "some_concerns": [2, 4], "high": [5, 9999]},
-      "strength_map": {"experimental": "causal", "quasi_experimental": "associative", "observational": "associative", "correlational": "associative", "unknown": "descriptive"},
-      "causal_verbs": ["导致", "证明", "证明有效", "因果", "causes", "proves", "effect of", "due to", "because of", "提高了", "提升了", "证明了"],
-      "downgrade_rule": "claim_strength 超过 strength_map[design_type] 允许强度 ⇒ overclaim，强度降级到允许值并登记；观察性设计 + 因果动词 ⇒ causal_ok=false",
-      "abstain_rule": "任一 unassessable 且 penalty 处于 low 档 → overall=uncertain；abstain≥2 → uncertain",
-      "direction_rule": "负面条目存在 against_conclusion → against_conclusion；否则存在 favors_conclusion → favors_conclusion；否则 unclear"
-    },
-    "analyses": [
-      {
-        "analysis_id": "A01",
-        "dataset_id": "ds-exp-01",
-        "title": "处理组产量描述统计与组间差异检验审计",
-        "design_type": "experimental",
-        "source_ref": "datasets[0]",
-        "data_quality": {"missing_policy": "无缺失", "duplicate_policy": "剔除 2 条重复录入行", "outlier_policy": "未发现须剔除的异常值", "removed_rows": 2, "notes": "单位 kg/plot 取自数据字典"},
-        "descriptive": {
-          "variable": "yield", "unit": "kg/plot",
-          "n_claimed": 12,
-          "mean_claimed": 53.65833333333333,
-          "sd_claimed": 4.740053381619881,
-          "quantiles_claimed": {"p25": 50.25, "p50": 53.5, "p75": 57.775000000000006}
-        },
-        "test_registration": {
-          "test_id": "T01", "test_family": "parametric", "test_name": "welch t-test",
-          "n_groups": 2, "paired": false, "min_group_n": 12,
-          "assumptions": {"normality": "yes", "variance_equality": "no"},
-          "reason": "Shapiro-Wilk 不拒绝正态、Levene 方差不齐 ⇒ Welch t（参数族）"
-        },
-        "claim": {
-          "claim_id": "c-A01",
-          "text": "处理组产量均值 53.66、标准差 4.74（n=12），p25=50.25、p50=53.5、p75=57.78；Welch t 检验 p=0.04。随机对照设计可作因果方向推断，但未报告效应量与置信区间，结论强度有限。",
-          "evidence_level": "experimental_primary",
-          "claim_strength": "causal"
-        },
-        "appraisals": [
-          {"checklist_id": "DQ-01", "domain": "data_quality", "judgment": "supported", "grade": "high", "category": "none", "bias_direction": "none",
-           "evidence_quote": "清洗记录：剔除 2 条重复录入行后保留 12 行有效记录", "evidence_location": "ds-exp-01#description",
-           "rationale": "重复剔除条数与保留行数均有交代，与 n=12 一致", "judged": true, "abstain_reason": null, "na_reason": null},
-          {"checklist_id": "DE-01", "domain": "descriptive", "judgment": "supported", "grade": "high", "category": "none", "bias_direction": "none",
-           "evidence_quote": "数据字典：产量 yield，单位 kg/plot", "evidence_location": "ds-exp-01#description",
-           "rationale": "n/均值/标准差/分位数齐全，口径与单位明确，且与原始数据复算一致", "judged": true, "abstain_reason": null, "na_reason": null},
-          {"checklist_id": "TC-01", "domain": "test_choice", "judgment": "supported", "grade": "high", "category": "none", "bias_direction": "none",
-           "evidence_quote": "经 Shapiro-Wilk 检验两组产量均不拒绝正态（P=0.21/0.34），Levene 检验示方差不齐（P=0.03），故采用 Welch t 检验", "evidence_location": "ds-exp-01#description#methods",
-           "rationale": "正态性与方差齐性先检验后选方法，Welch 与方差不齐匹配", "judged": true, "abstain_reason": null, "na_reason": null},
-          {"checklist_id": "EC-01", "domain": "effect_ci", "judgment": "unreported", "grade": "uncertain", "category": "reporting_gap", "bias_direction": "favors_conclusion",
-           "evidence_quote": "两组差异采用 Welch t 检验，未报告置信区间与效应量", "evidence_location": "ds-exp-01#description#report",
-           "rationale": "只有 p 值，无效应量与 CI，无法判断实际意义", "judged": true, "abstain_reason": null, "na_reason": null},
-          {"checklist_id": "IR-01", "domain": "interpretation", "judgment": "concerns", "grade": "medium", "category": "interpretation_risk", "bias_direction": "favors_conclusion",
-           "evidence_quote": "处理显著提高了产量（p=0.04），证明该处理有效", "evidence_location": "ds-exp-01#description#report",
-           "rationale": "p=0.04 且无效应量时写『证明有效』强度过高，统计显著≠证明有效", "judged": true, "abstain_reason": null, "na_reason": null},
-          {"checklist_id": "CC-01", "domain": "causal_claim", "judgment": "supported", "grade": "high", "category": "none", "bias_direction": "none",
-           "evidence_quote": "合成示范数据集，仅用于说明接口，非正式案例", "evidence_location": "ds-exp-01#description",
-           "rationale": "随机实验设计允许因果方向推断，因果表述未越界", "judged": true, "abstain_reason": null, "na_reason": null}
-        ],
-        "judged": true
-      },
-      {
-        "analysis_id": "A02",
-        "dataset_id": "ds-obs-02",
-        "title": "观察性队列相关分析审计",
-        "design_type": "observational",
-        "source_ref": "datasets[1]",
-        "data_quality": {"missing_policy": "unknown", "duplicate_policy": "unknown", "outlier_policy": "unknown", "removed_rows": null, "notes": "数据字典未说明缺失值处理口径"},
-        "descriptive": {
-          "variable": "score", "unit": "score",
-          "n_claimed": 20,
-          "mean_claimed": 5.59,
-          "sd_claimed": 1.3973282777463116,
-          "quantiles_claimed": null
-        },
-        "test_registration": {
-          "test_id": "T02", "test_type": "correlation", "test_family": "nonparametric", "test_name": "spearman rank correlation",
-          "n_groups": 2, "paired": false,
-          "assumptions": {"normality": "no", "variance_equality": "unknown"},
-          "reason": "结局评分偏态 ⇒ Spearman 秩相关（非参数族）"
-        },
-        "claim": {
-          "claim_id": "c-A02",
-          "text": "暴露水平与结局评分呈正相关（r=0.42，p=0.03）；样本均值 5.59、标准差 1.397（n=20）。观察性设计仅支持关联性结论。",
-          "evidence_level": "observational_primary",
-          "claim_strength": "associative"
-        },
-        "appraisals": [
-          {"checklist_id": "DQ-01", "domain": "data_quality", "judgment": "unassessable", "grade": "uncertain", "category": "none", "bias_direction": "unclear",
-           "evidence_quote": "", "evidence_location": "ds-obs-02#description（无缺失处理口径表述，已检索全文）",
-           "rationale": "全文未见缺失值处理口径，无法评价", "judged": true,
-           "abstain_reason": "数据字典未说明缺失值处理口径，无法判断清洗是否规范", "na_reason": null},
-          {"checklist_id": "DE-01", "domain": "descriptive", "judgment": "supported", "grade": "high", "category": "none", "bias_direction": "none",
-           "evidence_quote": "数据字典：随访结局评分 score，单位 score", "evidence_location": "ds-obs-02#description",
-           "rationale": "n/均值/标准差与原始数据复算一致，单位明确", "judged": true, "abstain_reason": null, "na_reason": null},
-          {"checklist_id": "TC-01", "domain": "test_choice", "judgment": "supported", "grade": "high", "category": "none", "bias_direction": "none",
-           "evidence_quote": "因结局评分呈偏态分布，采用 Spearman 秩相关分析暴露水平与评分的关联", "evidence_location": "ds-obs-02#description#methods",
-           "rationale": "偏态分布选非参数秩相关，方法与分布匹配", "judged": true, "abstain_reason": null, "na_reason": null},
-          {"checklist_id": "EC-01", "domain": "effect_ci", "judgment": "unreported", "grade": "uncertain", "category": "reporting_gap", "bias_direction": "favors_conclusion",
-           "evidence_quote": "未给出相关系数的置信区间", "evidence_location": "ds-obs-02#description#report",
-           "rationale": "r 已报告但无置信区间，不确定性不完整", "judged": true, "abstain_reason": null, "na_reason": null},
-          {"checklist_id": "IR-01", "domain": "interpretation", "judgment": "supported", "grade": "high", "category": "none", "bias_direction": "none",
-           "evidence_quote": "暴露水平与结局评分呈正相关（r=0.42，p=0.03），提示二者存在关联", "evidence_location": "ds-obs-02#description#report",
-           "rationale": "『提示关联』与观察性数据强度匹配", "judged": true, "abstain_reason": null, "na_reason": null},
-          {"checklist_id": "CC-01", "domain": "causal_claim", "judgment": "supported", "grade": "high", "category": "none", "bias_direction": "none",
-           "evidence_quote": "提示二者存在关联", "evidence_location": "ds-obs-02#description#report（来源文本无因果动词）",
-           "rationale": "claim 文本与来源表述均为关联性措辞，未使用因果动词，相关≠因果约束满足", "judged": true, "abstain_reason": null, "na_reason": null}
-        ],
-        "judged": true
-      }
-    ],
-    "stat_recompute": {"computed_by": "scripts/stat_recompute.py", "per_dataset": [], "all_match": null, "note": "stat_recompute.py 回填"},
-    "interpret_summary": {"computed_by": "scripts/interpret_rollup.py", "per_analysis": [], "totals": {}, "note": "interpret_rollup.py 回填"},
-    "coverage": {"datasets_total": 2, "domains_required": 6, "items_total": 12, "judged_items": 12, "abstained": 1, "method_errors": 0, "reporting_gaps": 2, "interpretation_risks": 1, "not_applicable": 0, "ratio": 1.0},
-    "conflicts": [],
-    "pending_review": [
-      {"analysis_id": "A02", "checklist_id": "DQ-01", "reason": "数据字典未说明缺失值处理口径，无法判断清洗是否规范", "needed_action": "向数据提供方确认缺失值处理规则后复评"}
-    ],
-    "steps": [
-      {"step": "step0", "action": "落骨架与数据集清单", "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work", "output_ref": "/app/output/result.json", "status": "done"},
-      {"step": "step1", "action": "声明 claim_rules 口径台账", "command": "（Agent 声明，落 /app/work/claim_rules.json）", "output_ref": "/app/work/claim_rules.json", "status": "done"},
-      {"step": "step2", "action": "逐分面评价 2 组 × 6 维度", "command": "（Agent 逐条判定）", "output_ref": "result.analyses[].appraisals", "status": "done"},
-      {"step": "step3", "action": "统计量复算与检验选择期望", "command": "python3 /skills/weekly-skill/scripts/stat_recompute.py --result /app/output/result.json --case /input/case.json", "output_ref": "result.stat_recompute", "status": "done"},
-      {"step": "step4", "action": "解读强度机械汇总", "command": "python3 /skills/weekly-skill/scripts/interpret_rollup.py --result /app/output/result.json", "output_ref": "result.interpret_summary", "status": "done"},
-      {"step": "step5", "action": "增益对照与效率计数", "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution", "output_ref": "result.gain_evidence", "status": "done"},
-      {"step": "step6", "action": "双重自检", "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json", "output_ref": "/app/work/verify_check.json", "status": "done"}
-    ],
-    "run_status": {"state": "success", "reason": null, "manual_takeover": []},
-    "verdict": "audited",
-    "verdict_basis": "2 组示范分析 12 条分面评价全部完成（1 条弃权已登记），统计复算一致，无因果越界",
-    "gain_evidence": {"probe_version": "gain_probe.py 回填（示意占位）"},
-    "efficiency": {"collected_by": "gain_probe.py 回填（示意占位）"}
+ "_note": "示意输出（合成，非正式答案）：对应 example-case.json，演示多维度覆盖 + 成文报告",
+ "case_id": "demo-stat-audit-001",
+ "status": "answered",
+ "result": {
+  "severity_rubric": {
+   "levels": {
+    "critical": "动摇核心结论",
+    "major": "局部问题可修正",
+    "minor": "表述/建议"
+   },
+   "declared_at": "step1"
   },
-  "claims": [
-    {"claim_id": "c-A01", "text": "处理组产量均值 53.66、标准差 4.74（n=12），p25=50.25、p50=53.5、p75=57.78；Welch t 检验 p=0.04；效应量与置信区间未报告，解读强度降为 concerns", "kind": "inferred", "source_id": "A01", "location": "analyses[0]",
-     "evidence": [
-       {"paragraph_id": "ds-exp-01#description#methods", "quote": "经 Shapiro-Wilk 检验两组产量均不拒绝正态（P=0.21/0.34），Levene 检验示方差不齐（P=0.03），故采用 Welch t 检验"},
-       {"paragraph_id": "ds-exp-01#description#report", "quote": "两组差异采用 Welch t 检验，未报告置信区间与效应量"},
-       {"paragraph_id": "ds-exp-01#description#report", "quote": "处理显著提高了产量（p=0.04），证明该处理有效"},
-       {"paragraph_id": "ds-exp-01#description", "quote": "清洗记录：剔除 2 条重复录入行后保留 12 行有效记录"},
-       {"paragraph_id": "ds-exp-01#description", "quote": "数据字典：产量 yield，单位 kg/plot"},
-       {"paragraph_id": "ds-exp-01#description", "quote": "合成示范数据集，仅用于说明接口，非正式案例"}
-     ]},
-    {"claim_id": "c-A02", "text": "暴露水平与结局评分呈正相关（r=0.42，p=0.03）；样本均值 5.59、标准差 1.397（n=20）；观察性设计仅支持关联性结论，效应量置信区间未报告，缺失口径弃权登记", "kind": "inferred", "source_id": "A02", "location": "analyses[1]",
-     "evidence": [
-       {"paragraph_id": "ds-obs-02#description#methods", "quote": "因结局评分呈偏态分布，采用 Spearman 秩相关分析暴露水平与评分的关联"},
-       {"paragraph_id": "ds-obs-02#description#report", "quote": "暴露水平与结局评分呈正相关（r=0.42，p=0.03），提示二者存在关联"},
-       {"paragraph_id": "ds-obs-02#description#report", "quote": "未给出相关系数的置信区间"},
-       {"paragraph_id": "ds-obs-02#description", "quote": "数据字典：随访结局评分 score，单位 score"}
-     ]}
+  "findings": [
+   {
+    "finding_id": "F01",
+    "aspect": "descriptive_stats",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "示意示例句子（回证）",
+    "location": "示例章节",
+    "evidence": "示例对照依据",
+    "revision_suggestion": "示例修改建议",
+    "status": "confirmed"
+   }
   ],
-  "uncertainties": {
-    "unreported": ["A01 效应量与置信区间未报告", "A02 相关系数置信区间未报告"],
-    "unverifiable": ["A02 缺失值处理口径缺失（已弃权登记）"],
-    "conflicts": [],
-    "human_review": ["A02/DQ-01 待数据提供方补充缺失处理规则"],
-    "summary": "示意输出：非正式答案，标题、数据与引文均为虚构"
+  "aspect_coverage": [
+   {
+    "aspect": "descriptive_stats",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "aspect": "inferential_stats",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "effect_size",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "confidence_interval",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "interpretation",
+    "status": "checked_no_issue",
+    "count": 0
+   }
+  ],
+  "report": "## 总体结论\n本案例完成5方面覆盖审查，发现示例问题，其余方面已查无异常。\n\n## 逐面小结\n- inferential_stats：已查。\n- effect_size：已查。\n- confidence_interval：已查。\n- interpretation：已查。\n\n## 主要问题清单\n示例问题1条，详见findings。\n\n## 待复核项\n示例待复核项。",
+  "run_status": {
+   "state": "success",
+   "reason": null
   },
-  "changelog": [
-    {"step": "step0", "change": "build_skeleton 落骨架"},
-    {"step": "step3", "change": "stat_recompute 复算一致"},
-    {"step": "step4", "change": "interpret_rollup 机械汇总"},
-    {"step": "step6", "change": "verify_check/schema_guard 自检"}
-  ],
-  "self_check": [],
-  "gates": [],
-  "unbacked_numbers": [],
-  "unbacked_evidence": [],
-  "validator_verdict": null,
-  "notes": "本文件为最小调用示例的示意输出（非正式案例答案）：数据集、引文与结论均为虚构合成，仅用于说明接口与完整使用流程。"
+  "verdict": "audited",
+  "verdict_basis": "5方面全覆盖"
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "示例主张",
+   "kind": "reported",
+   "source_id": "F01",
+   "location": "示例章节",
+   "evidence": [
+    {
+     "quote": "示意示例句子（回证）"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "summary": "示例不确定性",
+  "human_review": []
+ },
+ "changelog": []
 }

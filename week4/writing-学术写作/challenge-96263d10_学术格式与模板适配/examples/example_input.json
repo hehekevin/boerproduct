@@ -1,0 +1,12 @@
+{
+  "case_id": "example-96263d10-demo",
+  "task": "将原稿按目标学位论文模板完成格式适配（示意输入，非正式案例）",
+  "output_contract": {
+    "fields": ["adapted_manuscript", "format_spec", "format_mapping", "uncertainty", "changelog"]
+  },
+  "materials": [
+    {"id": "manuscript", "path": "manuscript.md", "note": "事实底稿"},
+    {"id": "template", "path": "template.docx", "note": "目标模板（真实探查对象）"}
+  ],
+  "constraints": "标题黑体三号居中；正文宋体小四 1.5 倍行距；参考文献 GB/T 7714"
+}

@@ -1,15 +1,41 @@
 #!/usr/bin/env python3
-"""verify_check.py — 实验方案可行性评估校验器（资源四态核验极简版）。
-校验资源四态判定枚举 / 逐方案覆盖 / feasibility 与条件一致性 / 契约字段。
-退出码恒 0，判据写在 validator_verdict。"""
-import argparse, json, os, sys
+"""verify_check.py — 多维度覆盖 + 成文报告校验器。
+校验 aspect 维度覆盖 / 逐字回证 / 严重度口径 / 成文报告 / 契约字段。退出码恒 0。"""
+import argparse, json, os, re, sys
 
-STATUS_ENUM = {"available", "external", "to_purchase", "unavailable", "to_confirm"}
-FEAS_ENUM = {"feasible", "conditionally_feasible", "infeasible"}
+ASPECTS = ("checklist_system", "resource_verification", "time_sample_estimate", "risk_anomaly", "ethics_safety")
+CATEGORIES = ("fact_error", "insufficient_evidence", "norm_issue", "suggestion")
+SEVERITIES = ("critical", "major", "minor")
 
 def load(p):
-    with open(p, encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(p, encoding="utf-8") as f: return json.load(f)
+    except Exception: return None
+
+def norm(s): return re.sub(r"\s+", "", str(s or ""))
+
+def all_text(case):
+    if not isinstance(case, dict): return ""
+    buf = []
+    def walk(o):
+        if isinstance(o, dict):
+            for v in o.values(): walk(v)
+        elif isinstance(o, list):
+            for v in o: walk(v)
+        elif isinstance(o, str):
+            if len(o.strip()) >= 4: buf.append(o)
+    walk(case)
+    return norm("".join(buf))
+
+def contract_fields(case):
+    oc = case.get("output_contract") if isinstance(case, dict) else None
+    if oc is None: return []
+    if isinstance(oc, dict):
+        for k in ("fields","required_fields"):
+            if isinstance(oc.get(k), list): return [str(x) for x in oc[k]]
+        return [str(k) for k in oc.keys()]
+    if isinstance(oc, list): return [str(x) for x in oc]
+    return []
 
 def main():
     ap = argparse.ArgumentParser()
@@ -20,59 +46,47 @@ def main():
     args = ap.parse_args()
     problems = []
     try:
-        res = load(args.result)
-        case = load(args.case)
+        res = load(args.result); case = load(args.case)
         result = res.get("result", {}) if isinstance(res.get("result"), dict) else {}
-        plans = case.get("plans", [])
-        checks = result.get("plan_checks", [])
-
-        checked_ids = {c.get("plan_id") for c in checks}
-        for p in plans:
-            if p.get("plan_id") not in checked_ids:
-                problems.append(f"plan {p.get('plan_id')} 未核验")
-
-        for c in checks:
-            rc = c.get("resource_checks", [])
-            if not rc and not result.get("material_gaps"):
-                problems.append(f"{c.get('plan_id')} resource_checks 空且无 material_gaps")
-            for r in rc:
-                if r.get("status") not in STATUS_ENUM:
-                    problems.append(f"{c.get('plan_id')} status 非法: {r.get('status')}")
-                if not r.get("basis") or not r.get("source_ref"):
-                    problems.append(f"{c.get('plan_id')} 缺 basis/source_ref: {r.get('item')}")
-            feas = c.get("feasibility")
-            if feas not in FEAS_ENUM:
-                problems.append(f"{c.get('plan_id')} feasibility 非法: {feas}")
-            if feas != "feasible" and not c.get("conditions"):
-                problems.append(f"{c.get('plan_id')} {feas} 缺 conditions")
-
-        oc = case.get("output_contract", {})
-        fields = oc.get("fields", []) if isinstance(oc, dict) else oc
-        for f_ in fields:
-            if f_ not in res:
-                problems.append(f"缺 output_contract 字段: {f_}")
-
+        findings = result.get("findings", [])
+        src = all_text(case)
+        real = {k: sum(1 for f in findings if f.get("aspect")==k) for k in ASPECTS}
+        cov = result.get("aspect_coverage", [])
+        covered = {c.get("aspect") for c in cov if isinstance(c, dict)}
+        for k in ASPECTS:
+            if real.get(k,0)==0 and k not in covered:
+                problems.append("方面 %s 未覆盖" % k)
+        for i, f in enumerate(findings):
+            fid = f.get("finding_id") or "F%d"%i
+            if f.get("aspect") not in ASPECTS: problems.append("%s aspect 非法"%fid)
+            if f.get("category") not in CATEGORIES: problems.append("%s category 非法"%fid)
+            if f.get("severity") not in SEVERITIES: problems.append("%s severity 非法"%fid)
+            if f.get("status")=="confirmed":
+                q = norm(f.get("quote"))
+                if not (src and len(q)>=6 and q in src): problems.append("%s quote 不在原文"%fid)
+                if not str(f.get("location") or "").strip(): problems.append("%s location 为空"%fid)
+        rub = result.get("severity_rubric", {})
+        if not rub.get("declared_at"): problems.append("severity_rubric 未声明")
+        for f in findings:
+            if f.get("category")=="suggestion" and f.get("severity")!="minor": problems.append("suggestion 应为 minor")
+            if f.get("category")=="fact_error" and f.get("severity") not in ("critical","major"): problems.append("fact_error 应为 critical/major")
+        rr = result.get("plan_report") or ""
+        if len(str(rr).strip()) < 200: problems.append("plan_report 缺失或不足 200 字")
+        for f_ in contract_fields(case):
+            if f_ not in res: problems.append("缺 output_contract 字段: %s"%f_)
         verdict = "PASS" if not problems else "FAIL"
     except Exception as e:
-        verdict = "FAIL"
-        problems = [f"verify 异常: {e}"]
-
+        verdict = "FAIL"; problems = ["verify 异常: %s"%e]
     report = {"validator_verdict": verdict, "problems": problems}
     try:
         os.makedirs(os.path.dirname(args.out), exist_ok=True)
-        with open(args.out, "w", encoding="utf-8") as f:
-            json.dump(report, f, ensure_ascii=False, indent=1)
+        with open(args.out, "w", encoding="utf-8") as f: json.dump(report, f, ensure_ascii=False, indent=1)
         if args.emit_into:
-            try:
-                res = load(args.result)
-            except Exception:
-                res = {}
-            res["validator_verdict"] = verdict
-            res.setdefault("self_check", []).append({"item": "verify_check", "verdict": verdict, "problems": len(problems)})
-            with open(args.result, "w", encoding="utf-8") as f:
-                json.dump(res, f, ensure_ascii=False, indent=1)
-    except Exception:
-        pass
+            cur = load(args.result) or {}
+            cur["validator_verdict"] = verdict
+            cur.setdefault("self_check", []).append({"item":"verify_check","verdict":verdict,"problems":len(problems)})
+            with open(args.result, "w", encoding="utf-8") as f: json.dump(cur, f, ensure_ascii=False, indent=1)
+    except Exception: pass
     print(json.dumps(report, ensure_ascii=False))
     sys.exit(0)
 

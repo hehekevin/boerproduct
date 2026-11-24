@@ -1,208 +1,81 @@
 {
-  "_note": "示意输出（synthetic，非正式答案）：对应 examples/example-case.json 的合成案例，用于演示接口与完整使用流程，不冒充正式案例结果。所有选题/文献/引文均为虚构。",
-  "case_id": "demo-topicaudit-001",
-  "status": "answered",
-  "result": {
-    "material_gaps": [],
-    "environment": {"python_version": "3.13.14", "packages": "stdlib-only", "seed": null, "hardware_note": "Windows 11 单机（示例环境，正式运行以平台为准）"},
-    "research_context": {"direction": "AI 辅助科研选题评估工具的方法选题", "scope": "面向 AI for Science 场景的选题评估方法研究设想", "constraints": "只对照 known_works 清单；数据/算力按单卡实验室条件假设"},
-    "criteria": {
-      "inclusion": [
-        {"criterion_id": "IN-01", "text": "创新陈述可拆条（method/data/scene/theory 四类之一）并与已知工作逐条对照"},
-        {"criterion_id": "IN-02", "text": "可行性核查覆盖 data/method/resource/time 四要素，每要素给 status 与 basis"}
-      ],
-      "exclusion": [
-        {"criterion_id": "EX-01", "text": "核心创新陈述被已知工作覆盖（overlap=covered）→ 分级 not_novel 并登记 duplicate_of"},
-        {"criterion_id": "EX-02", "text": "对照证据不足（known_works 覆盖不到或互相冲突）→ 分级 uncertain 并登记人工复核"}
-      ]
-    },
-    "rubric": {
-      "grade_rules": [
-        {"grade": "breakthrough", "rule": "≥1 条 method/theory 创新陈述 overlap=none 且四要素齐全、无关键可行性缺失"},
-        {"grade": "strong", "rule": "≥1 条创新陈述 overlap=none（data/scene 类），其余为 partial"},
-        {"grade": "incremental", "rule": "全部创新陈述 overlap=partial（改进或迁移）"},
-        {"grade": "not_novel", "rule": "核心创新陈述 overlap=covered（已有工作覆盖），登记 duplicate_of"},
-        {"grade": "uncertain", "rule": "对照证据不足（known_works 覆盖不到或互相冲突），登记人工复核"}
-      ],
-      "weights": {"novelty": 0.5, "feasibility": 0.3, "evidence": 0.2},
-      "tie_break": ["fused_score 降序", "novelty 因子降序", "proposal_id 升序"],
-      "normalization": "novelty/feasibility/evidence 因子按声明口径归一化到 0-1（评测员按证据强度保守赋值，赋值依据写入 rationale）",
-      "declared_at": "step1（任何分级/排序之前）"
-    },
-    "proposals": [
-      {
-        "proposal_id": "T01", "source_ref": "proposals[0]", "title": "EchoGuard：基于引文图回声结构的立项期可复现性预警",
-        "structure": {
-          "problem": "在立项（而非结题）阶段预警研究计划的可复现风险；比较基线为结题后预测（W03 路线）",
-          "hypothesis": "引文图回声结构在立项期即可区分高/低可复现风险的选题，AUROC 提升可证伪",
-          "method": "把回声结构特征前移到立项期输入，叠加风险分级预警器",
-          "expected_contribution": "方法创新（预警时机前移）+ 数据创新（立项期标注集）"
-        },
-        "missing_elements": [],
-        "novelty_claims": [
-          {"claim_id": "T01-N1", "text": "方法创新：立项期可复现性预警（时机前移）", "kind": "method", "closest_work_id": "W03",
-           "overlap": "none", "evidence_quote": "Our method operates post-hoc on completed projects and does not provide any early-warning mechanism during project selection.", "evidence_location": "known_works[W03].abstract"},
-          {"claim_id": "T01-N2", "text": "数据创新：立项期回声结构标注集", "kind": "data", "closest_work_id": "W01",
-           "overlap": "none", "evidence_quote": "The benchmark covers claim extraction, closest-work retrieval and overlap labeling, but targets post-hoc claim audit rather than project-selection early warning.", "evidence_location": "known_works[W01].abstract"}
-        ],
-        "novelty_grade": "breakthrough",
-        "feasibility": {
-          "data": {"status": "sufficient", "basis": "案例材料注明引文图数据可得（proposals[0].data_note）"},
-          "method": {"status": "partial", "basis": "回声特征已有（W03），立项期预警器需新实现"},
-          "resource": {"status": "assumption", "basis": "单卡训练为假设（案例未给算力配额）"},
-          "time": {"status": "sufficient", "basis": "案例材料时间窗口 12 个月可覆盖"}
-        },
-        "feasibility_verdict": "conditional",
-        "duplicate_of": null, "confidence": "high",
-        "rationale": "两条创新陈述与 W03/W01 最近工作均无覆盖（overlap=none，引文见 claims），符合声明口径 breakthrough；资源前提为假设故结论 conditional。",
-        "factors": {"novelty": 0.95, "feasibility": 0.7, "evidence": 0.9}, "fused_score": 0.865, "rank": 1,
-        "missing_metadata": [], "pending_reason": null, "judged": true
-      },
-      {
-        "proposal_id": "T02", "source_ref": "proposals[1]", "title": "CalibRank-X：小样本文献排序的对比校准增强",
-        "structure": {
-          "problem": "小样本条件下文献排序的稳定性；基线为无校准排序",
-          "hypothesis": "对比校准层能提升 top-k 稳定性",
-          "method": "在排序器上加对比校准层",
-          "expected_contribution": "工程改进"
-        },
-        "missing_elements": [],
-        "novelty_claims": [
-          {"claim_id": "T02-N1", "text": "方法创新：小样本对比校准", "kind": "method", "closest_work_id": "W02",
-           "overlap": "covered", "evidence_quote": "CalibRank applies lightweight contrastive calibration to literature ranking under small-sample conditions, improving top-k stability with a declared weight rubric.", "evidence_location": "known_works[W02].abstract"}
-        ],
-        "novelty_grade": "not_novel",
-        "feasibility": {
-          "data": {"status": "sufficient", "basis": "公开文献排序基准可复用（W02 同款数据）"},
-          "method": {"status": "sufficient", "basis": "方法本身成熟（W02 已给出）"},
-          "resource": {"status": "sufficient", "basis": "轻量模型单卡可跑"},
-          "time": {"status": "sufficient", "basis": "复现级工作量，3 个月内可完成"}
-        },
-        "feasibility_verdict": "feasible",
-        "duplicate_of": "W02", "confidence": "high",
-        "rationale": "核心方法陈述被 W02 逐字覆盖（overlap=covered），按声明口径分级 not_novel 并登记重复；可行但无创新增量。",
-        "factors": {"novelty": 0.2, "feasibility": 0.8, "evidence": 0.85}, "fused_score": 0.51, "rank": 3,
-        "missing_metadata": [], "pending_reason": null, "judged": true
-      },
-      {
-        "proposal_id": "T03", "source_ref": "proposals[2]", "title": "LLM 委员会自动生成基金申请选题",
-        "structure": {
-          "problem": "基金选题初稿的自动化生成；基线为单模型起草（W04 归类的 retrieval-augmented drafting）",
-          "hypothesis": "多智能体委员会评审式生成比单模型起草的选题接受率更高",
-          "method": "多 LLM 委员会（起草/质询/评分三角色）迭代生成",
-          "expected_contribution": "场景创新（委员会式选题生成）"
-        },
-        "missing_elements": [],
-        "novelty_claims": [
-          {"claim_id": "T03-N1", "text": "场景创新：委员会式多智能体选题生成", "kind": "scene", "closest_work_id": "W04",
-           "overlap": "uncertain", "evidence_quote": "Committee-based multi-agent proposal generation is left to future work.", "evidence_location": "known_works[W04].abstract"}
-        ],
-        "novelty_grade": "uncertain",
-        "feasibility": {
-          "data": {"status": "partial", "basis": "选题接受率标注缺失，需回访或代理指标（材料未给）"},
-          "method": {"status": "missing", "basis": "评估协议未定义（材料未给接受率口径）"},
-          "resource": {"status": "partial", "basis": "多智能体推理成本未估"},
-          "time": {"status": "partial", "basis": "标注回访周期未知"}
-        },
-        "feasibility_verdict": "uncertain",
-        "duplicate_of": null, "confidence": "low",
-        "rationale": "W04 把委员会式生成列为 future work——既不能证实已有人做（covered），也不能断言尚无人研究（清单外不可知），按声明口径分级 uncertain 并登记人工复核；评估协议缺口径，可行性 uncertain。",
-        "factors": {"novelty": 0.5, "feasibility": 0.5, "evidence": 0.4}, "fused_score": 0.48, "rank": 4,
-        "missing_metadata": ["接受率标注协议缺失"], "pending_reason": null, "judged": true
-      },
-      {
-        "proposal_id": "T04", "source_ref": "proposals[3]", "title": "跨语言科学问答的选题迁移评估",
-        "structure": {
-          "problem": "科学问答能力在中英跨语言场景的迁移评估；基线为单语评测",
-          "hypothesis": null,
-          "method": "构造双语评测集并测迁移差",
-          "expected_contribution": "场景迁移型评估"
-        },
-        "missing_elements": ["hypothesis"],
-        "novelty_claims": [
-          {"claim_id": "T04-N1", "text": "场景迁移：跨语言科学问答评估", "kind": "scene", "closest_work_id": "W05",
-           "overlap": "partial", "evidence_quote": "We provide a framework for estimating data, compute and personnel feasibility before experiments. Cross-lingual transfer scenarios are discussed only as an outlook and are not evaluated.", "evidence_location": "known_works[W05].abstract"}
-        ],
-        "novelty_grade": "incremental",
-        "feasibility": {
-          "data": {"status": "assumption", "basis": "假设双语语料开源可得（材料未证实）"},
-          "method": {"status": "sufficient", "basis": "迁移差评估协议成熟"},
-          "resource": {"status": "sufficient", "basis": "评测型任务单卡可跑"},
-          "time": {"status": "sufficient", "basis": "6 个月窗口可覆盖"}
-        },
-        "feasibility_verdict": "conditional",
-        "duplicate_of": null, "confidence": "medium",
-        "rationale": "场景迁移类创新与 W05 框架部分重叠（W05 已把跨语言列为 outlook），按声明口径分级 incremental；假设（hypothesis）要素缺失已登记，数据前提为假设，转人工补写。",
-        "factors": {"novelty": 0.6, "feasibility": 0.4, "evidence": 0.7}, "fused_score": 0.56, "rank": 2,
-        "missing_metadata": [], "pending_reason": null, "judged": true
-      }
-    ],
-    "ranking": {"ordered_ids": ["T01", "T04", "T02", "T03"], "ties": [], "top_k": ["T01", "T04", "T02", "T03"], "k_value": 4, "rubric_weights": {"novelty": 0.5, "feasibility": 0.3, "evidence": 0.2}, "tie_break": ["fused_score 降序", "novelty 因子降序", "proposal_id 升序"]},
-    "coverage": {"total_proposals": 4, "judged": 4, "structure_complete": 4, "novelty_covered": 1, "feasibility_flagged": 3, "ratio": 1.0},
-    "conflicts": [
-      {"item_ids": ["T02", "W02"], "kind": "covered_by_prior_work", "resolution": "flagged", "evidence": "T02 核心方法陈述与 W02 已发表工作逐字同域，分级 not_novel（见 T02-N1 引文）"}
-    ],
-    "human_review": [
-      {"proposal_id": "T01", "reason": "resource 前提为假设（单卡训练未获配额确认）", "needed_action": "向平台/导师确认算力配额后把 assumption 升级为 sufficient/partial"},
-      {"proposal_id": "T03", "reason": "novelty_grade=uncertain（W04 列为 future work，清单内无法判定）；method 要素缺评估协议", "needed_action": "补充 committee 式生成的检索证据与接受率评估口径，再重新分级"},
-      {"proposal_id": "T04", "reason": "hypothesis 要素缺失（missing_elements 已登记）；data 前提为假设", "needed_action": "补写可证伪假设并证实双语语料可得性"}
-    ],
-    "risks": [
-      {"risk_id": "R01", "proposal_id": "T01", "description": "立项期标注集需人工标注，冷启动成本高", "mitigation": "先用 W03 公开数据预训练，再小规模人工标注"},
-      {"risk_id": "R02", "proposal_id": "T03", "description": "接受率无法直接观测，评估可能失真", "mitigation": "登记为待复核；先以专家盲评作代理指标"}
-    ],
-    "alternatives": [
-      {"alt_id": "A01", "proposal_id": "T01", "route": "退守结题期预测 + 立项期试点双轨", "reason": "若立项期标注不可得，先复现 W03 再前移"},
-      {"alt_id": "A02", "proposal_id": "T03", "route": "降级为单模型 + 规则质询", "reason": "若委员会推理成本超预算"}
-    ],
-    "steps": [
-      {"step": "step0", "action": "落骨架与选题/已知工作清单", "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work", "output_ref": "/app/output/result.json", "status": "done"},
-      {"step": "step1", "action": "声明研究方向与五级分级口径（rubric）", "command": "", "output_ref": "/app/work/rubric.json", "status": "done"},
-      {"step": "step2", "action": "四条选题结构化 + 新颖性逐条对照 + 可行性核查", "command": "", "output_ref": "result.proposals", "status": "done"},
-      {"step": "step3", "action": "机械复算三因子分数并排序", "command": "python3 /skills/weekly-skill/scripts/novelty_rank.py --result /app/output/result.json", "output_ref": "result.ranking", "status": "done"},
-      {"step": "step4", "action": "登记 human_review / risks / alternatives 与 claims 证据链", "command": "", "output_ref": "result.human_review", "status": "done"},
-      {"step": "step5", "action": "增益对照双跑 + 污染反例", "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution", "output_ref": "/app/work/gain_evidence.json", "status": "done"},
-      {"step": "step6", "action": "双重自检（verify_check + schema_guard）", "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json", "output_ref": "/app/work/verify_check.json", "status": "done"}
-    ],
-    "run_status": {"state": "success", "reason": null, "manual_takeover": []},
-    "verdict": "assessed",
-    "verdict_basis": "4/4 条选题完成结构化、新颖性逐条对照（含 1 条 covered 标重、1 条 uncertain 转复核）与可行性核查",
-    "gain_evidence": {"available": false, "reason": "示例文件不携带实跑增益证据；正式运行由 gain_probe.py 双跑回写真实数字"},
-    "efficiency": {"available": false, "reason": "示例文件不携带效率计数；正式运行由 gain_probe.py 采集"}
+ "_note": "示意输出（合成，非正式答案）：对应 example-case.json，演示多维度覆盖 + 成文报告",
+ "case_id": "demo-topicaudit-001",
+ "status": "answered",
+ "result": {
+  "severity_rubric": {
+   "levels": {
+    "critical": "动摇核心结论",
+    "major": "局部问题可修正",
+    "minor": "表述/建议"
+   },
+   "declared_at": "step1"
   },
-  "claims": [
-    {"claim_id": "c-01", "text": "T01 分级 breakthrough：方法与数据创新陈述与最近工作 W03/W01 均无覆盖（overlap=none），fused_score=0.865 排第 1", "kind": "reported", "source_id": "T01", "location": "proposals[0]",
-     "evidence": [
-       {"paragraph_id": "known_works[W03].abstract", "quote": "Our method operates post-hoc on completed projects and does not provide any early-warning mechanism during project selection."},
-       {"paragraph_id": "known_works[W01].abstract", "quote": "The benchmark covers claim extraction, closest-work retrieval and overlap labeling, but targets post-hoc claim audit rather than project-selection early warning."}
-     ]},
-    {"claim_id": "c-02", "text": "T02 分级 not_novel：核心方法陈述被 W02 逐字覆盖（overlap=covered），fused_score=0.51", "kind": "reported", "source_id": "T02", "location": "proposals[1]",
-     "evidence": [
-       {"paragraph_id": "known_works[W02].abstract", "quote": "CalibRank applies lightweight contrastive calibration to literature ranking under small-sample conditions, improving top-k stability with a declared weight rubric."}
-     ]},
-    {"claim_id": "c-03", "text": "T03 分级 uncertain：W04 把委员会式生成列为 future work，清单内既不能证实也不能证伪，fused_score=0.48", "kind": "inferred", "source_id": "T03", "location": "proposals[2]",
-     "evidence": [
-       {"paragraph_id": "known_works[W04].abstract", "quote": "Committee-based multi-agent proposal generation is left to future work."}
-     ]},
-    {"claim_id": "c-04", "text": "T04 分级 incremental：场景迁移与 W05 框架部分重叠（W05 已把跨语言列为 outlook），fused_score=0.56 排第 2", "kind": "reported", "source_id": "T04", "location": "proposals[3]",
-     "evidence": [
-       {"paragraph_id": "known_works[W05].abstract", "quote": "We provide a framework for estimating data, compute and personnel feasibility before experiments. Cross-lingual transfer scenarios are discussed only as an outlook and are not evaluated."}
-     ]}
+  "findings": [
+   {
+    "finding_id": "F01",
+    "aspect": "question_definition",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "示意示例句子（回证）",
+    "location": "示例章节",
+    "evidence": "示例对照依据",
+    "revision_suggestion": "示例修改建议",
+    "status": "confirmed"
+   }
   ],
-  "uncertainties": {
-    "unreported": [],
-    "unverifiable": ["T03 的委员会式生成是否清单外已有人做——known_works 只含 5 条虚构条目，清单外不作断言"],
-    "conflicts": ["T02 与 W02 同域：按 EX-01 判 covered 处置，保留 W02 引文为证据"],
-    "human_review": ["T01（resource=assumption）", "T03（grade=uncertain + method 缺口径）", "T04（hypothesis 缺失 + data=assumption）"],
-    "summary": "本示例为合成示意：新颖性结论仅相对清单内 5 条虚构已知工作成立；『检索不到』一律标 uncertain 转 human_review，不写『尚无人研究』。"
+  "aspect_coverage": [
+   {
+    "aspect": "question_definition",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "aspect": "prior_work_comparison",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "novelty_identification",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "feasibility_judgment",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "evidence_traceback",
+    "status": "checked_no_issue",
+    "count": 0
+   }
+  ],
+  "review_report": "## 总体结论\n本案例完成5方面覆盖审查，发现示例问题，其余方面已查无异常。\n\n## 逐面小结\n- prior_work_comparison：已查。\n- novelty_identification：已查。\n- feasibility_judgment：已查。\n- evidence_traceback：已查。\n\n## 主要问题清单\n示例问题1条，详见findings。\n\n## 待复核项\n示例待复核项。",
+  "run_status": {
+   "state": "success",
+   "reason": null
   },
-  "changelog": [
-    {"step": "step0", "change": "build_skeleton 落骨架，提取 4 选题 5 已知工作"},
-    {"step": "step1", "change": "事前声明五级 grade_rules 与三因子权重（合计=1.0）"},
-    {"step": "step3", "change": "novelty_rank 机械复算：T01 0.865 > T04 0.56 > T02 0.51 > T03 0.48"}
-  ],
-  "self_check": [],
-  "gates": [],
-  "unbacked_numbers": [],
-  "validator_verdict": null
+  "verdict": "audited",
+  "verdict_basis": "5方面全覆盖"
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "示例主张",
+   "kind": "reported",
+   "source_id": "F01",
+   "location": "示例章节",
+   "evidence": [
+    {
+     "quote": "示意示例句子（回证）"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "summary": "示例不确定性",
+  "human_review": []
+ },
+ "changelog": []
 }

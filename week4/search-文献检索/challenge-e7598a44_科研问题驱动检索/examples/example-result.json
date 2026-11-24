@@ -1,720 +1,81 @@
 {
+ "_note": "示意输出（合成，非正式答案）：对应 example-case.json，演示多维度覆盖 + 成文报告",
  "case_id": "demo-quest-001",
  "status": "answered",
- "note": "示意输出（非正式案例答案）：对应 example-case.json 的合成示例，演示 result.json 结构与自检链路。",
  "result": {
-  "research_question": {
-   "object": "固态电解质中的锂离子-空位复合体（虚构示例）",
-   "mechanism": "空位聚集/复合体形成如何改变锂离子迁移路径与能垒",
-   "method": "计算筛选与实验电导率测量",
-   "time_range": "2015-2022",
-   "comparison": "复合体主导 vs 晶界主导的电导率机制",
-   "evidence_requirements": "须有可电导率数据或迁移能垒计算结果",
-   "scope": "固态锂离子电解质文献；不含液态电解液与正极材料合成"
+  "severity_rubric": {
+   "levels": {
+    "critical": "动摇核心结论",
+    "major": "局部问题可修正",
+    "minor": "表述/建议"
+   },
+   "declared_at": "step1"
   },
-  "subquestions": [
+  "findings": [
    {
-    "subq_id": "sq1",
-    "text": "空位聚集是否形成连通锂离子迁移通道？",
-    "dimension": "mechanism",
-    "query_ids": [
-     "q1"
-    ],
-    "status": "covered"
-   },
-   {
-    "subq_id": "sq2",
-    "text": "哪些计算方法用空位特征筛选超离子导体？",
-    "dimension": "method",
-    "query_ids": [
-     "q2"
-    ],
-    "status": "covered"
-   },
-   {
-    "subq_id": "sq3",
-    "text": "晶界机制与体相空位机制的相对贡献如何比较？",
-    "dimension": "comparison",
-    "query_ids": [
-     "q3"
-    ],
-    "status": "covered"
+    "finding_id": "F01",
+    "aspect": "question_decomposition",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "示意示例句子（回证）",
+    "location": "示例章节",
+    "evidence": "示例对照依据",
+    "revision_suggestion": "示例修改建议",
+    "status": "confirmed"
    }
   ],
-  "query_plan": [
+  "aspect_coverage": [
    {
-    "query_id": "q1",
-    "subq_id": "sq1",
-    "phase": 1,
-    "depends_on": [],
-    "query_string": "vacancy clustering Li-ion conduction solid electrolyte",
-    "term_expansions": [
-     "vacancy ordering",
-     "superionic conductor",
-     "锂空位有序"
-    ],
-    "rationale": "前置查询：机制子问题直接对应"
+    "aspect": "question_decomposition",
+    "status": "checked_findings",
+    "count": 1
    },
    {
-    "query_id": "q2",
-    "subq_id": "sq2",
-    "phase": 1,
-    "depends_on": [],
-    "query_string": "machine learning screening superionic conductor vacancy formation energy",
-    "term_expansions": [
-     "high-throughput screening",
-     "ML screening",
-     "高通量筛选"
-    ],
-    "rationale": "方法子问题，可与 q1 并行"
+    "aspect": "query_planning",
+    "status": "checked_no_issue",
+    "count": 0
    },
    {
-    "query_id": "q3",
-    "subq_id": "sq3",
-    "phase": 2,
-    "depends_on": [
-     "q1"
-    ],
-    "query_string": "grain boundary resistance bulk conductivity perovskite electrolyte",
-    "term_expansions": [
-     "LLTO",
-     "grain-boundary impedance",
-     "晶界阻抗"
-    ],
-    "rationale": "依赖 q1 确认体相机制后再比较"
+    "aspect": "keyword_expansion",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "multi_round",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "stop_condition",
+    "status": "checked_no_issue",
+    "count": 0
    }
   ],
-  "search_rounds": [
-   {
-    "round": 1,
-    "queries_executed": 3,
-    "findings": "3 条候选命中；R3 只涉晶界阻抗",
-    "adjustment": "R3 与机制子问题相关性存疑，进入第二轮核实"
-   },
-   {
-    "round": 2,
-    "queries_executed": 1,
-    "findings": "R3 摘要无空位复合体证据，降级为对照文献",
-    "adjustment": "停止：三个子问题均有证据或缺口登记，边际收益低于事前规则"
-   }
-  ],
-  "candidates": [
-   {
-    "candidate_id": "R1",
-    "title": "Vacancy-ordered Li6PS5Cl argyrodite: vacancy clustering and ionic conductivity",
-    "source": "records[0]",
-    "location": "example-case.json records[0].abstract_excerpt",
-    "metadata": {
-     "year": 2019,
-     "venue": "Journal of Synthetic Materials"
-    },
-    "subq_ids": [
-     "sq1"
-    ],
-    "relevance_score": 0.92,
-    "included": true,
-    "relevance_basis": "摘要逐字：vacancy clustering in Li6PS5Cl creates percolating Li-ion pathways，直接回答 sq1 机制"
-   },
-   {
-    "candidate_id": "R2",
-    "title": "Machine-learning screening of superionic conductors with vacancy features",
-    "source": "records[1]",
-    "location": "example-case.json records[1].abstract_excerpt",
-    "metadata": {
-     "year": 2021,
-     "venue": "Synthetic Computational Chemistry"
-    },
-    "subq_ids": [
-     "sq1",
-     "sq2"
-    ],
-    "relevance_score": 0.85,
-    "included": true,
-    "relevance_basis": "摘要逐字：random-forest model using vacancy-formation-energy features，覆盖 sq1/sq2 方法与机制"
-   },
-   {
-    "candidate_id": "R3",
-    "title": "Grain-boundary resistance in Li3xLa2/3-xTiO3 perovskite electrolytes",
-    "source": "records[2]",
-    "location": "example-case.json records[2].abstract_excerpt",
-    "metadata": {
-     "year": 2015,
-     "venue": "Journal of Imaginary Ceramics"
-    },
-    "subq_ids": [
-     "sq3"
-    ],
-    "relevance_score": 0.3,
-    "included": false,
-    "relevance_basis": "摘要只涉晶界阻抗；作为 sq3 对照文献保留",
-    "exclusion_reason": "无空位复合体证据，不作为 sq3 主要支撑，仅作机制对照"
-   }
-  ],
-  "gaps": [
-   {
-    "gap_id": "g1",
-    "subq_id": "sq3",
-    "kind": "conflict",
-    "description": "R3 报道晶界主导，与 R1 报道空位通道主导存在机制解释分歧",
-    "follow_up": "补一轮 grain boundary vs bulk vacancy 对比检索，或标注为待人工裁定"
-   }
-  ],
-  "stop_criteria": {
-   "declared_before": "step1（检索开始前写入 /app/work/stop_criteria.json）",
-   "applied": true,
-   "stop_reason": "三个子问题均达到覆盖标准：有查询命中且有候选关联或缺口登记",
-   "marginal_rule": "连续一轮新增相关候选数为 0 或新增候选全部重复时停止",
-   "rationale": "避免过早收敛；以子问题覆盖而非检索次数为停止依据"
-  },
-  "steps": [
-   {
-    "step": "step0",
-    "action": "落骨架与材料清单",
-    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
-    "output_ref": "result.research_question",
-    "status": "done"
-   },
-   {
-    "step": "step1",
-    "action": "问题拆解与查询规划、停止条件事前声明",
-    "command": "手工构建 subquestions/query_plan 后写入 result.json",
-    "output_ref": "result.subquestions",
-    "status": "done"
-   },
-   {
-    "step": "step2",
-    "action": "在案例记录集上执行检索并逐轮记录",
-    "command": "手工按 query_plan 逐条筛查 records；结果写 search_rounds",
-    "output_ref": "result.search_rounds",
-    "status": "done"
-   },
-   {
-    "step": "step3",
-    "action": "相关性判定与缺口登记",
-    "command": "手工逐条写 relevance_basis/exclusion_reason/gaps",
-    "output_ref": "result.candidates",
-    "status": "done"
-   },
-   {
-    "step": "step4",
-    "action": "增益对照与自检",
-    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
-    "output_ref": "result.gain_evidence",
-    "status": "done"
-   }
-  ],
-  "reproducibility": {
-   "total_subquestions": 3,
-   "query_covered": 3,
-   "evidence_covered": 3,
-   "uncovered": 0,
-   "ratio": 1.0,
-   "note": "covered=有查询且有候选关联或缺口登记"
-  },
+  "search_report": "## 总体结论\n本案例完成5方面覆盖审查，发现示例问题，其余方面已查无异常。\n\n## 逐面小结\n- query_planning：已查。\n- keyword_expansion：已查。\n- multi_round：已查。\n- stop_condition：已查。\n\n## 主要问题清单\n示例问题1条，详见findings。\n\n## 待复核项\n示例待复核项。",
   "run_status": {
    "state": "success",
-   "reason": "三个子问题全部覆盖，候选与缺口均登记",
-   "manual_takeover": []
+   "reason": null
   },
-  "verdict": "search_completed",
-  "verdict_basis": "全部子问题有查询覆盖且有关联候选或缺口登记；停止条件按事前规则触发",
-  "material_gaps": [],
-  "environment": {
-   "python_version": "3.12",
-   "packages": "stdlib-only",
-   "seed": null,
-   "hardware_note": "示例文件，未实际运行"
-  },
-  "gain_evidence": {
-   "available": false,
-   "reason": "示例为静态示意文件，未实跑 gain_probe；正式运行时由脚本回填真实对照数字"
-  },
-  "efficiency": {
-   "available": false,
-   "reason": "示例为静态示意文件，未实跑 gain_probe；正式运行时由脚本回填自动计数"
-  }
+  "verdict": "audited",
+  "verdict_basis": "5方面全覆盖"
  },
  "claims": [
   {
-   "claim_id": "k1",
-   "text": "R1 相关性评分 0.92：摘要句 vacancy clustering in Li6PS5Cl creates percolating Li-ion pathways 直接回答 sq1",
-   "kind": "inferred",
-   "source_id": "R1",
-   "location": "candidates[0]",
-   "evidence": [
-    {
-     "paragraph_id": "records[0].abstract_excerpt",
-     "quote": "vacancy clustering in Li6PS5Cl creates percolating Li-ion pathways"
-    }
-   ]
-  },
-  {
-   "claim_id": "k2",
-   "text": "R2 相关性评分 0.85：摘要句 random-forest model using vacancy-formation-energy features 覆盖方法子问题 sq2",
-   "kind": "inferred",
-   "source_id": "R2",
-   "location": "candidates[1]",
-   "evidence": [
-    {
-     "paragraph_id": "records[1].abstract_excerpt",
-     "quote": "random-forest model using vacancy-formation-energy features screens 1200 candidates"
-    }
-   ]
-  },
-  {
-   "claim_id": "k3",
-   "text": "R3 相关性评分 0.30 且排除为主证据：摘要只报道 grain-boundary resistance，无空位复合体证据",
-   "kind": "inferred",
-   "source_id": "R3",
-   "location": "candidates[2]",
-   "evidence": [
-    {
-     "paragraph_id": "records[2].abstract_excerpt",
-     "quote": "Total conductivity of LLTO is dominated by grain-boundary resistance"
-    }
-   ]
-  },
-  {
-   "claim_id": "k4",
-   "text": "缺口 g1（conflict）：R3 与 R1 对电导率主导机制的解释冲突，登记待人工裁定",
+   "claim_id": "c-01",
+   "text": "示例主张",
    "kind": "reported",
-   "source_id": "R3",
-   "location": "gaps[0]",
+   "source_id": "F01",
+   "location": "示例章节",
    "evidence": [
     {
-     "paragraph_id": "records[2].abstract_excerpt",
-     "quote": "dominated by grain-boundary resistance rather than bulk vacancy dynamics"
+     "quote": "示意示例句子（回证）"
     }
    ]
   }
  ],
  "uncertainties": {
-  "unreported": [
-   "记录集无 DOI/页码等完整元数据"
-  ],
-  "unverifiable": [],
-  "conflicts": [
-   "R1 空位通道主导 vs R3 晶界主导（gaps[0]）"
-  ],
-  "human_review": [
-   "机制冲突裁定"
-  ],
-  "summary": "合成示例；冲突与元数据缺口均已登记"
+  "summary": "示例不确定性",
+  "human_review": []
  },
- "changelog": [
-  {
-   "step": "step0",
-   "change": "build_skeleton 落骨架"
-  },
-  {
-   "step": "step1",
-   "change": "问题拆解 + 查询规划 + 停止条件事前声明"
-  },
-  {
-   "step": "step2",
-   "change": "两轮检索记录"
-  },
-  {
-   "step": "step3",
-   "change": "候选判定 + 缺口登记"
-  },
-  {
-   "step": "step4",
-   "change": "自检与增益对照占位（示例不实跑）"
-  }
- ],
- "self_check": [
-  {
-   "item": "case_id",
-   "template_value": "case_id 非空",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "top_fields",
-   "template_value": "status/result/claims/uncertainties 全键",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "status_enum",
-   "template_value": "status ∈ answered/partial/insufficient_evidence/input_error",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "research_question.present",
-   "template_value": "须有结构化研究问题 research_question",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "research_question.dimensions",
-   "template_value": "至少 1 个维度（对象/机制/方法/时间范围/比较/证据要求）有具体值",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "research_question.scope",
-   "template_value": "须写明检索范围 scope",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "query_plan.present",
-   "template_value": "须有查询计划 query_plan",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "query_plan[0].query_string",
-   "template_value": "查询式 query_string 非空",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "query_plan[0].subq_ref",
-   "template_value": "查询须挂到子问题 subq_id",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "query_plan[1].query_string",
-   "template_value": "查询式 query_string 非空",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "query_plan[1].subq_ref",
-   "template_value": "查询须挂到子问题 subq_id",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "query_plan[2].query_string",
-   "template_value": "查询式 query_string 非空",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "query_plan[2].subq_ref",
-   "template_value": "查询须挂到子问题 subq_id",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "query_plan[2].deps_valid",
-   "template_value": "依赖 depends_on 须指向存在的 query_id",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "query_plan.term_expansions",
-   "template_value": "至少一条查询做了术语/同义词扩展",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "subquestions.present",
-   "template_value": "须有子问题清单 subquestions",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "subquestions[0].id_text",
-   "template_value": "子问题须有 subq_id 与 text",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "subquestions[0].query_coverage",
-   "template_value": "子问题 sq1 须挂到 query_plan 中存在的查询",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "subquestions[1].id_text",
-   "template_value": "子问题须有 subq_id 与 text",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "subquestions[1].query_coverage",
-   "template_value": "子问题 sq2 须挂到 query_plan 中存在的查询",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "subquestions[2].id_text",
-   "template_value": "子问题须有 subq_id 与 text",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "subquestions[2].query_coverage",
-   "template_value": "子问题 sq3 须挂到 query_plan 中存在的查询",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "search_rounds[0].structure",
-   "template_value": "轮次须有 round 与 findings/adjustment 之一",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "search_rounds[1].structure",
-   "template_value": "轮次须有 round 与 findings/adjustment 之一",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates.present",
-   "template_value": "须有候选文献集 candidates",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[0].traceable",
-   "template_value": "候选须有来源 source 与定位 location（可追溯）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[0].subq_ref",
-   "template_value": "候选须关联至少一个子问题",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[0].relevance_basis",
-   "template_value": "候选须写明相关性依据 relevance_basis",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[0].relevance_backed",
-   "template_value": "relevance_score 数字须在 claim text 中回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[1].traceable",
-   "template_value": "候选须有来源 source 与定位 location（可追溯）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[1].subq_ref",
-   "template_value": "候选须关联至少一个子问题",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[1].relevance_basis",
-   "template_value": "候选须写明相关性依据 relevance_basis",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[1].relevance_backed",
-   "template_value": "relevance_score 数字须在 claim text 中回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[2].traceable",
-   "template_value": "候选须有来源 source 与定位 location（可追溯）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[2].subq_ref",
-   "template_value": "候选须关联至少一个子问题",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[2].relevance_basis",
-   "template_value": "候选须写明相关性依据 relevance_basis",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "candidates[2].relevance_backed",
-   "template_value": "relevance_score 数字须在 claim text 中回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "gaps[0].kind_enum",
-   "template_value": "gap kind ∈ no_result/conflict/metadata_missing/permission/other",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "gaps[0].follow_up",
-   "template_value": "gap 须写明 description 与 follow_up",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "stop_criteria.present",
-   "template_value": "须有停止条件 stop_criteria",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "stop_criteria.declared",
-   "template_value": "停止条件须事前声明 declared_before（检索前写定）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "stop_criteria.substance",
-   "template_value": "停止条件须写明实质规则（marginal_rule/stop_reason）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "reproducibility.present",
-   "template_value": "须有可复现性汇总 reproducibility",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "reproducibility.consistency",
-   "template_value": "reproducibility 计数须与子问题实际覆盖一致（total=3 query=3 evidence=3）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "steps.present",
-   "template_value": "须有复现步骤列表 steps[]",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "steps[0].action",
-   "template_value": "须写明动作 action",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "steps[1].action",
-   "template_value": "须写明动作 action",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "steps[2].action",
-   "template_value": "须写明动作 action",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "steps[3].action",
-   "template_value": "须写明动作 action",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "steps[4].action",
-   "template_value": "须写明动作 action",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "steps.has_command",
-   "template_value": "至少一条步骤给出可执行命令 command",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "run_status.present",
-   "template_value": "须有运行状态 run_status{state,reason}",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "run_status.state",
-   "template_value": "state ∈ success/partial/unable_to_determine/refused",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "run_status.reason",
-   "template_value": "须写明状态原因 reason",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "gain_evidence.present",
-   "template_value": "须有 gain_evidence（正常 vs 退化双模式对照）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "gain_evidence.available_false_reason",
-   "template_value": "available=false 须写明原因 reason",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "efficiency.present",
-   "template_value": "须有 efficiency 效率计数",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "efficiency.available_false_reason",
-   "template_value": "available=false 须写明原因 reason",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "verdict_enum",
-   "template_value": "∈ search_completed/partial_coverage/cannot_verify/refused",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "verdict_completion",
-   "template_value": "search_completed 须全部子问题 covered（当前 uncovered=0）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "claims_coverage",
-   "template_value": "有可回证数字则 claims 非空",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "numbers_backed",
-   "template_value": "全部可回证数字有逐字回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "environment.python_version",
-   "template_value": "environment 须有 python_version（或 python）",
-   "applied": true,
-   "match": true
-  }
- ],
- "unbacked_numbers": [],
- "gates": [
-  {
-   "gate": "result_readable",
-   "state": "enforced",
-   "note": ""
-  },
-  {
-   "gate": "case_contract",
-   "state": "enforced",
-   "note": ""
-  }
- ],
- "validator_verdict": "PASS"
+ "changelog": []
 }

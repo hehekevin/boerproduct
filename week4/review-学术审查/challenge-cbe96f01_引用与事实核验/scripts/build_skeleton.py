@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""build_skeleton.py — Step 0 自动落骨架与稿件结构清单（cite-fact-verify 引用与事实核验）。
+"""build_skeleton.py — Step 0 自动落骨架（cite-support-check 引用支持判定，极简单点）。
 
-读取 case.json 提取 output_contract 全部字段名与稿件结构（manuscript/paper/
-document 等常见键下的 sections/text/references），扫描输入目录补齐材料清单，
-写入骨架 result.json（全部键，待回填）与 /app/work/severity_rubric.json
-严重度口径模板（须在任何判定之前声明，之后禁止调整）。
+读取 case.json 提取 case_id、output_contract 全部字段名与稿件结构
+（manuscript/paper/document 等常见键下的 sections/text/references），扫描输入
+目录补齐材料清单，写入骨架 result.json 与 /app/work/skill_marker.json 标志文件。
 三级容错：任何一级失败都降级产出可用骨架，绝不崩溃、绝不缺 result.json。
 
 用法：
@@ -21,15 +20,6 @@ import sys
 
 MANUSCRIPT_KEYS = ("manuscript", "paper", "document", "full_text", "text", "body", "content")
 SECTION_KEYS = ("sections", "chapters", "parts")
-
-FACETS = (
-    ("citation_support", "引用支持：正文论断与被引文献主张的四态对应（完全/部分/不支持/无法判定）与过度推断"),
-    ("citation_fabrication", "编造引用：正文引用标记在参考文献表或材料中不存在"),
-    ("fact_consistency", "事实比对：正文事实性陈述与材料内证据（含被引主张）是否相符"),
-    ("numeric_consistency", "数值一致：正文、表格、图注与摘要间的数字、样本量、单位、年份与显著性表述复算"),
-    ("source_reliability", "来源可靠：来源等级、出版状态、版本差异与更正撤稿信息"),
-    ("evidence_locus", "证据定位：结论能否落到页/段/图表/数据集条目等可回查位置"),
-)
 
 
 def contract_fields(case):
@@ -72,8 +62,7 @@ def extract_manuscript(case):
             v = root.get(sk)
             if isinstance(v, list) and v:
                 for i, s in enumerate(v):
-                    sid = None
-                    name = None
+                    sid, name = None, None
                     if isinstance(s, dict):
                         sid = s.get("section_id") or s.get("id") or ("S%d" % (i + 1))
                         name = s.get("name") or s.get("title") or None
@@ -128,10 +117,8 @@ def main():
         return 0
 
     problems = []
-    case = {}
-    case_id = "unknown"
+    case, case_id = {}, "unknown"
 
-    # 一级：读 case.json
     try:
         if os.path.exists(args.case):
             with open(args.case, "r", encoding="utf-8") as f:
@@ -151,7 +138,6 @@ def main():
     if not marker_hit:
         problems.append("技能标志文件未命中（%s），脚本可能未挂载在 /skills/weekly-skill" % (marker_path or "SKILL.md"))
 
-    # 二级：组装骨架（output_contract 键 + 本题业务键，一个不缺）
     try:
         inner = {
             "material_gaps": [],
@@ -160,35 +146,24 @@ def main():
                             "skill_marker": {"hit": marker_hit, "path": marker_path}},
             "manuscript_overview": {"title": ms["title"], "sections": ms["sections"],
                                     "reference_count": ms["reference_count"]},
-            "severity_rubric": {"levels": {"critical": None, "major": None, "minor": None},
-                                "declared_at": None,
-                                "note": "任何逐条判定之前必须声明三级口径，之后禁止调整"},
-            "suppression_rules": [
-                {"rule_id": "FP-01", "text": "学科写作惯例（作者自陈局限、惯用转承语）不算缺陷"},
-                {"rule_id": "FP-02", "text": "期刊格式差异（引用编号样式、图表编号风格）不算缺陷"},
-                {"rule_id": "FP-03", "text": "作者有意取舍（篇幅/期刊要求内的省略）不算缺陷"},
-            ],
-            "facets": {k: v for k, v in FACETS},
-            "findings": [],
-            "suppressed": [],
-            "pending_review": [],
-            "clearances": [],
-            "citation_audit": {"note": "由 citation_audit.py 回填：引用标记 vs 参考文献表机械比对"},
-            "numeric_audit": {"note": "由 numeric_audit.py 回填：数值/单位/年份/显著性机械复算"},
-            "coverage": {"total_sections": len(ms["sections"]), "sections_with_findings": 0,
-                         "total_findings": 0, "judged": 0, "confirmed": 0, "pending": 0,
-                         "suppressed": 0, "facet_counts": {}, "category_counts": {},
-                         "severity_counts": {}, "per_section": {}, "note": "coverage_audit.py 回填"},
+            "citation_scan": {"note": "由 citation_scan.py 回填：带引用标号结论句候选清单与引用标记比对"},
+            "citation_checks": [],
+            "coverage": {"total_checks": 0, "judged": 0, "state_counts": {},
+                         "over_inference_count": 0, "note": "手动或校验器回填"},
             "unchecked": [],
             "steps": [],
             "run_status": {"state": None, "reason": None, "manual_takeover": []},
             "verdict": None,
             "verdict_basis": None,
+            "gain_evidence": {"available": False,
+                              "reason": "极简单点策略：单一引用支持判定方向，增益层在预算 50% 跳过"},
+            "efficiency": {"checker_runs": 0, "reproduce": "",
+                           "note": "由 verify_check.py 回填"},
         }
         skeleton = {"case_id": case_id, "status": "partial", "result": inner,
                     "claims": [], "uncertainties": {"unreported": [], "unverifiable": [],
                     "conflicts": [], "human_review": [],
-                    "summary": "骨架已落盘，待逐条审查后回填"},
+                    "summary": "骨架已落盘，待逐条判定后回填"},
                     "changelog": [{"step": "step0", "change": "build_skeleton 落骨架"}]}
         for f in fields:
             if f not in skeleton:
@@ -199,7 +174,6 @@ def main():
                     "claims": [], "uncertainties": {"summary": "骨架降级"},
                     "changelog": []}
 
-    # 三级：写盘（输出目录不存在则创建；仍失败则写到备用路径）
     out_path = args.out
     try:
         os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
@@ -219,19 +193,15 @@ def main():
         except Exception as e2:
             problems.append("备用写盘也失败: %s" % e2)
 
-    # 严重度口径模板（事前声明：判定前必须填写，之后禁止调整）
     try:
         os.makedirs(args.work_dir or ".", exist_ok=True)
-        led_path = os.path.join(args.work_dir, "severity_rubric.json")
-        if not os.path.exists(led_path):
-            with open(led_path, "w", encoding="utf-8") as f:
-                json.dump({"note": "任何逐条判定之前必须声明三级严重度口径；"
-                                   "声明后禁止调整，须与 result.severity_rubric 一致。",
-                           "declared_at": None,
-                           "levels": {"critical": None, "major": None, "minor": None}}, f,
-                          ensure_ascii=False, indent=1)
+        marker_file = os.path.join(args.work_dir, "skill_marker.json")
+        with open(marker_file, "w", encoding="utf-8") as f:
+            json.dump({"skill": "cite-support-check", "case_id": case_id,
+                       "marker_hit": marker_hit, "marker_path": marker_path}, f,
+                      ensure_ascii=False, indent=1)
     except Exception as e:
-        problems.append("severity_rubric 模板写出失败: %s" % e)
+        problems.append("skill_marker.json 写出失败: %s" % e)
 
     print("[build_skeleton] case_id=%s | contract 字段 %d 个 | 输入文件 %d 个 | 章节 %d 个 | 参考文献 %s"
           % (case_id, len(fields), len(all_files), len(ms["sections"]),

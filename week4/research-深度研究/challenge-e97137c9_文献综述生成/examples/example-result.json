@@ -1,120 +1,81 @@
 {
-  "_note": "示意输出（非正式答案）：基于 examples/example-case.json 合成案例的手工示意结果，用于说明接口与字段形态，不是正式案例运行结果。",
-  "case_id": "demo-litreview-001",
-  "status": "answered",
-  "result": {
-    "material_gaps": [],
-    "environment": {"python_version": "3.x", "packages": "stdlib-only", "seed": null, "hardware_note": "示意输出，非实测环境"},
-    "research_question": {
-      "question": "益生菌补充对成人肠易激综合征（IBS）症状的疗效与菌株特异性",
-      "scope": "人体对照试验与系统综述；结局含 IBS 全局症状/腹胀/腹痛评分",
-      "time_range": "2010-2025"
-    },
-    "criteria": {
-      "inclusion": [
-        {"criterion_id": "IN-01", "text": "人体对照试验或系统综述，结局包含 IBS 症状测量"},
-        {"criterion_id": "IN-02", "text": "干预为口服益生菌制剂（单菌株或多菌株）"}
-      ],
-      "exclusion": [
-        {"criterion_id": "EX-01", "text": "非人体研究（动物/体外/模型）"},
-        {"criterion_id": "EX-02", "text": "综述会议摘要与正式发表版本重复，合并保留正式版本"},
-        {"criterion_id": "EX-03", "text": "结局不含 IBS 症状测量（如仅代谢指标）"}
-      ]
-    },
-    "items": [
-      {"paper_id": "R01", "source_ref": "papers[0]", "title": "Bifidobacterium infantis 35624 improves global IBS symptoms: a randomized controlled trial", "label": "keep", "criteria_hit": ["IN-01", "IN-02"], "excluded_by": [], "theme_ids": ["T1"], "duplicate_of": null, "missing_metadata": [], "pending_reason": null, "judged": true},
-      {"paper_id": "R02", "source_ref": "papers[1]", "title": "A multi-strain probiotic formulation reduces bloating in IBS patients", "label": "keep", "criteria_hit": ["IN-01", "IN-02"], "excluded_by": [], "theme_ids": ["T1", "T2"], "duplicate_of": null, "missing_metadata": [], "pending_reason": null, "judged": true},
-      {"paper_id": "R03", "source_ref": "papers[2]", "title": "Probiotics are not superior to placebo for overall IBS symptom relief: a controlled trial", "label": "keep", "criteria_hit": ["IN-01", "IN-02"], "excluded_by": [], "theme_ids": ["T1"], "duplicate_of": null, "missing_metadata": [], "pending_reason": null, "judged": true},
-      {"paper_id": "R04", "source_ref": "papers[3]", "title": "Strain-specific mechanisms of probiotics in visceral hypersensitivity: a systematic review", "label": "keep", "criteria_hit": ["IN-01"], "excluded_by": [], "theme_ids": ["T2"], "duplicate_of": null, "missing_metadata": [], "pending_reason": null, "judged": true},
-      {"paper_id": "R05", "source_ref": "papers[4]", "title": "Gut microbiota modulation reduces visceral pain in a rodent model", "label": "exclude", "criteria_hit": [], "excluded_by": ["EX-01"], "theme_ids": [], "duplicate_of": null, "missing_metadata": [], "pending_reason": null, "judged": true},
-      {"paper_id": "R06", "source_ref": "papers[5]", "title": "Bifidobacterium infantis 35624 improves global IBS symptoms (conference abstract)", "label": "exclude", "criteria_hit": [], "excluded_by": ["EX-02"], "theme_ids": [], "duplicate_of": "R01", "missing_metadata": [], "pending_reason": null, "judged": true}
-    ],
-    "themes": [
-      {"theme_id": "T1", "title": "全局症状疗效的对照试验证据（正反并列）", "basis": "R01/R02/R03 三项试验对同一结局给出方向不同的结果，构成对照主题", "paper_ids": ["R01", "R02", "R03"], "boundary": "仅覆盖全局症状结局；腹痛/腹胀分项归入证据表分项行", "dispute_ids": ["D-01"]},
-      {"theme_id": "T2", "title": "菌株特异性与机制解释", "basis": "R04 系统综述提出菌株/剂量依赖性，R02 多菌株结果与之呼应", "paper_ids": ["R02", "R04"], "boundary": "机制推断以 R04 综述为限，不外推到未试验菌株"}
-    ],
-    "outline": {
-      "order": ["T1", "T2"],
-      "sections": [
-        {"section_id": "S1", "theme_id": "T1", "heading": "全局症状疗效：证据与分歧", "timeline_note": "2011 首报阳性 → 2015 阴性 → 2017 分项阳性", "method_note": "均为随机对照试验，样本量 77-120", "paragraphs": [
-          {"para_id": "P-01", "text": "两项试验报告益生菌优于安慰剂：单菌株试验见全局症状评分显著下降，多菌株试验见腹胀评分显著改善。", "claim_ids": ["c-01"], "source_ids": ["R01", "R02"]},
-          {"para_id": "P-02", "text": "但 2015 年的对照试验未发现益生菌在整体缓解上优于安慰剂，阳性与阴性结果并存，疗效结论存在分歧。", "claim_ids": ["c-02"], "source_ids": ["R03"]}
-        ]},
-        {"section_id": "S2", "theme_id": "T2", "heading": "菌株特异性与机制边界", "timeline_note": "2020 年系统综述对前述分歧给出解释框架", "method_note": "系统综述（人群+机制证据）", "paragraphs": [
-          {"para_id": "P-03", "text": "系统综述提示益生菌效应具有菌株与剂量依赖性，合并异质菌株可能掩盖菌株特异信号，这为上述分歧提供了可检验的解释。", "claim_ids": ["c-03"], "source_ids": ["R04"]}
-        ]}
-      ]
-    },
-    "evidence_table": [
-      {"row_id": "E-01", "paper_id": "R01", "quote": "Patients receiving Bifidobacterium infantis 35624 showed a clinically meaningful reduction in global symptom scores compared with placebo (p=0.02)", "location": "papers[0].abstract Results", "claim_id": "c-01", "strength": "established"},
-      {"row_id": "E-02", "paper_id": "R02", "quote": "Bloating scores decreased significantly in the probiotic group versus placebo (p=0.01)", "location": "papers[1].abstract", "claim_id": "c-01", "strength": "established"},
-      {"row_id": "E-03", "paper_id": "R03", "quote": "Overall symptom relief did not differ between groups at week 10 (p=0.31)", "location": "papers[2].abstract Results", "claim_id": "c-02", "strength": "disputed"},
-      {"row_id": "E-04", "paper_id": "R04", "quote": "Included trials suggest that effects are strain- and dose-dependent, and that pooling heterogeneous strains may mask strain-specific signals", "location": "papers[3].abstract", "claim_id": "c-03", "strength": "suggestive"},
-      {"row_id": "E-05", "paper_id": "R01", "quote": "Adverse events were similar between groups", "location": "papers[0].abstract Results", "claim_id": "c-04", "strength": "established"},
-      {"row_id": "E-06", "paper_id": "R02", "quote": "Tolerability was good with no serious adverse events", "location": "papers[1].abstract", "claim_id": "c-04", "strength": "established"}
-    ],
-    "disputes": [
-      {"dispute_id": "D-01", "question": "益生菌对 IBS 全局症状是否优于安慰剂", "status": "disputed",
-       "positions": [
-         {"side": "positive", "paper_ids": ["R01", "R02"], "quote": "Patients receiving Bifidobacterium infantis 35624 showed a clinically meaningful reduction in global symptom scores compared with placebo (p=0.02)"},
-         {"side": "negative", "paper_ids": ["R03"], "quote": "Overall symptom relief did not differ between groups at week 10 (p=0.31)"}
-       ],
-       "note": "两方在结局时点与菌株制剂上不同，未达成一致"},
-      {"dispute_id": "D-02", "question": "益生菌总体安全性", "status": "consensus",
-       "consensus_paper_ids": ["R01", "R02"],
-       "consensus_text": "现有试验均报告耐受良好，未见严重不良事件组间差异",
-       "note": "仅限所纳入两项试验的观察期"}
-    ],
-    "omissions": [],
-    "coverage": {"total_papers": 6, "included_papers": 4, "cited_in_outline": 4, "uncited": 0, "omissions_registered": 0, "ratio": 1.0, "note": "theme_group.py 机械重算覆盖（不入大纲的 keep 文献必须登记 omissions）"},
-    "steps": [
-      {"step": "step0", "action": "落骨架与文献清单", "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work", "output_ref": "/app/output/result.json", "status": "done"},
-      {"step": "step1", "action": "声明研究问题与纳排标准", "command": "(Agent 响应)", "output_ref": "result.criteria", "status": "done"},
-      {"step": "step2", "action": "逐条筛选并归纳主题", "command": "(Agent 响应)", "output_ref": "result.items/result.themes", "status": "done"},
-      {"step": "step3", "action": "写大纲草稿并绑定段落来源", "command": "(Agent 响应)", "output_ref": "result.outline/claims", "status": "done"},
-      {"step": "step4", "action": "登记分歧对照与共识", "command": "python3 /skills/weekly-skill/scripts/dispute_table.py --result /app/output/result.json --emit-into", "output_ref": "result.disputes", "status": "done"},
-      {"step": "step5", "action": "主题覆盖机械重算", "command": "python3 /skills/weekly-skill/scripts/theme_group.py --result /app/output/result.json --emit-into", "output_ref": "result.coverage", "status": "done"},
-      {"step": "step6", "action": "总校验 + 结构守卫 + 增益对照", "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --emit-into", "output_ref": "self_check/validator_verdict", "status": "done"}
-    ],
-    "run_status": {"state": "success", "reason": null, "manual_takeover": []},
-    "verdict": "drafted",
-    "verdict_basis": "6 篇全部逐条判定，4 篇纳入均入大纲并绑定来源，分歧并列呈现，无遗漏未登记",
-    "gain_evidence": {"available": false, "reason": "示意输出占位；实际运行由 gain_probe.py --emit-into 实跑回填"},
-    "efficiency": {"available": false, "reason": "示意输出占位；实际运行由 gain_probe.py --emit-into 实跑回填"}
+ "_note": "示意输出（合成，非正式答案）：对应 example-case.json，演示多维度覆盖 + 成文报告",
+ "case_id": "demo-litreview-001",
+ "status": "answered",
+ "result": {
+  "severity_rubric": {
+   "levels": {
+    "critical": "动摇核心结论",
+    "major": "局部问题可修正",
+    "minor": "表述/建议"
+   },
+   "declared_at": "step1"
   },
-  "claims": [
-    {"claim_id": "c-01", "text": "单菌株与多菌株试验均报告益生菌组症状评分显著优于安慰剂", "strength": "established", "source_ids": ["R01", "R02"], "para_ref": "sections[0].paragraphs[0]", "dispute_id": null,
-     "evidence": [
-       {"paragraph_id": "R01", "quote": "Patients receiving Bifidobacterium infantis 35624 showed a clinically meaningful reduction in global symptom scores compared with placebo (p=0.02)"},
-       {"paragraph_id": "R02", "quote": "Bloating scores decreased significantly in the probiotic group versus placebo (p=0.01)"}
-     ]},
-    {"claim_id": "c-02", "text": "整体症状缓解上益生菌未优于安慰剂的阴性结果与阳性结果并存", "strength": "disputed", "source_ids": ["R03"], "para_ref": "sections[0].paragraphs[1]", "dispute_id": "D-01",
-     "evidence": [
-       {"paragraph_id": "R03", "quote": "Overall symptom relief did not differ between groups at week 10 (p=0.31)"}
-     ]},
-    {"claim_id": "c-03", "text": "效应呈菌株与剂量依赖性，合并异质菌株可能掩盖菌株特异信号", "strength": "suggestive", "source_ids": ["R04"], "para_ref": "sections[1].paragraphs[0]", "dispute_id": null,
-     "evidence": [
-       {"paragraph_id": "R04", "quote": "Included trials suggest that effects are strain- and dose-dependent, and that pooling heterogeneous strains may mask strain-specific signals"}
-     ]},
-    {"claim_id": "c-04", "text": "纳入试验报告益生菌耐受良好，未见严重不良事件组间差异", "strength": "established", "source_ids": ["R01", "R02"], "para_ref": "disputes[D-02].consensus_text", "dispute_id": null,
-     "evidence": [
-       {"paragraph_id": "R01", "quote": "Adverse events were similar between groups"},
-       {"paragraph_id": "R02", "quote": "Tolerability was good with no serious adverse events"}
-     ]}
+  "findings": [
+   {
+    "finding_id": "F01",
+    "aspect": "screening",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "示意示例句子（回证）",
+    "location": "示例章节",
+    "evidence": "示例对照依据",
+    "revision_suggestion": "示例修改建议",
+    "status": "confirmed"
+   }
   ],
-  "uncertainties": {
-    "unreported": ["R03 亚组提示便秘型患者可能获益，但样本与检验未报告，不纳入结论"],
-    "unverifiable": [],
-    "conflicts": ["D-01：全局症状疗效阳性/阴性结果并存，按题面要求并列呈现不下单一结论"],
-    "human_review": [],
-    "summary": "疗效结论限定为『存在分歧』；安全性共识仅限两项试验观察期"
+  "aspect_coverage": [
+   {
+    "aspect": "screening",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "aspect": "topic_summary",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "evidence_organization",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "draft_generation",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "conflict_gap",
+    "status": "checked_no_issue",
+    "count": 0
+   }
+  ],
+  "report": "## 总体结论\n本案例完成5方面覆盖审查，发现示例问题，其余方面已查无异常。\n\n## 逐面小结\n- topic_summary：已查。\n- evidence_organization：已查。\n- draft_generation：已查。\n- conflict_gap：已查。\n\n## 主要问题清单\n示例问题1条，详见findings。\n\n## 待复核项\n示例待复核项。",
+  "run_status": {
+   "state": "success",
+   "reason": null
   },
-  "changelog": [
-    {"step": "step0", "change": "build_skeleton 落骨架"},
-    {"step": "step6", "change": "示意输出定稿（合成案例）"}
-  ],
-  "self_check": [],
-  "gates": [],
-  "unbacked_quotes": [],
-  "validator_verdict": "PASS"
+  "verdict": "audited",
+  "verdict_basis": "5方面全覆盖"
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "示例主张",
+   "kind": "reported",
+   "source_id": "F01",
+   "location": "示例章节",
+   "evidence": [
+    {
+     "quote": "示意示例句子（回证）"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "summary": "示例不确定性",
+  "human_review": []
+ },
+ "changelog": []
 }

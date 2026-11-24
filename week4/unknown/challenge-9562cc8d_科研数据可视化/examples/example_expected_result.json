@@ -1,0 +1,52 @@
+{
+  "_note": "示意输出（非正式案例结果）：由 examples/example_data.csv + example_task.md 实跑生成，字段结构与正式案例一致",
+  "case_id": "demo-viz-01",
+  "status": "partial",
+  "chart_selection": {
+    "columns": [
+      {"name": "week", "type": "numeric", "unique": 4, "missing": 0},
+      {"name": "treatment", "type": "categorical", "unique": 3, "missing": 0},
+      {"name": "biomass_g", "type": "numeric", "unique": 15, "missing": 0},
+      {"name": "height_cm", "type": "numeric", "unique": 16, "missing": 0}
+    ],
+    "intent_hits": [["comparison", "比较"], ["composition", "构成"]],
+    "recommended": "bar",
+    "candidates": [
+      {"chart": "bar", "score": 0.95, "rationale": "检测到比较意图且有分类+数值列：柱长编码跨组比较最直观", "encoding": "位置/长度编码优先，禁用角度与面积夸大差异"}
+    ],
+    "rejected": [
+      {"chart": "pie", "reason": "角度/面积编码读数不精确；如需构成请用堆叠柱长度编码"},
+      {"chart": "time_series_plot", "reason": "数据不含 datetime 列，无法构成时间序列图"}
+    ],
+    "rationale_coverage": 1.0,
+    "n_rows": 18
+  },
+  "figure": {
+    "svg": "figure.svg",
+    "png": "figure.png 或 renderer_unavailable 登记",
+    "chart": "bar",
+    "n_marks": 3,
+    "title": "第4周三组生物量比较（示意）",
+    "axis": {"x": "处理组", "y": "生物量 (g)"}
+  },
+  "verify_report": {
+    "status": "pass",
+    "fail_count": 0,
+    "completeness_score": 1.0,
+    "pixel_recompute": {"total": 3, "passed": 3, "tol_px": 1.5, "mismatches": []},
+    "data_consistency": {"mode": "agg_mean", "total": 3, "passed": 3, "mismatches": []}
+  },
+  "render_evidence": {"png": "PNG 宽高/nonbg_ratio 实测数字或 unknown+降级登记", "pdf_bytes": "实测或 unknown"},
+  "compliance_checks": [
+    {"check": "图型选择依据", "detail": "bar 推荐理由+pie/time_series 不推荐理由齐全，rationale_coverage=1.0"},
+    {"check": "数据-图形一致性", "detail": "3 柱逐点复算几何与聚合值全部通过，mismatch=0"},
+    {"check": "轴/图例/单位完备", "detail": "标题/来源/轴标目+单位/图例四项齐全，刻度≥2 单调"},
+    {"check": "渲染产物", "detail": "PNG/PDF 实测数字（或 renderer_unavailable 如实登记）"},
+    {"check": "口径说明", "detail": "18 行无缺失；重复 (week,treatment) 组合按 mean 聚合并登记"}
+  ],
+  "exceptions": [],
+  "gain_evidence": {"_note": "示意结构：ablations 三项（关选择理由/关自描述/关逐点校验）delta + pollution_injection 两项 FAIL 差 + baseline_comparison（基线 12 项人工核对→skill 0 项，reduction=12）"},
+  "efficiency": {"_note": "示意结构：mechanical_check_items / manual_checks_avoided / rerun_avoided_items 为真跑自动采集计数"},
+  "schema_report": {"status": "pass", "missing_keys": [], "case_id_match": true, "status_honest": true},
+  "pipeline_log": ["口径：无缺失行；重复 (week,treatment) 按 mean 聚合，未静默剔除"]
+}

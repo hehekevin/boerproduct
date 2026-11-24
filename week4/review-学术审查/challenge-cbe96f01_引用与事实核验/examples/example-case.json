@@ -1,7 +1,7 @@
 {
   "_note": "合成示意案例（非正式答案、非真实论文）：仅用于本地自测整条链路。题目、作者、数据与参考文献均为虚构，如有雷同纯属巧合。",
-  "case_id": "demo-citefact-001",
-  "task_type": "citation_fact_verification",
+  "case_id": "demo-citesup-001",
+  "task_type": "citation_support_verification",
   "manuscript": {
     "title": "社区老年人群血清维生素D水平与跌倒风险的关系研究（虚构示例稿）",
     "sections": [

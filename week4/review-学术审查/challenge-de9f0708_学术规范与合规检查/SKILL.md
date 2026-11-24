@@ -1,75 +1,84 @@
 ---
-name: academic-integrity-check
-description: Academic integrity and compliance check skill (focused on citation verification). Scans the manuscript text for in-text citation markers (如 [1]、[3]), verifies each against the reference list (existence, metadata, claim-reference alignment), and flags citation_gap / wrong_attribution / formatting_inconsistency with a verbatim quote and section location. Only citation-norm verification is in scope; privacy/copyright/ethics/journal-requirements are out-of-scope notes. Use when the task asks to check academic norm compliance with per-item evidence and severity.
+name: de9f0708
+description: Multi-aspect skill (6 aspects) with itemized findings and prose report embedded.
 ---
-## 强制执行协议（最高优先级）
-以下 4 条优先级高于本文档其余内容；冲突时以本节为准。
+
+## 强制执行协议（最高优先级，冲突时以本节为准）
 1. **第 0 步先落骨架**：读完 `/input/case.json` 第一个动作运行 `build_skeleton.py`，写含 output_contract 全字段 + case_id 的 result.json。此后 result.json 必须存在且可解析。
-2. **只核引用规范**：聚焦引用真实性/对应性/格式一致性，不查隐私/版权/伦理（各一句话兜底）。读不到的被引文献标"待复核"不脑补。
-3. **失败也交付**：任何中断仍写 result.json。脚本退出码恒 0，判据看 verdict。
-4. **预算保护**：超 32 次请求或 450 秒停止，用现有结果定稿。
+2. **6方面必覆盖**：academic_integrity / citation_norms / privacy_compliance / copyright_license / ethics_review / journal_requirements 都要逐面查过并记录，不得静默跳过。
+3. **成文报告必嵌入**：除 findings 外，必须写 `result.review_report`（Markdown 全文，≥200 字）。
+4. **失败也交付**：任何中断仍写 result.json。脚本退出码恒 0，判据看 verdict。
+5. **预算保护**：模型请求超 40 次或 600 秒即停止，用现有结果写 review_report 收尾。
 
 ## 定位与约定
-锁定子场景：给定一篇分章节稿件（含参考文献列表），完成「引文标号核验 → 逐条问题清单（quote+定位+severity）→ 结论」。只做引用规范核验，报出的问题必须能指回原文位置、有可核对依据。公开引用编号在文献表不存在的、论断与所引主题不对应的、引用格式不统一的都要报；风格差异不算不端。
-- 输入：`/input/case.json`（manuscript{sections[]+references} + output_contract）、`task.md`。
+锁定子场景：给定 稿件（分章节+参考文献），完成**6方面完整任务**。逐条问题带逐字 quote + 位置 + 严重度 + 修改建议；拿不准标待复核，不脑补。材料缺失、无法判断照实登记。
+- 输入：`/input/case.json`（稿件（分章节+参考文献） + output_contract）、`task.md`。以实际文件为准。
 - 工作区：`/app/work`；产物：`/app/output/result.json`。预算 64 请求/900 秒；仅标准库。
-- 线性 3 步。脚本定位以 skill_marker.json 校验。
+- 脚本定位以 skill_marker.json 校验。
 
-## 三步流程
+## 6方面定义（每面必查）
+1. `academic_integrity` 学术诚信。
+2. `citation_norms` 引用规范。
+3. `privacy_compliance` 隐私与数据合规。
+4. `copyright_license` 版权与许可。
+5. `ethics_review` 伦理审查。
+6. `journal_requirements` 投稿要求。
 
-### Step 0 — 落骨架
+## 五步流程
+
+### Step 0 — 落骨架（1 次脚本，必做）
 ```bash
 python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json \
   --input-root /input --out /app/output/result.json --work-dir /app/work
 ```
 
-### Step 1 — 引文核验（核心，1-2 次响应）
-扫正文各章节里的引用标号（如 [1]、[3]）：
-- 每个标号 `citation_checks[]`：`cite_marker`（[1]）+ `claim_quote`（正文带该标号的论断句逐字）+ `location`（如 sections[1].text）+ `status` ∈ `ok` / `not_in_refs` / `mismatch` / `uncertain`（读不到文献内容时）+ `basis`（一句话判定依据）+ `severity` ∈ `critical`/`major`/`minor`
-- 标号不在参考文献表 → `not_in_refs`（critical）
-- 标号存在但引用文献主题与论断明显不符 → `mismatch`（major）
-- 同一文献多次引用的格式/编号不一致 → `minor`
-- 每案例 6-10 条封顶，宁少勿滥
+### Step 1 — 严重度口径声明（1 次响应，判定前必做）
+critical=动摇核心结论；major=局部问题可修正；minor=表述/建议。写 result.severity_rubric。
 
-### Step 2 — 综合 + 自检
+### Step 2 — 6方面逐面产出（2-4 次响应，广度优先）
+逐面处理，每条问题写 `result.findings[]`：`aspect` ∈ 6面之一 + `quote` 逐字 + `location` + `severity` + `evidence` + `revision_suggestion`。**每面都要产出**：有问题记 finding；没问题的面在 `result.aspect_coverage` 记 `{aspect, status:"checked_no_issue"}`。
+
+### Step 3 — 写成文报告（1 次响应，必做）
+写 `result.review_report`（≥200 字）：①总体结论 ②6方面逐面小结 ③主要问题清单 ④待复核项。
+
+### Step 4 — 自检与交付（1 次脚本，必做）
 ```bash
 python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json \
   --case /input/case.json --out /app/work/verify_check.json --emit-into
 ```
-- `result.summary`：问题计数 + 最严重问题；`run_status` + `verdict` 如实。
-- verify_check 判据看 validator_verdict；FAIL 则逐条修复重跑直到 PASS。
+判据看 validator_verdict；FAIL 则修复→重跑直到 PASS。
 
-## 输出 schema（result.json 顶层 6 契约字段 + result 核心键）
+## 输出 schema（result.json 顶层契约字段 + result 核心键）
 ```json
 {
   "case_id":"…","status":"answered|partial|input_error",
   "result":{
-    "manuscript_title":"…",
-    "citation_checks":[{"cite_marker":"[1]","claim_quote":"…","location":"sections[1].text","status":"ok|not_in_refs|mismatch|uncertain","basis":"…","severity":"critical|major|minor"}],
-    "summary":{"total":"…","critical":"…","note":"…"},
+    "severity_rubric":{"levels":{"critical":"…","major":"…","minor":"…"},"declared_at":"step1"},
+    "findings":[{"finding_id":"F01","aspect":"academic_integrity","category":"insufficient_evidence","severity":"major","quote":"逐字","location":"…","evidence":"…","revision_suggestion":"…","status":"confirmed"}],
+    "aspect_coverage":[{"aspect":"academic_integrity","status":"checked_findings","count":1}],
+    "review_report":"## 总体结论\n……（≥200字）",
     "run_status":{"state":"success","reason":null},
-    "verdict":"audited|partially_audited|cannot_verify","verdict_basis":"…"
+    "verdict":"…","verdict_basis":"…"
   },
-  "claims":[{"claim_id":"c-01","text":"…","kind":"reported","source_id":"[1]","location":"sections[1].text","evidence":[{"quote":"…"}]}],
-  "uncertainties":{"summary":"…","human_review":[]},
-  "changelog":[]
+  "claims":[],"uncertainties":{"summary":"…"},"changelog":[]
 }
 ```
 
 ## 校验器会抓的错（verify_check.py）
-1. citation_checks 空且稿件有引用标号。
-2. status/severity 枚举非法；not_in_refs 无 basis；claim_quote 缺。
-3. 报出的 critical/major 无 basis（可核对依据）。
-4. verdict 与核验进度矛盾；缺 output_contract 字段。
+1. 6方面有任一面在 aspect_coverage 缺失。
+2. findings 里 aspect/category/severity 枚举非法；confirmed 缺 quote/location。
+3. review_report 缺失或 <200 字。
+4. severity_rubric 未声明；suggestion≠minor；fact_error 标 minor。
+5. verdict 与进度矛盾；缺 output_contract 字段。
 
 ## 异常处置
 | 场景 | 处置 |
 |---|---|
-| 无参考文献表 | 全部标号 not_in_refs，或 verdict=cannot_verify 不脑补 |
-| 被引文献内容读不到 | status=uncertain + 注明，不脑补主题对应 |
-| 题目材料只有摘要无全文 | 只核已有章节，material_gaps 登记 |
-| 校验失败 | 退出码恒 0，结论记 verdict |
+| 某方面材料缺失 | 该面记 checked_no_issue + 注明"材料缺失无法核验"，不编造 |
+| 无法判断 | 标待复核，不脑补 |
+| 材料超长/预算不足 | 未处理范围记 unchecked + status=partial |
+| 校验 FAIL | 修复后重跑；修不了如实登记，绝不中断交付 |
 
 ## 已知限制
-- 只核引用规范，不提供法务/伦理委员会正式意见；隐私/版权/伦理/投稿要求为 out-of-scope 一句话提示。
-- examples/ 为合成示意（虚构）非正式答案。
+- 只处理输入材料本身，不做外部检索/真实执行；结果为材料快照的整理。
+- examples/ 为合成示意（虚构），非正式答案。

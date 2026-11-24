@@ -1,128 +1,81 @@
 {
-  "case_id": "demo-cite-001",
-  "status": "answered",
-  "result": {
-    "material_gaps": [],
-    "environment": {"python_version": "3.12.3", "packages": "stdlib-only",
-                     "seed": null, "hardware_note": "示例环境，正式运行照实填写"},
-    "seed": {
-      "seed_id": "S0",
-      "title": "Sparse Mixture Routing for Modular Neural Retrieval",
-      "year": 2024,
-      "doi": "10.9000/smr.2024.001",
-      "venue": null,
-      "identity_keys": ["doi:10.9000/smr.2024.001",
-                         "title:sparse mixture routing for modular neural retrieval"],
-      "variants": [{"label": "preprint", "title": "Sparse Mixture Routing for Modular Neural Retrieval (preprint)",
-                     "doi": "10.9000/smr.2023.001.pre", "source_ref": "records.imported"}],
-      "source_ref": "case.json:seed",
-      "note": "示意种子；正式案例从 /input/case.json 实际内容定位"
-    },
-    "nodes": [
-      {"node_id": "S0", "title": "Sparse Mixture Routing for Modular Neural Retrieval", "year": 2024, "doi": "10.9000/smr.2024.001", "roles": ["seed"], "source_ref": "case.json:seed"},
-      {"node_id": "S0x", "title": "Sparse Mixture Routing for Modular Neural Retrieval (preprint)", "year": 2023, "doi": "10.9000/smr.2023.001.pre", "roles": ["variant"], "source_ref": "records.imported"},
-      {"node_id": "B1", "title": "Memory-Augmented Key-Value Networks", "year": 2019, "doi": "10.9000/mkv.2019.010", "roles": ["backward"], "source_ref": "records.references[0]"},
-      {"node_id": "B2", "title": "Keyed Memory Layers for Retrieval", "year": 2019, "doi": null, "roles": ["backward"], "source_ref": "records.references[1]"},
-      {"node_id": "B3", "title": "Routing Nets via Soft Gating (extended release)", "year": 2025, "doi": "10.9000/rsg.2025.004", "roles": ["backward", "forward"], "source_ref": "records.references[2]+records.citing[3]"},
-      {"node_id": "B3x", "title": "Routing Nets via Soft Gating", "year": 2021, "doi": "10.9000/rsg.2021.004", "roles": ["backward", "merged"], "source_ref": "records.references[2]"},
-      {"node_id": "F1", "title": "Gated Sparse Routing Revisited", "year": 2025, "doi": "10.9000/gsr.2025.002", "roles": ["forward"], "source_ref": "records.citing[0]"},
-      {"node_id": "F2", "title": "A Critique of Sparse Routing Benchmarks", "year": 2025, "doi": "10.9000/crb.2025.003", "roles": ["forward"], "source_ref": "records.citing[1]"},
-      {"node_id": "F3", "title": "Cross-Modal Sparse Retrieval", "year": 2026, "doi": "10.9000/cms.2026.001", "roles": ["forward"], "source_ref": "records.citing[2]"},
-      {"node_id": "P1", "title": "Conditional Memory Expansion for Open-Domain QA", "year": 2023, "doi": "10.9000/cme.2023.005", "roles": ["related"], "source_ref": "records.related[0]"},
-      {"node_id": "P2", "title": "Latent Index Pruning at Scale", "year": 2024, "doi": "10.9000/lip.2024.002", "roles": ["related"], "source_ref": "records.related[1]"},
-      {"node_id": "O1", "title": "Unlinked Retrieval Notes on Sparse Indexing", "year": 2018, "doi": "10.9000/urn.2018.001", "roles": ["orphan"], "source_ref": "records.imported"}
-    ],
-    "traces": {
-      "backward": [
-        {"edge_id": "be1", "direction": "backward", "from_id": "S0", "to_id": "B1", "layer": 1, "relation": "method_origin", "context_clue": "引用语境：方法出处", "source_ref": "records.references[0]", "pending": false, "pending_reason": null},
-        {"edge_id": "be2", "direction": "backward", "from_id": "S0", "to_id": "B2", "layer": 1, "relation": "dataset_origin", "context_clue": "引用语境：数据来源", "source_ref": "records.references[1]", "pending": true, "pending_reason": "B2 在材料中缺 DOI，仅按标题匹配，身份待复核"},
-        {"edge_id": "be3", "direction": "backward", "from_id": "S0", "to_id": "B3x", "layer": 1, "relation": "prior_work", "context_clue": "引用语境：前置工作", "source_ref": "records.references[2]", "pending": false, "pending_reason": null}
-      ],
-      "forward": [
-        {"edge_id": "fe1", "direction": "forward", "from_id": "F1", "to_id": "S0", "layer": 1, "relation": "improvement", "context_clue": "施引语境：后续改进", "source_ref": "records.citing[0]", "pending": false, "pending_reason": null},
-        {"edge_id": "fe2", "direction": "forward", "from_id": "F2", "to_id": "S0", "layer": 1, "relation": "critique", "context_clue": "施引语境：批评/质疑", "source_ref": "records.citing[1]", "pending": false, "pending_reason": null},
-        {"edge_id": "fe3", "direction": "forward", "from_id": "F3", "to_id": "S0", "layer": 1, "relation": "application", "context_clue": "施引语境：应用扩展", "source_ref": "records.citing[2]", "pending": false, "pending_reason": null},
-        {"edge_id": "fe4", "direction": "forward", "from_id": "F3", "to_id": "F1", "layer": 1, "relation": "builds_on", "context_clue": "施引语境：F3 的参考文献含 F1", "source_ref": "records.citing[2]:references", "pending": false, "pending_reason": null},
-        {"edge_id": "fe5", "direction": "forward", "from_id": "B3", "to_id": "S0", "layer": 1, "relation": "extended_release_cites_seed", "context_clue": "施引语境：扩展版补引种子", "source_ref": "records.citing[3]", "pending": false, "pending_reason": null}
-      ]
-    },
-    "related": [
-      {"related_id": "rel-P1", "node_id": "P1", "signals": ["bib_coupling", "topic"], "confidence": "high", "reason": "P1 与种子共享参考文献 B1（文献耦合），且同属记忆增强检索方法脉络", "confidence_basis": "共享参考文献 B1 可回指 be1 对应记录；满足 declared_rules 高置信要求", "edge_ids": ["be1"], "source_ref": "records.related[0]"},
-      {"related_id": "rel-P2", "node_id": "P2", "signals": ["co_citation", "author"], "confidence": "high", "reason": "F1 同时引用种子与 P2（共被引），且 P2 与种子共享作者 Demo A", "confidence_basis": "共被引证据落在 fe1 施引记录；满足 declared_rules 高置信要求", "edge_ids": ["fe1"], "source_ref": "records.citing[0]:references"}
-    ],
-    "clusters": [
-      {"cluster_id": "cl-method", "axis": "method", "members": ["S0", "F1", "F3", "P1"], "note": "稀疏混合路由方法脉络（示意）"}
-    ],
-    "network": {
-      "foundational": ["B1", "B2"],
-      "bridge": ["F1"],
-      "recent_hot": ["F3"],
-      "cycles": [{"cycle_id": "cy1", "nodes": ["S0", "B3", "B3x"], "evidence": "S0 引用 B3x（be3）；B3（B3x 的扩展版，经 merges.m2 合并）引用 S0（fe5），构成引用环"}],
-      "orphans": [{"node_id": "O1", "reason": "导入记录存在该条目，但无任何引用边或关联信号指向其他节点"}]
-    },
-    "paths": [
-      {"path_id": "p-F1", "target_id": "F1", "reachable": true, "hops": ["fe1"], "hop_count": 1, "direct": true, "trust": "direct", "note": "F1 直接施引种子"},
-      {"path_id": "p-F3", "target_id": "F3", "reachable": true, "hops": ["fe4", "fe1"], "hop_count": 2, "direct": false, "trust": "indirect_verified", "note": "F3→F1→S0 两跳，逐跳均有边可回指"},
-      {"path_id": "p-P1", "target_id": "P1", "reachable": false, "hops": [], "hop_count": 0, "direct": false, "trust": "unreachable", "note": "仅文献耦合关联，无引用链可达，属间接关联而非引用路径"}
-    ],
-    "merges": [
-      {"merge_id": "mg1", "kept_id": "S0", "merged_ids": ["S0x"], "keys": {"doi": "10.9000/smr.2024.001 vs 10.9000/smr.2023.001.pre", "title_norm": "sparse mixture routing for modular neural retrieval", "authors_sig": "Demo A / Demo B", "year": "2024 / 2023"}, "evidence": ["seed.variants[0]: 预印本记录标题主体与 S0 一致且作者列表一致（见 claims quote）", "DOI 前缀同为 10.9000/smr"], "conflict": null, "pending": false, "pending_reason": null},
-      {"merge_id": "mg2", "kept_id": "B3", "merged_ids": ["B3x"], "keys": {"doi": "10.9000/rsg.2025.004 vs 10.9000/rsg.2021.004", "title_norm": "routing nets via soft gating", "authors_sig": "Demo C", "year": "2025 / 2021"}, "evidence": ["B3 为 B3x 的扩展发布版：标题含 extended release 后缀且年份递进（见 claims quote）"], "conflict": null, "pending": false, "pending_reason": null}
-    ],
-    "declared_rules": [
-      {"rule": "related_confidence", "threshold": "high=至少1条可回指证据边或来源; medium=单一信号+语义复核; low=仅主题词重叠", "basis": "题面要求每条关联给出理由与置信度，机检复核高置信须有据", "declared_at": "step1"},
-      {"rule": "pruning_stop", "threshold": "每方向最多扩展2层；单层候选超过50条按被引数与年份截断", "basis": "64请求/900秒预算下的停止判据", "declared_at": "step1"},
-      {"rule": "dedup_keys", "threshold": "doi优先，其次 title_norm+year+作者签名；键冲突时不合并、只登记 pending", "basis": "身份合并保守原则，防同名不同文误合并", "declared_at": "step1"},
-      {"rule": "direction_coverage", "threshold": "双向均须尝试；无前向记录时登记 material_gaps 而非留空", "basis": "机检要求追踪方向覆盖，空方向必须登记原因", "declared_at": "step1"}
-    ],
-    "tracking_coverage": {
-      "backward_layers_max": 1, "forward_layers_max": 1,
-      "backward_edges": 3, "forward_edges": 5,
-      "related_items": 2, "clusters": 1, "paths": 3,
-      "merges": 2, "cycles_registered": 1, "orphans_registered": 1,
-      "seed_forward_available": true,
-      "coverage_note": "示例覆盖汇总；正式案例各项计数须与对应列表长度一致（机器复算）"
-    },
-    "pending_review": [
-      {"item_id": "be2", "kind": "edge", "reason": "B2 在材料中缺 DOI，仅按标题匹配", "what_to_check": "在数据源核对标题+作者后再确认 be2 指向，防同名不同文"}
-    ],
-    "steps": [
-      {"step": "step0", "action": "落骨架与材料清单", "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work", "output_ref": "changelog[0]", "status": "done"},
-      {"step": "step1", "action": "种子定位与规则事前声明", "command": null, "output_ref": "declared_rules", "status": "done"},
-      {"step": "step2", "action": "双向追踪（后向3边/前向5边）", "command": null, "output_ref": "traces", "status": "done"},
-      {"step": "step3", "action": "关联发现+网络+路径", "command": null, "output_ref": "related/network/paths", "status": "done"},
-      {"step": "step4", "action": "去重合并与待复核登记", "command": null, "output_ref": "merges/pending_review", "status": "done"},
-      {"step": "step5", "action": "增益对照与效率计数", "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution", "output_ref": "gain_evidence/efficiency", "status": "done"},
-      {"step": "step6", "action": "自检与交付", "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json", "output_ref": "self_check/validator_verdict", "status": "done"}
-    ],
-    "run_status": {"state": "success", "reason": "双向追踪、关联发现、去重合并完成；1 条缺 DOI 的边已登记待复核", "manual_takeover": []},
-    "verdict": "complete",
-    "verdict_basis": "双向均有边且覆盖计数一致；唯一待复核项已登记 pending_review",
-    "gain_evidence": {"runs": [], "delta_normal_minus_degraded": {}, "mechanism_to_metric_map": [], "boundaries": [], "failure_conditions": [], "note": "示意占位；正式运行由 gain_probe.py --emit-into 写入真实对照数字"},
-    "efficiency": {"wall_clock_seconds_total": 0.0, "checker_runs": 2, "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution", "note": "示意占位；正式运行由 gain_probe.py 写入"}
+ "_note": "示意输出（合成，非正式答案）：对应 example-case.json，演示多维度覆盖 + 成文报告",
+ "case_id": "demo-cite-002",
+ "status": "answered",
+ "result": {
+  "severity_rubric": {
+   "levels": {
+    "critical": "动摇核心结论",
+    "major": "局部问题可修正",
+    "minor": "表述/建议"
+   },
+   "declared_at": "step1"
   },
-  "claims": [
-    {"claim_id": "k01", "text": "种子标题 Sparse Mixture Routing for Modular Neural Retrieval（2024 年，DOI 10.9000/smr.2024.001）逐字摘自案例种子记录。", "kind": "reported", "source_id": "case.json.seed", "location": "seed", "evidence": [{"paragraph_id": "case.seed", "quote": "Sparse Mixture Routing for Modular Neural Retrieval. Demo A, Demo B. 2024. DOI 10.9000/smr.2024.001. Seed record."}]},
-    {"claim_id": "k02", "text": "预印本变体 S0x（2023 年，DOI 10.9000/smr.2023.001.pre）标题主体与种子一致，作者列表一致。", "kind": "reported", "source_id": "records.imported", "location": "seed.variants[0]", "evidence": [{"paragraph_id": "records.imported", "quote": "Sparse Mixture Routing for Modular Neural Retrieval (preprint). Demo A, Demo B. 2023. DOI 10.9000/smr.2023.001.pre."}]},
-    {"claim_id": "k03", "text": "B1 方法出处（2019 年，DOI 10.9000/mkv.2019.010）为种子参考文献首条。", "kind": "reported", "source_id": "records.references", "location": "traces.backward[0]", "evidence": [{"paragraph_id": "records.references[0]", "quote": "Memory-Augmented Key-Value Networks. 2019. DOI 10.9000/mkv.2019.010."}]},
-    {"claim_id": "k04", "text": "B2 数据来源（2019 年）为种子参考文献第二条，材料中缺 DOI，已登记待复核。", "kind": "reported", "source_id": "records.references", "location": "traces.backward[1]", "evidence": [{"paragraph_id": "records.references[1]", "quote": "Keyed Memory Layers for Retrieval. 2019. No DOI in source record."}]},
-    {"claim_id": "k05", "text": "B3 扩展版（2025 年，DOI 10.9000/rsg.2025.004）与 B3x 原版（2021 年，DOI 10.9000/rsg.2021.004）为同一工作的两个发布形态。", "kind": "reported", "source_id": "records", "location": "merges[1]", "evidence": [{"paragraph_id": "records.citing[3]", "quote": "Routing Nets via Soft Gating (extended release). 2025. DOI 10.9000/rsg.2025.004. Earlier preprint: Routing Nets via Soft Gating. 2021. DOI 10.9000/rsg.2021.004."}]},
-    {"claim_id": "k06", "text": "F1（2025 年，DOI 10.9000/gsr.2025.002）施引种子并同引 P2，构成共被引信号。", "kind": "reported", "source_id": "records.citing", "location": "traces.forward[0]", "evidence": [{"paragraph_id": "records.citing[0]", "quote": "Gated Sparse Routing Revisited. 2025. DOI 10.9000/gsr.2025.002. Cites S0 and Latent Index Pruning at Scale."}]},
-    {"claim_id": "k07", "text": "F2（2025 年，DOI 10.9000/crb.2025.003）对种子提出基准批评。", "kind": "reported", "source_id": "records.citing", "location": "traces.forward[1]", "evidence": [{"paragraph_id": "records.citing[1]", "quote": "A Critique of Sparse Routing Benchmarks. 2025. DOI 10.9000/crb.2025.003."}]},
-    {"claim_id": "k08", "text": "F3（2026 年，DOI 10.9000/cms.2026.001）施引种子与 F1，构成两跳路径。", "kind": "reported", "source_id": "records.citing", "location": "traces.forward[2]", "evidence": [{"paragraph_id": "records.citing[2]", "quote": "Cross-Modal Sparse Retrieval. 2026. DOI 10.9000/cms.2026.001. Cites S0 and Gated Sparse Routing Revisited."}]},
-    {"claim_id": "k09", "text": "P1（2023 年，DOI 10.9000/cme.2023.005）与种子共享参考文献 B1，属文献耦合。", "kind": "reported", "source_id": "records.related", "location": "related[0]", "evidence": [{"paragraph_id": "records.related[0]", "quote": "Conditional Memory Expansion for Open-Domain QA. 2023. DOI 10.9000/cme.2023.005. Reference list includes Memory-Augmented Key-Value Networks."}]},
-    {"claim_id": "k10", "text": "P2（2024 年，DOI 10.9000/lip.2024.002）与种子共享作者 Demo A 且被 F1 同引。", "kind": "reported", "source_id": "records.related", "location": "related[1]", "evidence": [{"paragraph_id": "records.related[1]", "quote": "Latent Index Pruning at Scale. Demo A. 2024. DOI 10.9000/lip.2024.002."}]},
-    {"claim_id": "k11", "text": "O1（2018 年，DOI 10.9000/urn.2018.001）为导入记录中的孤立条目。", "kind": "reported", "source_id": "records.imported", "location": "network.orphans", "evidence": [{"paragraph_id": "records.imported", "quote": "Unlinked Retrieval Notes on Sparse Indexing. 2018. DOI 10.9000/urn.2018.001. No citation links found."}]},
-    {"claim_id": "k12", "text": "实测覆盖：后向 3 条、前向 5 条、关联 2 条、簇 1 个、路径 3 条（直接 1 条、两跳 1 条、不可达 0 条）、合并 2 条、环 1 个、孤立节点 1 个；两方向层数各 1 层。", "kind": "inferred", "source_id": "result.json", "location": "tracking_coverage", "evidence": []}
+  "findings": [
+   {
+    "finding_id": "F01",
+    "aspect": "forward_backward_trace",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "示意示例句子（回证）",
+    "location": "示例章节",
+    "evidence": "示例对照依据",
+    "revision_suggestion": "示例修改建议",
+    "status": "confirmed"
+   }
   ],
-  "uncertainties": {
-    "unreported": [], "unverifiable": [], "conflicts": [],
-    "human_review": ["be2（B2 缺 DOI，按标题匹配）"],
-    "summary": "示意结果；唯一不确定项已登记 pending_review 并给出复核动作"
+  "aspect_coverage": [
+   {
+    "aspect": "forward_backward_trace",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "aspect": "related_discovery",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "citation_network",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "path_explanation",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "dedup_identity",
+    "status": "checked_no_issue",
+    "count": 0
+   }
+  ],
+  "report": "## 总体结论\n本案例完成5方面覆盖审查，发现示例问题，其余方面已查无异常。\n\n## 逐面小结\n- related_discovery：已查。\n- citation_network：已查。\n- path_explanation：已查。\n- dedup_identity：已查。\n\n## 主要问题清单\n示例问题1条，详见findings。\n\n## 待复核项\n示例待复核项。",
+  "run_status": {
+   "state": "success",
+   "reason": null
   },
-  "changelog": [
-    {"step": "step0", "change": "落骨架"},
-    {"step": "step2", "change": "双向追踪 8 条边"},
-    {"step": "step4", "change": "合并 2 组、登记 1 条待复核"}
-  ]
+  "verdict": "audited",
+  "verdict_basis": "5方面全覆盖"
+ },
+ "claims": [
+  {
+   "claim_id": "c-01",
+   "text": "示例主张",
+   "kind": "reported",
+   "source_id": "F01",
+   "location": "示例章节",
+   "evidence": [
+    {
+     "quote": "示意示例句子（回证）"
+    }
+   ]
+  }
+ ],
+ "uncertainties": {
+  "summary": "示例不确定性",
+  "human_review": []
+ },
+ "changelog": []
 }

@@ -1,0 +1,6 @@
+{
+  "case_id": "demo-viz-01",
+  "output_contract": ["case_id", "status", "chart_selection", "figure", "verify_report", "render_evidence", "compliance_checks", "exceptions"],
+  "materials": ["examples/example_data.csv", "examples/example_task.md"],
+  "note": "本文件为最小调用示例（示意），非正式案例；正式案例由平台在 /input 提供 case.json + task.md"
+}

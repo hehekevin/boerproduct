@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""build_skeleton.py — Step 0 自动落骨架与材料清单（cite-trace）。
+"""build_skeleton.py — Step 0 自动落骨架（cite-trace v2，仅前后向追踪）。
 
-读取 case.json 提取 output_contract 全部字段名与种子文献信息，扫描输入目录
-建立文献材料清单，写入骨架 result.json（全部键，待回填）与
-declared_rules.json 追踪/关联规则声明模板。
-三级容错：任何一级失败都降级产出可用骨架，绝不崩溃、绝不缺 result.json。
+读取 case.json 提取 case_id、output_contract 字段名与种子文献，扫描 /input 建
+材料清单，写骨架 result.json 与 skill_marker.json 标志文件。三级容错：任何一级
+失败都降级产出可用骨架，绝不崩溃、绝不缺 result.json。
 
 用法：
     python3 build_skeleton.py --case /input/case.json --input-root /input \
@@ -39,12 +38,7 @@ def contract_fields(case):
 
 
 def find_seed(case):
-    """在 case.json 中定位种子文献信息（兼容多种键名；找不到返回 None）。
-
-    注意：仅按键名定位，不按标签猜测内容；标题/DOI 等字段一律以实际
-    文件内容为准。标题归一化不用 isalpha 类启发式（汉字 isalpha()==True
-    会误判中文标题），这里只做原样提取。
-    """
+    """定位种子文献（仅按键名定位；标题/DOI 以实际内容为准，不按标签猜）。"""
     if not isinstance(case, dict):
         return None
     for key in ("seed", "seed_paper", "paper", "work", "article"):
@@ -55,11 +49,8 @@ def find_seed(case):
                 "title": v.get("title"),
                 "year": v.get("year"),
                 "doi": v.get("doi"),
-                "venue": v.get("venue"),
-                "identity_keys": [],
-                "variants": [],
                 "source_ref": "case.json:%s" % key,
-                "note": "由 build_skeleton 预提取，Step 1 复核并补 identity_keys",
+                "note": "由 build_skeleton 预提取，Step 1 复核",
             }
     return None
 
@@ -68,7 +59,7 @@ def scan_inputs(root):
     """递归扫描输入目录，返回 (全部文件, 引文类材料文件)。"""
     all_files, lit_files = [], []
     try:
-        for dirpath, dirnames, filenames in os.walk(root):
+        for dirpath, _dirnames, filenames in os.walk(root):
             for fn in sorted(filenames):
                 rel = os.path.relpath(os.path.join(dirpath, fn), root).replace("\\", "/")
                 all_files.append(rel)
@@ -97,7 +88,6 @@ def main():
     case = {}
     case_id = "unknown"
 
-    # 一级：读 case.json
     try:
         if os.path.exists(args.case):
             with open(args.case, "r", encoding="utf-8") as f:
@@ -112,57 +102,36 @@ def main():
     all_files, lit_files = scan_inputs(args.input_root)
     seed = find_seed(case)
 
-    # 二级：组装骨架（output_contract 键 + 本题业务键，一个不缺）
     try:
         inner = {
             "material_gaps": [],
-            "environment": {"python_version": None, "packages": None,
-                            "seed": None, "hardware_note": None},
-            "seed": seed or {"seed_id": None, "title": None, "year": None,
-                             "doi": None, "venue": None, "identity_keys": [],
-                             "variants": [], "source_ref": None,
-                             "note": "Step 1 从 case.json/材料中定位种子并回填"},
-            "nodes": ([{"node_id": seed["seed_id"], "title": seed.get("title"),
-                        "year": seed.get("year"), "doi": seed.get("doi"),
-                        "roles": ["seed"], "source_ref": seed.get("source_ref")}
-                       ] if seed else []),
-            "traces": {"backward": [], "forward": []},
-            "related": [],
-            "clusters": [],
-            "network": {"foundational": [], "bridge": [], "recent_hot": [],
-                        "cycles": [], "orphans": []},
-            "paths": [],
-            "merges": [],
-            "declared_rules": [],
-            "tracking_coverage": {"backward_layers_max": 0, "forward_layers_max": 0,
-                                  "backward_edges": 0, "forward_edges": 0,
-                                  "related_items": 0, "clusters": 0, "paths": 0,
-                                  "merges": 0, "cycles_registered": 0,
-                                  "orphans_registered": 0,
-                                  "seed_forward_available": None,
-                                  "coverage_note": "Step 2/3/4 回填：各项计数须与对应列表长度一致"},
-            "pending_review": [],
-            "steps": [],
+            "environment": {"python_version": None, "packages": "stdlib-only", "note": None},
+            "seed": seed or {"seed_id": None, "title": None, "year": None, "doi": None,
+                             "source_ref": None, "note": "Step 1 从 case.json/材料中定位并回填"},
+            "trace_results": [],
+            "trace_summary": {"backward_layers": 0, "forward_layers": 0,
+                              "backward_count": 0, "forward_count": 0,
+                              "max_layer": 2, "per_layer_cap": 5,
+                              "seed_forward_available": None,
+                              "stop_rule": "控制在2层、每层≤5篇即停止",
+                              "coverage_note": "Step 2 回填：各项计数须与 trace_results 对应条数一致"},
             "run_status": {"state": None, "reason": None, "manual_takeover": []},
-            "verdict": None,
-            "verdict_basis": None,
+            "verdict": None, "verdict_basis": None,
+            "gain_evidence": {"available": False, "reason": "预算过半，跳过增益层"},
+            "efficiency": {"available": False, "reason": "预算过半，跳过效率计数"},
         }
         skeleton = {"case_id": case_id, "status": "partial", "result": inner,
                     "claims": [], "uncertainties": {"unreported": [], "unverifiable": [],
-                    "conflicts": [], "human_review": [],
-                    "summary": "骨架已落盘，待 Step 1-4 回填"},
+                    "conflicts": [], "human_review": [], "summary": "骨架已落盘，待 Step 1-3 回填"},
                     "changelog": [{"step": "step0", "change": "build_skeleton 落骨架"}]}
-        # output_contract 声明的顶层字段若不在骨架中，补齐（值 unknown）
         for f in fields:
             if f not in skeleton:
                 skeleton[f] = "unknown"
     except Exception as e:
         problems.append("骨架组装异常: %s" % e)
         skeleton = {"case_id": case_id, "status": "partial", "result": {},
-                    "claims": [], "uncertainties": {"summary": "骨架降级"},
-                    "changelog": []}
+                    "claims": [], "uncertainties": {"summary": "骨架降级"}, "changelog": []}
 
-    # 三级：写盘（输出目录不存在则创建；仍失败则写到备用路径）
     out_path = args.out
     try:
         os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
@@ -182,20 +151,16 @@ def main():
         except Exception as e2:
             problems.append("备用写盘也失败: %s" % e2)
 
-    # 追踪/关联规则声明模板（事前声明，验算前必须填写）
     try:
         os.makedirs(args.work_dir or ".", exist_ok=True)
-        rules_path = os.path.join(args.work_dir, "declared_rules.json")
-        if not os.path.exists(rules_path):
-            with open(rules_path, "w", encoding="utf-8") as f:
-                json.dump({"note": "Step 1 追踪开始前必须填写；声明后禁止事后调整。"
-                                   "每行 {rule, threshold, basis, declared_at}，"
-                                   "related[].confidence 判定须与声明一致",
-                           "declared_by": "skill（题面未给出阈值时按保守原则自定并写明理由）",
-                           "declared_at": None,
-                           "rules": []}, f, ensure_ascii=False, indent=1)
+        marker = os.path.join(args.work_dir, "skill_marker.json")
+        if not os.path.exists(marker):
+            with open(marker, "w", encoding="utf-8") as f:
+                json.dump({"skill": "cite-trace", "built_at": "step0",
+                           "scripts": ["build_skeleton.py", "verify_check.py", "schema_guard.py"],
+                           "note": "脚本定位标志文件，Step 0 落盘"}, f, ensure_ascii=False, indent=1)
     except Exception as e:
-        problems.append("规则模板写出失败: %s" % e)
+        problems.append("标志文件写出失败: %s" % e)
 
     print("[build_skeleton] case_id=%s | contract 字段 %d 个 | 文件 %d 个 | 引文材料 %d 个"
           % (case_id, len(fields), len(all_files), len(lit_files)))

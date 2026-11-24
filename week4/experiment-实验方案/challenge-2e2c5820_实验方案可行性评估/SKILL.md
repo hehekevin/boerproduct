@@ -1,75 +1,83 @@
 ---
-name: plan-feasibility-check
-description: Experiment plan feasibility review skill (focused on resource-and-condition verification). For each candidate plan, verifies the equipment/materials/samples it references against the provided resource inventory, classifying each referenced resource into four states (available / external / to-purchase / unavailable), with a source-based rationale. Produces a per-plan feasibility conclusion (feasible / conditionally_feasible / infeasible) with an explicit condition list. Only resource-condition verification is in scope; time estimation and full ethics-loan review are one-line notes. Use when the task asks to check whether an experiment plan is feasible under concrete resource constraints.
+name: plan-feasibility-review
+description: Experiment plan feasibility review skill (five-aspect coverage / itemized findings / prose plan embedded). Reviews each candidate plan across five aspects — checklist_system (checkable device/material/time/sample/ethics items), resource_verification (resource vs existing inventory four states), time_sample_estimate (step-wise time and sample feasibility), risk_anomaly (failure modes and fallback), ethics_safety (animal/human/reagent approval path) — and emits BOTH an itemized findings list AND a full prose plan report (plan_report) embedded into result.json. Every aspect is explicitly checked.
 ---
-## 强制执行协议（最高优先级）
-以下 4 条优先级高于本文档其余内容；冲突时以本节为准。
-1. **第 0 步先落骨架**：读完 `/input/case.json` 第一个动作运行 `build_skeleton.py`，写含 output_contract 全字段 + case_id 的 `/app/output/result.json`。此后任何时刻 result.json 必须存在且 JSON 可解析。
-2. **只核验资源条件**：判定是「资源上是否到位」，不评技术路线合理性。方案未写明的资源不默认满足，登记待确认。
-3. **失败也交付**：任何中断仍写 result.json（status=partial）。所有脚本退出码恒 0，判据看 verdict。
-4. **预算保护**：超 32 次请求或 450 秒停止新增核验，用现有结果定稿。
+
+## 强制执行协议（最高优先级，冲突时以本节为准）
+1. **第 0 步先落骨架**：读完 `/input/case.json` 第一个动作运行 `build_skeleton.py`，写含 output_contract 全字段 + case_id 的 result.json。此后 result.json 必须存在且可解析。
+2. **五方面必覆盖**：checklist_system / resource_verification / time_sample_estimate / risk_anomaly / ethics_safety 都要逐面查过并记录，不得静默跳过。
+3. **成文方案必嵌入**：除 findings 外，必须写 `result.plan_report`（Markdown 全文，≥200 字）。
+4. **失败也交付**：任何中断仍写 result.json。脚本退出码恒 0，判据看 verdict。
+5. **预算保护**：模型请求超 40 次或 600 秒即停止，用现有结果写 plan_report 收尾。
 
 ## 定位与约定
-锁定子场景：给定 2 个候选方案 + 设备/材料/样本清单 + 预算/工期约束，完成「逐方案资源四态核验 → 可行性结论 + 条件清单」。只做资源条件核验，不逐条估算时间/人力、不展开伦理审批全流程（各一句话兜底）。材料缺失照实登记，不补造报价。
-- 输入：`/input/case.json`（research_objective + constraints + resources{equipment/materials/samples} + plans[] + output_contract）、`task.md`。
+锁定子场景：给定研究目标 + 约束 + 资源清单 + 候选方案，完成**五方面完整可行性评估**。逐条问题带逐字 quote + 位置 + 严重度 + 修改建议；区分已具备/可外协/需采购/不具备；材料缺失照实登记。
+- 输入：`/input/case.json`（research_objective + constraints + resources + plans + output_contract）、`task.md`。以实际文件为准。
 - 工作区：`/app/work`；产物：`/app/output/result.json`。预算 64 请求/900 秒；仅标准库。
-- 线性 3 步。脚本定位以 skill_marker.json 校验。
+- 脚本定位以 skill_marker.json 校验。
 
-## 三步流程
+## 五方面定义（每面必查）
+1. `checklist_system` 检查项体系：把设备/材料/时间/样本/伦理/参数/风险拆成可勾选、可判定的检查项。
+2. `resource_verification` 资源与条件核验：方案引用的设备/材料/样本与现有条件清单比对，判定已具备/可外协/需采购/不具备。
+3. `time_sample_estimate` 时间与样本估算：按步骤拆设备占用/人工/等待周期，核对样本来源、数量、保存条件与审批进度。
+4. `risk_anomaly` 风险与异常处置：识别设备故障/材料批次/样本不足/参数越界，给出降级路径与转人工节点。
+5. `ethics_safety` 伦理与安全合规：动物/人体/危险试剂/个人数据对应哪级审批、哪些材料、多久。
 
-### Step 0 — 落骨架
+## 五步流程
+
+### Step 0 — 落骨架（1 次脚本，必做）
 ```bash
 python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json \
   --input-root /input --out /app/output/result.json --work-dir /app/work
 ```
 
-### Step 1 — 逐方案资源四态核验（核心，1-2 次响应）
-对每个 plan，扫它 steps/parameters/reagents 里提到的设备、材料、样本，与 resources 清单比对：
-- `status` ∈ `available`（清单有且可用）/ `external`（共享平台需预约）/ `to_purchase`（清单有但缺货需采购）/ `unavailable`（清单无且无替代）
-- 每项给 `basis`（引用 resources 里对应条目原文）+ `source_ref`
-- 方案引用但清单未提的资源 → 标 `unavailable` 或 `to_confirm`，不默认满足
-- 每个 plan 给 `feasibility` ∈ `feasible`/`conditionally_feasible`/`infeasible` + `conditions[]`（可执行的条件清单，如"预约微流控芯片""采购二氯甲烷约5天"）+ 一句话结论依据
+### Step 1 — 严重度口径声明（1 次响应，判定前必做）
+critical=动摇主结论；major=局部问题可修正；minor=表述/建议。写 result.severity_rubric。
 
-### Step 2 — 综合结论 + 自检
+### Step 2 — 五方面逐面产出（2-4 次响应，广度优先）
+逐面处理，每条问题写 `result.findings[]`：`aspect` ∈ 五面之一 + `quote` 逐字 + `location` + `severity` + `evidence` + `revision_suggestion`。**每面都要产出**：有问题记 finding；没问题的面在 `result.aspect_coverage` 记 `{aspect, status:"checked_no_issue"}`。
+
+### Step 3 — 写成文方案（1 次响应，必做）
+写 `result.plan_report`（≥200 字）：①研究目标 ②五方面逐面小结 ③可行性结论 ④待确认项。
+
+### Step 4 — 自检与交付（1 次脚本，必做）
 ```bash
 python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json \
   --case /input/case.json --out /app/work/verify_check.json --emit-into
 ```
-- `result.conclusion`：哪个方案更可行 + 关键阻塞项；`result.run_status` + `result.verdict` 如实。
-- verify_check 判据看 validator_verdict；FAIL 则逐条修复重跑直到 PASS。
+判据看 validator_verdict；FAIL 则修复→重跑直到 PASS。
 
-## 输出 schema（result.json 顶层 6 契约字段 + result 核心键）
+## 输出 schema（result.json 顶层契约字段 + result 核心键）
 ```json
 {
   "case_id":"…","status":"answered|partial|input_error",
   "result":{
-    "research_objective":"…",
-    "constraints":{"budget_note":"…","deadline_note":"…"},
-    "plan_checks":[{"plan_id":"P1","resource_checks":[{"item":"…","kind":"equipment|material|sample","status":"available|external|to_purchase|unavailable","basis":"…","source_ref":"resources.equipment[0]"}],"feasibility":"conditionally_feasible","conditions":["…"]}],
-    "conclusion":{"recommended_plan":"P1","blockers":["…"],"note":"…"},
+    "severity_rubric":{"levels":{"critical":"…","major":"…","minor":"…"},"declared_at":"step1"},
+    "findings":[{"finding_id":"F01","aspect":"resource_verification","category":"insufficient_evidence","severity":"major","quote":"逐字","location":"…","evidence":"…","revision_suggestion":"…","status":"confirmed"}],
+    "aspect_coverage":[{"aspect":"resource_verification","status":"checked_findings","count":1}],
+    "plan_report":"## 总体结论\n……（≥200字）",
     "run_status":{"state":"success","reason":null},
-    "verdict":"reviewed|partially_reviewed|cannot_verify","verdict_basis":"…"
+    "verdict":"feasible|partially_feasible|infeasible|cannot_verify","verdict_basis":"…"
   },
-  "claims":[{"claim_id":"c-01","text":"…","kind":"reported","source_id":"P1","location":"resources.equipment[0]","evidence":[{"quote":"…"}]}],
-  "uncertainties":{"summary":"…","human_review":[]},
-  "changelog":[]
+  "claims":[],"uncertainties":{"summary":"…"},"changelog":[]
 }
 ```
 
 ## 校验器会抓的错（verify_check.py）
-1. plan_checks 未覆盖全部 plans；resource_checks 空且无 material_gaps 登记。
-2. status 枚举非法；每项 basis/source_ref 缺失。
-3. feasibility 枚举非法；infeasible/conditionally_feasible 无 conditions 或 blockers。
-4. verdict 与核验进度矛盾；缺 output_contract 字段。
+1. 五方面有任一面在 aspect_coverage 缺失。
+2. findings 里 aspect/category/severity 枚举非法；confirmed 缺 quote/location。
+3. plan_report 缺失或 <200 字。
+4. severity_rubric 未声明；suggestion≠minor；fact_error 标 minor。
+5. verdict 与进度矛盾；缺 output_contract 字段。
 
 ## 异常处置
 | 场景 | 处置 |
 |---|---|
-| 方案引用资源清单未提 | 标 to_confirm/unavailable，不默认满足 |
-| 资源清单为空 | 全部标 to_confirm，verdict=cannot_verify |
-| 预算/工期不清 | conditions 里注明"需确认预算/排期"，不脑补 |
-| 校验失败 | 退出码恒 0，结论记 verdict |
+| 某方面材料缺失 | 该面记 checked_no_issue + 注明"材料缺失无法核验"，不编造 |
+| 约束冲突 | 如实记 + verdict=infeasible + 转人工 |
+| 无可行解 | verdict=infeasible + reason + fallback |
+| 校验 FAIL | 修复后重跑；修不了如实登记，绝不中断交付 |
 
 ## 已知限制
-- 只核资源条件，不估时间人力、不展开伦理审批；报价/排期为组织方给定清单，不补造。
-- examples/ 为合成示意（虚构）非正式答案。
+- 只审资源/时间/样本/风险/伦理条件，不执行实验；报价为给定清单，不补造。
+- examples/ 为合成示意（虚构），非正式答案。

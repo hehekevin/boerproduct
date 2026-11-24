@@ -1,0 +1,36 @@
+{
+  "case_id": "demo-analysis-001",
+  "_note": "本文件为合成示例（示意），仅用于演示接口与自测链路，非正式案例、非正式答案。数据为虚构。",
+  "task_brief": "分析三组水灰比配比对混凝土 28 天抗压强度的影响：先核对字段与单位，处理缺失值与重复记录（重复记录以保留首次观测为准），再做分组统计与图表选型，最后给出可放进组会材料的结论说明，正文数字须与统计结果同源可回算。",
+  "data_dictionary": {
+    "batch": "浇注批次编号（字符串）",
+    "mix_id": "配比编号（字符串）",
+    "water_ratio": "水灰比（无量纲，保留两位小数）",
+    "curing_days": "养护天数（整数，天）",
+    "strength_mpa": "28 天抗压强度（MPa，保留一位小数）"
+  },
+  "tables": [
+    {
+      "table_id": "concrete-trial",
+      "n_rows": 12,
+      "columns": ["batch", "mix_id", "water_ratio", "curing_days", "strength_mpa"],
+      "rows": [
+        {"batch": "B1", "mix_id": "M-low", "water_ratio": 0.35, "curing_days": 28, "strength_mpa": 38.2},
+        {"batch": "B1", "mix_id": "M-low", "water_ratio": 0.35, "curing_days": 28, "strength_mpa": 38.2},
+        {"batch": "B1", "mix_id": "M-low", "water_ratio": 0.35, "curing_days": 28, "strength_mpa": 38.5},
+        {"batch": "B2", "mix_id": "M-low", "water_ratio": 0.35, "curing_days": 28, "strength_mpa": 38.9},
+        {"batch": "B2", "mix_id": "M-low", "water_ratio": 0.35, "curing_days": 28, "strength_mpa": 38.4},
+        {"batch": "B3", "mix_id": "M-low", "water_ratio": 0.35, "curing_days": 28, "strength_mpa": null},
+        {"batch": "B4", "mix_id": "M-mid", "water_ratio": 0.45, "curing_days": 28, "strength_mpa": 33.1},
+        {"batch": "B4", "mix_id": "M-mid", "water_ratio": 0.45, "curing_days": 28, "strength_mpa": 32.8},
+        {"batch": "B5", "mix_id": "M-mid", "water_ratio": 0.45, "curing_days": 28, "strength_mpa": 33.6},
+        {"batch": "B6", "mix_id": "M-high", "water_ratio": 0.55, "curing_days": 28, "strength_mpa": 29.1},
+        {"batch": "B6", "mix_id": "M-high", "water_ratio": 0.55, "curing_days": 28, "strength_mpa": 29.8},
+        {"batch": "B7", "mix_id": "M-high", "water_ratio": 0.55, "curing_days": 28, "strength_mpa": 29.6}
+      ]
+    }
+  ],
+  "output_contract": {
+    "fields": ["case_id", "status", "result", "claims", "uncertainties", "changelog"]
+  }
+}

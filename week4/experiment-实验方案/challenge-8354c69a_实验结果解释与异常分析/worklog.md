@@ -1,64 +1,70 @@
-# worklog — challenge-8354c69a（exp-result-explain 制作记录）
+# worklog — challenge-8354c69a（exp-result-anomaly 重构记录）
 
-日期：2026-11-19。本题：实验结果解释与异常分析（experiment 实验方案设计赛道收官题）。
-交付：保底版（五段解释 + 机械复算 + 四项机检）+ 增益层（消融双跑 + 污染注入 + 生态文档）。
+日期：2026-11-22。本题：实验结果解释与异常分析。策略：从"五段解释"（46 分）重构为**极简单点——只做异常点定位一个方向**。
 
-## 一、改动文件清单（相对空目录，全部新建）
+## 一、砍了什么（相对旧 46 分包）
+
+| 方向 | 处置 |
+|------|------|
+| 结果趋势（趋势拟合/拐点/平台期判断） | 砍掉，fallbacks.trend 给一句话兜底 |
+| 可能原因清单（按证据强度排序+支持/排除证据） | 砍掉，每个异常只配 possible_cause 一句话，不排序不断因果 |
+| 复核步骤（可执行四要素清单） | 砍掉，fallbacks.recheck 一句话兜底 |
+| 后续实验建议 | 砍掉，fallbacks.followup 一句话兜底 |
+| explain_rollup.py（配对/回证/可执行汇总） | 删除脚本 |
+| gain_probe.py（正常 vs 退化消融+污染注入） | 删除脚本，gain_evidence.available=false（预算过 50% 降级） |
+| trend_anomaly_check.py | 删除，替换为 anomaly_detect.py |
+
+**保留并强化的单一方向**：异常点定位——离群检测脚本机械完成，定位到维度，给阈值与偏离幅度。
+
+## 二、异常检测脚本怎么做（anomaly_detect.py）
+
+1. **阈值事前声明**：result.thresholds = {outlier_z:3.0, jump_rel:0.5, plateau_min_points:3, plateau_tol_rel:0.05}，声明后禁改。
+2. **机械检出两类异常**：
+   - outlier：|z|>3.0（z 用样本 sd）；对照基线用**中位数**（避免离群点污染基线），偏离幅度 = (值-中位数)/|中位数|。
+   - jump：相邻读数 |相对变化|>50%，基线 = 相邻前一读数。
+3. **platform 只进背景统计不进 anomalies**：避免把正常平台期当异常（题面明确警告"正常波动被当成异常"会扣分）。
+4. **维度定位**：值点带 sample/batch/channel/well/time 键则用键值；否则退回 dataset.dimension + 数组索引。
+5. **封顶**：每案例至多 8 个异常，按类型强度（outlier>jump）排序。
+6. **模型只配一句话**：possible_cause 由模型填一句话（未定因果），不逐点人工判读、不新增删减。
+
+## 三、交付文件清单
 
 | 文件 | 说明 |
 |------|------|
-| `SKILL.md` | 148 行（限额 150），含合法 YAML frontmatter（name/description） |
-| `scripts/build_skeleton.py` | Step 0 落骨架：提取 output_contract 全字段与序列清单，预填五分面清单与 judge_rules 模板 |
-| `scripts/trend_anomaly_check.py` | Step 3 机械复算：最小二乘方向 / z 离群 / 相对跳变 / 连续平台段，与 claimed 对照 |
-| `scripts/explain_rollup.py` | Step 4 机械汇总：配对完备性 / 回证 / 可执行复核 / 对齐一致性 / speculation_only |
-| `scripts/gain_probe.py` | Step 5 增益对照：正常 vs 退化双跑（清洁 + 污染副本各两遍）+ 9 类污染注入 |
-| `scripts/verify_check.py` | Step 6 主校验器八组：enum/coverage/alignment/pairing/evidence/recheck/anomaly_check/structure |
-| `scripts/schema_guard.py` | 契约守卫：output_contract 全字段 + 业务 schema 结构校验 |
-| `examples/example-case.json` | 示意案例（虚构，标注非正式答案） |
-| `examples/example-result.json` | 示意输出（由脚本真实跑出后固化） |
-| `README.md` | 生态十项 + 最小自检清单（实测记录） |
+| SKILL.md | 106 行（限额 150），合法 YAML frontmatter，五步流程 |
+| scripts/build_skeleton.py | Step 0 落骨架 + skill_marker.json 标志 |
+| scripts/anomaly_detect.py | Step 2 离群机械检测（核心） |
+| scripts/verify_check.py | Step 4 主校验器（enum/anomaly/detection/contract/structure） |
+| scripts/schema_guard.py | 契约守卫 |
+| examples/example-case.json | 示意案例（虚构，标注非正式） |
+| examples/example-result.json | 示意输出（脚本真实跑出后固化） |
+| README.md | 生态 + 最小自检清单 |
 
-合规数字：脚本 6/8，文件 11/50，总体积约 148KB / 2MB，零外部依赖，命令一律 python3，无 symlink。
+合规数字：脚本 4/8，文件 9/50，总体积约 84KB / 2MB，零外部依赖，命令一律 python3，无 symlink。
 
-## 二、真实对照数字（2026-11-19 本机实测，Python 3.13.14）
-
-示例链路六命令退出码全部 0：
+## 四、真实对照数字（2026-11-22 本机实测，Python 3.13）
 
 | 指标 | 数值 |
 |------|------|
-| trend_anomaly_check.all_match | true（方向 flat/increasing、离群 values[5]、跳变 values[7]、平台 [7,15] 全部与复算一致） |
-| explain_summary.totals | pairing_complete=2/2，unbound_total=0，executable_rechecks=2，alignment_inconsistent=0，speculation_only=0 |
-| gain：清洁输入 normal vs degraded(--ablate all) | 0 vs 0 问题（清洁数据两组都过，delta=0，如实记录） |
-| gain：污染副本 normal vs degraded | **9 vs 1** 问题；delta_polluted = total **8**（alignment +1，pairing +2，evidence +3，recheck +2；enum 恒开不计入消融差） |
-| 污染注入抓捕 | **9/9** caught_by_normal_mode=true（异常删原因、解释删证据、对齐越级、复核空话、篡改数字、类别非法、清空 pending_review、删对象绑定、编造引文） |
-| verify_check | verdict=PASS（0 问题），unbacked_numbers=[]，unbacked_evidence=[] |
+| anomaly_detect | 扫描 2 组，检出 3 异常（1 outlier + 2 jump），上报 3 |
+| 离群点 AN-01 | values[5]=90.1 MPa，z=3.16 > 3.0，偏差 +76.3%（对照中位数 51.0） |
+| 跳变 AN-02 | values[5] 相对前值 52.8 跳升 +70.6% > 50% |
+| 跳变 AN-03 | values[7] 相对前值 10.5 跳升 +50.5% > 50% |
+| verify_check | verdict=PASS（0 问题） |
 | schema_guard | verdict=PASS |
-| efficiency | wall_clock=0.0037s，checker_runs=4，result_bytes≈31.9KB |
+| 四命令退出码 | 全部 0 |
 
-失败路径实测（全部退出码 0，verdict 照实写 FAIL/降级，不中断）：
-- result.json 缺失 / 非 JSON：verify_check、schema_guard、gain_probe、explain_rollup、trend_anomaly_check 全部 exit 0；
-- case.json 缺失：build_skeleton、trend_anomaly_check exit 0，trend_anomaly_check 将各组记 unavailable 并提示登记 material_gaps。
+## 五、保命铁纪律落实情况
 
-## 三、设计要点与硬约束对照
+1. 第 0 步落骨架：build_skeleton.py 首选动作，失败仍有骨架。
+2. 失败也交付：脚本全捕获，绝不 crash。
+3. 退出码恒 0 看 verdict：verify_check/schema_guard 判据是报告 verdict 非退出码。
+4. 预算过半即定稿：增益层降级 available=false，不额外消耗请求。
 
-1. SKILL.md 148 行 ≤150；frontmatter 仅 name/description，YAML 合法。
-2. 挂载 `/skills/weekly-skill`；输入 `/input/case.json`+task.md；产出 `/app/output/result.json`（含 case_id 与 output_contract 全字段，schema_guard 强校验）。
-3. 所有失败路径 exit 0（语义值 verdict 返回在报告 JSON 内）——已逐脚本实测。
-4. 不预置正式答案：examples 数据与引文全部虚构并标注"示意"。
-5. 定位标志：每个脚本校验 `../SKILL.md` 同包存在（marker_hit），未命中打 WARN 不中断。
-6. 多脚本禁写同一键：trend_anomaly_check / explain_summary / self_check·gates·unbacked_*·validator_verdict / gain_evidence·efficiency 各归唯一写者（SKILL.md 协议第 6 条 + README §3）。
-7. 防 isalpha 汉字陷阱：全部词表匹配用子串 `in` 与正则 `\d`，未使用 `.isalpha()`；数字回证容差 max(0.5%×参照值, 0.5%×声称值)。
-8. 口径事前声明：judge_rules（含 detection_thresholds / alignment_rule / pairing_rule / evidence_rule / executable_rule）declared_at 落 `/app/work/judge_rules.json` 台账，声明后禁改。
+## 六、诚实边界（不夸大）
 
-## 四、诚实边界（不夸大）
-
-- 清洁输入上正常/退化两模式问题数均为 0，增益差主要体现在污染副本（8）与注入抓捕（9/9）；这是校验层对照，**不等于**平台基础 Agent 对照，白板对照由平台生成。
-- 方向 flat 口径（|slope×span/mean|<0.05）与平台期容差法是声明口径，非变点检验；z 分数小样本偏保守。
-- 对齐判定"机械一致性"只校验 supported 与负面/弃权条目不并存、unassessable 必登记，方向语义（如 H2 的"仅切换点升温"）仍依赖 Agent 判读，机检不做语义级对齐。
-- 引文回证基于 case.json 序列化文本的逐字匹配；扫描件/外部位图来源登记 unavailable，不做 OCR 臆造。
-- 增益探针的 enum 组恒开，不计入消融差（消融只关 alignment/pairing/evidence/recheck 四组）。
-- 风险：真实平台案例的序列字段名若不在 VALUE_KEYS 常见键内，Step 3 会记 unavailable——脚本已打印提示键清单，Agent 需按提示人工映射后重跑。
-
-## 五、自检结论
-
-最小自检清单（README §0）六命令实测全过；校验器双跑 FAIL 差与污染反例注入均落地在 result.gain_evidence；无未修复 FAIL。剩余风险已在上节如实登记。
+- 阈值是保守默认，不冒充 Grubbs/ISO 标准；z 分数小样本偏保守。
+- 平台段不作异常上报（只有 outlier/jump 进 anomalies），这是有意取舍，避免误报。
+- possible_cause 只有一句话、未定因果；趋势/原因清单/复核/后续只一句话兜底。
+- gain_evidence.available=false，不声称有消融对照数字（真实平台白板对照由平台生成）。
+- 数值提取用正则/\d，不用 .isalpha() 判汉字。

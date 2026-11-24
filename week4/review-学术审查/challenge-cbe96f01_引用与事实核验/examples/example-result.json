@@ -1,10 +1,10 @@
 {
  "_note": "示意输出（synthetic，非正式答案）：对应 examples/example-case.json 的合成案例（虚构论文），用于演示接口与完整使用流程，不冒充正式案例结果。",
- "case_id": "demo-citefact-001",
+ "case_id": "demo-citesup-001",
  "status": "answered",
  "result": {
   "material_gaps": [
-   "参考文献 [4] 全文未获取，引用支持性无法核对（F03 已标 pending）"
+   "参考文献 [4] 全文未获取，引用支持性无法核对（C03 已标 cannot_determine）"
   ],
   "environment": {
    "python_version": "3.13.x",
@@ -43,273 +43,65 @@
    ],
    "reference_count": 4
   },
-  "severity_rubric": {
-   "levels": {
-    "critical": "数值/事实前后矛盾或显著性表述自相矛盾等直接动摇结论可信性的错误",
-    "major": "引用不支持结论、编造引用嫌疑、事实陈述超出材料证据、关键证据缺失",
-    "minor": "规范与表述问题或建议性意见，不改变结论"
-   },
-   "declared_at": "step1（任何逐条判定之前）",
-   "note": "三级口径在 Step 1 事前声明并写入 /app/work/severity_rubric.json，之后禁止调整"
-  },
-  "suppression_rules": [
-   {
-    "rule_id": "FP-01",
-    "text": "学科写作惯例（作者自陈局限、惯用转承语）不算缺陷"
-   },
-   {
-    "rule_id": "FP-02",
-    "text": "期刊格式差异（引用编号样式、图表编号风格）不算缺陷"
-   },
-   {
-    "rule_id": "FP-03",
-    "text": "作者有意取舍（篇幅/期刊要求内的省略）不算缺陷"
-   }
-  ],
-  "facets": {
-   "citation_support": "引用支持：正文论断与被引文献主张的四态对应（完全/部分/不支持/无法判定）与过度推断",
-   "citation_fabrication": "编造引用：正文引用标记在参考文献表或材料中不存在",
-   "fact_consistency": "事实比对：正文事实性陈述与材料内证据（含被引主张）是否相符",
-   "numeric_consistency": "数值一致：正文、表格、图注与摘要间的数字、样本量、单位、年份与显著性表述复算",
-   "source_reliability": "来源可靠：来源等级、出版状态、版本差异与更正撤稿信息",
-   "evidence_locus": "证据定位：结论能否落到页/段/图表/数据集条目等可回查位置"
-  },
-  "findings": [
-   {
-    "finding_id": "F01",
-    "source_ref": "manuscript.sections[1].text",
-    "section_id": "S2",
-    "location": "S2 引言 第 4 句",
-    "facet": "citation_fabrication",
-    "category": "fact_error",
-    "severity": "major",
-    "quote": "近期 [9] 也支持这一结论。",
-    "cite_marker": "[9]",
-    "citation_state": null,
-    "over_inference": null,
-    "numeric_claims": [],
-    "evidence": "正文引用标记 [9] 未出现在参考文献表（文献表仅登记 [1]–[4]），机械扫描 citation_audit.fabricated_markers 已捕获该候选，属编造引用嫌疑",
-    "revision_suggestion": "删除该引用，或补入对应文献的完整书目信息并核对主张",
-    "status": "confirmed",
-    "pending_reason": null,
-    "suppressed_by": null,
-    "judged": true
-   },
-   {
-    "finding_id": "F02",
-    "source_ref": "manuscript.sections[1].text",
-    "section_id": "S2",
-    "location": "S2 引言 第 2 句",
-    "facet": "citation_support",
-    "category": "insufficient_evidence",
-    "severity": "major",
-    "quote": "[2] 报告补充维生素D可使跌倒风险降低约 20%。",
-    "cite_marker": "[2]",
-    "citation_state": "unsupported",
-    "over_inference": true,
-    "numeric_claims": [],
-    "evidence": "参考文献 [2] 荟萃分析明确强调证据主要来自维生素D缺乏人群、对充足人群无额外获益；本文将该引用直接作为『补充可降低跌倒风险』的支持依据属过度推断，引用主张与本文论断边界冲突",
-    "revision_suggestion": "改写为与 [2] 一致的表述（获益限于维生素D缺乏人群），或更换支持该论断的文献",
-    "status": "confirmed",
-    "pending_reason": null,
-    "suppressed_by": null,
-    "judged": true
-   },
-   {
-    "finding_id": "F03",
-    "source_ref": "manuscript.sections[1].text",
-    "section_id": "S2",
-    "location": "S2 引言 第 3 句",
-    "facet": "citation_support",
-    "category": "insufficient_evidence",
-    "severity": "major",
-    "quote": "另有试验证实补充可显著降低跌倒率 [4]。",
-    "cite_marker": "[4]",
-    "citation_state": "cannot_determine",
-    "over_inference": null,
-    "numeric_claims": [],
-    "evidence": "参考文献 [4] 全文未获取，无法核对被引主张与本文论断的对应关系，不凭空补结论",
-    "revision_suggestion": "获取 [4] 全文核对后再确认引用支持性；不支持则改写或删除",
-    "status": "pending",
-    "pending_reason": "参考文献 [4] 全文未获取，引用支持性无法确认，标待复核，不冒充已核对",
-    "suppressed_by": null,
-    "judged": true
-   },
-   {
-    "finding_id": "F04",
-    "source_ref": "manuscript.sections[0].text",
-    "section_id": "S1",
-    "location": "S1 摘要 第 2 句",
-    "facet": "numeric_consistency",
-    "category": "fact_error",
-    "severity": "critical",
-    "quote": "共纳入受试者 48 名",
-    "cite_marker": null,
-    "citation_state": null,
-    "over_inference": null,
-    "numeric_claims": [
-     {
-      "value": "48",
-      "unit": "名",
-      "where": "S1 摘要"
-     },
-     {
-      "value": "36",
-      "unit": "名",
-      "where": "S3 方法"
-     }
-    ],
-    "evidence": "摘要写纳入 48 名、方法节写招募 36 名，同一『受试者』样本量前后矛盾（numeric_audit.label_conflicts 已捕获该漂移候选，复核确认指同一量）",
-    "revision_suggestion": "核实实际样本量后统一摘要与方法节的数字表述",
-    "status": "confirmed",
-    "pending_reason": null,
-    "suppressed_by": null,
-    "judged": true
-   },
-   {
-    "finding_id": "F05",
-    "source_ref": "manuscript.sections[0].text",
-    "section_id": "S1",
-    "location": "S1 摘要 第 2 句",
-    "facet": "numeric_consistency",
-    "category": "fact_error",
-    "severity": "critical",
-    "quote": "显著高于充足组（p<0.01）",
-    "cite_marker": null,
-    "citation_state": null,
-    "over_inference": null,
-    "numeric_claims": [
-     {
-      "value": "p<0.01",
-      "unit": "",
-      "where": "S1 摘要"
-     },
-     {
-      "value": "p=0.04",
-      "unit": "",
-      "where": "S4 结果"
-     }
-    ],
-    "evidence": "摘要宣称 p<0.01，结果节报告 p=0.04；复算 0.04 不满足 <0.01，显著性表述自相矛盾（numeric_audit.p_violations 已捕获，复算真值一致）",
-    "revision_suggestion": "按结果节实际检验结果统一显著性表述，或补做检验并报告准确 p 值",
-    "status": "confirmed",
-    "pending_reason": null,
-    "suppressed_by": null,
-    "judged": true
-   },
-   {
-    "finding_id": "F06",
-    "source_ref": "manuscript.sections[0].text",
-    "section_id": "S1",
-    "location": "S1 摘要 末句",
-    "facet": "fact_consistency",
-    "category": "insufficient_evidence",
-    "severity": "major",
-    "quote": "据此建议所有老年人常规补充维生素D",
-    "cite_marker": null,
-    "citation_state": null,
-    "over_inference": null,
-    "numeric_claims": [],
-    "evidence": "本文证据仅来自单一社区 36/48 名老年人的观察随访，结论外推到『所有老年人』，事实性陈述超出材料内证据支持范围",
-    "revision_suggestion": "把建议限定为证据支持的人群范围（如维生素D不足的社区老年人），或补充多中心证据后再推广",
-    "status": "confirmed",
-    "pending_reason": null,
-    "suppressed_by": null,
-    "judged": true
-   },
-   {
-    "finding_id": "F07",
-    "source_ref": "manuscript.sections[4].text",
-    "section_id": "S5",
-    "location": "S5 讨论 第 2 句",
-    "facet": "source_reliability",
-    "category": "norm_issue",
-    "severity": "minor",
-    "quote": "[2] 的结果支持这一结论。",
-    "cite_marker": "[2]",
-    "citation_state": "partially_supported",
-    "over_inference": false,
-    "numeric_claims": [],
-    "evidence": "[2] 的证据边界（仅维生素D缺乏人群获益）与本文『社区应推行常规补充』的场景不一致，引用其支持普遍补充未区分人群来源等级，属来源适用范围问题",
-    "revision_suggestion": "在讨论中区分 [2] 的证据适用人群，避免以部分人群证据支持普遍性结论",
-    "status": "confirmed",
-    "pending_reason": null,
-    "suppressed_by": null,
-    "judged": true
-   },
-   {
-    "finding_id": "F08",
-    "source_ref": "manuscript.sections[3].text",
-    "section_id": "S4",
-    "location": "S4 结果 第 1 句",
-    "facet": "evidence_locus",
-    "category": "suggestion",
-    "severity": "minor",
-    "quote": "维生素D不足组 12 个月内跌倒发生率 32%，充足组 18%（p=0.04）。",
-    "cite_marker": null,
-    "citation_state": null,
-    "over_inference": null,
-    "numeric_claims": [
-     {
-      "value": "32",
-      "unit": "%",
-      "where": "S4 结果"
-     },
-     {
-      "value": "18",
-      "unit": "%",
-      "where": "S4 结果"
-     }
-    ],
-    "evidence": "发生率与显著性结果未落到表格/图/附录条目等可回查位置，读者无法按记录回查分组数据，属可补强的定位建议",
-    "revision_suggestion": "补充分组表或图，并在表注/图注中标注各组成员数与检验方法",
-    "status": "confirmed",
-    "pending_reason": null,
-    "suppressed_by": null,
-    "judged": true
-   },
-   {
-    "finding_id": "F09",
-    "source_ref": "manuscript.sections[4].text",
-    "section_id": "S5",
-    "location": "S5 讨论 末句",
-    "facet": "fact_consistency",
-    "category": "suggestion",
-    "severity": "minor",
-    "quote": "本研究的样本量较小，结论外推需谨慎",
-    "cite_marker": null,
-    "citation_state": null,
-    "over_inference": null,
-    "numeric_claims": [],
-    "evidence": "作者自陈局限性陈述，属学科写作惯例，按误报抑制规则 FP-01 不判为缺陷",
-    "revision_suggestion": "无需修改；保留为局限性讨论",
-    "status": "suppressed",
-    "pending_reason": null,
-    "suppressed_by": "FP-01",
-    "judged": true
-   }
-  ],
-  "suppressed": [
-   {
-    "finding_id": "F09",
-    "rule_id": "FP-01",
-    "reason": "「本研究的样本量较小，结论外推需谨慎」为作者自陈局限性陈述，属学科写作惯例（FP-01），不判为缺陷"
-   }
-  ],
-  "pending_review": [
-   {
-    "finding_id": "F03",
-    "reason": "参考文献 [4] 全文未获取，引用支持性无法确认",
-    "needed_action": "获取 [4] 全文后核对主张与论断对应关系，再决定确认/改写/删除"
-   }
-  ],
-  "clearances": [
-   {
-    "scope": "section:S3",
-    "reason": "方法节已逐句核对完毕：数值线索（2022/36/70/12）已并入 F04/F05 的对照证据，本节自身无独立新发现，登记已查清豁免"
-   }
-  ],
-  "citation_audit": {
+  "citation_scan": {
+   "candidate_sentences": [
+    {
+     "section_id": "S2",
+     "section_name": "引言",
+     "source_ref": "manuscript.sections[1]",
+     "sentence_index": 1,
+     "location": "S2 引言 第 1 句",
+     "quote": "既往研究提示维生素D缺乏与下肢肌力下降相关 [1]。",
+     "markers": [
+      "[1]"
+     ]
+    },
+    {
+     "section_id": "S2",
+     "section_name": "引言",
+     "source_ref": "manuscript.sections[1]",
+     "sentence_index": 2,
+     "location": "S2 引言 第 2 句",
+     "quote": "[2] 报告补充维生素D可使跌倒风险降低约 20%。",
+     "markers": [
+      "[2]"
+     ]
+    },
+    {
+     "section_id": "S2",
+     "section_name": "引言",
+     "source_ref": "manuscript.sections[1]",
+     "sentence_index": 3,
+     "location": "S2 引言 第 3 句",
+     "quote": "另有试验证实补充可显著降低跌倒率 [4]。",
+     "markers": [
+      "[4]"
+     ]
+    },
+    {
+     "section_id": "S2",
+     "section_name": "引言",
+     "source_ref": "manuscript.sections[1]",
+     "sentence_index": 4,
+     "location": "S2 引言 第 4 句",
+     "quote": "近期 [9] 也支持这一结论。",
+     "markers": [
+      "[9]"
+     ]
+    },
+    {
+     "section_id": "S5",
+     "section_name": "讨论",
+     "source_ref": "manuscript.sections[4]",
+     "sentence_index": 2,
+     "location": "S5 讨论 第 2 句",
+     "quote": "[2] 的结果支持这一结论。",
+     "markers": [
+      "[2]"
+     ]
+    }
+   ],
+   "candidate_count": 5,
    "markers_in_text": [
     "[1]",
     "[2]",
@@ -322,241 +114,33 @@
     "[3]",
     "[4]"
    ],
-   "fabricated_markers": [
+   "unknown_markers": [
     "[9]"
    ],
    "uncited_refs": [
     "[3]"
    ],
-   "marker_style_counts": {
-    "bracket_numeric": 5,
-    "author_year": 0
-   },
-   "scan_note": "机械比对正文引用标记与参考文献表；fabricated_markers 为编造引用候选，须由 Agent 逐条复核后才能写入 findings（facet=citation_fabrication，cite_marker 须命中本清单，verify_check 强制）。"
+   "scan_note": "机械提取带引用标号的结论句候选与引用标记底账；candidate_sentences 供 Agent 逐条判定入 citation_checks；unknown_markers 为正文有、参考文献表无的标记。"
   },
-  "numeric_audit": {
-   "inventory_per_section": {
-    "S1": [
-     {
-      "value": "48",
-      "unit": "名",
-      "label": "受试者",
-      "context": "关系。共纳入受试者 48 名，随访 12 个月，发现"
-     },
-     {
-      "value": "12",
-      "unit": "个月",
-      "label": "随访",
-      "context": "者 48 名，随访 12 个月，发现维生素D不足组跌"
-     }
-    ],
-    "S2": [
-     {
-      "value": "20",
-      "unit": "%",
-      "label": "降低约",
-      "context": "可使跌倒风险降低约 20%。另有试验证实补充可显著降"
-     }
-    ],
-    "S3": [
-     {
-      "value": "2022",
-      "unit": "年",
-      "label": "研究于",
-      "context": "本研究于 2022 年在社区招募受试者 36 "
-     },
-     {
-      "value": "36",
-      "unit": "名",
-      "label": "受试者",
-      "context": "年在社区招募受试者 36 名，年龄 70 岁以上，血"
-     },
-     {
-      "value": "70",
-      "unit": "岁",
-      "label": "年龄",
-      "context": "者 36 名，年龄 70 岁以上，血清 25(OH)"
-     },
-     {
-      "value": "25",
-      "unit": "",
-      "label": "血清",
-      "context": "70 岁以上，血清 25(OH)D 检测采用酶免疫法"
-     },
-     {
-      "value": "12",
-      "unit": "个月",
-      "label": "随访",
-      "context": "采用酶免疫法。随访 12 个月，跌倒事件由月度电话记"
-     }
-    ],
-    "S4": [
-     {
-      "value": "12",
-      "unit": "个月",
-      "label": "不足组",
-      "context": "维生素D不足组 12 个月内跌倒发生率 32%，"
-     },
-     {
-      "value": "32",
-      "unit": "%",
-      "label": "发生率",
-      "context": " 个月内跌倒发生率 32%，充足组 18%（p=0."
-     },
-     {
-      "value": "18",
-      "unit": "%",
-      "label": "充足组",
-      "context": "率 32%，充足组 18%（p=0.04）。受试者 "
-     },
-     {
-      "value": "48",
-      "unit": "名",
-      "label": "受试者",
-      "context": "0.04）。受试者 48 名中完成随访 41 名。"
-     },
-     {
-      "value": "41",
-      "unit": "名",
-      "label": "成随访",
-      "context": "48 名中完成随访 41 名。"
-     }
-    ],
-    "S5": []
-   },
-   "label_conflicts": [
-    {
-     "label": "受试者",
-     "unit": "名",
-     "values": [
-      "36",
-      "48"
-     ],
-     "sections": {
-      "36": [
-       "S3"
-      ],
-      "48": [
-       "S1",
-       "S4"
-      ]
-     },
-     "note": "同一前置标签+单位出现不同数值，须人工复核是否指同一量"
-    }
-   ],
-   "p_claims": {
-    "S1": [
-     "p<0.01"
-    ],
-    "S4": [
-     "p=0.04"
-    ]
-   },
-   "p_violations": [
-    {
-     "claimed": "p<0.01",
-     "claimed_section": "S1",
-     "actual": "p=0.04",
-     "actual_section": "S4",
-     "recompute": "0.04 不满足 <0.01，显著性表述自相矛盾（候选，须复核）"
-    }
-   ],
-   "stats": {
-    "numbers_scanned": 13,
-    "en_words": 11,
-    "note": "前置标签取数字前紧邻中文/字母串末 3 字符；英文词数用正则统计（规避 isalpha 汉字陷阱）"
-   },
-   "scan_note": "机械复算候选清单：label_conflicts 与 p_violations 须由 Agent 逐条复核后才能写入 findings（facet=numeric_consistency，numeric_claims 须逐字回证于稿件原文）。"
-  },
-  "coverage": {
-   "total_sections": 5,
-   "sections_with_findings": 4,
-   "total_findings": 9,
-   "judged": 9,
-   "confirmed": 7,
-   "pending": 1,
-   "suppressed": 1,
-   "facet_counts": {
-    "citation_support": 2,
-    "citation_fabrication": 1,
-    "fact_consistency": 2,
-    "numeric_consistency": 2,
-    "source_reliability": 1,
-    "evidence_locus": 1
-   },
-   "category_counts": {
-    "fact_error": 3,
-    "insufficient_evidence": 3,
-    "norm_issue": 1,
-    "suggestion": 2
-   },
-   "severity_counts": {
-    "critical": 2,
-    "major": 4,
-    "minor": 3
-   },
-   "per_section": {
-    "S1": 3,
-    "S2": 3,
-    "S4": 1,
-    "S5": 2
-   },
-   "manuscript_stats": {
-    "chars": 800,
-    "en_words": 33,
-    "note": "字符数按全部 case 文本计；英文词数用正则统计（规避 isalpha 汉字陷阱）"
-   },
-   "input_files": 2,
-   "note": "由 coverage_audit.py 机械计数生成；unchecked 为机械缺口清单，非空时 verdict 不得为 audited（verify_check 强制）。"
-  },
-  "unchecked": [],
   "steps": [
    {
     "step": "step0",
-    "action": "落骨架与稿件结构清单",
+    "action": "落骨架",
     "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
     "output_ref": "/app/output/result.json",
     "status": "done"
    },
    {
     "step": "step1",
-    "action": "声明严重度三级口径与误报抑制规则（判定前）",
-    "command": "手写 result.severity_rubric 与 suppression_rules，同步 /app/work/severity_rubric.json",
-    "output_ref": "result.severity_rubric",
+    "action": "提取带引用结论句并逐条四档判定",
+    "command": "python3 /skills/weekly-skill/scripts/citation_scan.py --result /app/output/result.json --case /input/case.json --emit-into 后 Agent 逐条写入 citation_checks",
+    "output_ref": "result.citation_checks",
     "status": "done"
    },
    {
     "step": "step2",
-    "action": "六分面逐条审查（引用四态判定/编造引用/数值复算/证据定位）",
-    "command": "Agent 通读稿件逐分面审查，写入 result.findings",
-    "output_ref": "result.findings",
-    "status": "done"
-   },
-   {
-    "step": "step3",
-    "action": "引用/数值/覆盖三项机械审计",
-    "command": "python3 /skills/weekly-skill/scripts/citation_audit.py --result /app/output/result.json --case /input/case.json --emit-into && python3 /skills/weekly-skill/scripts/numeric_audit.py --result /app/output/result.json --case /input/case.json --emit-into && python3 /skills/weekly-skill/scripts/coverage_audit.py --result /app/output/result.json --case /input/case.json --input-root /input --emit-into",
-    "output_ref": "result.citation_audit / result.numeric_audit / result.coverage",
-    "status": "done"
-   },
-   {
-    "step": "step4",
-    "action": "待复核与误报抑制登记、证据链落盘",
-    "command": "Agent 写入 result.pending_review / result.suppressed / claims",
-    "output_ref": "claims",
-    "status": "done"
-   },
-   {
-    "step": "step5",
-    "action": "增益对照与效率计数",
-    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
-    "output_ref": "result.gain_evidence",
-    "status": "done"
-   },
-   {
-    "step": "step6",
-    "action": "双重自检与交付",
-    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --ledger /app/work/severity_rubric.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
+    "action": "双自检与交付",
+    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --out /app/work/verify_check.json --emit-into && python3 /skills/weekly-skill/scripts/schema_guard.py --result /app/output/result.json --case /input/case.json --out /app/work/schema_guard.json",
     "output_ref": "/app/work/schema_guard.json",
     "status": "done"
    }
@@ -567,300 +151,132 @@
    "manual_takeover": []
   },
   "verdict": "audited",
-  "verdict_basis": "六分面全部覆盖、五个章节均有发现或豁免登记、9 条发现全部判定且 unchecked 为空",
+  "verdict_basis": "六方面全覆盖，共6处问题",
   "gain_evidence": {
-   "probe_version": "1.0",
-   "probe_tool": "scripts/gain_probe.py",
-   "case_id": "demo-citefact-001",
-   "input": {
-    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-cbe96f01\\submission\\examples\\example-result.json",
-    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-cbe96f01\\submission\\examples\\example-case.json",
-    "case_contract_state": "enforced",
-    "same_input_for_both_runs": true,
-    "run_order": [
-     "normal",
-     "degraded"
-    ],
-    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
-   },
-   "runs": [
-    {
-     "mode": "normal",
-     "ablate": "none",
-     "verdict": "PASS",
-     "problems": 0,
-     "metrics": {
-      "location_violations_objective": 0,
-      "location_caught": 0,
-      "location_missed": 0,
-      "severity_violations_objective": 0,
-      "severity_caught": 0,
-      "severity_missed": 0,
-      "evidence_violations_objective": 0,
-      "evidence_missed": 0,
-      "pending_violations_objective": 0,
-      "pending_caught": 0,
-      "pending_missed": 0,
-      "citation_violations_objective": 0,
-      "citation_caught": 0,
-      "citation_missed": 0,
-      "numeric_violations_objective": 0,
-      "numeric_caught": 0,
-      "numeric_missed": 0,
-      "manual_review_items": 0,
-      "manual_review_breakdown": {
-       "unjudged": 0,
-       "no_revision_suggestion": 0,
-       "location_missed": 0,
-       "severity_missed": 0,
-       "evidence_missed": 0,
-       "pending_missed": 0,
-       "citation_missed": 0,
-       "numeric_missed": 0
-      },
-      "steps_count": 51,
-      "steps_detail": {
-       "checks_executed": 44,
-       "checks_disabled": 0,
-       "flow_steps_total": 7,
-       "flow_steps_done": 7
-      },
-      "clarification_rounds": 0
-     },
-     "wall_clock_seconds": 0.0008
-    },
-    {
-     "mode": "degraded",
-     "ablate": "all",
-     "verdict": "PASS",
-     "problems": 0,
-     "metrics": {
-      "location_violations_objective": 0,
-      "location_caught": 0,
-      "location_missed": 0,
-      "severity_violations_objective": 0,
-      "severity_caught": 0,
-      "severity_missed": 0,
-      "evidence_violations_objective": 0,
-      "evidence_missed": 0,
-      "pending_violations_objective": 0,
-      "pending_caught": 0,
-      "pending_missed": 0,
-      "citation_violations_objective": 0,
-      "citation_caught": 0,
-      "citation_missed": 0,
-      "numeric_violations_objective": 0,
-      "numeric_caught": 0,
-      "numeric_missed": 0,
-      "manual_review_items": 0,
-      "manual_review_breakdown": {
-       "unjudged": 0,
-       "no_revision_suggestion": 0,
-       "location_missed": 0,
-       "severity_missed": 0,
-       "evidence_missed": 0,
-       "pending_missed": 0,
-       "citation_missed": 0,
-       "numeric_missed": 0
-      },
-      "steps_count": 7,
-      "steps_detail": {
-       "checks_executed": 0,
-       "checks_disabled": 6,
-       "flow_steps_total": 7,
-       "flow_steps_done": 7
-      },
-      "clarification_rounds": 0
-     },
-     "wall_clock_seconds": 0.0005
-    }
-   ],
-   "delta_normal_minus_degraded": {
-    "location_missed": 0,
-    "severity_missed": 0,
-    "evidence_missed": 0,
-    "pending_missed": 0,
-    "citation_missed": 0,
-    "numeric_missed": 0,
-    "manual_review_items": 0,
-    "steps_count": 44,
-    "clarification_rounds": 0
-   },
-   "mechanism_to_metric_map": [
-    {
-     "metric": "location_missed",
-     "mechanism": "引用逐字回证（quote 空白归一化后须逐字出现在稿件原文中 + location 非空）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后引文张冠李戴、位置缺失不再被判 FAIL，清单不可回原文核对"
-    },
-    {
-     "metric": "severity_missed",
-     "mechanism": "严重度分级口径（suggestion⇒minor、fact_error⇒critical/major，口径判定前声明）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后严重度可随意抬升/压低，分级口径失效"
-    },
-    {
-     "metric": "evidence_missed",
-     "mechanism": "claims 证据链回证（confirmed 须有 source_id 对应条目且 quote 逐字回证；fact_error 须给对照依据）",
-     "formula": "无回证的 confirmed 发现数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后证据链缺失不再判 FAIL，判断退化为自述"
-    },
-    {
-     "metric": "pending_missed",
-     "mechanism": "待复核与误报抑制登记（pending⇒pending_review 含 reason+needed_action；suppressed⇒suppressed[] 且 rule_id 须在事前规则表内）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后待定条目可静默漏登记、误报抑制可绕过规则表，人工复核入口丢失"
-    },
-    {
-     "metric": "citation_missed",
-     "mechanism": "引用规则（四态枚举/不可判定⇒pending 不冒充已核对/cite_marker 回证参考文献表与编造引用候选清单）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后编造引用可冒充已核对、读不到被引文献可凭空补结论"
-    },
-    {
-     "metric": "numeric_missed",
-     "mechanism": "数值回证（numeric_claims 逐字回证于稿件原文，配合 numeric_audit 的标签冲突与 p 值复算底账）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后数值可凭空冒充证据，数值漂移不再被判 FAIL"
-    },
-    {
-     "metric": "manual_review_items",
-     "mechanism": "漏检 + 未判定 + 缺修改建议合计",
-     "formula": "unjudged + no_revision_suggestion + 六类漏检",
-     "higher_is_better": false,
-     "degrade_effect": "机器判定面缩小后，需人工逐条核对的条目增加"
-    },
-    {
-     "metric": "steps_count",
-     "mechanism": "七步线性流程 + 机械校验三元组自检",
-     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
-     "higher_is_better": null,
-     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
-    },
-    {
-     "metric": "clarification_rounds",
-     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
-     "formula": "ceil(manual_review_items / 3)",
-     "higher_is_better": false,
-     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
-    }
-   ],
-   "boundaries": [
-    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
-    "退化模式关闭六组检查（location/severity/evidence/pending/citation/numeric），枚举、结构守卫、coverage 汇总一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
-    "六类违规的客观真值由探针独立复算（与 verify_check 分开实现），口径一致时漏检数才可信。",
-    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
-    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
-   ],
-   "failure_conditions": [
-    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
-    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，引用/数值回证退化为不可判（src 为空）。",
-    "citation_audit / numeric_audit 未回填时闸门记 not_found，编造引用识别退化为独立复算。",
-    "severity_rubric 未事前声明时分级口径真值不可得，severity_missed 记违规而非『无违规』。",
-    "把 --ablate 的退化结果当作交付自检结论即为误用。",
-    "污染反例自测只在副本上注入，原 result.json 不被修改。"
-   ],
-   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
-   "pollution_selftest": {
-    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\wk-cite\\gain_probe_polluted.json",
-    "injected": [
-     "F01 清空 quote/location（引用定位失据）",
-     "F01 篡改 cite_marker 为 [99]（参考文献表不存在的编造引用）",
-     "F04 篡改 numeric_claims 数值为原文不存在的 999（数值漂移）",
-     "F03 标 pending 但清空 pending_reason",
-     "F01 fact_error 但清空对照依据 evidence",
-     "清空 pending_review（待复核登记丢失）",
-     "清空 claims（证据链缺失）"
-    ],
-    "normal_mode": {
-     "verdict": "FAIL",
-     "problems": 13,
-     "location_missed": 0,
-     "severity_missed": 0,
-     "evidence_missed": 0,
-     "pending_missed": 1,
-     "citation_missed": 0,
-     "numeric_missed": 0,
-     "problem_sample": [
-      "F01 quote 不在稿件原文中或过短（引用逐字回证失败）",
-      "F01 location（原文位置）为空",
-      "F01 confirmed 但 claims 证据链无逐字回证",
-      "F01 category=fact_error 但对照依据 evidence 为空",
-      "F02 confirmed 但 claims 证据链无逐字回证",
-      "F04 confirmed 但 claims 证据链无逐字回证",
-      "F05 confirmed 但 claims 证据链无逐字回证",
-      "F06 confirmed 但 claims 证据链无逐字回证"
-     ]
-    },
-    "degraded_mode": {
-     "verdict": "PASS",
-     "problems": 0,
-     "location_missed": 1,
-     "severity_missed": 0,
-     "evidence_missed": 7,
-     "pending_missed": 2,
-     "citation_missed": 1,
-     "numeric_missed": 1,
-     "problem_sample": []
-    },
-    "missed_detection_delta": {
-     "location_missed": 1,
-     "severity_missed": 0,
-     "evidence_missed": 7,
-     "pending_missed": 1,
-     "citation_missed": 1,
-     "numeric_missed": 1,
-     "problems": -13
-    },
-    "caught_by_normal_mode": true,
-    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
-   }
+   "available": false,
+   "reason": "极简单点策略：单一引用支持判定方向，增益层在预算 50% 跳过"
   },
   "efficiency": {
-   "collected_by": "scripts/gain_probe.py（自动采集）",
-   "wall_clock_seconds_total": 0.0095,
-   "result_bytes": 24689,
-   "input_files_scanned": 2,
-   "checker_runs": 2,
-   "checker_checks_executed_normal": 44,
-   "checker_checks_executed_degraded": 0,
-   "checker_checks_disabled_degraded": 6,
-   "findings_total": 9,
-   "manual_review_items_normal": 0,
-   "manual_review_items_degraded": 0,
-   "clarification_rounds_normal": 0,
-   "clarification_rounds_degraded": 0,
-   "model_requests": null,
-   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
-   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
+   "checker_runs": 4,
+   "reproduce": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json"
+  },
+  "findings": [
+   {
+    "finding_id": "F01",
+    "aspect": "citation_support",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "[2] 报告补充维生素D可使跌倒风险降低约 20%",
+    "location": "S2 引言 第2句",
+    "evidence": "Dupont(2020)荟萃分析强调证据主要来自缺乏人群，对充足人群无额外获益，正文未带此限定",
+    "revision_suggestion": "补充[2]的证据适用人群限定",
+    "status": "confirmed"
+   },
+   {
+    "finding_id": "F02",
+    "aspect": "numeric_stat_consistency",
+    "category": "fact_error",
+    "severity": "critical",
+    "quote": "共纳入受试者 48 名",
+    "location": "S1 摘要",
+    "evidence": "摘要写48名、方法写36名，样本量前后矛盾",
+    "revision_suggestion": "统一摘要与方法的样本量",
+    "status": "confirmed"
+   },
+   {
+    "finding_id": "F03",
+    "aspect": "numeric_stat_consistency",
+    "category": "fact_error",
+    "severity": "major",
+    "quote": "p<0.01",
+    "location": "S1 摘要",
+    "evidence": "摘要写p<0.01、结果写p=0.04，p值表述不一致",
+    "revision_suggestion": "统一p值精确报告口径",
+    "status": "confirmed"
+   },
+   {
+    "finding_id": "F04",
+    "aspect": "citation_support",
+    "category": "fact_error",
+    "severity": "critical",
+    "quote": "近期 [9] 也支持这一结论",
+    "location": "S2 引言 末句",
+    "evidence": "参考文献表仅4条，[9]引文编号越界不存在",
+    "revision_suggestion": "修正引文编号或补充对应文献",
+    "status": "confirmed"
+   },
+   {
+    "finding_id": "F05",
+    "aspect": "argument_chain",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "据此建议所有老年人常规补充维生素D",
+    "location": "S1 摘要 末句",
+    "evidence": "由48人观察性研究直接推广到全体老年人常规补充，结论外推超出数据范围",
+    "revision_suggestion": "限定结论适用范围，改为探索性建议",
+    "status": "confirmed"
+   },
+   {
+    "finding_id": "F06",
+    "aspect": "integrity_norms",
+    "category": "norm_issue",
+    "severity": "minor",
+    "quote": "本研究经社区伦理委员会审查",
+    "location": "S3 方法",
+    "evidence": "涉及人的研究伦理审批，未给批件编号",
+    "revision_suggestion": "补充伦理批件编号",
+    "status": "confirmed"
+   }
+  ],
+  "aspect_coverage": [
+   {
+    "aspect": "citation_support",
+    "status": "checked_findings",
+    "count": 2
+   },
+   {
+    "aspect": "fact_source_reliability",
+    "status": "checked_no_issue",
+    "count": 0
+   },
+   {
+    "aspect": "evidence_location",
+    "status": "checked_findings",
+    "count": 6
+   },
+   {
+    "aspect": "numeric_stat_consistency",
+    "status": "checked_findings",
+    "count": 2
+   },
+   {
+    "aspect": "argument_chain",
+    "status": "checked_findings",
+    "count": 1
+   },
+   {
+    "aspect": "integrity_norms",
+    "status": "checked_findings",
+    "count": 1
+   }
+  ],
+  "review_report": "## 总体结论\n本文考察血清维生素D水平与老年人跌倒风险的关系，存在几处需修订的问题：样本量前后矛盾（48 vs 36）、引用编号越界（[9]不存在）、引用证据被过度外推、结论超出数据范围。\n\n## 六方面小结\n- 引用支持：正文引用[2]未带其适用人群限定，[9]引用越界，共2处问题。\n- 事实来源可靠性：材料内事实均来自稿件自述，无外部来源可核，标已查无异常。\n- 证据定位：6条finding均带逐字quote与章节定位，可回证。\n- 数值统计一致性：样本量48/36矛盾、p值表述不一致，共2处问题。\n- 论证链：由48人观察性研究推广到全体老年人，结论外推超出数据。\n- 学术规范：伦理审查未给批件编号。\n\n## 主要问题清单\n共6处问题（critical 2 / major 3 / minor 1），详见findings逐条。\n\n## 待复核项\n样本量正确值、[9]引文对应文献、伦理批件编号需作者确认。",
+  "severity_rubric": {
+   "levels": {
+    "critical": "动摇核心结论",
+    "major": "局部问题可修正",
+    "minor": "表述/建议"
+   },
+   "declared_at": "step1"
   }
  },
  "claims": [
   {
    "claim_id": "c-01",
-   "text": "F01 编造引用：正文引用标记 [9] 不在参考文献表（fact_error/major）",
+   "text": "C01 引用支持：[2] 证据边界（仅缺乏人群获益）与本文普遍论断冲突，属部分支持+过度推断",
    "kind": "reported",
-   "source_id": "F01",
-   "location": "findings[0]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[1].text",
-     "quote": "近期 [9] 也支持这一结论。"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-02",
-   "text": "F02 引用支持：[2] 证据边界（仅缺乏人群获益）与本文论断冲突，属过度推断（insufficient_evidence/major）",
-   "kind": "reported",
-   "source_id": "F02",
-   "location": "findings[1]",
+   "source_id": "C01",
+   "location": "citation_checks[0]",
    "evidence": [
     {
      "paragraph_id": "manuscript.sections[1].text",
@@ -873,79 +289,28 @@
    ]
   },
   {
+   "claim_id": "c-02",
+   "text": "C02 引用支持：[1] 与本文论断一致（完整支持）",
+   "kind": "reported",
+   "source_id": "C02",
+   "location": "citation_checks[1]",
+   "evidence": [
+    {
+     "paragraph_id": "manuscript.sections[1].text",
+     "quote": "既往研究提示维生素D缺乏与下肢肌力下降相关 [1]。"
+    }
+   ]
+  },
+  {
    "claim_id": "c-03",
-   "text": "F04 数值一致：摘要 48 名与方法节 36 名样本量矛盾（fact_error/critical）",
+   "text": "C03 引用支持：[4] 全文未获取，标无法判定（cannot_determine）",
    "kind": "reported",
-   "source_id": "F04",
-   "location": "findings[3]",
+   "source_id": "C03",
+   "location": "citation_checks[2]",
    "evidence": [
     {
-     "paragraph_id": "manuscript.sections[0].text",
-     "quote": "共纳入受试者 48 名"
-    },
-    {
-     "paragraph_id": "manuscript.sections[2].text",
-     "quote": "本研究于 2022 年在社区招募受试者 36 名"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-04",
-   "text": "F05 数值一致：摘要宣称 p<0.01 与结果节 p=0.04 复算矛盾（fact_error/critical）",
-   "kind": "reported",
-   "source_id": "F05",
-   "location": "findings[4]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[0].text",
-     "quote": "显著高于充足组（p<0.01）"
-    },
-    {
-     "paragraph_id": "manuscript.sections[3].text",
-     "quote": "维生素D不足组 12 个月内跌倒发生率 32%，充足组 18%（p=0.04）。"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-05",
-   "text": "F06 事实比对：『建议所有老年人常规补充』超出单一社区观察证据范围（insufficient_evidence/major）",
-   "kind": "inferred",
-   "source_id": "F06",
-   "location": "findings[5]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[0].text",
-     "quote": "据此建议所有老年人常规补充维生素D"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-06",
-   "text": "F07 来源可靠：以 [2] 部分人群证据支持普遍性结论，来源适用范围不一致（norm_issue/minor）",
-   "kind": "reported",
-   "source_id": "F07",
-   "location": "findings[6]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[4].text",
-     "quote": "[2] 的结果支持这一结论。"
-    },
-    {
-     "paragraph_id": "manuscript.references[1].text",
-     "quote": "Dupont（2020）的荟萃分析显示补充维生素D使跌倒风险降低约 20%，但强调证据主要来自维生素D缺乏人群，对充足人群无额外获益。"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-07",
-   "text": "F08 证据定位：分组发生率与显著性结果缺可回查的表格/图条目（suggestion/minor）",
-   "kind": "inferred",
-   "source_id": "F08",
-   "location": "findings[7]",
-   "evidence": [
-    {
-     "paragraph_id": "manuscript.sections[3].text",
-     "quote": "维生素D不足组 12 个月内跌倒发生率 32%，充足组 18%（p=0.04）。"
+     "paragraph_id": "manuscript.sections[1].text",
+     "quote": "另有试验证实补充可显著降低跌倒率 [4]。"
     }
    ]
   }
@@ -953,13 +318,13 @@
  "uncertainties": {
   "unreported": [],
   "unverifiable": [
-   "参考文献 [4] 全文未获取，引用支持性待复核（F03）"
+   "参考文献 [4] 全文未获取，引用支持性无法判定（C03）"
   ],
   "conflicts": [],
   "human_review": [
-   "F03 待获取 [4] 全文后人工复核引用支持性"
+   "C03 待获取 [4] 全文后人工复核引用支持性"
   ],
-  "summary": "1 条待复核（引用 [4] 全文缺失）与 1 条材料缺口已如实登记，未凭空补结论；编造引用与数值矛盾均已与机械扫描候选对齐"
+  "summary": "1 条无法判定（引用 [4] 全文缺失）已如实登记，未凭空补结论"
  },
  "changelog": [
   {
@@ -967,320 +332,68 @@
    "change": "build_skeleton 落骨架"
   },
   {
+   "step": "step1",
+   "change": "citation_scan 提取 5 条候选，Agent 逐条判定 4 条（另 1 条 [9] 为编造引用标记不入引用支持判定）"
+  },
+  {
    "step": "step2",
-   "change": "六分面逐条审查，产出 9 条发现（7 confirmed / 1 pending / 1 suppressed）"
-  },
-  {
-   "step": "step3",
-   "change": "citation_audit + numeric_audit + coverage_audit 三项机械审计回写"
-  },
-  {
-   "step": "step5",
-   "change": "gain_probe 回写正常 vs 退化对照与效率计数"
-  },
-  {
-   "step": "step6",
    "change": "verify_check + schema_guard 双自检 PASS 后交付"
   }
  ],
  "self_check": [
   {
-   "item": "findings[0].location_backed",
-   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "item": "enums",
+   "template_value": "support_state/status/run_status.state/verdict 枚举合法",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[1].location_backed",
-   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "item": "quote_backed",
+   "template_value": "each quote blank-normalized substring of manuscript text + location non-empty",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[3].location_backed",
-   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "item": "cannot_determine_honest",
+   "template_value": "cannot_determine ⇔ source_accessible=false 不冒充已核对",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[4].location_backed",
-   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "item": "cite_markers_backed",
+   "template_value": "cite_markers 均回证参考文献表（不越界）",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[5].location_backed",
-   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "item": "over_inference_consistent",
+   "template_value": "over_inference=true ⇒ partially/unsupported",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[6].location_backed",
-   "template_value": "quote 逐字回证于稿件原文 + location 非空",
+   "item": "contract_fields",
+   "template_value": "output_contract 全字段齐备",
    "applied": true,
    "match": true
   },
   {
-   "item": "findings[7].location_backed",
-   "template_value": "quote 逐字回证于稿件原文 + location 非空",
-   "applied": true,
-   "match": true
+   "item": "verify_check",
+   "verdict": "FAIL",
+   "problems": 1
   },
   {
-   "item": "severity_rubric.declared",
-   "template_value": "三级口径判定前声明（declared_at + levels 非空）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[0].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[1].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[2].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[3].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[4].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[5].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[6].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[7].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[8].severity_rule",
-   "template_value": "分级口径映射（suggestion⇒minor；fact_error⇒critical/major）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[0].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[1].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[3].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[4].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[5].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[6].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[7].claim_backed",
-   "template_value": "confirmed ⇒ claims 逐字回证",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[2].pending_registered",
-   "template_value": "pending ⇒ 登记 pending_review（reason+needed_action）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[8].suppression_registered",
-   "template_value": "suppressed ⇒ 登记 suppressed[]（rule_id 须在事前规则表内）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[0].citation_rules",
-   "template_value": "引用规则（四态枚举/不可判定⇒pending/cite_marker 回证参考文献表或编造候选）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[1].citation_rules",
-   "template_value": "引用规则（四态枚举/不可判定⇒pending/cite_marker 回证参考文献表或编造候选）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[2].citation_rules",
-   "template_value": "引用规则（四态枚举/不可判定⇒pending/cite_marker 回证参考文献表或编造候选）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[3].citation_rules",
-   "template_value": "引用规则（四态枚举/不可判定⇒pending/cite_marker 回证参考文献表或编造候选）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[4].citation_rules",
-   "template_value": "引用规则（四态枚举/不可判定⇒pending/cite_marker 回证参考文献表或编造候选）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[5].citation_rules",
-   "template_value": "引用规则（四态枚举/不可判定⇒pending/cite_marker 回证参考文献表或编造候选）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[6].citation_rules",
-   "template_value": "引用规则（四态枚举/不可判定⇒pending/cite_marker 回证参考文献表或编造候选）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[7].citation_rules",
-   "template_value": "引用规则（四态枚举/不可判定⇒pending/cite_marker 回证参考文献表或编造候选）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[8].citation_rules",
-   "template_value": "引用规则（四态枚举/不可判定⇒pending/cite_marker 回证参考文献表或编造候选）",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[0].numeric_backed",
-   "template_value": "numeric_claims 逐字回证于稿件原文",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[1].numeric_backed",
-   "template_value": "numeric_claims 逐字回证于稿件原文",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[2].numeric_backed",
-   "template_value": "numeric_claims 逐字回证于稿件原文",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[3].numeric_backed",
-   "template_value": "numeric_claims 逐字回证于稿件原文",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[4].numeric_backed",
-   "template_value": "numeric_claims 逐字回证于稿件原文",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[5].numeric_backed",
-   "template_value": "numeric_claims 逐字回证于稿件原文",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[6].numeric_backed",
-   "template_value": "numeric_claims 逐字回证于稿件原文",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[7].numeric_backed",
-   "template_value": "numeric_claims 逐字回证于稿件原文",
-   "applied": true,
-   "match": true
-  },
-  {
-   "item": "findings[8].numeric_backed",
-   "template_value": "numeric_claims 逐字回证于稿件原文",
-   "applied": true,
-   "match": true
+   "item": "verify_check",
+   "verdict": "PASS",
+   "problems": 0
   }
  ],
+ "validator_verdict": "PASS",
  "gates": [
   {
    "gate": "case_contract",
    "state": "enforced",
    "note": ""
-  },
-  {
-   "gate": "severity_ledger",
-   "state": "enforced",
-   "note": ""
-  },
-  {
-   "gate": "coverage_audit_output",
-   "state": "enforced",
-   "note": ""
-  },
-  {
-   "gate": "citation_audit_output",
-   "state": "enforced",
-   "note": ""
-  },
-  {
-   "gate": "numeric_audit_output",
-   "state": "enforced",
-   "note": ""
-  },
-  {
-   "gate": "coverage_audit_output",
-   "state": "enforced",
-   "note": ""
   }
- ],
- "unbacked_numbers": [],
- "validator_verdict": "PASS"
+ ]
 }

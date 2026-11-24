@@ -1,652 +1,81 @@
 {
- "_note": "示意输出（非正式答案）：与 example-case.json 配套的合成示例，展示 result.json 应有的结构与引用粒度；所有内容均为虚构，不冒充正式案例结果。",
+ "_note": "示意输出（合成，非正式答案）：对应 example-case.json，演示多维度覆盖 + 成文报告",
  "case_id": "demo-kbqa-001",
  "status": "answered",
  "result": {
-  "material_gaps": [
-   "知识库中无动物实验伦理审批通过率的任何统计数据（Q3-1）"
-  ],
-  "environment": {
-   "python_version": "3.12.x",
-   "packages": "stdlib-only",
-   "seed": null,
-   "hardware_note": "示例为合成环境说明；实跑时照实填写"
+  "severity_rubric": {
+   "levels": {
+    "critical": "动摇核心结论",
+    "major": "局部问题可修正",
+    "minor": "表述/建议"
+   },
+   "declared_at": "step1"
   },
-  "knowledge_base": {
-   "entries": [
-    {
-     "entry_id": "E01",
-     "source_ref": "kb_entries[0]",
-     "title": "样品前处理 SOP v2",
-     "kind": "doc",
-     "version": "v2.1",
-     "path": "kb/sop_sample_prep_v2.md",
-     "readable": true,
-     "chars": null,
-     "missing_metadata": []
-    },
-    {
-     "entry_id": "E02",
-     "source_ref": "kb_entries[1]",
-     "title": "样品前处理 SOP v1（存档）",
-     "kind": "doc",
-     "version": "v1.0",
-     "path": "kb/archive/sop_sample_prep_v1.md",
-     "readable": true,
-     "chars": null,
-     "missing_metadata": []
-    },
-    {
-     "entry_id": "E03",
-     "source_ref": "kb_entries[2]",
-     "title": "仪器校准 FAQ",
-     "kind": "faq",
-     "version": "",
-     "path": "kb/faq_calibration.md",
-     "readable": true,
-     "chars": null,
-     "missing_metadata": []
-    },
-    {
-     "entry_id": "E04",
-     "source_ref": "kb_entries[3]",
-     "title": "组会笔记 2024-05",
-     "kind": "note",
-     "version": "",
-     "path": "kb/notes/2024-05.md",
-     "readable": true,
-     "chars": null,
-     "missing_metadata": []
-    },
-    {
-     "entry_id": "E05",
-     "source_ref": "kb_entries[4]",
-     "title": "伦理审批流程说明",
-     "kind": "doc",
-     "version": "",
-     "path": "kb/ethics.md",
-     "readable": true,
-     "chars": null,
-     "missing_metadata": []
-    }
-   ],
-   "total_entries": 5,
-   "duplicates": []
-  },
-  "questions": [
+  "findings": [
    {
-    "question_id": "Q1",
-    "question": "当前样品前处理 SOP 的称样量与离心参数是什么？与旧版相比改了什么？",
-    "decomposed": true,
-    "subquestions": [
-     {
-      "sub_id": "Q1-1",
-      "sub_question": "当前 SOP（v2）的称样量与离心参数是多少？"
-     },
-     {
-      "sub_id": "Q1-2",
-      "sub_question": "与旧版 SOP 相比哪些参数发生了变化？"
-     }
-    ]
-   },
-   {
-    "question_id": "Q2",
-    "question": "离心机转速上限和校准周期是多少？",
-    "decomposed": true,
-    "subquestions": [
-     {
-      "sub_id": "Q2-1",
-      "sub_question": "离心机转速上限是多少？"
-     },
-     {
-      "sub_id": "Q2-2",
-      "sub_question": "离心机校准周期是多久？"
-     }
-    ]
-   },
-   {
-    "question_id": "Q3",
-    "question": "动物实验伦理审批的平均通过率是多少？",
-    "decomposed": true,
-    "subquestions": [
-     {
-      "sub_id": "Q3-1",
-      "sub_question": "动物实验伦理审批的平均通过率是多少？"
-     }
-    ]
+    "finding_id": "F01",
+    "aspect": "multi_file_search",
+    "category": "insufficient_evidence",
+    "severity": "major",
+    "quote": "示意示例句子（回证）",
+    "location": "示例章节",
+    "evidence": "示例对照依据",
+    "revision_suggestion": "示例修改建议",
+    "status": "confirmed"
    }
   ],
-  "answers": [
+  "aspect_coverage": [
    {
-    "sub_id": "Q1-1",
-    "question_id": "Q1",
-    "sub_question": "当前 SOP（v2）的称样量与离心参数是多少？",
-    "status": "answered",
-    "confidence": "high",
-    "sentences": [
-     {
-      "sentence_id": "Q1-1-s1",
-      "text": "当前样品前处理流程为：称取样品 0.5 g，加入 10 mL 缓冲液，涡旋 60 秒。",
-      "source_entry": "E01",
-      "quote": "称取样品 0.5 g；2) 加入 10 mL 缓冲液；3) 涡旋 60 秒",
-      "quote_location": "E01 正文第 1-3 步",
-      "confidence": "high"
-     },
-     {
-      "sentence_id": "Q1-1-s2",
-      "text": "离心参数为离心 5 分钟，转速 8000 rpm。",
-      "source_entry": "E01",
-      "quote": "离心 5 分钟，转速 8000 rpm",
-      "quote_location": "E01 正文第 4 步",
-      "confidence": "high"
-     }
-    ],
-    "miss_reason": null
+    "aspect": "multi_file_search",
+    "status": "checked_findings",
+    "count": 1
    },
    {
-    "sub_id": "Q1-2",
-    "question_id": "Q1",
-    "sub_question": "与旧版 SOP 相比哪些参数发生了变化？",
-    "status": "answered",
-    "confidence": "high",
-    "sentences": [
-     {
-      "sentence_id": "Q1-2-s1",
-      "text": "旧版 SOP 的流程为：称取样品 1.0 g，加入 5 mL 缓冲液，离心 3 分钟，转速 4000 rpm。",
-      "source_entry": "E02",
-      "quote": "称取样品 1.0 g，加入 5 mL 缓冲液，离心 3 分钟，转速 4000 rpm",
-      "quote_location": "E02 正文首句",
-      "confidence": "high"
-     },
-     {
-      "sentence_id": "Q1-2-s2",
-      "text": "旧版流程已被 v2 取代，两版在称样量、缓冲液体积、离心时间与转速上均存在差异。",
-      "source_entry": "E02",
-      "quote": "已被 v2 取代",
-      "quote_location": "E02 正文末句",
-      "confidence": "medium"
-     }
-    ],
-    "miss_reason": null
+    "aspect": "source_cited_qa",
+    "status": "checked_no_issue",
+    "count": 0
    },
    {
-    "sub_id": "Q2-1",
-    "question_id": "Q2",
-    "sub_question": "离心机转速上限是多少？",
-    "status": "answered",
-    "confidence": "high",
-    "sentences": [
-     {
-      "sentence_id": "Q2-1-s1",
-      "text": "本实验室台式离心机的转速上限为 12000 rpm。",
-      "source_entry": "E03",
-      "quote": "本实验室台式离心机上限为 12000 rpm",
-      "quote_location": "E03 FAQ 第 1 问答案",
-      "confidence": "high"
-     }
-    ],
-    "miss_reason": null
+    "aspect": "evidence_traceback",
+    "status": "checked_no_issue",
+    "count": 0
    },
    {
-    "sub_id": "Q2-2",
-    "question_id": "Q2",
-    "sub_question": "离心机校准周期是多久？",
-    "status": "answered",
-    "confidence": "high",
-    "sentences": [
-     {
-      "sentence_id": "Q2-2-s1",
-      "text": "离心机的校准周期为每 6 个月校准一次。",
-      "source_entry": "E03",
-      "quote": "每 6 个月校准一次",
-      "quote_location": "E03 FAQ 第 2 问答案",
-      "confidence": "high"
-     }
-    ],
-    "miss_reason": null
+    "aspect": "uncertainty_hint",
+    "status": "checked_no_issue",
+    "count": 0
    },
    {
-    "sub_id": "Q3-1",
-    "question_id": "Q3",
-    "sub_question": "动物实验伦理审批的平均通过率是多少？",
-    "status": "miss",
-    "confidence": null,
-    "sentences": [],
-    "miss_reason": "知识库 5 个条目中只有伦理审批流程与周期说明（E05），没有任何关于动物实验伦理审批通过率的统计数据；检索未命中后逐条复核确认无依据。"
+    "aspect": "metadata_version",
+    "status": "checked_no_issue",
+    "count": 0
    }
   ],
-  "gaps": [
-   {
-    "sub_id": "Q3-1",
-    "missing_topic": "动物实验伦理审批的平均通过率",
-    "needed_action": "向伦理委员会索取审批统计数据，或接入外部数据库后重新作答",
-    "kind": "no_hit"
-   }
-  ],
-  "retrieval": {
-   "queries": 5,
-   "topk": 3,
-   "miss_registered": 1,
-   "index_tool": "scripts/kb_index.py",
-   "note": "示例检索口径说明；实跑时由 /app/work/retrieval.json 回填"
-  },
-  "coverage": {
-   "total_questions": 3,
-   "decomposed": 3,
-   "total_subquestions": 5,
-   "answered": 4,
-   "partial": 0,
-   "miss": 1,
-   "uncovered_subquestions": 0,
-   "ratio": 0.8
-  },
-  "conflicts": [
-   {
-    "entries": [
-     "E01",
-     "E02"
-    ],
-    "kind": "version_succession",
-    "resolution": "recorded",
-    "evidence": "E02 正文末句注明已被 v2 取代；引用当前参数时以 E01 为准，E02 仅用于版本差异说明。"
-   }
-  ],
-  "steps": [
-   {
-    "step": "step0",
-    "action": "落骨架与知识库盘点",
-    "command": "python3 /skills/weekly-skill/scripts/build_skeleton.py --case /input/case.json --input-root /input --out /app/output/result.json --work-dir /app/work",
-    "output_ref": "/app/output/result.json",
-    "status": "done"
-   },
-   {
-    "step": "step1",
-    "action": "问题拆解与作答口径声明",
-    "command": "（模型响应：result.questions 填拆解）",
-    "output_ref": "result.questions",
-    "status": "done"
-   },
-   {
-    "step": "step2",
-    "action": "机械检索与未命中候选判定",
-    "command": "python3 /skills/weekly-skill/scripts/kb_index.py --result /app/output/result.json --case /input/case.json --work-dir /app/work",
-    "output_ref": "/app/work/retrieval.json",
-    "status": "done"
-   },
-   {
-    "step": "step3",
-    "action": "逐问逐句作答（句句带来源与引文）",
-    "command": "（模型响应：result.answers + claims 回填）",
-    "output_ref": "result.answers",
-    "status": "done"
-   },
-   {
-    "step": "step4",
-    "action": "未命中登记与缺口清单",
-    "command": "（模型响应：result.gaps 回填）",
-    "output_ref": "result.gaps",
-    "status": "done"
-   },
-   {
-    "step": "step5",
-    "action": "增益对照与效率计数",
-    "command": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution",
-    "output_ref": "result.gain_evidence",
-    "status": "done"
-   },
-   {
-    "step": "step6",
-    "action": "自检与交付",
-    "command": "python3 /skills/weekly-skill/scripts/verify_check.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --out /app/work/verify_check.json --emit-into",
-    "output_ref": "/app/work/verify_check.json",
-    "status": "done"
-   }
-  ],
+  "report": "## 总体结论\n本案例完成5方面覆盖审查，发现示例问题，其余方面已查无异常。\n\n## 逐面小结\n- source_cited_qa：已查。\n- evidence_traceback：已查。\n- uncertainty_hint：已查。\n- metadata_version：已查。\n\n## 主要问题清单\n示例问题1条，详见findings。\n\n## 待复核项\n示例待复核项。",
   "run_status": {
    "state": "success",
-   "reason": null,
-   "manual_takeover": []
+   "reason": null
   },
-  "verdict": "partially_answered",
-  "verdict_basis": "5 个子问题中 4 个已带来源逐句作答，1 个（Q3-1）知识库确无依据并已登记缺口清单。",
-  "gain_evidence": {
-   "probe_version": "1.0",
-   "probe_tool": "scripts/gain_probe.py",
-   "case_id": "demo-kbqa-001",
-   "input": {
-    "result_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-80dd5ddc\\submission\\examples\\example-result.json",
-    "case_path": "D:\\hzm\\workbuddy\\2026-11-11-12-12-42\\bohrium-week4-final\\challenge-80dd5ddc\\submission\\examples\\example-case.json",
-    "case_contract_state": "enforced",
-    "entries_manifest_state": "enforced",
-    "same_input_for_both_runs": true,
-    "run_order": [
-     "normal",
-     "degraded"
-    ],
-    "note": "两遍均读取同一份 result.json 内容（深拷贝传入校验函数，不做原地修改）"
-   },
-   "runs": [
-    {
-     "mode": "normal",
-     "ablate": "none",
-     "verdict": "PASS",
-     "problems": 0,
-     "metrics": {
-      "alignment_violations_objective": 0,
-      "alignment_caught": 0,
-      "alignment_missed": 0,
-      "coverage_violations_objective": 0,
-      "coverage_caught": 0,
-      "coverage_missed": 0,
-      "miss_violations_objective": 0,
-      "miss_caught": 0,
-      "miss_missed": 0,
-      "evidence_violations_objective": 0,
-      "evidence_missed": 0,
-      "uncovered_subquestions": 0,
-      "manual_review_items": 0,
-      "manual_review_breakdown": {
-       "uncovered": 0,
-       "alignment_missed": 0,
-       "coverage_missed": 0,
-       "miss_missed": 0,
-       "evidence_missed": 0
-      },
-      "steps_count": 21,
-      "steps_detail": {
-       "checks_executed": 14,
-       "checks_disabled": 0,
-       "flow_steps_total": 7,
-       "flow_steps_done": 7
-      },
-      "clarification_rounds": 0
-     },
-     "wall_clock_seconds": 0.0006
-    },
-    {
-     "mode": "degraded",
-     "ablate": "all",
-     "verdict": "PASS",
-     "problems": 0,
-     "metrics": {
-      "alignment_violations_objective": 0,
-      "alignment_caught": 0,
-      "alignment_missed": 0,
-      "coverage_violations_objective": 0,
-      "coverage_caught": 0,
-      "coverage_missed": 0,
-      "miss_violations_objective": 0,
-      "miss_caught": 0,
-      "miss_missed": 0,
-      "evidence_violations_objective": 0,
-      "evidence_missed": 0,
-      "uncovered_subquestions": 0,
-      "manual_review_items": 0,
-      "manual_review_breakdown": {
-       "uncovered": 0,
-       "alignment_missed": 0,
-       "coverage_missed": 0,
-       "miss_missed": 0,
-       "evidence_missed": 0
-      },
-      "steps_count": 7,
-      "steps_detail": {
-       "checks_executed": 0,
-       "checks_disabled": 4,
-       "flow_steps_total": 7,
-       "flow_steps_done": 7
-      },
-      "clarification_rounds": 0
-     },
-     "wall_clock_seconds": 0.0004
-    }
-   ],
-   "delta_normal_minus_degraded": {
-    "alignment_missed": 0,
-    "coverage_missed": 0,
-    "miss_missed": 0,
-    "evidence_missed": 0,
-    "manual_review_items": 0,
-    "steps_count": 14,
-    "clarification_rounds": 0
-   },
-   "mechanism_to_metric_map": [
-    {
-     "metric": "alignment_missed",
-     "mechanism": "答案句-来源对齐检查（来源条目须存在、引文须逐字回证条目正文台账、无来源句识别）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后无来源句与编造引文不再判 FAIL，答案句与证据脱钩"
-    },
-    {
-     "metric": "coverage_missed",
-     "mechanism": "问题拆解覆盖检查（case 每问须拆解、每子问题须有答案、coverage 计数机械复算）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后漏拆解/漏答子问题不再可检出，多问回答可静默缺问"
-    },
-    {
-     "metric": "miss_missed",
-     "mechanism": "检索未命中登记检查（miss ⇒ miss_reason + gaps 含 missing_topic/needed_action；partial 须显式声明缺口）",
-     "formula": "客观违规数 − 被校验层捕获数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后知识不足可被通顺回答掩盖，缺口清单丢失"
-    },
-    {
-     "metric": "evidence_missed",
-     "mechanism": "claims 证据链回证（答案句原文与引文须在对应 claim 中逐字出现；数字须回证条目正文）",
-     "formula": "无回证的答案句数",
-     "higher_is_better": false,
-     "degrade_effect": "关闭后证据链缺失不再判 FAIL，引用真实性退化为自述"
-    },
-    {
-     "metric": "manual_review_items",
-     "mechanism": "漏检 + 未覆盖子问题合计",
-     "formula": "uncovered + 四类漏检",
-     "higher_is_better": false,
-     "degrade_effect": "机器判定面缩小后，需人工回原文核对的条目增加"
-    },
-    {
-     "metric": "steps_count",
-     "mechanism": "七步线性流程 + 机械校验三元组自检",
-     "formula": "校验层已执行检查项数 + 流程层已完成步骤数",
-     "higher_is_better": null,
-     "degrade_effect": "关闭检查项会减少执行计数，但换来漏检——步骤少不等于质量高"
-    },
-    {
-     "metric": "clarification_rounds",
-     "mechanism": "把人工核对条目按每轮 3 条打包（公式随记录落盘）",
-     "formula": "ceil(manual_review_items / 3)",
-     "higher_is_better": false,
-     "degrade_effect": "人工条目越多，回原文/回问所需的轮次越多"
-    }
-   ],
-   "boundaries": [
-    "对照对象是本校验层自身的正常模式与退化模式，不是平台基础 Agent 与参赛 Agent 的平台白板对照；平台对照结论由平台生成，本探针不代替、不冒充。",
-    "退化模式关闭四组检查（alignment/coverage/miss/evidence），枚举、结构守卫、verdict 一致性等基础检查仍开启，因此退化侧漏检数是下界而非最坏情形。",
-    "四类违规的客观真值由探针经 objective_violations 独立复算（与 verify_check 的self_check 分开计数），口径一致时漏检数才可信。",
-    "引文回证真值依赖 build_skeleton 产出的 entries.json 台账；台账缺失时回证降级为 claims 链内回证，alignment 真值口径相应放宽（闸门 entries_manifest 可见）。",
-    "wall_clock_seconds 为本机两次 analyze 调用耗时，受机器负载影响，仅作同次对照参考。",
-    "追问轮次是按约定批量（每轮 3 条）折算的估计量，不是实测交互次数。"
-   ],
-   "failure_conditions": [
-    "result.json 不存在或不可解析 → 探针输出 FAIL 并以退出码 0 结束，不改交付物。",
-    "case.json 缺失 → case_contract 闸门记 skipped_not_provided，契约字段校验跳过。",
-    "entries.json 台账缺失时引文回证无法对正文核验，alignment 真值只含结构性违规。",
-    "把 --ablate 的退化结果当作交付自检结论即为误用。",
-    "污染反例自测只在副本上注入，原 result.json 不被修改。"
-   ],
-   "interpretation_rule": "delta>0 且指标为 lower_is_better 时表示机制带来增益（漏检减少）；delta=0 表示该指标在本输入上无区分度。",
-   "pollution_selftest": {
-    "polluted_copy": "C:\\Users\\hzm\\AppData\\Local\\Temp\\kbqa_final\\gain_probe_polluted.json",
-    "injected": [
-     "Q1-1 首句改为无来源句 + 编造文本",
-     "Q3-1 标 miss 但清空 miss_reason",
-     "清空 gaps（缺口清单丢失）",
-     "清空 claims（证据链缺失）"
-    ],
-    "normal_mode": {
-     "verdict": "FAIL",
-     "problems": 8,
-     "alignment_missed": 0,
-     "coverage_missed": 0,
-     "miss_missed": 0,
-     "evidence_missed": 2,
-     "problem_sample": [
-      "Q1-1 sentences[0]: 无来源句（source_entry 空）",
-      "Q3-1 标 miss 但缺 miss_reason 或未登记 gaps（须含 missing_topic 与 needed_action）",
-      "Q1-1 sentences[0] 在 claims 证据链中无逐字回证",
-      "Q1-1 sentences[1] 在 claims 证据链中无逐字回证",
-      "Q1-2 sentences[0] 在 claims 证据链中无逐字回证",
-      "Q1-2 sentences[1] 在 claims 证据链中无逐字回证",
-      "Q2-1 sentences[0] 在 claims 证据链中无逐字回证",
-      "Q2-2 sentences[0] 在 claims 证据链中无逐字回证"
-     ]
-    },
-    "degraded_mode": {
-     "verdict": "PASS",
-     "problems": 0,
-     "alignment_missed": 1,
-     "coverage_missed": 0,
-     "miss_missed": 1,
-     "evidence_missed": 6,
-     "problem_sample": []
-    },
-    "missed_detection_delta": {
-     "alignment_missed": 1,
-     "coverage_missed": 0,
-     "miss_missed": 1,
-     "evidence_missed": 4,
-     "problems": -8
-    },
-    "caught_by_normal_mode": true,
-    "note": "污染仅注入副本；正常模式须抓到污染项，退化模式漏检属预期。"
-   }
-  },
-  "efficiency": {
-   "collected_by": "scripts/gain_probe.py（自动采集）",
-   "wall_clock_seconds_total": 0.006,
-   "result_bytes": 11914,
-   "entries_with_content": 6,
-   "checker_runs": 2,
-   "checker_checks_executed_normal": 14,
-   "checker_checks_executed_degraded": 0,
-   "checker_checks_disabled_degraded": 4,
-   "subquestions_total": 5,
-   "manual_review_items_normal": 0,
-   "manual_review_items_degraded": 0,
-   "clarification_rounds_normal": 0,
-   "clarification_rounds_degraded": 0,
-   "model_requests": null,
-   "model_requests_note": "模型请求数由 Agent 侧记录（不可由本脚本采集），交付前按实际请求次数回填；缺失时保持 null，不得臆造。",
-   "reproduce": "python3 /skills/weekly-skill/scripts/gain_probe.py --result /app/output/result.json --case /input/case.json --work-dir /app/work --emit-into --inject-pollution"
-  }
+  "verdict": "audited",
+  "verdict_basis": "5方面全覆盖"
  },
  "claims": [
   {
    "claim_id": "c-01",
-   "text": "当前样品前处理流程为：称取样品 0.5 g，加入 10 mL 缓冲液，涡旋 60 秒。",
+   "text": "示例主张",
    "kind": "reported",
-   "source_id": "E01",
-   "location": "answers[0].sentences[0]",
+   "source_id": "F01",
+   "location": "示例章节",
    "evidence": [
     {
-     "paragraph_id": "E01#正文",
-     "quote": "称取样品 0.5 g；2) 加入 10 mL 缓冲液；3) 涡旋 60 秒"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-02",
-   "text": "离心参数为离心 5 分钟，转速 8000 rpm。",
-   "kind": "reported",
-   "source_id": "E01",
-   "location": "answers[0].sentences[1]",
-   "evidence": [
-    {
-     "paragraph_id": "E01#正文",
-     "quote": "离心 5 分钟，转速 8000 rpm"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-03",
-   "text": "旧版 SOP 的流程为：称取样品 1.0 g，加入 5 mL 缓冲液，离心 3 分钟，转速 4000 rpm。",
-   "kind": "reported",
-   "source_id": "E02",
-   "location": "answers[1].sentences[0]",
-   "evidence": [
-    {
-     "paragraph_id": "E02#正文",
-     "quote": "称取样品 1.0 g，加入 5 mL 缓冲液，离心 3 分钟，转速 4000 rpm"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-04",
-   "text": "旧版流程已被 v2 取代，两版在称样量、缓冲液体积、离心时间与转速上均存在差异。",
-   "kind": "inferred",
-   "source_id": "E02",
-   "location": "answers[1].sentences[1]",
-   "evidence": [
-    {
-     "paragraph_id": "E02#正文",
-     "quote": "已被 v2 取代"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-05",
-   "text": "本实验室台式离心机的转速上限为 12000 rpm。",
-   "kind": "reported",
-   "source_id": "E03",
-   "location": "answers[2].sentences[0]",
-   "evidence": [
-    {
-     "paragraph_id": "E03#FAQ第1问",
-     "quote": "本实验室台式离心机上限为 12000 rpm"
-    }
-   ]
-  },
-  {
-   "claim_id": "c-06",
-   "text": "离心机的校准周期为每 6 个月校准一次。",
-   "kind": "reported",
-   "source_id": "E03",
-   "location": "answers[3].sentences[0]",
-   "evidence": [
-    {
-     "paragraph_id": "E03#FAQ第2问",
-     "quote": "每 6 个月校准一次"
+     "quote": "示意示例句子（回证）"
     }
    ]
   }
  ],
  "uncertainties": {
-  "unreported": [],
-  "unverifiable": [
-   "动物实验伦理审批的平均通过率（Q3-1）：知识库无任何统计数据"
-  ],
-  "conflicts": [],
-  "human_review": [],
-  "summary": "Q3-1 检索未命中并经逐条复核确认无依据，已如实回答知识不足并登记缺口清单；其余子问题均逐句回证到条目正文。"
+  "summary": "示例不确定性",
+  "human_review": []
  },
- "changelog": [
-  {
-   "step": "step0",
-   "change": "build_skeleton 落骨架并盘点知识库 5 条目"
-  },
-  {
-   "step": "step1",
-   "change": "3 个问题拆解为 5 个子问题"
-  },
-  {
-   "step": "step3",
-   "change": "4 个子问题逐句作答，Q3-1 登记 miss"
-  }
- ],
- "self_check": [],
- "unbacked_numbers": [],
- "validator_verdict": "PASS",
- "gates": []
+ "changelog": []
 }

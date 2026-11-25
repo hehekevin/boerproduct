@@ -1,0 +1,49 @@
+{
+  "$comment": "result.json 输出模板。生成时删除 $comment 与 $note 键。output_contract_fields 必须包含 case.json 中 output_contract 声明的全部字段；anchors 列出笔记中每个关键结论的定位。",
+  "case_id": "{案例标识，来自 case.json，必填}",
+  "task_type": "structured_paper_notes",
+  "status": "成功 | 部分完成 | 无法判断 | 失败",
+  "status_reason": "当 status 非 '成功' 时必填：缺口描述与可人工接管位置",
+  "paper_meta": {
+    "title": "论文原文标题",
+    "authors": "作者列表",
+    "venue_year": "期刊或会议与年份",
+    "total_pages": 0,
+    "file_name": "输入论文文件名"
+  },
+  "note_fields": {
+    "research_question": "研究问题一句话概括",
+    "data": "数据集与规模一句话概括",
+    "method_conditions": "方法与前提条件一句话概括",
+    "key_findings": ["主要发现，数字逐字一致"],
+    "limitations": ["论文原文明说的局限"],
+    "conclusion": "论文结论一句话概括"
+  },
+  "anchors": [
+    {
+      "claim": "关键结论或摘录短句",
+      "page": "页码，如 p.3",
+      "section": "章节号与名称，如 2.2 Experimental Setup",
+      "paragraph": "段落序号，如 ¶2",
+      "figure_table": "图表编号，如 Table 1 / Fig. 3，无则填 null"
+    }
+  ],
+  "number_checks": [
+    {
+      "metric": "指标名",
+      "abstract_value": "摘要或结论中的值",
+      "body_value": "正文表格中的值，图表不可读填 null",
+      "result": "已核对 | 冲突 | 无表格来源"
+    }
+  ],
+  "unreported": ["未报告字段：说明"],
+  "uncertain": ["无法判断项：原因"],
+  "conflicts": ["材料冲突项：两处锚点"],
+  "fact_vs_evaluation_note": "本结果中事实类内容均带锚点可回链原文；阅读者评价已与事实分栏，未混入事实栏。",
+  "output_contract_fields": {
+    "$note": "将 case.json 中 output_contract 声明的全部字段名作为键，值为对应结果或定位"
+  },
+  "change_log": [
+    { "time": "生成时间", "change": "初版生成，status=成功" }
+  ]
+}

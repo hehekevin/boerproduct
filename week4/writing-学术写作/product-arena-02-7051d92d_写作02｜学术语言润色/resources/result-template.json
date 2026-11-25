@@ -1,0 +1,64 @@
+{
+  "_comment": "result.json 输出模板。写入 /app/output/result.json 时删除 _comment 字段。若 case.json 的 output_contract 另有约定字段，以 output_contract 为准合并补齐，case_id 必填。",
+  "case_id": "case-XX",
+  "status": "success",
+  "status_note": "success 或 partial。partial 时 uncertainty 必须写明未覆盖范围与原因。",
+  "polished_text_file": "polished_text.md",
+  "revision_log_file": "revision_log.md",
+  "polished_text": "润色后完整文本（与 polished_text.md 内容一致）",
+  "revision_log": [
+    {
+      "id": "R001",
+      "location": "Introduction, para 1, sentence 2",
+      "original": "The experimental results prove that the proposed method is effective.",
+      "revised": "The experimental results demonstrate that the proposed method is effective.",
+      "type": "register",
+      "reason": "prove 属绝对化表述，demonstrate 与原句限定强度同档",
+      "risk": "low",
+      "manual_review": false
+    }
+  ],
+  "glossary": [
+    {
+      "term_zh": "深度学习",
+      "canonical_en": "deep learning",
+      "abbr": "DL",
+      "first_occurrence": "Introduction, para 1, sentence 1",
+      "variants_found": ["DL"],
+      "action": "expand at first occurrence; use DL afterwards"
+    }
+  ],
+  "evidence": {
+    "_note": "事实与来源映射：数字、术语、引用、图表、关键论断逐条回溯到原文位置，不新增材料外事实",
+    "numbers_preserved": [
+      {"value": "92.3%", "original_location": "Experiments, para 2, sentence 1", "polished_location": "Experiments, para 2, sentence 1", "unchanged": true}
+    ],
+    "citations_preserved": [
+      {"marker": "[12]", "original_location": "Introduction, para 3, sentence 2", "unchanged": true}
+    ],
+    "figures_preserved": [
+      {"marker": "Figure 3", "original_location": "Results, para 1, sentence 2", "unchanged": true}
+    ]
+  },
+  "manual_review_items": [
+    {
+      "id": "M001",
+      "location": "References in Experiments, para 2",
+      "issue": "原文 [9] 指向的图表号疑似有误（正文称 Figure 4，图中标注 Figure 5）",
+      "action_taken": "保持原样未修改",
+      "needs": "作者确认图表编号"
+    }
+  ],
+  "uncertainty": [
+    "目标文体未在输入中指定，按期刊论文体处理",
+    "第 4 章第 2 段存在编码异常字符两处，保留原样未处理"
+  ],
+  "stats": {
+    "total_sentences": 120,
+    "revised_sentences": 34,
+    "revision_ratio": "28.3%",
+    "by_type": {"grammar": 9, "syntax": 4, "punctuation": 3, "spelling": 2, "terminology": 6, "consistency": 4, "register": 4, "conciseness": 1, "chinese-english": 1},
+    "segments_processed": 1,
+    "model_requests_used": 8
+  }
+}
